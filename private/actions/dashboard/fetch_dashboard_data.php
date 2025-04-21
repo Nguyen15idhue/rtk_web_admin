@@ -20,6 +20,8 @@ function fetch_dashboard_data(): array
         'referred_registrations' => 0,
         'total_commission_paid' => 0,
         'recent_activities' => [],
+        // Add default structure for chart data
+        'new_registrations_chart_data' => ['labels' => [], 'data' => []],
     ];
 
     try {
@@ -98,6 +100,41 @@ function fetch_dashboard_data(): array
             $dashboard_data['recent_activities'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        // New Registrations (Last 7 Days) for Chart
+        $seven_days_ago = date('Y-m-d 00:00:00', strtotime('-6 days')); // Include today
+        $today_end = date('Y-m-d 23:59:59');
+        $sql_chart = "SELECT DATE(created_at) as registration_date, COUNT(id) as count
+                      FROM registration
+                      WHERE created_at BETWEEN :start_date AND :end_date
+                        AND deleted_at IS NULL
+                      GROUP BY DATE(created_at)
+                      ORDER BY registration_date ASC";
+        $stmt_chart = $pdo->prepare($sql_chart);
+        $stmt_chart->bindParam(':start_date', $seven_days_ago);
+        $stmt_chart->bindParam(':end_date', $today_end);
+        $stmt_chart->execute();
+        $results = $stmt_chart->fetchAll(PDO::FETCH_ASSOC);
+
+        // Prepare data for the chart
+        $chart_labels = [];
+        $chart_data = [];
+        $registrations_by_date = [];
+        foreach ($results as $row) {
+            $registrations_by_date[$row['registration_date']] = $row['count'];
+        }
+
+        // Generate labels and data for the last 7 days, filling missing days with 0
+        for ($i = 6; $i >= 0; $i--) {
+            $date = date('Y-m-d', strtotime("-$i days"));
+            $chart_labels[] = date('d/m', strtotime($date)); // Format date as DD/MM
+            $chart_data[] = $registrations_by_date[$date] ?? 0;
+        }
+
+        $dashboard_data['new_registrations_chart_data'] = [
+            'labels' => $chart_labels,
+            'data' => $chart_data,
+        ];
+
     } catch (PDOException $e) {
         error_log("Dashboard PDO Error: " . $e->getMessage());
         // Return default data in case of PDO error
@@ -110,6 +147,7 @@ function fetch_dashboard_data(): array
             'referred_registrations' => 0,
             'total_commission_paid' => 0,
             'recent_activities' => [],
+            'new_registrations_chart_data' => ['labels' => [], 'data' => []], // Default chart data
         ];
     } catch (Exception $e) {
         error_log("Dashboard General Error: " . $e->getMessage());
@@ -123,6 +161,7 @@ function fetch_dashboard_data(): array
             'referred_registrations' => 0,
             'total_commission_paid' => 0,
             'recent_activities' => [],
+            'new_registrations_chart_data' => ['labels' => [], 'data' => []], // Default chart data
         ];
     }
 

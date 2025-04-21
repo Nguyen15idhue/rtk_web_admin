@@ -1,3 +1,16 @@
+<?php
+// Assuming $base_path is defined before this file is included
+// (e.g., in page_bootstrap.php which should be included by the calling page)
+// If $base_path is not guaranteed, you might need to calculate it here or pass it explicitly.
+// Example: $base_path = '/rtk_web_admin/'; // Or calculate dynamically
+
+// Ensure $base_path ends with a slash if it's expected
+if (substr($base_path, -1) !== '/') {
+    $base_path .= '/';
+}
+$public_assets_path = $base_path . 'public/assets/';
+
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -10,12 +23,13 @@
 
     <!-- Your CSS files -->
     <!-- Base styles, variables etc. should be loaded here -->
-    <link rel="stylesheet" href="/assets/css/base.css"> <!-- Assuming base styles are here -->
-    <link rel="stylesheet" href="/assets/css/layouts/main-content.css"> <!-- Styles for content area -->
-    <link rel="stylesheet" href="/assets/css/layouts/admin_sidebar.css"> <!-- ADDED: Styles for the sidebar -->
+    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/base.css"> <!-- Corrected Path -->
+    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/layouts/main-content.css"> <!-- Corrected Path -->
+    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/layouts/sidebar.css"> <!-- Corrected Path & Name -->
     <!-- Include other necessary CSS like components (buttons, cards, etc.) -->
-    <link rel="stylesheet" href="/assets/css/components/cards.css">
-    <link rel="stylesheet" href="/assets/css/components/tables.css">
+    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/components/cards.css"> <!-- Corrected Path -->
+    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/components/tables.css"> <!-- Corrected Path -->
+    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/components/buttons.css"> <!-- Added buttons.css -->
 
     <!-- Add this style for dashboard specific layout -->
     <style>

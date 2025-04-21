@@ -94,6 +94,11 @@ class Database {
         if ($this->conn === null) {
              error_log("[Database GetConnection] Failed to establish connection.");
         }
+
+        if ($this->conn !== null) {
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        }
+
         return $this->conn;
     }
 }

@@ -21,6 +21,6 @@ session_destroy();
 $base_path = '/public'; // Or determine dynamically if needed
 
 // Redirect to the login page
-header("Location: " . $base_path . "/pages/auth/login.php");
+header("Location: " . $base_path . "/pages/auth/admin_login.php");
 exit();
 ?>

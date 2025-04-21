@@ -1,7 +1,9 @@
 <?php
 session_start();
 require_once __DIR__ . '/../../config/database.php'; // Adjust path as needed
-
+$_SESSION['admin_id'] = $admin_data['id'];
+$_SESSION['admin_username'] = $admin_data['admin_username'];
+$_SESSION['admin_role'] = $admin_data['role']; 
 // Note: The activity log function might need adjustment if you want to log admin actions
 // For simplicity, logging is omitted here but can be added similarly to process_login.php
 

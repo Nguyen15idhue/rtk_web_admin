@@ -29,7 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Expecting JSON payload
-$input = json_decode(file_get_contents('php://input'), true);
+$rawInput = file_get_contents('php://input');
+    $input = json_decode($rawInput, true);
+    if (!is_array($input)) {
+        $input = $_POST;
+    }
 $transaction_id = filter_var($input['transaction_id'] ?? null, FILTER_VALIDATE_INT);
 
 if ($transaction_id === false || $transaction_id <= 0) {

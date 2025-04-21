@@ -105,11 +105,13 @@ $base_path = '/';
             </div>
         </div> <!-- End Stats Grid -->
 
-        <!-- Charts Section - Placeholder -->
+        <!-- Charts Section -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
             <div class="bg-white p-4 sm:p-6 rounded-lg shadow border border-gray-200" style="background-color: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
                 <h3 class="text-base md:text-lg font-semibold text-gray-900 mb-4" style="font-size: 1.1rem; font-weight: 600; color: #111827; margin-bottom: 1rem;">Đăng ký mới (7 ngày)</h3>
-                <div class="chart-container" style="min-height: 200px; display: flex; align-items: center; justify-content: center; color: #6b7280;"> Biểu đồ đăng ký (Cần JS) </div>
+                <div class="chart-container" style="min-height: 200px; position: relative;">
+                    <canvas id="newRegistrationsChart"></canvas>
+                </div>
             </div>
             <div class="bg-white p-4 sm:p-6 rounded-lg shadow border border-gray-200" style="background-color: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
                 <h3 class="text-base md:text-lg font-semibold text-gray-900 mb-4" style="font-size: 1.1rem; font-weight: 600; color: #111827; margin-bottom: 1rem;">Giới thiệu HĐ (7 ngày)</h3>
@@ -141,6 +143,67 @@ $base_path = '/';
         </section>
     </main>
 </div> <!-- End dashboard-wrapper -->
+
+<!-- Add Chart.js library if not already included globally -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // --- New Registrations Chart ---
+    const newRegCtx = document.getElementById('newRegistrationsChart');
+    if (newRegCtx) {
+        // --- IMPORTANT ---
+        // You need to fetch this data in PHP (e.g., in fetch_dashboard_data.php)
+        // and make it available here. Example structure:
+        <?php
+            // $new_registrations_chart_data should be fetched in fetch_dashboard_data.php
+            $new_registrations_chart_data = $data['new_registrations_chart_data'];
+        ?>
+        const newRegistrationsData = <?php echo json_encode($new_registrations_chart_data); ?>;
+
+        new Chart(newRegCtx, {
+            type: 'line', // Or 'bar'
+            data: {
+                labels: newRegistrationsData.labels,
+                datasets: [{
+                    label: 'Đăng ký mới',
+                    data: newRegistrationsData.data,
+                    borderColor: 'rgb(59, 130, 246)', // blue-500
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.1,
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0 // Ensure whole numbers for counts
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false // Hide legend if only one dataset
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                }
+            }
+        });
+    }
+
+    // --- Placeholder for Referral Chart ---
+    // Add similar logic here for the "Giới thiệu HĐ (7 ngày)" chart
+    // const referralCtx = document.getElementById('referralChart'); // Add an ID to its canvas
+    // if (referralCtx) { ... }
+});
+</script>
 
 <!-- Note: Sidebar and Footer includes should be handled by the main layout file -->
 <!-- Removed JS from here, it should be in a global JS file or footer include -->

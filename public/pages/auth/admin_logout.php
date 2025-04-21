@@ -3,5 +3,5 @@
 define('PRIVATE_PATH', dirname(__FILE__, 4) . '/private');
 
 // Include the actual logout processing script
-require_once(PRIVATE_PATH . '/action/auth/process_logout.php');
+require_once(PRIVATE_PATH . '/actions/auth/process_admin_logout.php');
 ?>
