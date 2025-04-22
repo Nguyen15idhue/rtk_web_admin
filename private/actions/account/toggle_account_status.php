@@ -1,6 +1,5 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\toggle_status.php
-session_start();
 header('Content-Type: application/json');
 
 // Check admin login

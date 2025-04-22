@@ -1,7 +1,6 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\update_account.php
 header('Content-Type: application/json');
-session_start();
 
 // Basic security check
 if (!isset($_SESSION['admin_id'])) {
