@@ -1,7 +1,6 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\get_account_details.php
 header('Content-Type: application/json');
-session_start();
 
 // Prevent PHP from outputting HTML errors directly
 error_reporting(E_ALL); // Report all errors for logging

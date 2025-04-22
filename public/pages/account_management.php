@@ -535,7 +535,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
 
 <script>
     // --- API Base Path for JavaScript (relative) ---
-    const apiBasePath = '../../private/actions/account/';
+    const apiBasePath = '../actions/account/index.php';
     const basePath = '<?php echo $base_path; ?>'; // Needed for some actions potentially
 
     const accountsTableBody = document.getElementById('accountsTable')?.querySelector('tbody');
@@ -579,7 +579,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
         if (editAccountError) editAccountError.textContent = '';
 
         try {
-            const response = await fetch(`${apiBasePath}get_account_details.php?id=${accountId}`);
+            const response = await fetch(`${apiBasePath}?action=get_account_details&id=${accountId}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -615,7 +615,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
         viewDetailsContent.innerHTML = '<p>Đang tải...</p>';
         viewModal.style.display = 'block';
 
-        const url = `${apiBasePath}get_account_details.php?id=${accountId}`;
+        const url = `${apiBasePath}?action=get_account_details&id=${accountId}`;
         console.log("Attempting to fetch URL:", url);
 
         fetch(url)
@@ -713,7 +713,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
         if (createAccountError) createAccountError.textContent = '';
 
         try {
-            const response = await fetch(`${apiBasePath}create_account.php`, {
+            const response = await fetch(`${apiBasePath}?action=create_account`, {
                 method: 'POST',
                 body: formData
             });
@@ -746,7 +746,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
          if (editAccountError) editAccountError.textContent = '';
 
         try {
-            const response = await fetch(`${apiBasePath}update_account.php`, {
+            const response = await fetch(`${apiBasePath}?action=update_account`, {
                 method: 'POST',
                 body: formData
             });
@@ -831,7 +831,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
         }
 
         try {
-            const response = await fetch(`${apiBasePath}delete_account.php`, {
+            const response = await fetch(`${apiBasePath}?action=delete_account`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json', // Send as JSON
@@ -869,7 +869,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
         }
 
         try {
-            const response = await fetch(`${apiBasePath}toggle_account_status.php`, {
+            const response = await fetch(`${apiBasePath}?action=toggle_account_status`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json', // Send as JSON

@@ -225,7 +225,13 @@ class AccountModel {
             return false;
         }
 
-        $accountId = 'MANUAL_' . $data['registration_id'] . '_' . strtoupper(substr(md5(uniqid()), 0, 6));
+        // Use provided ID or default to RTK_…
+        if (!empty($data['id'])) {
+            $accountId = $data['id'];
+        } else {
+            $accountId = 'RTK_' . $data['registration_id'] . '_' . time();
+        }
+
         $hashedPassword = password_hash($data['password_acc'], PASSWORD_DEFAULT);
         if ($hashedPassword === false) {
             error_log("Create account failed: Password hashing failed.");
@@ -426,6 +432,65 @@ class AccountModel {
         } catch (PDOException $e) {
             error_log("Error checking username existence: " . $e->getMessage());
             return true;
+        }
+    }
+
+    /**
+     * Get RTK accounts for a specific user, including mount point details.
+     *
+     * @param int $userId
+     * @return array
+     */
+    public function getAccountsByUserId(int $userId): array {
+        try {
+            $sql = "SELECT sa.*, r.start_time AS start_date, r.end_time AS end_date,"
+                 . " r.status AS reg_status, p.name AS package_name,"
+                 . " DATEDIFF(r.end_time, r.start_time) AS duration_days,"
+                 . " sa.username_acc AS username"
+                 . " FROM survey_account sa"
+                 . " JOIN registration r ON sa.registration_id = r.id"
+                 . " JOIN package p ON r.package_id = p.id"
+                 . " WHERE r.user_id = :user_id AND sa.deleted_at IS NULL"
+                 . " ORDER BY sa.created_at DESC";
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+            $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($accounts as &$account) {
+                $account['stations'] = $this->getMountPointsForAccount($account['id']);
+            }
+            unset($account);
+
+            return $accounts;
+        } catch (PDOException $e) {
+            error_log("Error fetching RTK accounts by user ($userId): " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Fetch mount point entries for a given account.
+     *
+     * @param string $accountId
+     * @return array
+     */
+    private function getMountPointsForAccount(string $accountId): array {
+        try {
+            $sql = "SELECT mp.id, mp.ip, mp.port, mp.mountpoint"
+                 . " FROM survey_account sa"
+                 . " JOIN registration r ON sa.registration_id = r.id"
+                 . " JOIN mount_point mp ON mp.location_id = r.location_id"
+                 . " WHERE sa.id = :account_id";
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':account_id', $accountId, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Error fetching mount points for account ' . $accountId . ': ' . $e->getMessage());
+            return [];
         }
     }
 }

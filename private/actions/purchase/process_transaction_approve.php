@@ -17,13 +17,14 @@ header('Content-Type: application/json'); // Set response type
 //     exit;
 // }
 
-
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../classes/Database.php';
 // require_once __DIR__ . '/../../utils/logger.php'; // Example: For logging actions
 // require_once __DIR__ . '/../../utils/permissions.php'; // Example: For permission checks
 // require_once __DIR__ . '/../../services/SurveyAccountService.php'; // Example: Service to activate accounts
 require_once __DIR__ . '/../../services/TransactionHistoryService.php'; // Service to manage transaction history
+require_once __DIR__ . '/../../api/rtk_system/account_api.php';      // thêm
+require_once __DIR__ . '/../../utils/functions.php';                // thêm (generate_unique_id,…)
 
 // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -34,16 +35,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // Expecting JSON payload
 $rawInput = file_get_contents('php://input');
-    $input = json_decode($rawInput, true);
-    if (!is_array($input)) {
-        $input = $_POST;
-    }
+$input = json_decode($rawInput, true);
+if (!is_array($input)) {
+    $input = $_POST;
+}
 $transaction_id = filter_var($input['transaction_id'] ?? null, FILTER_VALIDATE_INT);
 
 if ($transaction_id === false || $transaction_id <= 0) {
-     http_response_code(400); // Bad Request
-     echo json_encode(['success' => false, 'message' => 'Invalid or missing transaction ID.']);
-     exit;
+    http_response_code(400); // Bad Request
+    echo json_encode(['success' => false, 'message' => 'Invalid or missing transaction ID.']);
+    exit;
 }
 
 // --- Processing ---
@@ -60,7 +61,7 @@ $db->beginTransaction();
 
 try {
     // 1. Verify Transaction Exists and is Pending or Rejected (Allow re-approval)
-    $stmt_check = $db->prepare("SELECT status, user_id FROM registration WHERE id = :id AND deleted_at IS NULL FOR UPDATE"); // Lock row
+    $stmt_check = $db->prepare("SELECT status, user_id, num_account FROM registration WHERE id = :id AND deleted_at IS NULL FOR UPDATE"); // Lock row
     $stmt_check->bindParam(':id', $transaction_id, PDO::PARAM_INT);
     $stmt_check->execute();
     $registration = $stmt_check->fetch(PDO::FETCH_ASSOC);
@@ -70,7 +71,7 @@ try {
     }
     // Allow approving if pending or previously rejected
     if (!in_array($registration['status'], ['pending', 'rejected'])) {
-         throw new Exception("Transaction cannot be approved (Current Status: " . $registration['status'] . "). Only pending or rejected transactions can be approved.");
+        throw new Exception("Transaction cannot be approved (Current Status: " . $registration['status'] . "). Only pending or rejected transactions can be approved.");
     }
     $old_status = $registration['status']; // Store old status for logging
 
@@ -97,28 +98,69 @@ try {
     if ($accounts_activated_count == 0) {
         // Decide handling: Rollback? Log warning? Depends on business logic.
         // For now, log a warning but proceed, assuming registration update is primary.
-         error_log("Warning: No survey accounts found or enabled for approved registration ID: " . $transaction_id);
+        error_log("Warning: No survey accounts found or enabled for approved registration ID: " . $transaction_id);
         // OR: throw new Exception("Failed to activate associated survey account(s). Rollback required.");
     }
 
-    // 5. Update Transaction History
+    // 5. Tự động tạo RTK account qua API
+    $username = 'user' . $transaction_id . '_' . time();
+    $password = bin2hex(random_bytes(8));
+    $apiPayload = [
+        "name"      => $username,
+        "userPwd"   => $password,
+        "startTime" => strtotime('now') * 1000,
+        "endTime"   => strtotime('+' . ($registration['num_account'] ?? 30) . ' days') * 1000,
+        "enabled"   => 1,
+        "numOnline" => 1,
+        "mountIds"  => [],
+        "regionIds" => [],
+        "casterIds" => [],
+        "customerBizType"   => 1,
+        "customerCompany"   => ""      // sửa: API yêu cầu string, không phải array
+    ];
+    $apiRes = createRtkAccount($apiPayload);
+    if (!$apiRes['success']) {
+        throw new Exception("RTK API tạo account thất bại: " . $apiRes['error']);
+    }
+    // chèn local record
+    $accId = 'RTK_' . $transaction_id . '_' . time();
+    $stmt_ins = $db->prepare("
+        INSERT INTO survey_account
+          (id, registration_id, username_acc, password_acc, concurrent_user, enabled, created_at)
+        VALUES (:id, :rid, :uname, :pwd, 1, 1, NOW())
+    ");
+    $stmt_ins->execute([
+        ':id'    => $accId,
+        ':rid'   => $transaction_id,
+        ':uname' => $username,
+        ':pwd'   => password_hash($password, PASSWORD_DEFAULT)
+    ]);
+
+    // 6. Update Transaction History
     TransactionHistoryService::updateStatusByRegistrationId($db, $transaction_id, 'completed');
 
-    // 6. Log Activity
+    // 7. Log Activity
     // log_admin_activity($_SESSION['admin_id'], 'approve_transaction', 'registration', $transaction_id, ['old_status' => $old_status], ['new_status' => 'active']); // Example
 
-    // 7. TODO: Send Notifications (Email/SMS to user?)
+    // 8. TODO: Send Notifications (Email/SMS to user?)
 
     // --- Commit Transaction ---
     $db->commit();
-    echo json_encode(['success' => true, 'message' => 'Transaction #' . $transaction_id . ' approved successfully.']);
+    echo json_encode([
+        'success' => true,
+        'message' => 'Transaction #' . $transaction_id . ' approved and account created.',
+        'account' => [
+            'username' => $username,
+            'password' => $password
+        ]
+    ]);
 
 } catch (Exception $e) {
     $db->rollBack();
     error_log("Error approving transaction ID $transaction_id: " . $e->getMessage()); // Log detailed error
     http_response_code(500); // Internal Server Error
     // Provide a generic error message to the client
-    echo json_encode(['success' => false, 'message' => 'Failed to approve transaction:' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'Failed to approve transaction: ' . $e->getMessage()]);
 }
 
 exit;
