@@ -40,13 +40,12 @@ if ($project_folder_index === -1) {
     // You might want to define a constant BASE_PATH in a config file instead.
     error_log("Could not determine project base path in page_bootstrap.php");
     // Defaulting to a relative path might work in some server configs but is less reliable
-    $base_path_segment = '/rtk_web_admin/'; // Adjust this fallback as needed
+    $base_path_segment = '/'; // Adjust this fallback as needed
 } else {
     // Base path at project root, exclude 'public' directory
     $base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_folder_index + 1)) . '/';
 }
 $base_path = $protocol . $host . $base_path_segment;
-
 
 // --- Database Connection ---
 $database = new Database();

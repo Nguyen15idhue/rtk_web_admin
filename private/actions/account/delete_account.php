@@ -11,6 +11,7 @@ if (!isset($_SESSION['admin_id'])) {
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../classes/Database.php';
 require_once __DIR__ . '/../../classes/AccountModel.php';
+require_once __DIR__ . '/../../api/rtk_system/account_api.php';
 
 // Get input data
 $rawInput = file_get_contents('php://input');
@@ -45,6 +46,12 @@ try {
     $success = $accountModel->deleteAccount($accountId);
 
     if ($success) {
+        // call centralized API function
+        $apiResult = deleteRtkAccount([$accountId]);
+        if (!$apiResult['success']) {
+            throw new Exception('External API delete failed: '.$apiResult['error']);
+        }
+
         // Log activity (implement logging function)
         // log_activity($_SESSION['admin_id'], 'delete', 'survey_account', $accountId, null, null);
 

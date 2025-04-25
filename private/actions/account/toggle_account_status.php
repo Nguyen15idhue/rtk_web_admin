@@ -1,7 +1,10 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\toggle_status.php
 header('Content-Type: application/json');
-
+error_reporting(E_ALL); // Report all errors for logging
+ini_set('display_errors', 0); // Keep off for browser output
+ini_set('log_errors', 1); // Ensure errors are logged
+ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
 // Check admin login
 if (!isset($_SESSION['admin_id'])) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
@@ -12,6 +15,7 @@ require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../classes/Database.php';
 require_once __DIR__ . '/../../classes/AccountModel.php'; // Uses updated deriveAccountStatus
 require_once __DIR__ . '/../../utils/functions.php'; // Uses updated get_account_action_buttons, get_account_status_badge
+require_once __DIR__ . '/../../api/rtk_system/account_api.php';
 
 // Get input data
 $rawInput = file_get_contents('php://input');
@@ -73,16 +77,58 @@ try {
         // Regenerate status badge HTML using the updated function
         $newStatusBadgeHtml = get_account_status_badge($newDerivedStatus);
 
-        // Log activity (implement logging function if needed)
-        // log_activity($_SESSION['admin_id'], $action, 'survey_account', $accountId, ['enabled' => !$enable], ['enabled' => $enable]);
+        // Prepare and call external RTK API to sync status
+        $stmtPwd = $db->prepare("SELECT password_acc FROM survey_account WHERE id = ?");
+        $stmtPwd->execute([$accountId]);
+        $currentPwd = $stmtPwd->fetchColumn();
 
+        // --- Mới: Lấy mountIds để không bị reset sau suspend/reactivate ---
+        $stmtLoc = $db->prepare("
+            SELECT r.location_id 
+            FROM registration r 
+            JOIN survey_account sa ON sa.registration_id = r.id 
+            WHERE sa.id = ?
+        ");
+        $stmtLoc->execute([$accountId]);
+        $locationId = (int)$stmtLoc->fetchColumn();
+        $mountIds = getMountPointsByLocationId($locationId); // Hàm có sẵn trong utils/functions.php
+
+        // Prepare payload for RTK API to sync status, thêm mountIds
+        $apiPayload = [
+            'id'              => $accountId,
+            'name'            => $updatedAccount['username_acc'],
+            'userPwd'         => $currentPwd,
+            'startTime'       => strtotime($updatedAccount['activation_date']) * 1000,
+            'endTime'         => strtotime($updatedAccount['expiry_date'])   * 1000,
+            'enabled'         => $enable ? 1 : 0,
+            'numOnline'       => $updatedAccount['concurrent_user']   ?? 1,
+            'customerBizType' => $updatedAccount['customerBizType']   ?? 1,
+            'mountIds'        => $mountIds
+        ];
+        // Log payload for debugging
+        error_log("RTK API Payload: " . json_encode($apiPayload));
+        $apiResult = updateRtkAccount($apiPayload);
+        // Log response from RTK API
+        error_log("RTK API Response: " . json_encode($apiResult));
+        if (!$apiResult['success']) {
+            // External API failed: commit DB but notify front‑end
+            $db->commit();
+            echo json_encode([
+                'success'            => false,
+                'message'            => 'Account status updated but external API error: ' . $apiResult['error'],
+                'newStatus'          => $newDerivedStatus,
+                'newStatusBadgeHtml' => $newStatusBadgeHtml,
+                'newButtonsHtml'     => $newButtonsHtml
+            ]);
+            exit;
+        }
         $db->commit();
         echo json_encode([
             'success' => true,
             'message' => 'Account status updated successfully.',
-            'newStatus' => $newDerivedStatus, // Send back the calculated derived status string
-            'newStatusBadgeHtml' => $newStatusBadgeHtml, // Send back the new badge HTML
-            'newButtonsHtml' => $newButtonsHtml // Send back the new buttons HTML
+            'newStatus' => $newDerivedStatus,
+            'newStatusBadgeHtml' => $newStatusBadgeHtml,
+            'newButtonsHtml' => $newButtonsHtml
         ]);
     } else {
         $db->rollBack();

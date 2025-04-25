@@ -21,6 +21,14 @@ $current_page = $account_list_data['current_page'];
 $items_per_page = $account_list_data['items_per_page'];
 $pagination_base_url = $account_list_data['pagination_base_url'];
 
+// Fetch provinces list for create account form
+$locationsStmt = $db->query("SELECT id, province FROM location WHERE status = 1 ORDER BY province");
+$locations = $locationsStmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch package list for create account form
+$packagesStmt = $db->query("SELECT id, name FROM package WHERE is_active = 1 ORDER BY display_order");
+$packages = $packagesStmt->fetchAll(PDO::FETCH_ASSOC);
+
 // --- Include Helpers needed for the View ---
 // dashboard_helpers contains functions like get_account_status_badge, get_account_action_buttons
 require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
@@ -58,7 +66,6 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
             --transition-speed: 150ms;
         }
         body { font-family: sans-serif; background-color: var(--gray-100); color: var(--gray-800); }
-        .dashboard-wrapper { display: flex; min-height: 100vh; }
         .content-wrapper { flex-grow: 1; padding: 1.5rem; }
         .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding: 1rem 1.5rem; background: white; border-radius: var(--rounded-lg); box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
         .content-header h2 { font-size: 1.5rem; font-weight: var(--font-semibold); color: var(--gray-800); }
@@ -186,7 +193,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
         .header-actions .btn-primary { font-size: var(--font-size-sm); }
 
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
-        .modal-content { background-color: #fefefe; margin: 10% auto; padding: 25px; border: 1px solid #888; width: 80%; max-width: 600px; border-radius: var(--rounded-lg); position: relative; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19); }
+        .modal-content { background-color: #fefefe; margin: 2% auto; padding: 25px; border: 1px solid #888; width: 80%; max-width: 600px; border-radius: var(--rounded-lg); position: relative; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19); }
         .modal-header { padding-bottom: 15px; border-bottom: 1px solid var(--border-color); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .modal-header h4 { margin: 0; font-size: 1.25rem; font-weight: var(--font-semibold); color: var(--gray-800); }
         .modal-close { color: var(--gray-400); font-size: 1.5rem; font-weight: bold; cursor: pointer; border: none; background: none; line-height: 1; padding: 0.5rem; border-radius: var(--rounded-full); transition: color var(--transition-speed) ease-in-out, background-color var(--transition-speed) ease-in-out; }
@@ -252,13 +259,19 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
         .toast-error { background-color: var(--danger-600); }
         .toast-warning { background-color: var(--warning-500); color: var(--gray-900); }
         .toast-info { background-color: var(--info-500); }
+
+        /* highlight readonly field and indicate non-editable */
+        .form-group input[readonly] {
+            background-color: var(--gray-200);
+            color: var(--gray-500);
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
 
-<div class="dashboard-wrapper">
     <?php
-        // Use the path returned by bootstrap
+        include $private_includes_path . 'admin_header.php';
         include $private_includes_path . 'admin_sidebar.php';
     ?>
 
@@ -433,24 +446,36 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
                     <label for="create-user-email">Email User:</label>
                     <input type="email" id="create-user-email" name="user_email" required>
                 </div>
+                <!-- Add province/location select -->
+                <div class="form-group">
+                    <label for="create-location">Tỉnh/Thành:</label>
+                    <select id="create-location" name="location_id" required>
+                        <option value="">Chọn tỉnh/thành</option>
+                        <?php foreach ($locations as $loc): ?>
+                            <option value="<?php echo htmlspecialchars($loc['id']); ?>">
+                                <?php echo htmlspecialchars($loc['province']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label for="create-package">Gói:</label>
-                    <select id="create-package" name="package_name" required>
+                    <select id="create-package" name="package_id">
                         <option value="">Chọn gói</option>
-                        <option value="Gói 1 Tháng">Gói 1 Tháng</option>
-                        <option value="Gói 3 Tháng">Gói 3 Tháng</option>
-                        <option value="Gói 6 Tháng">Gói 6 Tháng</option>
-                        <option value="Gói 1 Năm">Gói 1 Năm</option>
-                        <option value="Gói Vĩnh Viễn">Gói Vĩnh Viễn</option>
+                        <?php foreach ($packages as $pkg): ?>
+                            <option value="<?php echo $pkg['id']; ?>">
+                                <?php echo htmlspecialchars($pkg['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="create-activation-date">Ngày kích hoạt:</label>
-                    <input type="date" id="create-activation-date" name="activation_date">
+                    <input type="date" id="create-activation-date" name="start_time">
                 </div>
                 <div class="form-group">
                     <label for="create-expiry-date">Ngày hết hạn:</label>
-                    <input type="date" id="create-expiry-date" name="expiry_date">
+                    <input type="date" id="create-expiry-date" name="end_time">
                 </div>
                 <div class="form-group">
                     <label for="create-status">Trạng thái:</label>
@@ -482,7 +507,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
                 <input type="hidden" id="edit-account-id" name="id">
                 <div class="form-group">
                     <label for="edit-username">Username TK:</label>
-                    <input type="text" id="edit-username" name="username_acc" required>
+                    <input type="text" id="edit-username" name="username_acc" required readonly>
                 </div>
                 <div class="form-group">
                     <label for="edit-password">Mật khẩu TK (Để trống nếu không đổi):</label>
@@ -494,13 +519,13 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
                 </div>
                 <div class="form-group">
                     <label for="edit-package">Gói:</label>
-                    <select id="edit-package" name="package_name" required>
+                    <select id="edit-package" name="package_id">
                         <option value="">Chọn gói</option>
-                        <option value="Gói 1 Tháng">Gói 1 Tháng</option>
-                        <option value="Gói 3 Tháng">Gói 3 Tháng</option>
-                        <option value="Gói 6 Tháng">Gói 6 Tháng</option>
-                        <option value="Gói 1 Năm">Gói 1 Năm</option>
-                        <option value="Gói Vĩnh Viễn">Gói Vĩnh Viễn</option>
+                        <?php foreach ($packages as $pkg): ?>
+                            <option value="<?php echo $pkg['id']; ?>">
+                                <?php echo htmlspecialchars($pkg['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="form-group">
@@ -516,7 +541,6 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
                     <select id="edit-status" name="status" required>
                         <option value="active">Hoạt động</option>
                         <option value="pending">Chờ KH</option>
-                        <option value="expired">Hết hạn</option>
                         <option value="suspended">Đình chỉ</option>
                         <option value="rejected">Bị từ chối</option>
                     </select>
@@ -590,7 +614,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
                 editAccountForm.querySelector('#edit-account-id').value = account.id;
                 editAccountForm.querySelector('#edit-username').value = account.username_acc || '';
                 editAccountForm.querySelector('#edit-user-email').value = account.user_email || '';
-                editAccountForm.querySelector('#edit-package').value = account.package_name || '';
+                editAccountForm.querySelector('#edit-package').value = account.package_id || '';
                 // Ensure date format is YYYY-MM-DD for input type="date"
                 editAccountForm.querySelector('#edit-activation-date').value = account.activation_date ? account.activation_date.split(' ')[0] : '';
                 editAccountForm.querySelector('#edit-expiry-date').value = account.expiry_date ? account.expiry_date.split(' ')[0] : '';
@@ -729,7 +753,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
             }
         } catch (error) {
             console.error('Error creating account:', error);
-             if(createAccountError) createAccountError.textContent = 'Lỗi khi gửi yêu cầu tạo tài khoản.';
+            if(createAccountError) createAccountError.textContent = 'Lỗi khi gửi yêu cầu tạo tài khoản.';
             showToast('error', 'Lỗi khi gửi yêu cầu tạo tài khoản.');
         } finally {
             submitButton.disabled = false;
@@ -934,6 +958,80 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
         });
     }
 
+    // Add auto-expiry calculation logic
+    const packageDurations = {
+        '1': {months: 1},
+        '2': {months: 3},
+        '3': {months: 6},
+        '4': {years: 1},
+        '5': {years: 100},
+        '7': {days: 7}    // gói trial_7d id=7
+    };
+
+    function calculateExpiryDate(activation, pkgId) {
+        if (!activation || !packageDurations[pkgId]) return '';
+        const date = new Date(activation);
+        const dur = packageDurations[pkgId];
+        if (dur.days)   date.setDate(date.getDate() + dur.days);
+        if (dur.months) date.setMonth(date.getMonth() + dur.months);
+        if (dur.years)  date.setFullYear(date.getFullYear() + dur.years);
+        const yyyy = date.getFullYear();
+        const mm   = String(date.getMonth() + 1).padStart(2, '0');
+        const dd   = String(date.getDate()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}`;
+    }
+
+    // Bind events cho form Tạo
+    const createPkg = document.getElementById('create-package');
+    const createAct = document.getElementById('create-activation-date');
+    const createExp = document.getElementById('create-expiry-date');
+    if (createPkg && createAct && createExp) {
+        function updateCreateExpiry() {
+            const pid = createPkg.value;
+            if (packageDurations[pid]) {
+                createExp.value = calculateExpiryDate(createAct.value, pid);
+            }
+        }
+        createPkg.addEventListener('change', updateCreateExpiry);
+        createAct.addEventListener('change', updateCreateExpiry);
+        createExp.addEventListener('input', () => {
+            const pid = createPkg.value;
+            if (createExp.value && packageDurations[pid]
+                && calculateExpiryDate(createAct.value, pid) !== createExp.value) {
+                createPkg.value = ''; // chuyển sang tùy chỉnh nếu sửa tay
+            }
+        });
+    }
+
+    // Bind events cho form Chỉnh sửa (tương tự)
+    const editPkg = document.getElementById('edit-package');
+    const editAct = document.getElementById('edit-activation-date');
+    const editExp = document.getElementById('edit-expiry-date');
+    if (editPkg && editAct && editExp) {
+        function updateEditExpiry() {
+            const pid = editPkg.value;
+            if (packageDurations[pid]) {
+                editExp.value = calculateExpiryDate(editAct.value, pid);
+            }
+        }
+        editPkg.addEventListener('change', updateEditExpiry);
+        editAct.addEventListener('change', updateEditExpiry);
+        editExp.addEventListener('input', () => {
+            const pid = editPkg.value;
+            if (editExp.value && packageDurations[pid]
+                && calculateExpiryDate(editAct.value, pid) !== editExp.value) {
+                editPkg.value = ''; 
+            }
+        });
+    }
+
+    // Warn when focusing readonly username field
+    const editUsernameInput = document.getElementById('edit-username');
+    if (editUsernameInput) {
+        editUsernameInput.addEventListener('focus', () => {
+            showToast('warning', 'Username TK không thể thay đổi');
+        });
+    }
 </script>
 
 </body>

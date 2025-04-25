@@ -42,13 +42,16 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
                 r.rejection_reason, -- Fetch rejection reason
                 u.email as user_email,
                 p.name as package_name,
-                pay.payment_image -- Get proof image filename from payment table
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
         ";
         $base_from = "
             FROM registration r
             JOIN user u ON r.user_id = u.id
             JOIN package p ON r.package_id = p.id
             LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
         ";
         $base_where = " WHERE r.deleted_at IS NULL "; // Exclude soft-deleted registrations
 

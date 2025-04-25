@@ -13,7 +13,7 @@ $base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_fo
 $base_path = $protocol . $host . $base_path_segment;
 
 // --- Define Includes Path ---
-$private_includes_path = __DIR__ . '/../../private/includes/'; // Add this line back
+$private_includes_path = __DIR__ . '/../../private/includes/';
 
 // Check if admin is logged in
 if (!isset($_SESSION['admin_id'])) {
@@ -24,7 +24,7 @@ if (!isset($_SESSION['admin_id'])) {
 
 $admin_id = $_SESSION['admin_id'];
 // Use 'admin_name' consistent with user_management.php if available, otherwise fallback
-$user_display_name = $_SESSION['admin_name'] ?? $_SESSION['admin_username'] ?? 'Admin';
+$user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 
 // Fetch admin profile data
 $db = new Database();
@@ -83,8 +83,7 @@ $profile_role = $admin_profile['role'] ?? 'N/A';
             --transition-speed: 150ms;
         }
         body { font-family: sans-serif; background-color: var(--gray-100); color: var(--gray-800); }
-        .dashboard-wrapper { display: flex; min-height: 100vh; }
-        .content-wrapper { flex-grow: 1; padding: 1.5rem; }
+        .content-wrapper { flex-grow: 1; width: 100%; padding: 1.5rem 0; }
         .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding: 1rem 1.5rem; background: white; border-radius: var(--rounded-lg); box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
         .content-header h2 { font-size: 1.5rem; font-weight: var(--font-semibold); color: var(--gray-800); }
         .user-info { display: flex; align-items: center; gap: 1rem; font-size: var(--font-size-sm); }
@@ -176,7 +175,7 @@ $profile_role = $admin_profile['role'] ?? 'N/A';
 </head>
 <body>
 
-<div class="dashboard-wrapper">
+    <?php include $private_includes_path . 'admin_header.php'; ?>
     <?php include $private_includes_path . 'admin_sidebar.php'; ?>
 
     <main class="content-wrapper">
@@ -248,7 +247,6 @@ $profile_role = $admin_profile['role'] ?? 'N/A';
             </div>
         </div>
     </main>
-</div>
 
 <script>
     const profileStatusEl = document.getElementById('profile-status');

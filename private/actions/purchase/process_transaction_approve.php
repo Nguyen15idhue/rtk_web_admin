@@ -5,7 +5,7 @@ header('Content-Type: application/json'); // Set response type
 
 // --- Prerequisites ---
 // Ensure session started, user is admin, CSRF protection is in place etc.
-// session_start();
+session_start(); // Ensure session is started to read the cookie
 // if (!isset($_SESSION['admin_id']) || !check_admin_permission('transaction_approve')) {
 //     http_response_code(403);
 //     echo json_encode(['success' => false, 'message' => 'Permission denied.']);
@@ -61,7 +61,12 @@ $db->beginTransaction();
 
 try {
     // 1. Verify Transaction Exists and is Pending or Rejected (Allow re-approval)
-    $stmt_check = $db->prepare("SELECT status, user_id, num_account FROM registration WHERE id = :id AND deleted_at IS NULL FOR UPDATE"); // Lock row
+    $stmt_check = $db->prepare("
+        SELECT status, user_id, num_account, start_time, end_time
+        FROM registration
+        WHERE id = :id AND deleted_at IS NULL
+        FOR UPDATE
+    ");
     $stmt_check->bindParam(':id', $transaction_id, PDO::PARAM_INT);
     $stmt_check->execute();
     $registration = $stmt_check->fetch(PDO::FETCH_ASSOC);
@@ -75,12 +80,38 @@ try {
     }
     $old_status = $registration['status']; // Store old status for logging
 
-    // 2. Update Registration Status and clear rejection reason
-    $stmt_update_reg = $db->prepare("UPDATE registration SET status = 'active', rejection_reason = NULL, updated_at = NOW() WHERE id = :id");
-    $stmt_update_reg->bindParam(':id', $transaction_id, PDO::PARAM_INT);
+
+
+    // Calculate original duration in GMT+7
+    $tz = new DateTimeZone('Asia/Bangkok'); // GMT+7
+    $original_start_time = new DateTime($registration['start_time'], $tz);
+    $original_end_time   = new DateTime($registration['end_time'], $tz);
+    $duration_interval   = $original_start_time->diff($original_end_time);
+
+    // Calculate new start and end times based on approval time
+    $new_start_time_dt = new DateTime('now', $tz);
+    $new_end_time_dt   = clone $new_start_time_dt;
+    $new_end_time_dt->add($duration_interval);
+
+    $new_start_time_sql = $new_start_time_dt->format('Y-m-d H:i:s');
+    $new_end_time_sql   = $new_end_time_dt->format('Y-m-d H:i:s');
+
+    // 2. Update Registration Status, clear rejection reason, reset start/end times
+    $stmt_update_reg = $db->prepare("
+        UPDATE registration 
+        SET status = 'active',
+            rejection_reason = NULL,
+            start_time = :new_start,
+            end_time   = :new_end,
+            updated_at = NOW()
+        WHERE id = :id
+    ");
+    $stmt_update_reg->bindParam(':new_start', $new_start_time_sql);
+    $stmt_update_reg->bindParam(':new_end',   $new_end_time_sql);
+    $stmt_update_reg->bindParam(':id',        $transaction_id, PDO::PARAM_INT);
     $updated_reg = $stmt_update_reg->execute();
     if (!$updated_reg) {
-        throw new Exception("Failed to update registration status.");
+        throw new Exception("Failed to update registration status and times.");
     }
 
     // 3. Update Payment Confirmation (if applicable)
@@ -102,39 +133,81 @@ try {
         // OR: throw new Exception("Failed to activate associated survey account(s). Rollback required.");
     }
 
-    // 5. Tự động tạo RTK account qua API
-    $username = 'user' . $transaction_id . '_' . time();
-    $password = bin2hex(random_bytes(8));
-    $apiPayload = [
-        "name"      => $username,
-        "userPwd"   => $password,
-        "startTime" => strtotime('now') * 1000,
-        "endTime"   => strtotime('+' . ($registration['num_account'] ?? 30) . ' days') * 1000,
-        "enabled"   => 1,
-        "numOnline" => 1,
-        "mountIds"  => [],
-        "regionIds" => [],
-        "casterIds" => [],
-        "customerBizType"   => 1,
-        "customerCompany"   => ""      // sửa: API yêu cầu string, không phải array
+    // 5. Tạo account qua endpoint create_account.php
+    // build dynamic URL to include correct host & port
+    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+    $host     = $_SERVER['HTTP_HOST']; 
+    $url      = $protocol . '://' . $host . '/private/actions/account/create_account.php';
+
+    $username   = 'user' . $transaction_id . '_' . time();
+    $password   = bin2hex(random_bytes(8));
+    $payload = [
+        'registration_id' => $transaction_id,
+        'username_acc'    => $username,
+        'password_acc'    => $password,
+        'start_time'      => $new_start_time_sql, // Use new start time
+        'end_time'        => $new_end_time_sql,   // Use new end time
+        'enabled'         => 1,
+        'concurrent_user' => 1
     ];
-    $apiRes = createRtkAccount($apiPayload);
-    if (!$apiRes['success']) {
-        throw new Exception("RTK API tạo account thất bại: " . $apiRes['error']);
+
+    // --- Release session lock before internal request ---
+    session_write_close(); 
+    // --- End Release session lock ---
+
+    // call internal script
+    $accountCreationFailedDueToTimeout = false; // Flag for timeout
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);  // fail fast on connect
+    curl_setopt($ch, CURLOPT_TIMEOUT, 3); 
+    if (isset($_COOKIE[session_name()])) {
+        curl_setopt($ch, CURLOPT_COOKIE, session_name() . '=' . $_COOKIE[session_name()]);
     }
-    // chèn local record
-    $accId = 'RTK_' . $transaction_id . '_' . time();
-    $stmt_ins = $db->prepare("
-        INSERT INTO survey_account
-          (id, registration_id, username_acc, password_acc, concurrent_user, enabled, created_at)
-        VALUES (:id, :rid, :uname, :pwd, 1, 1, NOW())
-    ");
-    $stmt_ins->execute([
-        ':id'    => $accId,
-        ':rid'   => $transaction_id,
-        ':uname' => $username,
-        ':pwd'   => password_hash($password, PASSWORD_DEFAULT)
-    ]);
+
+    $result = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+    $curlErrno = curl_errno($ch); // Get the cURL error number
+    $totalTime = curl_getinfo($ch, CURLINFO_TOTAL_TIME); // Get total time taken
+    curl_close($ch);
+
+    // --- Re-open session if needed later in the script ---
+    // session_start(); // Uncomment if you need to write to $_SESSION after this point
+    // --- End Re-open session ---
+
+    // Check specifically for timeout error
+    if ($curlErrno === CURLE_OPERATION_TIMEDOUT) {
+         error_log("Warning: Account creation request timed out for registration ID $transaction_id after {$totalTime} seconds. Approval committed, but account creation needs verification.");
+         $accountCreationFailedDueToTimeout = true; // Set flag, but don't throw exception
+         // Reset username/password as they are unknown due to timeout
+         $username = null;
+         $password = null;
+    } elseif (!$accountCreationFailedDueToTimeout) { // Only proceed with other checks if no timeout occurred
+        if ($curlError) {
+            throw new Exception("Account creation request failed (cURL Error): " . $curlError);
+        }
+        // Allow HTTP status 0 (often indicates success in internal/CLI contexts) or 200
+        if ($httpCode !== 200 && $httpCode !== 0) {
+            // Include more of the response body for debugging non-JSON errors (like HTML error pages)
+            throw new Exception("Account creation failed (HTTP Status $httpCode): " . substr(strip_tags($result ?: ''), 0, 500));
+        }
+
+        $resData = json_decode($result, true);
+        if (!is_array($resData)) {
+            // Include the raw response if JSON decoding fails
+            throw new Exception("Invalid JSON response from account creation service. Response: " . substr($result ?: '', 0, 500));
+        }
+        if (empty($resData['success'])) {
+            throw new Exception("Account creation failed: " . ($resData['message'] ?? 'Unknown error from account service'));
+        }
+        // use returned credentials in response
+        $username = $resData['account']['username'];
+        $password = $resData['account']['password'];
+    }
 
     // 6. Update Transaction History
     TransactionHistoryService::updateStatusByRegistrationId($db, $transaction_id, 'completed');
@@ -146,13 +219,28 @@ try {
 
     // --- Commit Transaction ---
     $db->commit();
+
+    // --- Prepare final response ---
+    $responseMessage = 'Transaction #' . $transaction_id . ' approved.';
+    $accountDetails = null;
+
+    if ($accountCreationFailedDueToTimeout) {
+        $responseMessage .= ' However, the account creation request timed out. Please verify account status manually.';
+        $accountDetails = ['username' => 'Pending (Timeout)', 'password' => 'Pending (Timeout)'];
+    } elseif ($username && $password) {
+        $responseMessage .= ' Account created successfully.';
+        $accountDetails = ['username' => $username, 'password' => $password];
+    } else {
+         // This case might occur if the create_account script succeeded but didn't return expected data (should have been caught earlier)
+         error_log("Warning: Transaction approved but account details missing for registration ID $transaction_id without explicit timeout.");
+         $responseMessage .= ' Account details might be missing or pending.';
+         $accountDetails = ['username' => 'Unknown', 'password' => 'Unknown'];
+    }
+
     echo json_encode([
         'success' => true,
-        'message' => 'Transaction #' . $transaction_id . ' approved and account created.',
-        'account' => [
-            'username' => $username,
-            'password' => $password
-        ]
+        'message' => $responseMessage,
+        'account' => $accountDetails
     ]);
 
 } catch (Exception $e) {

@@ -1,0 +1,40 @@
+/* Styles for the main content area and its wrapper */
+
+/* Ensure :root variables are available (loaded via base.css or defined here/sidebar.css) */
+
+.dashboard-wrapper {
+    display: flex; /* Use flexbox for sidebar + content layout */
+    min-height: 100vh;
+    position: relative; /* Needed for fixed/absolute children positioning */
+    background-color: var(--gray-50, #f9fafb); /* Background for the entire page */
+}
+
+.content-wrapper {
+    flex-grow: 1; /* Take up remaining space */
+    padding: 1.5rem; /* Default padding */
+    transition: margin-left var(--sidebar-transition-speed, 300ms) ease-in-out; /* Smooth transition for margin change */
+    /* background-color: var(--gray-50, #f9fafb); /* Background for content area */
+    min-width: 0; /* Prevent content from overflowing container in flex context */
+}
+
+/* Desktop Styles */
+@media (min-width: 1025px) {
+    .content-wrapper {
+        /* Push content to the right based on default sidebar width */
+        margin-left: var(--sidebar-width, 260px);
+    }
+    /* Adjust content margin when sidebar is collapsed */
+    body.sidebar-is-collapsed .content-wrapper {
+        margin-left: var(--sidebar-width-collapsed, 70px);
+    }
+}
+
+/* Mobile/Tablet Styles */
+@media (max-width: 1024px) {
+    .content-wrapper {
+        margin-left: 0 !important; /* No margin push needed when sidebar is overlay */
+        padding-top: 5rem; /* Add padding to prevent overlap with fixed hamburger */
+        padding-left: 1rem; /* Adjust padding for smaller screens */
+        padding-right: 1rem;
+    }
+}

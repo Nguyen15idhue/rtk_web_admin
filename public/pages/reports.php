@@ -84,6 +84,7 @@ $commission_pending = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 
 
 <div class="dashboard-wrapper">
     <?php include $private_includes_path . 'admin_sidebar.php'; ?>
+    <?php include $private_includes_path . 'admin_header.php'; ?>
 
     <main class="content-wrapper">
         <div class="content-header">

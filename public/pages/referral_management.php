@@ -13,6 +13,7 @@ $base_path = '/'; // Adjust if necessary
 <div class="dashboard-wrapper">
     <!-- Include Sidebar -->
     <?php include $private_includes_path . 'admin_sidebar.php'; ?>
+    <?php include $private_includes_path . 'admin_header.php'; ?>
 
     <main class="content-wrapper">
         <div class="content-header">

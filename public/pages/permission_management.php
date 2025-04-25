@@ -11,8 +11,12 @@ $is_super_admin = (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] ===
 
 ?>
 
-<div class="dashboard-wrapper">
-    <?php include $private_includes_path . 'admin_sidebar.php'; ?>
+
+
+    <?php 
+        include $private_includes_path . 'admin_sidebar.php';
+        include $private_includes_path . 'admin_header.php';
+    ?>
 
     <main class="content-wrapper">
         <div class="content-header">
@@ -22,11 +26,6 @@ $is_super_admin = (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] ===
                 <a href="<?php echo $base_path; ?>public/pages/profile.php">Hồ sơ</a>
                 <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
             </div>
-            <?php if ($is_super_admin): ?>
-                <button class="btn btn-primary ml-4" onclick="openCreateRoleModal()">
-                    <i class="fas fa-user-shield mr-1"></i> Thêm QTV/Vận hành
-                </button>
-            <?php endif; ?>
         </div>
 
         <div id="admin-permission-management" class="content-section">
@@ -39,9 +38,10 @@ $is_super_admin = (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] ===
             <p class="text-xs sm:text-sm text-gray-600 mb-6">Quản lý vai trò và quyền hạn truy cập cho tài khoản quản trị hệ thống.</p>
 
             <!-- Permission Cards: Responsive Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
+            <div class="grid grid-cols-3 gap-4">  <!-- Luôn 3 cột ngang -->
+
                 <!-- Role Card Mẫu (Super Admin) -->
-                <div class="bg-white p-4 sm:p-5 rounded-lg shadow border border-red-300">
+                <div class="card border-red-300 bg-red-50">  <!-- Nền đỏ nhạt -->
                     <h3 class="text-base md:text-lg font-semibold text-red-700 mb-2 flex items-center gap-2">
                         <i class="fas fa-crown text-yellow-500"></i> Super Admin
                     </h3>
@@ -56,7 +56,7 @@ $is_super_admin = (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] ===
                 </div>
 
                 <!-- Role: Quản trị viên (Admin) -->
-                <div class="bg-white p-4 sm:p-5 rounded-lg shadow border border-blue-300">
+                <div class="card border-blue-300 bg-blue-50">  <!-- Nền xanh dương nhạt -->
                     <h3 class="text-base md:text-lg font-semibold text-blue-700 mb-2 flex items-center gap-2">
                         <i class="fas fa-user-shield"></i> Quản trị viên
                     </h3>
@@ -93,7 +93,7 @@ $is_super_admin = (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] ===
                 </div>
 
                 <!-- Role: Vận hành (Operator) -->
-                <div class="bg-white p-4 sm:p-5 rounded-lg shadow border border-green-300">
+                <div class="card border-green-300 bg-green-50">  <!-- Nền xanh lá nhạt -->
                     <h3 class="text-base md:text-lg font-semibold text-green-700 mb-2 flex items-center gap-2">
                         <i class="fas fa-user-cog"></i> Vận hành
                     </h3>
@@ -123,7 +123,6 @@ $is_super_admin = (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] ===
             <p class="text-xs text-red-600 mt-4 italic">*Lưu ý: Chỉ Super Admin có thể thay đổi quyền. TK mới tạo cần đổi MK mặc định.</p>
         </div>
     </main>
-</div>
 
 <style>
    .modal {
@@ -142,6 +141,18 @@ $is_super_admin = (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] ===
      border-radius: 0.5rem;
      max-width: 500px;
      width: 90%;
+   }
+
+   /* Card base style (from shared HTML template) */
+   .card {
+     background-color: #fff;
+     padding: 1rem;
+     border-radius: 0.5rem;
+     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+     border: 1px solid #e5e7eb;
+   }
+   @media (min-width: 640px) {
+     .card { padding: 1.25rem; }
    }
 </style>
 
@@ -208,7 +219,7 @@ $is_super_admin = (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] ===
 
     function openCreateRoleModal() {
         document.getElementById('createRoleForm').reset();
-        document.getElementById('createRoleModal').style.display = 'block';
+        document.getElementById('createRoleModal').style.display = 'flex';
     }
 
     function closeModal(modalId) {

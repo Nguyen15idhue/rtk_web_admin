@@ -23,7 +23,7 @@ require_once __DIR__ . '/../../private/actions/invoice/fetch_transactions.php';
 // !!! IMPORTANT: Replace this with the actual URL where your images are hosted !!!
 define('IMAGE_HOST_BASE_URL', 'http://localhost:8000/'); // Example URL
 
-$user_display_name = $_SESSION['admin_name'] ?? 'Admin';
+$user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 
 $current_page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $items_per_page = 15;
@@ -71,7 +71,6 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
             --border-color: var(--gray-200);
         }
         body { font-family: sans-serif; background-color: var(--gray-100); color: var(--gray-800); }
-        .dashboard-wrapper { display: flex; min-height: 100vh; }
         .content-wrapper { flex-grow: 1; padding: 1.5rem; }
         .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding: 1rem 1.5rem; background: white; border-radius: var(--rounded-lg); box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
         .content-header h2 { font-size: 1.5rem; font-weight: var(--font-semibold); color: var(--gray-800); }
@@ -131,7 +130,8 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
 </head>
 <body>
 
-<div class="dashboard-wrapper">
+
+    <?php include __DIR__ . '/../../private/includes/admin_header.php'; ?>
     <?php include __DIR__ . '/../../private/includes/admin_sidebar.php'; ?>
 
     <main class="content-wrapper">
@@ -168,6 +168,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                     <thead>
                         <tr>
                             <th>Mã GD</th>
+                            <th>Tỉnh/Thành phố</th>
                             <th>Email</th>
                             <th>Gói</th>
                             <th>Số tiền</th>
@@ -180,7 +181,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                     <tbody>
                         <?php if (empty($transactions)): ?>
                             <tr id="no-results-row">
-                                <td colspan="8">Không tìm thấy giao dịch phù hợp.</td>
+                                <td colspan="9">Không tìm thấy giao dịch phù hợp.</td>
                             </tr>
                         <?php else: ?>
                             <?php foreach ($transactions as $transaction): ?>
@@ -213,7 +214,8 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                                             <?php echo $transaction_id; ?>
                                         </a>
                                     </td>
-                                    <td><?php echo htmlspecialchars($transaction['user_email']); ?></td>
+                                    <td><?php echo htmlspecialchars($transaction['province'] ?? ''); ?></td>
+                                    <td><?php echo htmlspecialchars($transaction['user_email']?? ''); ?></td>
                                     <td><?php echo htmlspecialchars($transaction['package_name']); ?></td>
                                     <td class="amount"><?php echo format_currency($transaction['amount']); ?></td>
                                     <td><?php echo format_datetime($transaction['request_date']); ?></td>
@@ -299,7 +301,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
             </div>
         </div>
     </main>
-</div>
+
 
 <div id="proofModal" class="modal-overlay">
     <div class="modal-content">
@@ -452,10 +454,16 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                 body: JSON.stringify({ transaction_id: transactionId })
             });
 
-            const data = await response.json();
+            let data;
+            if (response.ok) {
+                data = await response.json();
+            } else {
+                const errorText = await response.text();
+                throw new Error(`HTTP ${response.status}: ${errorText}`);
+            }
 
             if (response.ok && data.success) {
-                alert('Duyệt thành công!');
+                alert(`Duyệt thành công!\nTài khoản đã tạo:\nUsername: ${data.account.username}\nPassword: ${data.account.password}`);
                 updateTableRowStatus(transactionId, 'active', 'Đã duyệt', 'status-approved');
             } else {
                 alert('Duyệt thất bại: ' + (data.message || 'Lỗi không xác định. Kiểm tra console log.'));
@@ -464,7 +472,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
             }
         } catch (error) {
             console.error('Error approving transaction:', error);
-            alert('Có lỗi xảy ra khi duyệt giao dịch. Kiểm tra console log.');
+            alert('Có lỗi xảy ra khi duyệt giao dịch:\n' + (error.message || error));
             enableActionButtons(row, 'rejected');
         }
     }

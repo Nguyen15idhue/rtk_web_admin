@@ -11,6 +11,7 @@ if (!isset($_SESSION['admin_id'])) {
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../classes/Database.php';
 require_once __DIR__ . '/../../classes/AccountModel.php';
+require_once __DIR__ . '/../../api/rtk_system/account_api.php';
 
 $response = ['success' => false, 'message' => 'Invalid request'];
 
@@ -28,6 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode($response);
         exit;
     }
+
+    // --- XỬ LÝ TRẠNG THÁI ---
+    $inputStatus = $input['status'] ?? null;
+    $regStatus = in_array($inputStatus, ['pending','rejected']) 
+                 ? $inputStatus 
+                 : 'active';
 
     try {
         $database = new Database();
@@ -49,6 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Prepare data for update (filter out ID)
         $updateData = $input;
         unset($updateData['id']); // Don't try to update the ID itself
+
+        // override enabled based on status select
+        if ($inputStatus !== null) {
+            $updateData['enabled'] = ($inputStatus === 'suspended') ? 0 : 1;
+        }
 
         // Handle password: only include if not empty
         if (empty($updateData['password_acc'])) {
@@ -75,10 +87,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $success = $accountModel->updateAccount($accountId, $updateData);
 
         if ($success) {
+            // Cập nhật registration.status
+            if ($inputStatus !== null) {
+                $stmtReg = $db->prepare("
+                    UPDATE registration 
+                    SET status = ?, updated_at = NOW() 
+                    WHERE id = (
+                        SELECT registration_id FROM survey_account WHERE id = ?
+                    )
+                ");
+                $stmtReg->execute([$regStatus, $accountId]);
+            }
+
             $response['success'] = true;
             $response['message'] = 'Account updated successfully.';
-            // Optionally fetch and return the updated account details
-            // $response['account'] = $accountModel->getAccountById($accountId);
+
+            // --- New: Ghi đè start_time và end_time vào bảng registration ---
+            $activation = $input['activation_date'] ?? null;
+            $expiry     = $input['expiry_date'] ?? null;
+            if ($activation && $expiry) {
+                $stmtReg = $db->prepare("
+                    UPDATE registration 
+                    SET start_time = ?, end_time = ?
+                    WHERE id = (
+                        SELECT registration_id 
+                        FROM survey_account 
+                        WHERE id = ?
+                    )
+                ");
+                $stmtReg->execute([
+                    $activation . ' 00:00:00', 
+                    $expiry     . ' 23:59:59', 
+                    $accountId
+                ]);
+            }
+
+            // fetch existing password if no new password provided
+            if (empty($input['password_acc'])) {
+                $stmtPwd = $db->prepare("SELECT password_acc FROM survey_account WHERE id = ?");
+                $stmtPwd->execute([$accountId]);
+                $currentPwd = $stmtPwd->fetchColumn();
+            } else {
+                $currentPwd = $input['password_acc'];
+            }
+
+            // --- New: preserve mountIds if location_id unchanged ---
+            $stmtOldLoc = $db->prepare("
+                SELECT r.location_id 
+                FROM registration r 
+                JOIN survey_account sa ON sa.registration_id = r.id 
+                WHERE sa.id = ?
+            ");
+            $stmtOldLoc->execute([$accountId]);
+            $oldLocationId = (int)$stmtOldLoc->fetchColumn();
+            $newLocationId = isset($input['location_id']) ? (int)$input['location_id'] : $oldLocationId;
+            // nếu đổi location thì dùng mới, ngược lại giữ cũ
+            $locationIdToUse = ($newLocationId !== $oldLocationId) ? $newLocationId : $oldLocationId;
+            $mountIds = getMountPointsByLocationId($locationIdToUse);
+
+            // prepare payload for RTK API, thêm mountIds
+            $apiPayload = [
+                'id'              => $accountId,
+                'name'            => $input['username_acc'],
+                'userPwd'         => $currentPwd,
+                'startTime'       => strtotime($input['activation_date']) * 1000,
+                'endTime'         => strtotime($input['expiry_date'])   * 1000,
+                'enabled'         => $updateData['enabled']      ?? 1,
+                'numOnline'       => $updateData['concurrent_user'] ?? 1,
+                'customerBizType' => $updateData['customerBizType'] ?? 1,
+                'mountIds'        => $mountIds,
+                // add casterIds, regionIds, mountIds, customerCompany if needed
+            ];
+
+            // call external RTK update API
+            $apiResult = updateRtkAccount($apiPayload);
+            if (!$apiResult['success']) {
+                // append lỗi từ API bên ngoài vào message để front‑end show lên
+                $response['message'] .= ' External API Error: ' . $apiResult['error'];
+                // nếu muốn coi là không thành công tổng thể
+                $response['success'] = false;
+            }
+
+            // finally, return the refreshed account record
+            $response['account'] = $accountModel->getAccountById($accountId);
+
         } else {
             $response['message'] = 'Failed to update account. Check logs for details.';
         }
@@ -95,3 +187,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 echo json_encode($response);
+?>
