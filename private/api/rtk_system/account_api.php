@@ -133,28 +133,18 @@ function createRtkAccount(array $accountData): array {
  */
 function getMountPointsByLocationId(int $locationId): array {
     try {
-        // Kết nối database
-        require_once dirname(__DIR__, 2) . '/config/database.php';
-        
-        $dbConfig = include dirname(__DIR__, 2) . '/config/database.php';
-        // ensure we only use the character set (not the collation)
-        $rawCs  = $dbConfig['charset'] ?? 'utf8mb4';
-        $charset = explode('_', $rawCs)[0];
-        $dsn = "mysql:host={$dbConfig['host']};dbname={$dbConfig['dbname']};charset={$charset}";
-        
-        try {
-            $pdo = new PDO($dsn, $dbConfig['username'], $dbConfig['password'], $dbConfig['options']);
-        } catch (PDOException $e) {
-            // fallback to default mount IDs if mysql_native_password plugin not available
-            if (str_contains($e->getMessage(), "mysql_native_password")) {
-                switch ($locationId) {
-                    case 63: return [44, 45, 46, 47, 48, 49, 64];
-                    case 24: return [1, 2, 3];
-                    default: return [40 + $locationId % 10];
-                }
+        // Use existing Database class for proper credentials
+        require_once dirname(__DIR__, 2) . '/classes/Database.php';
+        $database = new Database();
+        $pdo = $database->getConnection();
+        if (!$pdo) {
+            error_log("Error connecting for mount points (loc {$locationId}): Failed via Database class");
+            // fallback defaults
+            switch ($locationId) {
+                case 63: return [44,45,46,47,48,49,64];
+                case 24: return [1,2,3];
+                default:   return [40 + $locationId % 10];
             }
-            error_log("Error connecting for mount points (loc $locationId): " . $e->getMessage());
-            return [];
         }
         
         // Tìm mount point IDs và chuyển thành số (API yêu cầu giá trị số)
@@ -208,7 +198,12 @@ function getMountPointsByLocationId(int $locationId): array {
         return $mountIds;
     } catch (PDOException $e) {
         error_log("Error fetching mount points for location $locationId: " . $e->getMessage());
-        return []; // Return empty array on error
+        // fallback defaults
+        switch ($locationId) {
+            case 63: return [44,45,46,47,48,49,64];
+            case 24: return [1,2,3];
+            default:   return [40 + $locationId % 10];
+        }
     }
 }
 

@@ -44,6 +44,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
     <title>Quản lý TK Đo đạc - Admin</title>
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/base.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -79,100 +80,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
         .filter-bar input, .filter-bar select { padding: 0.6rem 0.8rem; border: 1px solid var(--gray-300); border-radius: var(--rounded-md); font-size: var(--font-size-sm); }
         .filter-bar input:focus, .filter-bar select:focus { outline: none; border-color: var(--primary-500); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
         .filter-bar button, .filter-bar a.btn-secondary { padding: 0.6rem 1rem; font-size: var(--font-size-sm); }
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.2rem;
-            border: 1px solid transparent;
-            border-radius: var(--rounded-md);
-            font-size: var(--font-size-sm);
-            font-weight: var(--font-medium);
-            text-align: center;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color var(--transition-speed) ease-in-out, border-color var(--transition-speed) ease-in-out, color var(--transition-speed) ease-in-out, box-shadow var(--transition-speed) ease-in-out;
-            white-space: nowrap;
-        }
-        .btn:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-        }
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        .btn i {
-            line-height: 1;
-        }
-        .btn-primary {
-            background-color: var(--primary-600);
-            color: white;
-            border-color: var(--primary-600);
-        }
-        .btn-primary:hover {
-            background-color: var(--primary-700);
-            border-color: var(--primary-700);
-        }
-        .btn-secondary {
-            background-color: white;
-            color: var(--gray-700);
-            border-color: var(--gray-300);
-        }
-        .btn-secondary:hover {
-            background-color: var(--gray-50);
-            border-color: var(--gray-400);
-            color: var(--gray-800);
-        }
-        .btn-success {
-            background-color: var(--success-600);
-            color: white;
-            border-color: var(--success-600);
-        }
-        .btn-success:hover {
-            background-color: var(--success-700);
-            border-color: var(--success-700);
-        }
-        .btn-danger {
-            background-color: var(--danger-600);
-            color: white;
-            border-color: var(--danger-600);
-        }
-        .btn-danger:hover {
-            background-color: var(--danger-700);
-            border-color: var(--danger-700);
-        }
-        .transactions-table-wrapper { overflow-x: auto; background: white; border-radius: var(--rounded-lg); border: 1px solid var(--border-color); box-shadow: 0 1px 2px rgba(0,0,0,0.05); margin-top: 1rem; }
-        .transactions-table { width: 100%; border-collapse: collapse; min-width: 800px; }
-        .transactions-table th, .transactions-table td { padding: 0.9rem 1rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: var(--font-size-sm); vertical-align: middle; }
-        .transactions-table th { background-color: var(--gray-50); font-weight: var(--font-semibold); color: var(--gray-600); white-space: nowrap; }
-        .transactions-table tr:last-child td { border-bottom: none; }
-        .transactions-table tr:hover { background-color: var(--gray-50); }
-        .transactions-table td.status { text-align: center; }
-        .transactions-table td.actions { text-align: center; }
-        .transactions-table td .action-buttons { display: inline-flex; gap: 0.5rem; justify-content: center; }
-        .transactions-table td .btn-icon {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.4rem;
-            font-size: 1.1rem;
-            line-height: 1;
-            border-radius: var(--rounded-full);
-            color: var(--gray-500);
-            transition: background-color var(--transition-speed) ease-in-out, color var(--transition-speed) ease-in-out;
-        }
-        .transactions-table td .btn-icon:hover {
-            background-color: var(--gray-100);
-            color: var(--gray-700);
-        }
-        .transactions-table td .btn-view:hover { color: var(--info-600); background-color: rgba(14, 165, 233, 0.1); }
-        .transactions-table td .btn-edit:hover { color: var(--warning-600); background-color: rgba(245, 158, 11, 0.1); }
-        .transactions-table td .btn-danger:hover { color: var(--danger-700); background-color: rgba(220, 38, 38, 0.1); }
-        .transactions-table td .btn-toggle-on:hover { color: var(--success-700); background-color: rgba(5, 150, 105, 0.1); }
-        .transactions-table td .btn-toggle-off:hover { color: var(--danger-700); background-color: rgba(220, 38, 38, 0.1); }
-
+        /* button styles moved to components/buttons.css */
         .status-badge { padding: 0.3rem 0.8rem; border-radius: var(--rounded-full); font-size: 0.8rem; display: inline-block; font-weight: var(--font-medium); text-align: center; min-width: 90px; border: 1px solid transparent; }
         .status-badge.badge-green { background-color: var(--badge-green-bg); color: var(--badge-green-text); border-color: var(--success-500); }
         .status-badge.badge-yellow { background-color: var(--badge-yellow-bg); color: var(--badge-yellow-text); border-color: var(--badge-yellow-border); }
@@ -444,7 +352,9 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
                 </div>
                 <div class="form-group">
                     <label for="create-user-email">Email User:</label>
-                    <input type="email" id="create-user-email" name="user_email" required>
+                    <input type="email" id="create-user-email" name="user_email" required list="emailSuggestionsCreate">
+                    <datalist id="emailSuggestionsCreate"></datalist>
+                    <div id="create-user-info" class="user-info"></div>
                 </div>
                 <!-- Add province/location select -->
                 <div class="form-group">
@@ -515,7 +425,20 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
                 </div>
                 <div class="form-group">
                     <label for="edit-user-email">Email User:</label>
-                    <input type="email" id="edit-user-email" name="user_email" required>
+                    <input type="email" id="edit-user-email" name="user_email" required list="emailSuggestionsEdit">
+                    <datalist id="emailSuggestionsEdit"></datalist>
+                    <div id="edit-user-info" class="user-info"></div>
+                </div>
+                <div class="form-group">
+                    <label for="edit-location">Tỉnh/Thành:</label>
+                    <select id="edit-location" name="location_id" required>
+                        <option value="">Chọn tỉnh/thành</option>
+                        <?php foreach ($locations as $loc): ?>
+                            <option value="<?php echo htmlspecialchars($loc['id']); ?>">
+                                <?php echo htmlspecialchars($loc['province']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="edit-package">Gói:</label>
@@ -614,6 +537,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
                 editAccountForm.querySelector('#edit-account-id').value = account.id;
                 editAccountForm.querySelector('#edit-username').value = account.username_acc || '';
                 editAccountForm.querySelector('#edit-user-email').value = account.user_email || '';
+                editAccountForm.querySelector('#edit-location').value = account.location_id || '';
                 editAccountForm.querySelector('#edit-package').value = account.package_id || '';
                 // Ensure date format is YYYY-MM-DD for input type="date"
                 editAccountForm.querySelector('#edit-activation-date').value = account.activation_date ? account.activation_date.split(' ')[0] : '';
@@ -1032,6 +956,43 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
             showToast('warning', 'Username TK không thể thay đổi');
         });
     }
+
+    // Email autocomplete + hiển thị user info
+    ;(function(){
+      const base = basePath; // từ biến PHP injected ở trên
+      // chung
+      function setup(inputId, listId, infoId){
+        const inp = document.getElementById(inputId);
+        const lst = document.getElementById(listId);
+        const info = document.getElementById(infoId);
+        let users = [];
+        if(!inp) return;
+        let timer;
+        inp.addEventListener('input', e=>{
+          clearTimeout(timer);
+          timer = setTimeout(async ()=>{
+            const q = e.target.value.trim();
+            if(!q){ lst.innerHTML=''; return; }
+            try {
+              const res = await fetch(`${base}private/actions/account/search_users.php?email=${encodeURIComponent(q)}`);
+              const j = await res.json();
+              if(j.success){
+                users = j.users;
+                lst.innerHTML = users.map(u=>`<option value="${u.email}">${u.username}</option>`).join('');
+              }
+            } catch(err){ console.error(err); }
+          }, 300);
+        });
+        inp.addEventListener('change', e=>{
+          const u = users.find(u=>u.email === e.target.value);
+          info.innerHTML = u
+            ? `<p>Người dùng: <strong>${u.username}</strong> — SĐT: ${u.phone}</p>`
+            : '';
+        });
+      }
+      setup('create-user-email','emailSuggestionsCreate','create-user-info');
+      setup('edit-user-email','emailSuggestionsEdit','edit-user-info');
+    })();
 </script>
 
 </body>

@@ -2,13 +2,6 @@
 
 /* Ensure :root variables are available (loaded via base.css or defined here/sidebar.css) */
 
-.dashboard-wrapper {
-    display: flex; /* Use flexbox for sidebar + content layout */
-    min-height: 100vh;
-    position: relative; /* Needed for fixed/absolute children positioning */
-    background-color: var(--gray-50, #f9fafb); /* Background for the entire page */
-}
-
 .content-wrapper {
     flex-grow: 1; /* Take up remaining space */
     padding: 1.5rem; /* Default padding */

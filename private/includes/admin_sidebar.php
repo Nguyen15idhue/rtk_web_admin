@@ -9,6 +9,7 @@ $admin_nav_items = [
     ['label' => 'QL người dùng', 'icon' => 'fa-users', 'url' => '/public/pages/user_management.php', 'active_check' => 'user_management.php', 'permission' => 'user_management'],
     ['label' => 'QL TK đo đạc', 'icon' => 'fa-ruler-combined', 'url' => '/public/pages/account_management.php', 'active_check' => 'account_management.php', 'permission' => 'account_management'],
     ['label' => 'QL hóa đơn/GD', 'icon' => 'fa-file-invoice-dollar', 'url' => '/public/pages/invoice_management.php', 'active_check' => 'invoice_management.php', 'permission' => 'invoice_management'],
+    ['label' => 'QL doanh thu', 'icon' => 'fa-dollar-sign', 'url' => '/public/pages/revenue_management.php', 'active_check' => 'revenue_management.php', 'permission' => 'revenue_management'],
     ['label' => 'QL người giới thiệu', 'icon' => 'fa-network-wired', 'url' => '/public/pages/referral_management.php', 'active_check' => 'referral_management.php', 'permission' => 'referral_management'],
     ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => '/public/pages/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports'],
     ['label' => 'QL phân quyền', 'icon' => 'fa-user-lock', 'url' => '/public/pages/permission_management.php', 'active_check' => 'permission_management.php', 'permission' => 'permission_management'],

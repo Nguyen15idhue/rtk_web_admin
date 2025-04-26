@@ -1,6 +1,11 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\user_management.php
 session_start();
+error_reporting(E_ALL); // Report all errors for logging
+ini_set('display_errors', 0); // Keep off for browser output
+ini_set('log_errors', 1); // Ensure errors are logged
+ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
+
 // --- Includes and Setup ---
 if (!isset($_SESSION['admin_id'])) {
     header('Location: auth/admin_login.php');
@@ -34,9 +39,13 @@ $user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 
 // --- Get Filters ---
 $filters = [
-    'search' => $_GET['search'] ?? '',
-    'status' => $_GET['status'] ?? '',
+    'search' => filter_input(INPUT_GET, 'search', FILTER_SANITIZE_SPECIAL_CHARS) ?: '',
+    'status' => filter_input(INPUT_GET, 'status', FILTER_SANITIZE_SPECIAL_CHARS) ?: '',
 ];
+// Debug PHP error log
+error_log('[DEBUG] Search keyword: ' . $filters['search']);
+// Debug JavaScript console
+echo '<script>console.log("DEBUG Search keyword:", ' . json_encode($filters['search'], JSON_UNESCAPED_UNICODE) . ');</script>';
 
 // --- Pagination Setup ---
 $items_per_page = 10;
@@ -73,9 +82,10 @@ if (strpos($pagination_base_url, '?') === false) {
 $page_title = 'Quản lý Người dùng';
 $private_includes_path = __DIR__ . '/../../private/includes/';
 
-// Include Header
 include $private_includes_path . 'admin_header.php';
 ?>
+<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables.css">
+<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
 
 <!-- Page Specific Styles -->
 <style>
@@ -92,109 +102,8 @@ include $private_includes_path . 'admin_header.php';
 .content-wrapper .filter-bar input, .content-wrapper .filter-bar select { padding: 0.6rem 0.8rem; border: 1px solid var(--gray-300); border-radius: var(--rounded-md); font-size: var(--font-size-sm); }
 .content-wrapper .filter-bar input:focus, .content-wrapper .filter-bar select:focus { outline: none; border-color: var(--primary-500); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
 .content-wrapper .filter-bar button, .content-wrapper .filter-bar a.btn-secondary { padding: 0.6rem 1rem; font-size: var(--font-size-sm); }
-.content-wrapper .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1.2rem;
-    border: 1px solid transparent;
-    border-radius: var(--rounded-md);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-medium);
-    text-align: center;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color var(--transition-speed) ease-in-out, border-color var(--transition-speed) ease-in-out, color var(--transition-speed) ease-in-out, box-shadow var(--transition-speed) ease-in-out;
-    white-space: nowrap;
-}
-.content-wrapper .btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-}
-.content-wrapper .btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-.content-wrapper .btn i {
-    line-height: 1;
-}
-.content-wrapper .btn-primary {
-    background-color: var(--primary-600);
-    color: white;
-    border-color: var(--primary-600);
-}
-.content-wrapper .btn-primary:hover {
-    background-color: var(--primary-700);
-    border-color: var(--primary-700);
-}
-.content-wrapper .btn-secondary {
-    background-color: white;
-    color: var(--gray-700);
-    border-color: var(--gray-300);
-}
-.content-wrapper .btn-secondary:hover {
-    background-color: var(--gray-50);
-    border-color: var(--gray-400);
-    color: var(--gray-800);
-}
-.content-wrapper .btn-success {
-    background-color: var(--success-600);
-    color: white;
-    border-color: var(--success-600);
-}
-.content-wrapper .btn-success:hover {
-    background-color: var(--success-700);
-    border-color: var(--success-700);
-}
-.content-wrapper .btn-danger {
-    background-color: var(--danger-600);
-    color: white;
-    border-color: var(--danger-600);
-}
-.content-wrapper .btn-danger:hover {
-    background-color: var(--danger-700);
-    border-color: var(--danger-700);
-}
-.content-wrapper .transactions-table-wrapper { overflow-x: auto; background: white; border-radius: var(--rounded-lg); border: 1px solid var(--border-color); box-shadow: 0 1px 2px rgba(0,0,0,0.05); margin-top: 1rem; }
-.content-wrapper .transactions-table { width: 100%; border-collapse: collapse; min-width: 800px; }
-.content-wrapper .transactions-table th, .content-wrapper .transactions-table td { padding: 0.9rem 1rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: var(--font-size-sm); vertical-align: middle; }
-.content-wrapper .transactions-table th { background-color: var(--gray-50); font-weight: var(--font-semibold); color: var(--gray-600); white-space: nowrap; }
-.content-wrapper .transactions-table tr:last-child td { border-bottom: none; }
-.content-wrapper .transactions-table tr:hover { background-color: var(--gray-50); }
-.content-wrapper .transactions-table td.status { text-align: center; }
-.content-wrapper .transactions-table td.actions { text-align: center; }
-.content-wrapper .transactions-table td .action-buttons { display: inline-flex; gap: 0.5rem; justify-content: center; }
-.content-wrapper .transactions-table td .btn-icon {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.4rem;
-    font-size: 1.1rem;
-    line-height: 1;
-    border-radius: var(--rounded-full);
-    color: var(--gray-500);
-    transition: background-color var(--transition-speed) ease-in-out, color var(--transition-speed) ease-in-out;
-}
-.content-wrapper .transactions-table td .btn-icon:hover {
-    background-color: var(--gray-100);
-    color: var(--gray-700);
-}
-.content-wrapper .transactions-table td .btn-view:hover { color: var(--info-600); background-color: rgba(14, 165, 233, 0.1); }
-.content-wrapper .transactions-table td .btn-edit:hover { color: var(--warning-600); background-color: rgba(245, 158, 11, 0.1); }
-.content-wrapper .transactions-table td .btn-secondary i.fa-toggle-off { color: var(--danger-600); }
-.content-wrapper .transactions-table td .btn-success i.fa-toggle-on { color: var(--success-600); }
-.content-wrapper .transactions-table td .btn-secondary:hover i.fa-toggle-off { color: var(--danger-700); background-color: rgba(220, 38, 38, 0.1); }
-.content-wrapper .transactions-table td .btn-success:hover i.fa-toggle-on { color: var(--success-700); background-color: rgba(5, 150, 105, 0.1); }
-.content-wrapper .status-badge { padding: 0.3rem 0.8rem; border-radius: var(--rounded-full); font-size: 0.8rem; display: inline-block; font-weight: var(--font-medium); text-align: center; min-width: 90px; border: 1px solid transparent; }
-.content-wrapper .status-active { color: var(--success-600); font-weight: bold; }
-.content-wrapper .status-inactive { color: var(--danger-600); font-weight: bold; }
-.content-wrapper .pagination-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: var(--font-size-sm); color: var(--gray-600); }
-.content-wrapper .pagination-controls { display: flex; gap: 0.3rem; }
-.content-wrapper .pagination-controls button { padding: 0.4rem 0.8rem; border: 1px solid var(--gray-300); background-color: #fff; cursor: pointer; border-radius: var(--rounded-md); font-size: var(--font-size-sm); }
-.content-wrapper .pagination-controls button:disabled { background-color: var(--gray-100); color: var(--gray-400); cursor: not-allowed; }
-.content-wrapper .pagination-controls button.active { background-color: var(--primary-500); color: #fff; border-color: var(--primary-500); font-weight: bold; }
-.content-wrapper #no-results-row td { text-align: center; padding: 3rem; color: var(--gray-500); font-size: var(--font-size-base); }
+.content-wrapper .status-badge.active { color: var(--success-600); font-weight: bold; }
+.content-wrapper .status-badge.inactive { color: var(--danger-600); font-weight: bold; }
 .content-wrapper .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
 .content-wrapper .header-actions h3 { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
 .content-wrapper .header-actions .btn-primary { font-size: var(--font-size-sm); }
@@ -241,6 +150,7 @@ include $private_includes_path . 'admin_header.php';
     margin-top: 1rem;
     text-align: left;
 }
+/* button styles moved to components/buttons.css */
 </style>
 
 <?php

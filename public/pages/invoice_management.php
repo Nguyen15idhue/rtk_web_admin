@@ -51,7 +51,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
     <title>Quản lý Giao dịch - Admin</title>
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/base.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables.css">
     <style>
         :root {
             --primary-500: #3b82f6; --primary-600: #2563eb; --primary-700: #1d4ed8;
@@ -84,34 +84,14 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
         .filter-bar input, .filter-bar select { padding: 0.6rem 0.8rem; border: 1px solid var(--gray-300); border-radius: var(--rounded-md); font-size: var(--font-size-sm); }
         .filter-bar input:focus, .filter-bar select:focus { outline: none; border-color: var(--primary-500); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
         .filter-bar button, .filter-bar a.btn-secondary { padding: 0.6rem 1rem; font-size: var(--font-size-sm); }
-        .transactions-table-wrapper { overflow-x: auto; background: white; border-radius: var(--rounded-lg); border: 1px solid var(--border-color); box-shadow: 0 1px 2px rgba(0,0,0,0.05); margin-top: 1rem; }
-        .transactions-table { width: 100%; border-collapse: collapse; min-width: 800px; }
-        .transactions-table th, .transactions-table td { padding: 0.9rem 1rem; text-align: left; border-bottom: 1px solid var(--border-color); font-size: var(--font-size-sm); vertical-align: middle; }
-        .transactions-table th { background-color: var(--gray-50); font-weight: var(--font-semibold); color: var(--gray-600); white-space: nowrap; }
-        .transactions-table tr:last-child td { border-bottom: none; }
-        .transactions-table tr:hover { background-color: var(--gray-50); }
-        .transactions-table td.amount { font-weight: var(--font-medium); color: var(--gray-800); white-space: nowrap; }
-        .transactions-table td.status { text-align: center; }
-        .transactions-table td.actions { text-align: center; }
-        .transactions-table td .action-buttons { display: inline-flex; gap: 0.5rem; justify-content: center; }
-        .transactions-table td .btn-icon { background: none; border: none; cursor: pointer; padding: 0.3rem; font-size: 1.2rem; line-height: 1; }
-        .transactions-table td .btn-approve { color: var(--success-600); }
-        .transactions-table td .btn-reject { color: var(--danger-600); }
-        .transactions-table td .btn-view-proof { color: var(--info-600); }
-        .transactions-table td .btn-revert { color: var(--warning-500); }
-        .transactions-table td .btn-disabled { color: var(--gray-400); cursor: not-allowed; }
-        .transactions-table td .clickable-id { cursor: pointer; color: var(--primary-600); font-weight: var(--font-semibold); text-decoration: none; }
-        .transactions-table td .clickable-id:hover { text-decoration: underline; }
-        .status-badge { padding: 0.3rem 0.8rem; border-radius: var(--rounded-full); font-size: 0.8rem; display: inline-block; font-weight: var(--font-medium); text-align: center; min-width: 90px; border: 1px solid transparent; }
+
+        /* Invoice‑specific status‑badge colors */
         .status-approved { background: var(--badge-green-bg); color: var(--badge-green-text); border-color: #a7f3d0; }
-        .status-pending { background: var(--badge-yellow-bg); color: var(--badge-yellow-text); border-color: var(--badge-yellow-border); }
-        .status-rejected { background: var(--badge-red-bg); color: var(--badge-red-text); border-color: #fecaca; }
-        .status-unknown { background: var(--gray-100); color: var(--gray-500); border-color: var(--gray-300); }
-        .pagination-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: var(--font-size-sm); color: var(--gray-600); }
-        .pagination-controls { display: flex; gap: 0.3rem; }
-        .pagination-controls button { padding: 0.4rem 0.8rem; border: 1px solid var(--gray-300); background-color: #fff; cursor: pointer; border-radius: var(--rounded-md); font-size: var(--font-size-sm); }
-        .pagination-controls button:disabled { background-color: var(--gray-100); color: var(--gray-400); cursor: not-allowed; }
-        .pagination-controls button.active { background-color: var(--primary-500); color: #fff; border-color: var(--primary-500); font-weight: bold; }
+        .status-pending  { background: var(--badge-yellow-bg); color: var(--badge-yellow-text); border-color: var(--badge-yellow-border); }
+        .status-rejected { background: var(--badge-red-bg); color: var(--badge-red-text);    border-color: #fecaca; }
+        .status-unknown  { background: var(--gray-100);     color: var(--gray-500);         border-color: var(--gray-300); }
+
+        /* Modal styling */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-content { background: white; padding: 1.5rem 2rem; border-radius: var(--rounded-lg); box-shadow: 0 5px 15px rgba(0,0,0,0.2); width: 90%; max-width: 600px; position: relative; transform: scale(0.9); transition: transform 0.3s ease; }
@@ -125,7 +105,6 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
         .modal-body span { flex-grow: 1; }
         .modal-body .status-badge-modal { margin-left: 5px; vertical-align: middle; }
         #proofModalImage { max-width: 100%; height: auto; display: block; margin: 1rem auto; border: 1px solid var(--gray-300); border-radius: var(--rounded-md); }
-        #no-results-row td { text-align: center; padding: 3rem; color: var(--gray-500); font-size: var(--font-size-base); }
     </style>
 </head>
 <body>

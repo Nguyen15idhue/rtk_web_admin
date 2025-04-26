@@ -34,6 +34,9 @@ if ($current_page > $total_pages && $total_pages > 0) {
 
 $offset = ($current_page - 1) * $items_per_page;
 $accounts = $accountModel->getAccounts($filters, $items_per_page, $offset);
+// Note: If search still doesn't work for accounts,
+// verify the implementation of the getAccounts method within the AccountModel class.
+// Ensure the WHERE clause correctly uses the 'search' filter passed in $filters.
 
 // --- Build Pagination URL ---
 // Remove 'page' param from existing query string to build the base URL

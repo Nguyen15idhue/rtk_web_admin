@@ -1,7 +1,9 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\update_account.php
 header('Content-Type: application/json');
-
+error_reporting(E_ALL); // Report all errors for logging
+ini_set('display_errors', 0); // Keep off for browser output
+ini_set('log_errors', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
 // Basic security check
 if (!isset($_SESSION['admin_id'])) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
@@ -17,10 +19,14 @@ $response = ['success' => false, 'message' => 'Invalid request'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rawInput = file_get_contents('php://input');
+    error_log("[update_account] raw input: " . $rawInput);
     $input = json_decode($rawInput, true);
     if (!is_array($input)) {
         $input = $_POST;
     }
+    error_log("[update_account] decoded input: " . print_r($input, true));
+    // debug: log the customer_phone value from input
+    error_log("[update_account] input customer_phone: " . ($input['customer_phone'] ?? '<none>'));
     $accountId = $input['id'] ?? null;
 
     // Basic validation
@@ -56,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Prepare data for update (filter out ID)
         $updateData = $input;
         unset($updateData['id']); // Don't try to update the ID itself
+        error_log("[update_account] updateData initial: " . print_r($updateData, true));
 
         // override enabled based on status select
         if ($inputStatus !== null) {
@@ -122,6 +129,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
             }
 
+            // NEW: capture updated user_id for API
+            $rtkUserId = null;
+            $userEmail = filter_var($input['user_email'] ?? null, FILTER_VALIDATE_EMAIL);
+            if ($userEmail) {
+                $stmtUser = $db->prepare("SELECT id FROM `user` WHERE email = ?");
+                $stmtUser->execute([$userEmail]);
+                $newUserId = (int)$stmtUser->fetchColumn();
+                if ($newUserId) {
+                    $stmtUpdUser = $db->prepare("
+                        UPDATE registration
+                        SET user_id = ?, updated_at = NOW()
+                        WHERE id = (
+                            SELECT registration_id FROM survey_account WHERE id = ?
+                        )
+                    ");
+                    $stmtUpdUser->execute([$newUserId, $accountId]);
+                    $rtkUserId = $newUserId; // store for payload
+                }
+            }
+
             // fetch existing password if no new password provided
             if (empty($input['password_acc'])) {
                 $stmtPwd = $db->prepare("SELECT password_acc FROM survey_account WHERE id = ?");
@@ -132,6 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // --- New: preserve mountIds if location_id unchanged ---
+            // lấy ID location cũ từ DB
             $stmtOldLoc = $db->prepare("
                 SELECT r.location_id 
                 FROM registration r 
@@ -140,12 +168,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ");
             $stmtOldLoc->execute([$accountId]);
             $oldLocationId = (int)$stmtOldLoc->fetchColumn();
-            $newLocationId = isset($input['location_id']) ? (int)$input['location_id'] : $oldLocationId;
-            // nếu đổi location thì dùng mới, ngược lại giữ cũ
-            $locationIdToUse = ($newLocationId !== $oldLocationId) ? $newLocationId : $oldLocationId;
-            $mountIds = getMountPointsByLocationId($locationIdToUse);
 
-            // prepare payload for RTK API, thêm mountIds
+            // NEW: xác thực location_id từ form
+            $newLocationId = filter_var($input['location_id'] ?? null, FILTER_VALIDATE_INT, ['options'=>['min_range'=>1]]) ?: $oldLocationId;
+
+            // nếu có thay đổi, cập nhật luôn trong registration để đồng bộ
+            if ($newLocationId !== $oldLocationId) {
+                $stmtUpdLoc = $db->prepare("
+                    UPDATE registration 
+                    SET location_id = ?, updated_at = NOW() 
+                    WHERE id = (
+                        SELECT registration_id FROM survey_account WHERE id = ?
+                    )
+                ");
+                $stmtUpdLoc->execute([$newLocationId, $accountId]);
+                error_log("Location changed for account {$accountId}: old={$oldLocationId}, new={$newLocationId}");
+            }
+
+            // tính mountIds dựa trên giá trị đã xác thực
+            $mountIds = getMountPointsByLocationId($newLocationId);
+
+            // NEW: prepare additional payload fields à la create_account
+            $casterIds       = !empty($input['caster'])             ? [trim($input['caster'])] : [];
+            $regionIdsArr    = isset($updateData['regionIds'])      ? [$updateData['regionIds']] : [];
+            $customerCompany = $input['customer_company'] ?? '';
+            // get customer_phone: prefer input, else load from user table
+            $customerPhone = $input['customer_phone'] ?? '';
+            if (empty($customerPhone) && !empty($rtkUserId)) {
+                $stmtPhone = $db->prepare("SELECT phone FROM `user` WHERE id = ?");
+                $stmtPhone->execute([$rtkUserId]);
+                $customerPhone = $stmtPhone->fetchColumn() ?: '';
+            }
+            error_log("[update_account] final customer_phone: " . $customerPhone);
+
+            // get customer_phone: prefer input, else load from user table
+            $customerName = $input['customer_name'] ?? '';
+            if (empty($customerName) && !empty($rtkUserId)) {
+                $stmtName = $db->prepare("SELECT username FROM `user` WHERE id = ?");
+                $stmtName->execute([$rtkUserId]);
+                $customerName = $stmtName->fetchColumn() ?: '';
+            }
+            error_log("[update_account] final customer_name: " . $customerPhone);
+
+            // prepare payload for RTK API
             $apiPayload = [
                 'id'              => $accountId,
                 'name'            => $input['username_acc'],
@@ -155,12 +220,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'enabled'         => $updateData['enabled']      ?? 1,
                 'numOnline'       => $updateData['concurrent_user'] ?? 1,
                 'customerBizType' => $updateData['customerBizType'] ?? 1,
+                'userId'          => $rtkUserId,
+                'customerName'    => $customerName,
+                'customerPhone'   => $customerPhone,
+                'customerCompany' => $customerCompany,
+                'casterIds'       => $casterIds,
+                'regionIds'       => $regionIdsArr,
                 'mountIds'        => $mountIds,
-                // add casterIds, regionIds, mountIds, customerCompany if needed
             ];
+            error_log("[update_account] RTK API payload: " . print_r($apiPayload, true));
 
             // call external RTK update API
             $apiResult = updateRtkAccount($apiPayload);
+            error_log("[update_account] RTK API result: " . print_r($apiResult, true));
+            // log internal API message if present
+            if (!empty($apiResult['data']['msg'])) {
+                error_log("[update_account] RTK API message: " . $apiResult['data']['msg']);
+                // append RTK API informational message to response
+                $response['message'] .= ' RTK Info: ' . $apiResult['data']['msg'];
+            }
+
             if (!$apiResult['success']) {
                 // append lỗi từ API bên ngoài vào message để front‑end show lên
                 $response['message'] .= ' External API Error: ' . $apiResult['error'];
@@ -174,6 +253,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $response['message'] = 'Failed to update account. Check logs for details.';
         }
+
+        // debug: log full response before sending
+        error_log("[update_account] response payload: " . json_encode($response));
 
     } catch (PDOException $e) {
         error_log("Database error updating account: " . $e->getMessage());

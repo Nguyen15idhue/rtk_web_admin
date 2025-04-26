@@ -31,43 +31,8 @@ $page_title = 'Admin Dashboard';
 ?>
 
 <?php
-// Include Header and Sidebar
 include $private_includes_path . 'admin_header.php';
 include $private_includes_path . 'admin_sidebar.php';
-?>
-<style>
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-.stat-card {
-    background-color: #fff;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    display: flex;
-    align-items: center;
-}
-.stat-card .icon {
-    font-size: 1.5rem;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    margin-right: 1rem;
-}
-.stat-card h3 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
-}
-.stat-card .value {
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin-top: 0.25rem;
-}
-</style>
-<?php
 ?>
 
 
@@ -146,21 +111,19 @@ include $private_includes_path . 'admin_sidebar.php';
     </div> <!-- End Stats Grid -->
 
     <!-- Charts Section -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-        <div class="content-section"> <!-- Use content-section class -->
-            <h3 class="text-base md:text-lg font-semibold text-gray-900 mb-4" style="border-bottom: none; margin-bottom: 1rem;">Đăng ký mới (7 ngày)</h3>
+    <div class="charts-grid">
+        <section class="content-section">
+            <h3>Đăng ký mới (7 ngày)</h3>
             <div class="chart-container">
                 <canvas id="newRegistrationsChart"></canvas>
             </div>
-        </div>
-        <div class="content-section"> <!-- Use content-section class -->
-            <h3 class="text-base md:text-lg font-semibold text-gray-900 mb-4" style="border-bottom: none; margin-bottom: 1rem;">Giới thiệu HĐ (7 ngày)</h3>
-            <div class="chart-container" style="display: flex; align-items: center; justify-content: center; color: var(--gray-500);">
-                <!-- Placeholder for Referral Chart -->
-                 Biểu đồ giới thiệu (Cần JS & Canvas ID)
-                 <!-- <canvas id="referralChart"></canvas> -->
+        </section>
+        <section class="content-section">
+            <h3>Giới thiệu HĐ (7 ngày)</h3>
+            <div class="chart-container placeholder">
+                Biểu đồ giới thiệu (Cần JS & Canvas ID)
             </div>
-        </div>
+        </section>
     </div><!-- End Charts Section -->
 
     <!-- Recent Activity Section -->

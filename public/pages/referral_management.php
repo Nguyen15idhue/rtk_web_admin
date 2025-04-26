@@ -6,8 +6,6 @@ $private_includes_path = __DIR__ . '/../../private/includes/';
 $user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 $base_path = '/'; // Adjust if necessary
 
-// TODO: Fetch actual referral data here
-
 ?>
 
 <div class="dashboard-wrapper">

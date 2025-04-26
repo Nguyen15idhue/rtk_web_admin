@@ -1,5 +1,6 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\create_account.php
+session_start(); // ← add this
 header('Content-Type: application/json');
 
 // Prevent PHP from outputting HTML errors directly
@@ -23,10 +24,13 @@ require_once __DIR__ . '/../../api/rtk_system/account_api.php';
 $response = ['success' => false, 'message' => 'Invalid request'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    error_log("[CA] Start create_account request");
     $rawInput = file_get_contents('php://input');
     $input = json_decode($rawInput, true);
+    error_log("[CA] Raw input: " . json_encode($input));
     if (!is_array($input)) {
         $input = $_POST;
+        error_log("Debug: Fallback to \$_POST input: " . json_encode($input));
     }
 
     // --- Input Validation ---
@@ -50,9 +54,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    error_log("[CA] registration_id={$registration_id}, username_acc={$username_acc}, password_len=" . strlen($password_acc));
+
     // --- Handle Optional Integer/Boolean Fields ---
+    // NEW: validate location_id input
     $location_input = filter_var($input['location_id'] ?? null, FILTER_VALIDATE_INT, ['options'=>['min_range'=>1]]);
-    if ($location_input === false) $location_input = 1;
+    if ($location_input === false) {
+        $location_input = 1;
+    }
+    // NEW: log để kiểm tra form gửi lên đúng hay không
+    error_log("[CA] location_input={$location_input}");
 
     // NEW: package_id from form
     $package_input = filter_var($input['package_id'] ?? null, FILTER_VALIDATE_INT, ['options'=>['min_range'=>1]]);
@@ -65,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dtEndDb    = new DateTime($rawEndDb,   new DateTimeZone('Asia/Bangkok'));
     $start_time_db = $dtStartDb->format('Y-m-d H:i:s');
     $end_time_db   = $dtEndDb->format('Y-m-d H:i:s');
+    error_log("[CA] computed start_time_db={$start_time_db}, end_time_db={$end_time_db}");
 
     $concurrent_user = filter_var($input['concurrent_user'] ?? 1, FILTER_VALIDATE_INT);
     if ($concurrent_user === false || $concurrent_user < 1) $concurrent_user = 1; // Default to 1 if invalid or empty
@@ -99,21 +111,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
+        // NEW: fetch user_id based on provided email
+        $userEmail = filter_var($input['user_email'] ?? null, FILTER_VALIDATE_EMAIL);
+        error_log("[CA] Validating user_email: {$userEmail}");
+        if (!$userEmail) {
+            echo json_encode(['success'=>false,'message'=>'Email người dùng không hợp lệ.']);
+            exit;
+        }
+        $stmtUser = $db->prepare("SELECT id FROM `user` WHERE email = ?");
+        $stmtUser->execute([$userEmail]);
+        $userId = (int)$stmtUser->fetchColumn();
+        error_log("[CA] Retrieved userId={$userId}");
+        if (!$userId) {
+            echo json_encode(['success'=>false,'message'=>'Không tìm thấy người dùng với email đã cung cấp.']);
+            exit;
+        }
+
         // if missing, create a dummy registration so FK will exist
         if ($autoReg) {
+            error_log("[CA] Inserting auto registration for user {$userId}");
             $stmt = $db->prepare(
               "INSERT INTO registration 
                (user_id, package_id, location_id, num_account, start_time, end_time, base_price, vat_percent, vat_amount, total_price, status)
                VALUES (?, ?, ?, 1, ?, ?, 0, 0, 0, 0, 'pending')"
             );
             $stmt->execute([
-                $_SESSION['admin_id'],
+                $userId,            // <-- dùng userId thay vì admin_id
                 $package_input,
                 $location_input,
                 $start_time_db,
                 $end_time_db
             ]);
             $registration_id = (int)$db->lastInsertId();
+            error_log("[CA] auto registration inserted, new regId={$registration_id}");
         }
 
         // Fetch location_id from registration
@@ -131,8 +161,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ");
         $stmtInfo->execute([$registration_id]);
         $regInfo = $stmtInfo->fetch(PDO::FETCH_ASSOC);
+        error_log("[CA] Price={$regInfo['price']} => " . ((float)$regInfo['price'] === 0.0 ? 'trial' : 'normal') . " flow");
 
         if ($regInfo && (float)$regInfo['price'] === 0.0) {
+            error_log("Debug: Entering trial flow for registration_id={$registration_id}");
             // --- trial flow ---
             // build base username
             $base = preg_replace('/[^a-zA-Z0-9]/', '', $regInfo['customer_name']);
@@ -172,13 +204,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "mountIds"       => getMountPointsByLocationId($location_id)  // <- use helper
             ];
 
+            error_log("[CA] RTK API payload: " . json_encode($apiData));
             $res = createRtkAccount($apiData);
+            error_log("[CA] RTK API response: " . json_encode($res));
             if (!$res['success']) {
                 echo json_encode(['success'=>false,'message'=>'RTK API failed: '.($res['error']??'')]);
                 exit;
             }
             // insert local (trial) – use API-returned ID as the PK
             $accId = (int)$res['data']['id'];    // <-- use API id
+            error_log("[CA] Inserting survey_account id={$accId}");
             $ins = $db->prepare("
                 INSERT INTO survey_account
                   (id,registration_id,username_acc,password_acc,concurrent_user,enabled,customerBizType,created_at)
@@ -193,14 +228,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 1,
                 1
             ]);
+            error_log("[CA] survey_account insert rowCount=" . $ins->rowCount());
             // update registration & transaction
             $db->prepare("UPDATE registration SET status='active',updated_at=NOW() WHERE id=?")
                ->execute([$registration_id]);
+            error_log("[CA] registration status updated");
             $db->prepare("
                 UPDATE transaction_history 
                 SET status='completed',updated_at=NOW() 
                 WHERE registration_id=? AND status='pending'
             ")->execute([$registration_id]);
+            error_log("[CA] transaction_history status updated");
 
             echo json_encode([
                 'success'  => true,
@@ -210,6 +248,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
+        error_log("Debug: Non-trial account creation path for registration_id={$registration_id}");
         $accountModel = new AccountModel($db);
 
         // --- Always call RTK API for new account ---
@@ -237,7 +276,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "regionIds"      => $regionIds ? [$regionIds] : [],
                 "mountIds"       => getMountPointsByLocationId($location_id)  // <- use helper
             ];
+            error_log("[CA] RTK API payload: " . json_encode($apiData));
             $apiRes = createRtkAccount($apiData);
+            error_log("[CA] RTK API response: " . json_encode($apiRes));
             if (!$apiRes['success']) {
                 echo json_encode(['success'=>false,'message'=>'RTK API error: '.$apiRes['error']]);
                 exit;
@@ -279,17 +320,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
+        error_log("[CA] accountModel->createAccount returned=" . ($creationSuccess ? 'true' : 'false'));
         if ($creationSuccess) {
             // Cập nhật registration.status theo lựa chọn
             $db->prepare(
                 "UPDATE registration SET status = ?, updated_at = NOW() WHERE id = ?"
             )->execute([$regStatus, $registration_id]);
+            error_log("[CA] registration status set to {$regStatus}");
 
             echo json_encode([
                 'success' => true,
                 'message' => 'Account created with ID: ' . $apiId
             ]);
         } else {
+            error_log("[CA] Unknown failure in createAccountModel");
             echo json_encode(['success'=>false,'message'=>'Unknown failure']);
         }
         exit;
