@@ -1,0 +1,65 @@
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid transparent;
+    border-radius: var(--rounded-md);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-medium);
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color var(--transition-speed) ease-in-out, border-color var(--transition-speed) ease-in-out, color var(--transition-speed) ease-in-out, box-shadow var(--transition-speed) ease-in-out;
+    white-space: nowrap;
+}
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.btn i {
+    line-height: 1;
+    margin-right: 0.25rem; /* ensure icon/text spacing */
+}
+.btn-primary {
+    background-color: var(--primary-600);
+    color: white;
+    border-color: var(--primary-600);
+}
+.btn-primary:hover {
+    background-color: var(--primary-700);
+    border-color: var(--primary-700);
+}
+.btn-secondary {
+    background-color: white;
+    color: var(--gray-700);
+    border-color: var(--gray-300);
+}
+.btn-secondary:hover {
+    background-color: var(--gray-50);
+    border-color: var(--gray-400);
+    color: var(--gray-800);
+}
+.btn-success {
+    background-color: var(--success-600);
+    color: white;
+    border-color: var(--success-600);
+}
+.btn-success:hover {
+    background-color: var(--success-700);
+    border-color: var(--success-700);
+}
+.btn-danger {
+    background-color: var(--danger-600);
+    color: white;
+    border-color: var(--danger-600);
+}
+.btn-danger:hover {
+    background-color: var(--danger-700);
+    border-color: var(--danger-700);
+}

@@ -1,5 +1,6 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\create_account.php
+session_start(); // ← add this
 header('Content-Type: application/json');
 
 // Prevent PHP from outputting HTML errors directly
@@ -17,16 +18,19 @@ if (!isset($_SESSION['admin_id'])) {
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../classes/Database.php';
 require_once __DIR__ . '/../../classes/AccountModel.php';
-require_once __DIR__ . '/../../utils/functions.php'; // For generate_unique_id if needed
+require_once __DIR__ . '/../../utils/functions.php'; 
 require_once __DIR__ . '/../../api/rtk_system/account_api.php';
 
 $response = ['success' => false, 'message' => 'Invalid request'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    error_log("[CA] Start create_account request");
     $rawInput = file_get_contents('php://input');
     $input = json_decode($rawInput, true);
+    error_log("[CA] Raw input: " . json_encode($input));
     if (!is_array($input)) {
         $input = $_POST;
+        error_log("Debug: Fallback to \$_POST input: " . json_encode($input));
     }
 
     // --- Input Validation ---
@@ -50,7 +54,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    error_log("[CA] registration_id={$registration_id}, username_acc={$username_acc}, password_len=" . strlen($password_acc));
+
     // --- Handle Optional Integer/Boolean Fields ---
+    // NEW: validate location_id input
+    $location_input = filter_var($input['location_id'] ?? null, FILTER_VALIDATE_INT, ['options'=>['min_range'=>1]]);
+    if ($location_input === false) {
+        $location_input = 1;
+    }
+    // NEW: log để kiểm tra form gửi lên đúng hay không
+    error_log("[CA] location_input={$location_input}");
+
+    // NEW: package_id from form
+    $package_input = filter_var($input['package_id'] ?? null, FILTER_VALIDATE_INT, ['options'=>['min_range'=>1]]);
+    if ($package_input === false) $package_input = 1;
+
+    // NEW: parse start/end for registration
+    $rawStartDb = $input['start_time'] ?? 'now';
+    $rawEndDb   = $input['end_time']   ?? '+30 days';
+    $dtStartDb  = new DateTime($rawStartDb, new DateTimeZone('Asia/Bangkok'));
+    $dtEndDb    = new DateTime($rawEndDb,   new DateTimeZone('Asia/Bangkok'));
+    $start_time_db = $dtStartDb->format('Y-m-d H:i:s');
+    $end_time_db   = $dtEndDb->format('Y-m-d H:i:s');
+    error_log("[CA] computed start_time_db={$start_time_db}, end_time_db={$end_time_db}");
+
     $concurrent_user = filter_var($input['concurrent_user'] ?? 1, FILTER_VALIDATE_INT);
     if ($concurrent_user === false || $concurrent_user < 1) $concurrent_user = 1; // Default to 1 if invalid or empty
 
@@ -66,6 +93,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $customerBizType = filter_var($input['customerBizType'] ?? 1, FILTER_VALIDATE_INT);
     if ($customerBizType === false) $customerBizType = 1; // Default to 1 if empty or invalid
 
+    // --- XỬ LÝ TRẠNG THÁI ---
+    $inputStatus = $input['status'] ?? 'active';
+    // xác định registration.status
+    $regStatus = in_array($inputStatus, ['pending','rejected']) ? $inputStatus : 'active';
+    // override enabled: suspended => 0, ngược lại => 1
+    $enabled = ($inputStatus === 'suspended') ? 0 : 1;
+
     try {
         $database = new Database();
         $db = $database->getConnection();
@@ -77,16 +111,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
+        // NEW: fetch user_id based on provided email
+        $userEmail = filter_var($input['user_email'] ?? null, FILTER_VALIDATE_EMAIL);
+        error_log("[CA] Validating user_email: {$userEmail}");
+        if (!$userEmail) {
+            echo json_encode(['success'=>false,'message'=>'Email người dùng không hợp lệ.']);
+            exit;
+        }
+        $stmtUser = $db->prepare("SELECT id FROM `user` WHERE email = ?");
+        $stmtUser->execute([$userEmail]);
+        $userId = (int)$stmtUser->fetchColumn();
+        error_log("[CA] Retrieved userId={$userId}");
+        if (!$userId) {
+            echo json_encode(['success'=>false,'message'=>'Không tìm thấy người dùng với email đã cung cấp.']);
+            exit;
+        }
+
         // if missing, create a dummy registration so FK will exist
         if ($autoReg) {
+            error_log("[CA] Inserting auto registration for user {$userId}");
             $stmt = $db->prepare(
               "INSERT INTO registration 
                (user_id, package_id, location_id, num_account, start_time, end_time, base_price, vat_percent, vat_amount, total_price, status)
-               VALUES (?, 1, 1, 1, NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY), 0, 0, 0, 0, 'pending')"
+               VALUES (?, ?, ?, 1, ?, ?, 0, 0, 0, 0, 'pending')"
             );
-            $stmt->execute([ $_SESSION['admin_id'] ]);
+            $stmt->execute([
+                $userId,            // <-- dùng userId thay vì admin_id
+                $package_input,
+                $location_input,
+                $start_time_db,
+                $end_time_db
+            ]);
             $registration_id = (int)$db->lastInsertId();
+            error_log("[CA] auto registration inserted, new regId={$registration_id}");
         }
+
+        // Fetch location_id from registration
+        $locStmt = $db->prepare("SELECT location_id FROM registration WHERE id = ?");
+        $locStmt->execute([$registration_id]);
+        $location_id = (int)$locStmt->fetchColumn();
 
         // Fetch price & user info to detect trial
         $stmtInfo = $db->prepare("
@@ -98,8 +161,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ");
         $stmtInfo->execute([$registration_id]);
         $regInfo = $stmtInfo->fetch(PDO::FETCH_ASSOC);
+        error_log("[CA] Price={$regInfo['price']} => " . ((float)$regInfo['price'] === 0.0 ? 'trial' : 'normal') . " flow");
 
         if ($regInfo && (float)$regInfo['price'] === 0.0) {
+            error_log("Debug: Entering trial flow for registration_id={$registration_id}");
             // --- trial flow ---
             // build base username
             $base = preg_replace('/[^a-zA-Z0-9]/', '', $regInfo['customer_name']);
@@ -114,12 +179,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $password = bin2hex(random_bytes(8));
 
+            // compute start/end in ms based on GMT+7, not via strtotime
+            $rawStart = $input['start_time'] ?? 'now';
+            $rawEnd   = $input['end_time']   ?? '+7 days';
+            $dtStart  = new DateTime($rawStart, new DateTimeZone('Asia/Bangkok'));
+            $dtEnd    = new DateTime($rawEnd,   new DateTimeZone('Asia/Bangkok'));
+            $startMs  = $dtStart->getTimestamp() * 1000;
+            $endMs    = $dtEnd->getTimestamp()   * 1000;
+
             // prepare API payload
             $apiData = [
                 "name"           => $username,
                 "userPwd"        => $password,
-                "startTime"      => strtotime($input['start_time'] ?? 'now')*1000,
-                "endTime"        => strtotime($input['end_time']   ?? '+7 days')*1000,
+                "startTime"      => $startMs,
+                "endTime"        => $endMs,
                 "enabled"        => 1,
                 "numOnline"      => $input['concurrent_user'],
                 "customerName"   => $regInfo['customer_name'],
@@ -128,16 +201,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "customerCompany"=> "",
                 "casterIds"      => [],
                 "regionIds"      => [],
-                "mountIds"       => []
+                "mountIds"       => getMountPointsByLocationId($location_id)  // <- use helper
             ];
 
+            error_log("[CA] RTK API payload: " . json_encode($apiData));
             $res = createRtkAccount($apiData);
+            error_log("[CA] RTK API response: " . json_encode($res));
             if (!$res['success']) {
                 echo json_encode(['success'=>false,'message'=>'RTK API failed: '.($res['error']??'')]);
                 exit;
             }
-            // insert local
-            $accId = 'RTK_'.$registration_id.'_'.time();
+            // insert local (trial) – use API-returned ID as the PK
+            $accId = (int)$res['data']['id'];    // <-- use API id
+            error_log("[CA] Inserting survey_account id={$accId}");
             $ins = $db->prepare("
                 INSERT INTO survey_account
                   (id,registration_id,username_acc,password_acc,concurrent_user,enabled,customerBizType,created_at)
@@ -147,37 +223,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $accId,
                 $registration_id,
                 $username,
-                password_hash($password, PASSWORD_DEFAULT),
+                $password,
                 $concurrent_user,
                 1,
                 1
             ]);
+            error_log("[CA] survey_account insert rowCount=" . $ins->rowCount());
             // update registration & transaction
             $db->prepare("UPDATE registration SET status='active',updated_at=NOW() WHERE id=?")
                ->execute([$registration_id]);
+            error_log("[CA] registration status updated");
             $db->prepare("
                 UPDATE transaction_history 
                 SET status='completed',updated_at=NOW() 
                 WHERE registration_id=? AND status='pending'
             ")->execute([$registration_id]);
+            error_log("[CA] transaction_history status updated");
 
             echo json_encode([
                 'success'  => true,
                 'message'  => 'Trial account created',
-                'account'  => ['username'=>$username,'password'=>$password]
+                'account'  => ['username'=>$username,'password'=>$password,'id'=>$accId]
             ]);
             exit;
         }
 
+        error_log("Debug: Non-trial account creation path for registration_id={$registration_id}");
         $accountModel = new AccountModel($db);
 
         // --- Always call RTK API for new account ---
         try {
+            // compute start/end in ms based on GMT+7, not via strtotime
+            $rawStart = $input['start_time'] ?? 'now';
+            $rawEnd   = $input['end_time']   ?? '+30 days';
+            $dtStart  = new DateTime($rawStart, new DateTimeZone('Asia/Bangkok'));
+            $dtEnd    = new DateTime($rawEnd,   new DateTimeZone('Asia/Bangkok'));
+            $startMs  = $dtStart->getTimestamp() * 1000;
+            $endMs    = $dtEnd->getTimestamp()   * 1000;
+
             $apiData = [
                 "name"           => $username_acc,
                 "userPwd"        => $password_acc,
-                "startTime"      => strtotime($input['start_time'] ?? 'now') * 1000,
-                "endTime"        => strtotime($input['end_time']   ?? '+30 days') * 1000,
+                "startTime"      => $startMs,
+                "endTime"        => $endMs,
                 "enabled"        => $enabled,
                 "numOnline"      => $concurrent_user,
                 "customerName"   => $input['customer_name']  ?? ($regInfo['customer_name'] ?? ''),
@@ -186,9 +274,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "customerCompany"=> "",
                 "casterIds"      => !empty($input['caster']) ? [trim($input['caster'])] : [],
                 "regionIds"      => $regionIds ? [$regionIds] : [],
-                "mountIds"       => []
+                "mountIds"       => getMountPointsByLocationId($location_id)  // <- use helper
             ];
+            error_log("[CA] RTK API payload: " . json_encode($apiData));
             $apiRes = createRtkAccount($apiData);
+            error_log("[CA] RTK API response: " . json_encode($apiRes));
             if (!$apiRes['success']) {
                 echo json_encode(['success'=>false,'message'=>'RTK API error: '.$apiRes['error']]);
                 exit;
@@ -205,17 +295,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // --- Generate RTK_ ID for survey_account table ---
-        $unique_account_id = 'RTK_' . $registration_id . '_' . time();
-
+        // use API-returned ID as the PK
+        $apiId = (int)$apiRes['data']['id'];
         // Prepare data for creation
         $accountData = [
-            'id'               => $unique_account_id,
+            'id'               => $apiId,           // <-- API id
             'registration_id'  => $registration_id,
             'username_acc'     => $username_acc,
-            'password_acc'     => $password_acc, // raw, will hash next
+            'password_acc'     => $password_acc,    // raw
             'concurrent_user'  => $concurrent_user,
-            'enabled'          => $enabled,
+            'enabled'          => $enabled,       // <- dùng giá trị đã override
             'caster'           => !empty($input['caster']) ? trim($input['caster']) : null,
             'user_type'        => $user_type,
             'regionIds'        => $regionIds,
@@ -223,25 +312,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'area'             => !empty($input['area']) ? trim($input['area']) : null,
         ];
 
-        // Hash password
-        $accountData['password_acc'] = password_hash($accountData['password_acc'], PASSWORD_DEFAULT);
-
         // Create account
-        $creationSuccess = false;
         try {
             $creationSuccess = $accountModel->createAccount($accountData);
         } catch (PDOException $e) {
-            // show detailed DB error
             echo json_encode(['success'=>false,'message'=>'DB error: '.$e->getMessage()]);
             exit;
         }
 
+        error_log("[CA] accountModel->createAccount returned=" . ($creationSuccess ? 'true' : 'false'));
         if ($creationSuccess) {
+            // Cập nhật registration.status theo lựa chọn
+            $db->prepare(
+                "UPDATE registration SET status = ?, updated_at = NOW() WHERE id = ?"
+            )->execute([$regStatus, $registration_id]);
+            error_log("[CA] registration status set to {$regStatus}");
+
             echo json_encode([
                 'success' => true,
-                'message' => 'Account created with ID: ' . htmlspecialchars($unique_account_id)
+                'message' => 'Account created with ID: ' . $apiId
             ]);
         } else {
+            error_log("[CA] Unknown failure in createAccountModel");
             echo json_encode(['success'=>false,'message'=>'Unknown failure']);
         }
         exit;
@@ -266,3 +358,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 echo json_encode($response);
+?>

@@ -1,70 +1,216 @@
-[21-Apr-2025 09:09:17 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[21-Apr-2025 09:09:17 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[21-Apr-2025 12:24:58 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[21-Apr-2025 12:24:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[21-Apr-2025 15:47:34 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[21-Apr-2025 15:47:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[21-Apr-2025 15:47:44 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[21-Apr-2025 15:47:44 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 03:48:14 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 03:48:14 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 03:48:19 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 03:48:19 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 03:49:30 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 03:49:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 04:07:01 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 04:07:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 04:07:33 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 04:07:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 04:07:35 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 04:07:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 04:07:45 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 04:07:45 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 04:07:50 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 04:07:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 04:12:08 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 04:12:08 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 04:22:02 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 04:22:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 04:34:14 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 04:34:14 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 04:35:24 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 04:35:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 04:35:24 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDO::getConnection() in E:\Application\laragon\www\rtk_web_admin\private\classes\RtkAccount.php:8
-Stack trace:
-#0 E:\Application\laragon\www\rtk_web_admin\private\actions\account\get_account_details.php(34): RtkAccount->__construct(Object(PDO))
-#1 E:\Application\laragon\www\rtk_web_admin\public\actions\account\index.php(25): require_once('E:\\Application\\...')
-#2 {main}
-  thrown in E:\Application\laragon\www\rtk_web_admin\private\classes\RtkAccount.php on line 8
-[22-Apr-2025 04:35:25 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 04:35:25 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 04:35:25 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDO::getConnection() in E:\Application\laragon\www\rtk_web_admin\private\classes\RtkAccount.php:8
-Stack trace:
-#0 E:\Application\laragon\www\rtk_web_admin\private\actions\account\get_account_details.php(34): RtkAccount->__construct(Object(PDO))
-#1 E:\Application\laragon\www\rtk_web_admin\public\actions\account\index.php(25): require_once('E:\\Application\\...')
-#2 {main}
-  thrown in E:\Application\laragon\www\rtk_web_admin\private\classes\RtkAccount.php on line 8
-[22-Apr-2025 04:35:31 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 04:35:31 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 04:35:31 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PDO::getConnection() in E:\Application\laragon\www\rtk_web_admin\private\classes\RtkAccount.php:8
-Stack trace:
-#0 E:\Application\laragon\www\rtk_web_admin\private\actions\account\get_account_details.php(34): RtkAccount->__construct(Object(PDO))
-#1 E:\Application\laragon\www\rtk_web_admin\public\actions\account\index.php(25): require_once('E:\\Application\\...')
-#2 {main}
-  thrown in E:\Application\laragon\www\rtk_web_admin\private\classes\RtkAccount.php on line 8
-[22-Apr-2025 04:36:22 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 04:36:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 04:36:52 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 04:36:52 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 05:31:08 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 05:31:08 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 05:32:02 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 05:32:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 05:32:04 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 05:32:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 06:32:29 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 06:32:29 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 08:55:46 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 08:55:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[22-Apr-2025 09:05:41 UTC] [Database GetConnection] No active connection found. Attempting to connect...
-[22-Apr-2025 09:05:41 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 09:36:42 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 09:36:42 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 09:36:42 UTC] Warning: No survey accounts found or enabled for approved registration ID: 41
+[26-Apr-2025 09:36:45 UTC] Warning: Account creation request timed out for registration ID 41 after 3.015989 seconds. Approval committed, but account creation needs verification.
+[26-Apr-2025 09:38:35 UTC] [CA] Start create_account request
+[26-Apr-2025 09:38:35 UTC] [CA] Raw input: null
+[26-Apr-2025 09:38:35 UTC] Debug: Fallback to $_POST input: {"username_acc":"user6_dong_02","password_acc":"123456","user_email":"acook6963@gmail.com","location_id":"63","package_id":"2","start_time":"2025-02-22","end_time":"2025-05-22","status":"active"}
+[26-Apr-2025 09:38:35 UTC] [CA] registration_id=, username_acc=user6_dong_02, password_len=6
+[26-Apr-2025 09:38:35 UTC] [CA] location_input=63
+[26-Apr-2025 09:38:35 UTC] [CA] computed start_time_db=2025-02-22 00:00:00, end_time_db=2025-05-22 00:00:00
+[26-Apr-2025 09:38:35 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 09:38:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 09:38:35 UTC] [CA] Validating user_email: acook6963@gmail.com
+[26-Apr-2025 09:38:35 UTC] [CA] Retrieved userId=102
+[26-Apr-2025 09:38:35 UTC] [CA] Inserting auto registration for user 102
+[26-Apr-2025 09:38:35 UTC] [CA] auto registration inserted, new regId=47
+[26-Apr-2025 09:38:35 UTC] [CA] Price=270000.00 => normal flow
+[26-Apr-2025 09:38:35 UTC] Debug: Non-trial account creation path for registration_id=47
+[26-Apr-2025 09:38:35 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 09:38:36 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 09:38:36 UTC] [CA] RTK API payload: {"name":"user6_dong_02","userPwd":"123456","startTime":1740157200000,"endTime":1747846800000,"enabled":1,"numOnline":1,"customerName":"Long2005","customerPhone":"0999999222","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[26-Apr-2025 09:38:36 UTC] [CA] RTK API response: {"success":true,"data":{"id":845,"name":"user6_dong_02","userPwd":"123456","startTime":1740157200000,"endTime":1747846800000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2005","customerPhone":"0999999222","customerCompany":""},"error":null}
+[26-Apr-2025 09:38:36 UTC] [CA] accountModel->createAccount returned=true
+[26-Apr-2025 09:38:36 UTC] [CA] registration status set to active
+[26-Apr-2025 09:39:11 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 09:39:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 09:39:11 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 09:39:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 09:39:11 UTC] RTK API Payload: {"id":"845","name":"user6_dong_02","userPwd":"123456","startTime":1740182400000,"endTime":1747872000000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[26-Apr-2025 09:39:11 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[26-Apr-2025 09:39:16 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 09:39:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 09:45:52 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 09:45:52 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 09:45:52 UTC] [PTA] Start approve transaction_id=41
+[26-Apr-2025 09:45:52 UTC] [PTA] Transaction begun
+[26-Apr-2025 09:45:52 UTC] [PTA] check SQL executed, rowCount=1
+[26-Apr-2025 09:45:52 UTC] [PTA] fetched registration={"status":"pending","user_id":101,"num_account":1,"start_time":"2025-04-26 16:36:42","end_time":"2025-07-26 16:36:42","location_id":63,"package_id":2}
+[26-Apr-2025 09:45:52 UTC] [PTA] update registration executed, affectedRows=1
+[26-Apr-2025 09:45:52 UTC] [PTA] update payment executed, affectedRows=1
+[26-Apr-2025 09:45:52 UTC] [PTA] activate survey_account executed, affectedRows=0
+[26-Apr-2025 09:45:52 UTC] Warning: No survey accounts found or enabled for approved registration ID: 41
+[26-Apr-2025 09:45:52 UTC] [PTA] province_code=YBI, lastUser=YBI098, nextSeq=99, username=YBI099, password=0900000001
+[26-Apr-2025 09:45:52 UTC] [PTA] cURL timeout set to 3s; calling URL=http://localhost:3000/private/actions/account/create_account.php with payload={"registration_id":41,"username_acc":"YBI099","password_acc":"0900000001","user_email":"acook6962@gmail.com","location_id":63,"package_id":2,"start_time":"2025-04-26 16:45:52","end_time":"2025-07-26 16:45:52","enabled":1,"concurrent_user":1}
+[26-Apr-2025 09:45:52 UTC] DEBUG [Account Creation] URL: http://localhost:3000/private/actions/account/create_account.php
+[26-Apr-2025 09:45:52 UTC] DEBUG [Account Creation] Payload: {"registration_id":41,"username_acc":"YBI099","password_acc":"0900000001","user_email":"acook6962@gmail.com","location_id":63,"package_id":2,"start_time":"2025-04-26 16:45:52","end_time":"2025-07-26 16:45:52","enabled":1,"concurrent_user":1}
+[26-Apr-2025 09:45:55 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 3011 milliseconds with 0 bytes received","totalTime":3.011502}
+[26-Apr-2025 09:45:55 UTC] [PTA] TransactionHistoryService updated
+[26-Apr-2025 09:45:55 UTC] [PTA] Transaction committed successfully
+[26-Apr-2025 09:49:17 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 09:49:17 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 09:49:17 UTC] [PTA] Start approve transaction_id=41
+[26-Apr-2025 09:49:17 UTC] [PTA] Transaction begun
+[26-Apr-2025 09:49:17 UTC] [PTA] check SQL executed, rowCount=1
+[26-Apr-2025 09:49:17 UTC] [PTA] fetched registration={"status":"pending","user_id":101,"num_account":1,"start_time":"2025-04-26 16:45:52","end_time":"2025-07-26 16:45:52","location_id":63,"package_id":2}
+[26-Apr-2025 09:49:17 UTC] [PTA] update registration executed, affectedRows=1
+[26-Apr-2025 09:49:17 UTC] [PTA] update payment executed, affectedRows=1
+[26-Apr-2025 09:49:17 UTC] [PTA] activate survey_account executed, affectedRows=0
+[26-Apr-2025 09:49:17 UTC] Warning: No survey accounts found or enabled for approved registration ID: 41
+[26-Apr-2025 09:49:17 UTC] [PTA] province_code=YBI, lastUser=YBI098, nextSeq=99, username=YBI099, password=0900000001
+[26-Apr-2025 09:49:17 UTC] [PTA] cURL timeout set to 3s; calling URL=http://localhost:3000/private/actions/account/create_account.php with payload={"registration_id":41,"username_acc":"YBI099","password_acc":"0900000001","user_email":"acook6962@gmail.com","location_id":63,"package_id":2,"start_time":"2025-04-26 16:49:17","end_time":"2025-07-26 16:49:17","enabled":1,"concurrent_user":1}
+[26-Apr-2025 09:49:17 UTC] DEBUG [Account Creation] URL: http://localhost:3000/private/actions/account/create_account.php
+[26-Apr-2025 09:49:17 UTC] DEBUG [Account Creation] Payload: {"registration_id":41,"username_acc":"YBI099","password_acc":"0900000001","user_email":"acook6962@gmail.com","location_id":63,"package_id":2,"start_time":"2025-04-26 16:49:17","end_time":"2025-07-26 16:49:17","enabled":1,"concurrent_user":1}
+[26-Apr-2025 09:49:20 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 3002 milliseconds with 0 bytes received","totalTime":3.002112}
+[26-Apr-2025 09:49:20 UTC] [PTA] TransactionHistoryService updated
+[26-Apr-2025 09:49:20 UTC] [PTA] Transaction committed successfully
+[26-Apr-2025 09:49:20 UTC] [CA] Start create_account request
+[26-Apr-2025 09:49:20 UTC] [CA] Raw input: {"registration_id":41,"username_acc":"YBI099","password_acc":"0900000001","user_email":"acook6962@gmail.com","location_id":63,"package_id":2,"start_time":"2025-04-26 16:49:17","end_time":"2025-07-26 16:49:17","enabled":1,"concurrent_user":1}
+[26-Apr-2025 09:49:20 UTC] [CA] registration_id=41, username_acc=YBI099, password_len=10
+[26-Apr-2025 09:49:20 UTC] [CA] location_input=63
+[26-Apr-2025 09:49:20 UTC] [CA] computed start_time_db=2025-04-26 16:49:17, end_time_db=2025-07-26 16:49:17
+[26-Apr-2025 09:49:20 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 09:49:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 09:49:20 UTC] [CA] Validating user_email: acook6962@gmail.com
+[26-Apr-2025 09:49:20 UTC] [CA] Retrieved userId=101
+[26-Apr-2025 09:49:20 UTC] [CA] Price=270000.00 => normal flow
+[26-Apr-2025 09:49:20 UTC] Debug: Non-trial account creation path for registration_id=41
+[26-Apr-2025 09:49:20 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 09:49:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 09:49:20 UTC] [CA] RTK API payload: {"name":"YBI099","userPwd":"0900000001","startTime":1745660957000,"endTime":1753523357000,"enabled":1,"numOnline":1,"customerName":"B23DCCN510","customerPhone":"0900000001","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[26-Apr-2025 09:49:20 UTC] [CA] RTK API response: {"success":true,"data":{"id":846,"name":"YBI099","userPwd":"0900000001","startTime":1745660957000,"endTime":1753523357000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"B23DCCN510","customerPhone":"0900000001","customerCompany":""},"error":null}
+[26-Apr-2025 09:49:21 UTC] [CA] accountModel->createAccount returned=true
+[26-Apr-2025 09:49:21 UTC] [CA] registration status set to active
+[26-Apr-2025 10:03:02 UTC] [DEBUG] Search keyword: 
+[26-Apr-2025 10:03:02 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 10:03:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 10:03:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 10:03:12 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 10:03:12 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 10:03:17 UTC] [update_account] raw input: 
+[26-Apr-2025 10:03:17 UTC] [update_account] decoded input: Array
+(
+    [id] => 846
+    [username_acc] => YBI099
+    [password_acc] => 
+    [user_email] => acook6962@gmail.com
+    [location_id] => 63
+    [package_id] => 3
+    [activation_date] => 2025-04-26
+    [expiry_date] => 2025-10-26
+    [status] => active
+)
+
+[26-Apr-2025 10:03:17 UTC] [update_account] input customer_phone: <none>
+[26-Apr-2025 10:03:17 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 10:03:17 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 10:03:17 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => YBI099
+    [password_acc] => 
+    [user_email] => acook6962@gmail.com
+    [location_id] => 63
+    [package_id] => 3
+    [activation_date] => 2025-04-26
+    [expiry_date] => 2025-10-26
+    [status] => active
+)
+
+[26-Apr-2025 10:03:17 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 10:03:17 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 10:03:17 UTC] [update_account] final customer_phone: 0900000001
+[26-Apr-2025 10:03:17 UTC] [update_account] final customer_name: 0900000001
+[26-Apr-2025 10:03:17 UTC] [update_account] RTK API payload: Array
+(
+    [id] => 846
+    [name] => YBI099
+    [userPwd] => 0900000001
+    [startTime] => 1745625600000
+    [endTime] => 1761436800000
+    [enabled] => 1
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 101
+    [customerName] => B23DCCN510
+    [customerPhone] => 0900000001
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 44
+            [1] => 45
+            [2] => 46
+            [3] => 47
+            [4] => 48
+            [5] => 49
+            [6] => 60
+            [7] => 64
+        )
+
+)
+
+[26-Apr-2025 10:03:17 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[26-Apr-2025 10:03:17 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully.","account":{"id":"846","username_acc":"YBI099","enabled":1,"created_at":"2025-04-26 16:49:21","password_acc":"0900000001","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"registration_id":41,"activation_date":"2025-04-26 00:00:00","expiry_date":"2025-10-26 23:59:59","registration_status":"active","num_account":1,"user_id":101,"user_email":"acook6962@gmail.com","user_username":"B23DCCN510","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":63,"location_name":"Y\u00ean B\u00e1i","derived_status":"active"}}
+[26-Apr-2025 10:03:25 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 10:03:25 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 10:03:25 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 10:03:25 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 10:03:25 UTC] RTK API Payload: {"id":"846","name":"YBI099","userPwd":"0900000001","startTime":1745625600000,"endTime":1761523199000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[26-Apr-2025 10:03:25 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[26-Apr-2025 10:03:33 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 10:03:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 10:48:31 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 10:48:31 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 10:48:31 UTC] [PTA] Start approve transaction_id=41
+[26-Apr-2025 10:48:31 UTC] [PTA] Transaction begun
+[26-Apr-2025 10:48:31 UTC] [PTA] check SQL executed, rowCount=1
+[26-Apr-2025 10:48:31 UTC] [PTA] fetched registration={"status":"pending","user_id":101,"num_account":3,"start_time":"2025-04-26 00:00:00","end_time":"2025-10-26 23:59:59","location_id":63,"package_id":2}
+[26-Apr-2025 10:48:31 UTC] [PTA] update registration executed, affectedRows=1
+[26-Apr-2025 10:48:31 UTC] [PTA] update payment executed, affectedRows=1
+[26-Apr-2025 10:48:31 UTC] [PTA] activate survey_account executed, affectedRows=0
+[26-Apr-2025 10:48:31 UTC] Warning: No survey accounts found or enabled for approved registration ID: 41
+[26-Apr-2025 10:48:31 UTC] [PTA] province_code=YBI, lastUser=YBI099, nextSeq=100, username=YBI100, password=0900000001
+[26-Apr-2025 10:48:31 UTC] [PTA] cURL timeout set to 3s; calling URL=http://localhost:3000/private/actions/account/create_account.php with payload={"registration_id":41,"username_acc":"YBI100","password_acc":"0900000001","user_email":"acook6962@gmail.com","location_id":63,"package_id":2,"start_time":"2025-04-26 17:48:31","end_time":"2025-10-27 17:48:30","enabled":1,"concurrent_user":1}
+[26-Apr-2025 10:48:31 UTC] DEBUG [Account Creation] URL: http://localhost:3000/private/actions/account/create_account.php
+[26-Apr-2025 10:48:31 UTC] DEBUG [Account Creation] Payload: {"registration_id":41,"username_acc":"YBI100","password_acc":"0900000001","user_email":"acook6962@gmail.com","location_id":63,"package_id":2,"start_time":"2025-04-26 17:48:31","end_time":"2025-10-27 17:48:30","enabled":1,"concurrent_user":1}
+[26-Apr-2025 10:48:34 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 3013 milliseconds with 0 bytes received","totalTime":3.012109}
+[26-Apr-2025 10:48:34 UTC] [PTA] TransactionHistoryService updated
+[26-Apr-2025 10:48:34 UTC] [PTA] Transaction committed successfully
+[26-Apr-2025 10:48:34 UTC] [CA] Start create_account request
+[26-Apr-2025 10:48:34 UTC] [CA] Raw input: {"registration_id":41,"username_acc":"YBI100","password_acc":"0900000001","user_email":"acook6962@gmail.com","location_id":63,"package_id":2,"start_time":"2025-04-26 17:48:31","end_time":"2025-10-27 17:48:30","enabled":1,"concurrent_user":1}
+[26-Apr-2025 10:48:34 UTC] [CA] registration_id=41, username_acc=YBI100, password_len=10
+[26-Apr-2025 10:48:34 UTC] [CA] location_input=63
+[26-Apr-2025 10:48:34 UTC] [CA] computed start_time_db=2025-04-26 17:48:31, end_time_db=2025-10-27 17:48:30
+[26-Apr-2025 10:48:34 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 10:48:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 10:48:34 UTC] [CA] Validating user_email: acook6962@gmail.com
+[26-Apr-2025 10:48:34 UTC] [CA] Retrieved userId=101
+[26-Apr-2025 10:48:34 UTC] [CA] Price=270000.00 => normal flow
+[26-Apr-2025 10:48:34 UTC] Debug: Non-trial account creation path for registration_id=41
+[26-Apr-2025 10:48:34 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 10:48:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 10:48:34 UTC] [CA] RTK API payload: {"name":"YBI100","userPwd":"0900000001","startTime":1745664511000,"endTime":1761562110000,"enabled":1,"numOnline":1,"customerName":"B23DCCN510","customerPhone":"0900000001","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[26-Apr-2025 10:48:34 UTC] [CA] RTK API response: {"success":true,"data":{"id":847,"name":"YBI100","userPwd":"0900000001","startTime":1745664511000,"endTime":1761562110000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"B23DCCN510","customerPhone":"0900000001","customerCompany":""},"error":null}
+[26-Apr-2025 10:48:34 UTC] [CA] accountModel->createAccount returned=true
+[26-Apr-2025 10:48:34 UTC] [CA] registration status set to active
+[26-Apr-2025 10:54:24 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 10:54:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 10:54:24 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 10:54:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[26-Apr-2025 10:54:24 UTC] RTK API Payload: {"id":"847","name":"YBI100","userPwd":"0900000001","startTime":1745689711000,"endTime":1761587310000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[26-Apr-2025 10:54:24 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[26-Apr-2025 10:54:27 UTC] [Database GetConnection] No active connection found. Attempting to connect...
+[26-Apr-2025 10:54:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.

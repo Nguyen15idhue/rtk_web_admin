@@ -1,11 +1,16 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\user\fetch_users.php
 declare(strict_types=1);
+error_reporting(E_ALL); // Report all errors for logging
+ini_set('display_errors', 0); // Keep off for browser output
+ini_set('log_errors', 1); // Ensure errors are logged
+ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
 
 if (basename(__FILE__) == basename($_SERVER["SCRIPT_FILENAME"])) {
      http_response_code(403);
      die("Forbidden: Direct access is not allowed.");
 }
+// --- END Role check ---
 
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../classes/Database.php';
@@ -33,8 +38,10 @@ function fetch_paginated_users(array $filters = [], int $page = 1, int $per_page
         // --- Apply Filters --- 
         if (!empty($filters['search'])) {
             $search_term = '%' . trim($filters['search']) . '%';
-            $base_where .= " AND (email LIKE :search OR username LIKE :search OR company_name LIKE :search)";
-            $params[':search'] = $search_term;
+            $base_where .= " AND (email LIKE :search_email OR username LIKE :search_username OR company_name LIKE :search_company)";
+            $params[':search_email']    = $search_term;
+            $params[':search_username'] = $search_term;
+            $params[':search_company']  = $search_term;
         }
         if (!empty($filters['status'])) {
             if ($filters['status'] === 'active') {
@@ -58,22 +65,16 @@ function fetch_paginated_users(array $filters = [], int $page = 1, int $per_page
 
         // --- Fetch Data for Current Page --- 
         $data_query = $base_select . $base_from . $base_where;
-        $data_query .= " ORDER BY created_at DESC"; // Default order
+        $data_query .= " ORDER BY created_at DESC";
         $data_query .= " LIMIT :limit OFFSET :offset";
 
+        $allParams = $params;
+        $allParams[':limit']  = $per_page;
+        $allParams[':offset'] = $offset;
+
         $stmt_data = $db->prepare($data_query);
+        $stmt_data->execute($allParams);
 
-        // Bind filter parameters
-        foreach ($params as $key => &$val) {
-            $stmt_data->bindParam($key, $val);
-        }
-        unset($val); // break reference
-
-        // Bind pagination parameters
-        $stmt_data->bindValue(':limit', $per_page, PDO::PARAM_INT);
-        $stmt_data->bindValue(':offset', $offset, PDO::PARAM_INT);
-
-        $stmt_data->execute();
         $users = $stmt_data->fetchAll(PDO::FETCH_ASSOC);
 
         return [

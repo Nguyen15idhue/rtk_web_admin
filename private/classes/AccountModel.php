@@ -12,7 +12,7 @@ class AccountModel {
         FROM survey_account sa
         JOIN registration r ON sa.registration_id = r.id
         JOIN user u ON r.user_id = u.id
-        JOIN package p ON r.package_id = p.id
+        LEFT JOIN package p ON r.package_id = p.id
         JOIN location l ON r.location_id = l.id
         WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
     "; // Updated base query to include more fields for editing
@@ -105,7 +105,7 @@ class AccountModel {
                 FROM survey_account sa
                 JOIN registration r ON sa.registration_id = r.id
                 JOIN user u ON r.user_id = u.id
-                JOIN package p ON r.package_id = p.id
+                LEFT JOIN package p ON r.package_id = p.id
                 JOIN location l ON r.location_id = l.id
                 WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL";
         $params = [];
@@ -232,11 +232,8 @@ class AccountModel {
             $accountId = 'RTK_' . $data['registration_id'] . '_' . time();
         }
 
-        $hashedPassword = password_hash($data['password_acc'], PASSWORD_DEFAULT);
-        if ($hashedPassword === false) {
-            error_log("Create account failed: Password hashing failed.");
-            return false;
-        }
+        // dùng thẳng mật khẩu input
+        $password = $data['password_acc'];
 
         $sql = "INSERT INTO survey_account (
                     id, registration_id, username_acc, password_acc, concurrent_user, enabled,
@@ -252,7 +249,7 @@ class AccountModel {
                 ':id'               => $accountId,
                 ':registration_id'  => $data['registration_id'],
                 ':username_acc'     => $data['username_acc'],
-                ':password_acc'     => $hashedPassword,
+                ':password_acc'     => $password,
                 ':concurrent_user'  => $data['concurrent_user'] ?? 1,
                 ':enabled'          => isset($data['enabled']) ? (int)$data['enabled'] : 1,
                 ':caster'           => $data['caster'] ?? null,
@@ -272,7 +269,7 @@ class AccountModel {
      *
      * @param string $accountId The ID of the account to update.
      * @param array $data Associative array of data to update. Can include:
-     *                    'username_acc', 'password_acc' (will be hashed if provided),
+     *                    'username_acc', 'password_acc',
      *                    'concurrent_user', 'enabled', 'caster', 'user_type',
      *                    'regionIds', 'customerBizType', 'area'.
      *                    Does NOT update 'registration_id'.
@@ -290,14 +287,9 @@ class AccountModel {
             $setClauses[] = "username_acc = :username_acc";
             $params[':username_acc'] = $data['username_acc'];
         }
-        if (isset($data['password_acc']) && !empty($data['password_acc'])) {
-            $hashedPassword = password_hash($data['password_acc'], PASSWORD_DEFAULT);
-            if ($hashedPassword === false) {
-                error_log("Update account ($accountId) failed: Password hashing failed.");
-                return false;
-            }
+        if (isset($data['password_acc']) && $data['password_acc'] !== '') {
             $setClauses[] = "password_acc = :password_acc";
-            $params[':password_acc'] = $hashedPassword;
+            $params[':password_acc'] = $data['password_acc'];
         }
         if (isset($data['concurrent_user'])) {
             $setClauses[] = "concurrent_user = :concurrent_user";
@@ -373,15 +365,30 @@ class AccountModel {
             return false;
         }
 
-        $sql = "UPDATE survey_account SET enabled = :enabled, updated_at = NOW() WHERE id = :id AND deleted_at IS NULL";
-
         try {
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindValue(':enabled', (int)$enable, PDO::PARAM_INT);
-            $stmt->bindValue(':id', $accountId, PDO::PARAM_STR);
-            return $stmt->execute();
+            // 1. Cập nhật survey_account
+            $sql1 = "UPDATE survey_account 
+                     SET enabled = :enabled, updated_at = NOW() 
+                     WHERE id = :id AND deleted_at IS NULL";
+            $stmt1 = $this->db->prepare($sql1);
+            $stmt1->bindValue(':enabled', (int)$enable, PDO::PARAM_INT);
+            $stmt1->bindValue(':id', $accountId, PDO::PARAM_STR);
+            $stmt1->execute();
+
+            // 2. Nếu đang bật account thì ép luôn registration.status = 'active'
+            if ($enable) {
+                $sql2 = "UPDATE registration r
+                         JOIN survey_account sa ON sa.registration_id = r.id
+                         SET r.status = 'active', r.updated_at = NOW()
+                         WHERE sa.id = :id AND r.deleted_at IS NULL";
+                $stmt2 = $this->db->prepare($sql2);
+                $stmt2->bindValue(':id', $accountId, PDO::PARAM_STR);
+                $stmt2->execute();
+            }
+
+            return true;
         } catch (PDOException $e) {
-            error_log("Toggle status for account ($accountId) to " . ($enable ? 'enabled' : 'disabled') . " failed: " . $e->getMessage());
+            error_log("Toggle status for account ($accountId) failed: " . $e->getMessage());
             return false;
         }
     }
@@ -449,7 +456,7 @@ class AccountModel {
                  . " sa.username_acc AS username"
                  . " FROM survey_account sa"
                  . " JOIN registration r ON sa.registration_id = r.id"
-                 . " JOIN package p ON r.package_id = p.id"
+                 . " LEFT JOIN package p ON r.package_id = p.id"
                  . " WHERE r.user_id = :user_id AND sa.deleted_at IS NULL"
                  . " ORDER BY sa.created_at DESC";
 

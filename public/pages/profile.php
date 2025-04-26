@@ -13,7 +13,7 @@ $base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_fo
 $base_path = $protocol . $host . $base_path_segment;
 
 // --- Define Includes Path ---
-$private_includes_path = __DIR__ . '/../../private/includes/'; // Add this line back
+$private_includes_path = __DIR__ . '/../../private/includes/';
 
 // Check if admin is logged in
 if (!isset($_SESSION['admin_id'])) {
@@ -24,7 +24,7 @@ if (!isset($_SESSION['admin_id'])) {
 
 $admin_id = $_SESSION['admin_id'];
 // Use 'admin_name' consistent with user_management.php if available, otherwise fallback
-$user_display_name = $_SESSION['admin_name'] ?? $_SESSION['admin_username'] ?? 'Admin';
+$user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 
 // Fetch admin profile data
 $db = new Database();
@@ -82,9 +82,19 @@ $profile_role = $admin_profile['role'] ?? 'N/A';
             --border-color: var(--gray-200);
             --transition-speed: 150ms;
         }
-        body { font-family: sans-serif; background-color: var(--gray-100); color: var(--gray-800); }
-        .dashboard-wrapper { display: flex; min-height: 100vh; }
-        .content-wrapper { flex-grow: 1; padding: 1.5rem; }
+        body {
+            overflow-x: hidden;
+            font-family: sans-serif;
+            background-color: var(--gray-100);
+            color: var(--gray-800);
+        }
+        .content-wrapper {
+            flex-grow: 1;
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 1.5rem 0;
+        }
         .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding: 1rem 1.5rem; background: white; border-radius: var(--rounded-lg); box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
         .content-header h2 { font-size: 1.5rem; font-weight: var(--font-semibold); color: var(--gray-800); }
         .user-info { display: flex; align-items: center; gap: 1rem; font-size: var(--font-size-sm); }
@@ -93,52 +103,6 @@ $profile_role = $admin_profile['role'] ?? 'N/A';
         .user-info a:hover { text-decoration: underline; }
         .content-section { background: white; border-radius: var(--rounded-lg); padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
         .content-section h3 { font-size: var(--font-size-lg); font-weight: var(--font-semibold); color: var(--gray-700); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem; }
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.2rem;
-            border: 1px solid transparent;
-            border-radius: var(--rounded-md);
-            font-size: var(--font-size-sm);
-            font-weight: var(--font-medium);
-            text-align: center;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color var(--transition-speed) ease-in-out, border-color var(--transition-speed) ease-in-out, color var(--transition-speed) ease-in-out, box-shadow var(--transition-speed) ease-in-out;
-            white-space: nowrap;
-        }
-        .btn:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-        }
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        .btn i {
-            line-height: 1; /* Ensure icon aligns well */
-            margin-right: 0.25rem; /* Add space between icon and text */
-        }
-        .btn-primary {
-            background-color: var(--primary-600);
-            color: white;
-            border-color: var(--primary-600);
-        }
-        .btn-primary:hover {
-            background-color: var(--primary-700);
-            border-color: var(--primary-700);
-        }
-        .btn-danger {
-            background-color: var(--danger-600);
-            color: white;
-            border-color: var(--danger-600);
-        }
-        .btn-danger:hover {
-            background-color: var(--danger-700);
-            border-color: var(--danger-700);
-        }
         .form-group { margin-bottom: 1rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; font-weight: var(--font-medium); color: var(--gray-700); font-size: var(--font-size-sm); }
         .form-group input[type="text"], .form-group input[type="email"], .form-group input[type="tel"], .form-group input[type="password"] {
@@ -176,7 +140,7 @@ $profile_role = $admin_profile['role'] ?? 'N/A';
 </head>
 <body>
 
-<div class="dashboard-wrapper">
+    <?php include $private_includes_path . 'admin_header.php'; ?>
     <?php include $private_includes_path . 'admin_sidebar.php'; ?>
 
     <main class="content-wrapper">
@@ -248,7 +212,6 @@ $profile_role = $admin_profile['role'] ?? 'N/A';
             </div>
         </div>
     </main>
-</div>
 
 <script>
     const profileStatusEl = document.getElementById('profile-status');

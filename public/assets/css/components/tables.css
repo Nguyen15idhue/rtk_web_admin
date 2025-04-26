@@ -1,0 +1,120 @@
+/* Common table wrapper styling */
+.content-wrapper .transactions-table-wrapper {
+    overflow-x: auto;
+    background: white;
+    border-radius: var(--rounded-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    margin-top: 1rem;
+}
+
+/* Table styling */
+.content-wrapper .transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.content-wrapper .transactions-table th,
+.content-wrapper .transactions-table td {
+    padding: 0.9rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    font-size: var(--font-size-sm);
+    vertical-align: middle;
+}
+
+.content-wrapper .transactions-table th {
+    background-color: var(--gray-50);
+    font-weight: var(--font-semibold);
+    color: var(--gray-600);
+    white-space: nowrap;
+}
+
+.content-wrapper .transactions-table tr:last-child td {
+    border-bottom: none;
+}
+
+.content-wrapper .transactions-table tr:hover {
+    background-color: var(--gray-50);
+}
+
+/* Action and status cells */
+.content-wrapper .transactions-table td.status,
+.content-wrapper .transactions-table td.actions {
+    text-align: center;
+}
+
+.content-wrapper .transactions-table td .action-buttons {
+    display: inline-flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+/* Icon buttons */
+.content-wrapper .transactions-table td .btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.4rem;
+    font-size: 1.1rem;
+    line-height: 1;
+    border-radius: var(--rounded-full);
+    color: var(--gray-500);
+    transition: background-color var(--transition-speed) ease-in-out, color var(--transition-speed) ease-in-out;
+}
+
+.content-wrapper .transactions-table td .btn-icon:hover {
+    background-color: var(--gray-100);
+    color: var(--gray-700);
+}
+
+.content-wrapper .transactions-table td .btn-view:hover { color: var(--info-600); background-color: rgba(14, 165, 233, 0.1); }
+.content-wrapper .transactions-table td .btn-edit:hover { color: var(--warning-600); background-color: rgba(245, 158, 11, 0.1); }
+.content-wrapper .transactions-table td .btn-secondary i.fa-toggle-off { color: var(--danger-600); }
+.content-wrapper .transactions-table td .btn-success i.fa-toggle-on { color: var(--success-600); }
+.content-wrapper .transactions-table td .btn-secondary:hover i.fa-toggle-off { color: var(--danger-700); background-color: rgba(220, 38, 38, 0.1); }
+.content-wrapper .transactions-table td .btn-success:hover i.fa-toggle-on { color: var(--success-700); background-color: rgba(5, 150, 105, 0.1); }
+
+/* Status badge */
+.content-wrapper .status-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--rounded-full);
+    font-size: 0.8rem;
+    display: inline-block;
+    font-weight: var(--font-medium);
+    text-align: center;
+    min-width: 90px;
+    border: 1px solid transparent;
+}
+
+.content-wrapper .status-active { color: var(--success-600); font-weight: bold; }
+.content-wrapper .status-inactive { color: var(--danger-600); font-weight: bold; }
+
+/* Pagination styling */
+.content-wrapper .pagination-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    font-size: var(--font-size-sm);
+    color: var(--gray-600);
+}
+
+.content-wrapper .pagination-controls { display: flex; gap: 0.3rem; }
+.content-wrapper .pagination-controls button {
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--gray-300);
+    background-color: #fff;
+    cursor: pointer;
+    border-radius: var(--rounded-md);
+    font-size: var(--font-size-sm);
+}
+
+.content-wrapper .pagination-controls button:disabled { background-color: var(--gray-100); color: var(--gray-400); cursor: not-allowed; }
+.content-wrapper .pagination-controls button.active { background-color: var(--primary-500); color: #fff; border-color: var(--primary-500); font-weight: bold; }
+
+/* No results row */
+.content-wrapper #no-results-row td { text-align: center; padding: 3rem; color: var(--gray-500); font-size: var(--font-size-base); }

@@ -123,9 +123,13 @@ function get_account_action_buttons(array $account): string {
     $buttons .= '<button class="btn-icon btn-view" title="Xem" onclick="viewAccountDetails(\'' . $id . '\')"><i class="fas fa-eye"></i></button>';
 
     // Edit Button (Available unless rejected or maybe expired?)
-    // Allow editing active and suspended. Maybe pending? Not expired/rejected.
-    if (in_array($status, ['active', 'suspended', 'pending'])) {
+    // Allow editing active and suspended. Maybe pending? Not rejected.
+    if (in_array($status, ['active', 'suspended', 'pending', 'expired'])) {
         $buttons .= '<button class="btn-icon btn-edit" title="Sửa" onclick="openEditAccountModal(\'' . $id . '\')" data-permission="account_edit"><i class="fas fa-pencil-alt"></i></button>';
+    }
+
+    if (!in_array($status, ['active'])) {
+        $buttons .= '<button class="btn-icon btn-danger" title="Xóa" onclick="deleteAccount(\'' . $id . '\', event)" data-permission="account_delete"><i class="fas fa-trash-alt"></i></button>';
     }
 
     // Status Toggle / Specific Actions based on derived status AND enabled flag
@@ -137,21 +141,13 @@ function get_account_action_buttons(array $account): string {
         case 'suspended': // Is currently suspended (enabled=0, reg=active)
             // Button to Reactivate (Set enabled=1)
             $buttons .= '<button class="btn-icon btn-success" title="Kích hoạt lại (Enable)" onclick="toggleAccountStatus(\'' . $id . '\', \'reactivate\', event)" data-permission="account_status_toggle"><i class="fas fa-play-circle"></i></button>';
-            // Allow deletion of suspended accounts
-            $buttons .= '<button class="btn-icon btn-danger" title="Xóa" onclick="deleteAccount(\'' . $id . '\', event)" data-permission="account_delete"><i class="fas fa-trash-alt"></i></button>';
             break;
         case 'expired':
-            // No toggle for expired. Allow deletion.
-            $buttons .= '<button class="btn-icon btn-danger" title="Xóa" onclick="deleteAccount(\'' . $id . '\', event)" data-permission="account_delete"><i class="fas fa-trash-alt"></i></button>';
             break;
         case 'rejected':
-            // No toggle for rejected. Allow deletion.
-            $buttons .= '<button class="btn-icon btn-danger" title="Xóa" onclick="deleteAccount(\'' . $id . '\', event)" data-permission="account_delete"><i class="fas fa-trash-alt"></i></button>';
             break;
         case 'pending':
              $buttons .= '<button class="btn-icon btn-success" title="Kích hoạt lại (Enable)" onclick="toggleAccountStatus(\'' . $id . '\', \'reactivate\', event)" data-permission="account_status_toggle"><i class="fas fa-play-circle"></i></button>';
-             // No toggle needed for pending (status comes from registration). Maybe allow deletion?
-             $buttons .= '<button class="btn-icon btn-danger" title="Xóa" onclick="deleteAccount(\'' . $id . '\', event)" data-permission="account_delete"><i class="fas fa-trash-alt"></i></button>';
              break;
         case 'unknown':
             // Log error, maybe show delete button?
