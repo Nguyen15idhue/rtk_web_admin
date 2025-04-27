@@ -27,7 +27,7 @@ $admin_id = $_SESSION['admin_id'];
 $user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 
 // Fetch admin profile data
-$db = new Database();
+$db = Database::getInstance();
 $conn = $db->getConnection();
 $admin_profile = null;
 

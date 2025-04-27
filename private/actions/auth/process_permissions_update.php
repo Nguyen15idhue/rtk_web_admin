@@ -28,7 +28,7 @@ if (!in_array($role, $validRoles)) {
 }
 $permissions = $data['permissions'];
 try {
-    $db = new Database();
+    $db = Database::getInstance();
     $conn = $db->getConnection();
     $stmt = $conn->prepare('UPDATE role_permissions SET allowed = :allowed WHERE role = :role AND permission = :perm');
     foreach ($permissions as $perm => $allow) {

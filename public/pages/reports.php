@@ -7,7 +7,7 @@ $private_includes_path = __DIR__ . '/../../private/includes/';
 $user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 $base_path = '/'; // Adjust if necessary
 
-$db = new Database();
+$db = Database::getInstance();
 $pdo = $db->getConnection();
 
 $start_date = $_GET['start_date'] ?? date('Y-m-01');

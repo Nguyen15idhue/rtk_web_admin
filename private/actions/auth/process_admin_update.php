@@ -11,7 +11,7 @@ if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'superadmin')
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../classes/Database.php';
 
-$db = (new Database())->getConnection();
+$db = (Database::getInstance())->getConnection();
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $input = json_decode(file_get_contents('php://input'), true);
 

@@ -24,7 +24,7 @@ if (isset($_GET['id'])) {
     $accountId = $_GET['id'];
 
     try {
-        $database = new Database();
+        $database = Database::getInstance();
         $db = $database->getConnection();
 
         if (!$db) {

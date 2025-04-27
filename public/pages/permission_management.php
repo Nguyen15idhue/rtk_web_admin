@@ -12,7 +12,7 @@ $is_super_admin = (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] ===
 // Fetch admin accounts for listing
 require_once __DIR__ . '/../../private/config/database.php';
 require_once __DIR__ . '/../../private/classes/Database.php';
-$dbConn = (new Database())->getConnection();
+$dbConn = Database::getInstance()->getConnection();
 $admins = [];
 if ($dbConn) {
     $stmt = $dbConn->query("SELECT id, name, admin_username, role, created_at FROM admin");

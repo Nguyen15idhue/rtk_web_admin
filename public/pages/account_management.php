@@ -119,6 +119,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
         .form-group input[type="email"],
         .form-group input[type="password"],
         .form-group input[type="date"],
+        .form-group input[type="number"],
         .form-group select {
             width: 100%;
             padding: 0.6rem 0.8rem;
@@ -395,7 +396,11 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
                         <option value="suspended">Đình chỉ</option>
                     </select>
                 </div>
-                 <div class="form-group error-message" id="createAccountError"></div>
+                <div class="form-group">
+                    <label for="create-account-count">Số lượng TK:</label>
+                    <input type="number" id="create-account-count" name="account_count" min="1" value="1">
+                </div>
+                <div class="form-group error-message" id="createAccountError"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="closeModal('createAccountModal')">Hủy</button>

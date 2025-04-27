@@ -40,7 +40,7 @@ if (!in_array($action, ['suspend', 'reactivate'])) {
 
 $enable = ($action === 'reactivate'); // true for reactivate (set enabled=1), false for suspend (set enabled=0)
 
-$database = new Database();
+$database = Database::getInstance();
 $db = $database->getConnection();
 
 if (!$db) {

@@ -45,7 +45,7 @@ try {
     //     exit;
     // }
 
-    $db = new Database();
+    $db = Database::getInstance();;
     $conn = $db->getConnection();
 
     if (!$conn) {

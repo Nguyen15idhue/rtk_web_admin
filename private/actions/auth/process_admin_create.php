@@ -40,7 +40,7 @@ if (!$name || !$username || !$password || !in_array($role, ['admin','operator'])
 }
 // Connect to database
 try {
-    $db = new Database();
+    $db = Database::getInstance();
     $conn = $db->getConnection();
 } catch (Exception $e) {
     error_log('DB Connection Error in process_admin_create: ' . $e->getMessage());

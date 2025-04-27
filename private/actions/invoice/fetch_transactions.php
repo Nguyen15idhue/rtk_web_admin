@@ -27,7 +27,7 @@ require_once __DIR__ . '/../../utils/functions.php'; // Include helpers
 function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_page = 10): array {
     try {
         // Instantiate Database and get connection
-        $db = (new Database())->getConnection();
+        $db = Database::getInstance()->getConnection();
         if (!$db) {
             throw new Exception("Failed to connect to the database.");
         }

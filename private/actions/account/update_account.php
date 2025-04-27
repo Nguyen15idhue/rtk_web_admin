@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                  : 'active';
 
     try {
-        $database = new Database();
+        $database = Database::getInstance();
         $db = $database->getConnection();
 
         if (!$db) {

@@ -27,7 +27,7 @@ if (!$input || !isset($input['id'])) {
 
 $accountId = filter_var($input['id'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-$database = new Database();
+$database = Database::getInstance();
 $db = $database->getConnection();
 
 if (!$db) {

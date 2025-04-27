@@ -43,6 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username_acc = trim($input['username_acc'] ?? '');
     $password_acc = trim($input['password_acc'] ?? '');
 
+    // NEW: support multiple accounts creation
+    $account_count = filter_var($input['account_count'] ?? 1, FILTER_VALIDATE_INT, ['options'=>['min_range'=>1]]);
+    if ($account_count === false) {
+        $account_count = 1;
+    }
+
     if (empty($username_acc)) {
         $response['message'] = 'Username cannot be empty.';
         echo json_encode($response);
@@ -101,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $enabled = ($inputStatus === 'suspended') ? 0 : 1;
 
     try {
-        $database = new Database();
+        $database = Database::getInstance();
         $db = $database->getConnection();
 
         if (!$db) {
@@ -251,8 +257,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         error_log("Debug: Non-trial account creation path for registration_id={$registration_id}");
         $accountModel = new AccountModel($db);
 
-        // --- Always call RTK API for new account ---
-        try {
+        // NEW: prepare for multiple-account loop
+        $createdAccounts = [];
+        // extract base name and numeric suffix (if any)
+        if (preg_match('/^(.*?)(\d+)$/', $username_acc, $m)) {
+            $baseName = $m[1];
+            $startNum = intval($m[2]);
+            $padLen   = strlen($m[2]);
+        } else {
+            $baseName = $username_acc;
+            $startNum = 0;
+            $padLen   = 0;
+        }
+
+        // ensure starting username does not already exist
+        $chkStmt = $db->prepare(
+            "SELECT COUNT(*) FROM survey_account WHERE username_acc = ? AND deleted_at IS NULL"
+        );
+        while (true) {
+            // build a candidate username to test
+            if ($padLen) {
+                $testName = $baseName . str_pad($startNum, $padLen, '0', STR_PAD_LEFT);
+            } else {
+                $testName = $baseName . $startNum;
+            }
+            $chkStmt->execute([$testName]);
+            if ($chkStmt->fetchColumn() > 0) {
+                // already exists → try next
+                $startNum++;
+                continue;
+            }
+            break;
+        }
+
+        for ($i = 0; $i < $account_count; $i++) {
+            // build new username off the first free number
+            $num = $startNum + $i;
+            if ($padLen) {
+                $curUsername = $baseName . str_pad($num, $padLen, '0', STR_PAD_LEFT);
+            } else {
+                $curUsername = $baseName . $num;
+            }
+
+            // --- call RTK API per account ---
             // compute start/end in ms based on GMT+7, not via strtotime
             $rawStart = $input['start_time'] ?? 'now';
             $rawEnd   = $input['end_time']   ?? '+30 days';
@@ -262,7 +309,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $endMs    = $dtEnd->getTimestamp()   * 1000;
 
             $apiData = [
-                "name"           => $username_acc,
+                "name"           => $curUsername,
                 "userPwd"        => $password_acc,
                 "startTime"      => $startMs,
                 "endTime"        => $endMs,
@@ -276,66 +323,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "regionIds"      => $regionIds ? [$regionIds] : [],
                 "mountIds"       => getMountPointsByLocationId($location_id)  // <- use helper
             ];
-            error_log("[CA] RTK API payload: " . json_encode($apiData));
+            error_log("[CA] RTK API payload for {$curUsername}: " . json_encode($apiData));
             $apiRes = createRtkAccount($apiData);
-            error_log("[CA] RTK API response: " . json_encode($apiRes));
+            error_log("[CA] RTK API response for {$curUsername}: " . json_encode($apiRes));
             if (!$apiRes['success']) {
-                echo json_encode(['success'=>false,'message'=>'RTK API error: '.$apiRes['error']]);
+                echo json_encode([
+                    'success' => false,
+                    'message' => "RTK API failed for {$curUsername}: " . ($apiRes['error'] ?? '')
+                ]);
                 exit;
             }
-        } catch (Exception $e) {
-            echo json_encode(['success'=>false,'message'=>'RTK API exception: '.$e->getMessage()]);
-            exit;
+            $apiId = (int)$apiRes['data']['id'];
+
+            // --- insert local record via model ---
+            $accountData = [
+                'id'              => $apiId,
+                'registration_id' => $registration_id,
+                'username_acc'    => $curUsername,
+                'password_acc'    => $password_acc,
+                'concurrent_user' => $concurrent_user,
+                'enabled'         => $enabled,
+                'caster'          => !empty($input['caster']) ? trim($input['caster']) : null,
+                'user_type'       => $user_type,
+                'regionIds'       => $regionIds,
+                'customerBizType' => $customerBizType,
+                'area'            => !empty($input['area']) ? trim($input['area']) : null,
+            ];
+            $accountModel->createAccount($accountData);
+
+            $createdAccounts[] = [
+                'username' => $curUsername,
+                'id'       => $apiId
+            ];
         }
 
-        // Check if username already exists
-        if ($accountModel->usernameExists($username_acc)) {
-            $response['message'] = 'Username "' . htmlspecialchars($username_acc) . '" already exists.';
-            echo json_encode($response);
-            exit;
-        }
-
-        // use API-returned ID as the PK
-        $apiId = (int)$apiRes['data']['id'];
-        // Prepare data for creation
-        $accountData = [
-            'id'               => $apiId,           // <-- API id
-            'registration_id'  => $registration_id,
-            'username_acc'     => $username_acc,
-            'password_acc'     => $password_acc,    // raw
-            'concurrent_user'  => $concurrent_user,
-            'enabled'          => $enabled,       // <- dùng giá trị đã override
-            'caster'           => !empty($input['caster']) ? trim($input['caster']) : null,
-            'user_type'        => $user_type,
-            'regionIds'        => $regionIds,
-            'customerBizType'  => $customerBizType,
-            'area'             => !empty($input['area']) ? trim($input['area']) : null,
-        ];
-
-        // Create account
-        try {
-            $creationSuccess = $accountModel->createAccount($accountData);
-        } catch (PDOException $e) {
-            echo json_encode(['success'=>false,'message'=>'DB error: '.$e->getMessage()]);
-            exit;
-        }
-
-        error_log("[CA] accountModel->createAccount returned=" . ($creationSuccess ? 'true' : 'false'));
-        if ($creationSuccess) {
-            // Cập nhật registration.status theo lựa chọn
-            $db->prepare(
-                "UPDATE registration SET status = ?, updated_at = NOW() WHERE id = ?"
-            )->execute([$regStatus, $registration_id]);
-            error_log("[CA] registration status set to {$regStatus}");
-
-            echo json_encode([
-                'success' => true,
-                'message' => 'Account created with ID: ' . $apiId
-            ]);
-        } else {
-            error_log("[CA] Unknown failure in createAccountModel");
-            echo json_encode(['success'=>false,'message'=>'Unknown failure']);
-        }
+        // NEW: return all created accounts
+        echo json_encode([
+            'success'  => true,
+            'message'  => 'Accounts created: ' . count($createdAccounts),
+            'accounts' => $createdAccounts
+        ]);
         exit;
 
     } catch (PDOException $e) {

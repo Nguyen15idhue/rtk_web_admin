@@ -19,7 +19,7 @@ if (!$id || !is_numeric($id)) {
 // DB connection
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../classes/Database.php';
-$db = (new Database())->getConnection();
+$db = (Database::getInstance())->getConnection();
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 try {

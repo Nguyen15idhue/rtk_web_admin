@@ -21,7 +21,7 @@ if (!isset($_GET['user_id']) || !filter_var($_GET['user_id'], FILTER_VALIDATE_IN
 
 $user_id = (int)$_GET['user_id'];
 
-$db = new Database();
+$db = Database::getInstance();
 $conn = $db->getConnection();
 
 if (!$conn) {

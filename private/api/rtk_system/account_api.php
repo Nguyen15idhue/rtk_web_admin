@@ -135,7 +135,7 @@ function getMountPointsByLocationId(int $locationId): array {
     try {
         // Use existing Database class for proper credentials
         require_once dirname(__DIR__, 2) . '/classes/Database.php';
-        $database = new Database();
+        $database = Database::getInstance();
         $pdo = $database->getConnection();
         if (!$pdo) {
             error_log("Error connecting for mount points (loc {$locationId}): Failed via Database class");

@@ -30,7 +30,7 @@ require_once __DIR__ . '/../../services/TransactionHistoryService.php'; // Servi
 require_once __DIR__ . '/../../api/rtk_system/account_api.php';      // thêm
 require_once __DIR__ . '/../../utils/functions.php';                // thêm (generate_unique_id,…)
 
-// --- Input Validation ---
+// // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405); // Method Not Allowed
     echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
@@ -53,7 +53,7 @@ if ($transaction_id === false || $transaction_id <= 0) {
 
 // --- Processing ---
 // Instantiate Database and get connection
-$db = (new Database())->getConnection();
+$db = (Database::getInstance())->getConnection();
 if (!$db) {
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Database connection failed.']);
@@ -186,13 +186,14 @@ try {
         'registration_id' => $transaction_id,
         'username_acc'    => $username,
         'password_acc'    => $password,
-        'user_email'      => $userEmail,                // new
-        'location_id'     => $registration['location_id'], // new
-        'package_id'      => $registration['package_id'],  // new
-        'start_time'      => $new_start_time_sql, // Use new start time
-        'end_time'        => $new_end_time_sql,   // Use new end time
+        'user_email'      => $userEmail,                
+        'location_id'     => $registration['location_id'], 
+        'package_id'      => $registration['package_id'],  
+        'start_time'      => $new_start_time_sql,
+        'end_time'        => $new_end_time_sql,
         'enabled'         => 1,
-        'concurrent_user' => 1
+        'concurrent_user' => 1,
+        'account_count'   => (int)$registration['num_account'],
     ];
 
     error_log("[PTA] province_code={$province_code}, lastUser={$lastUser}, nextSeq={$nextSeq}, username={$username}, password={$password}");
@@ -233,26 +234,24 @@ try {
 
     // --- Refined cURL error handling ---
     if ($curlErrno === CURLE_OPERATION_TIMEDOUT) {
-        // timeout → flag, continue
         $accountCreationFailedDueToTimeout = true;
     } elseif ($curlError) {
-        // any other cURL error → abort
         throw new Exception("Account creation request failed (cURL Error): {$curlError}");
     } elseif ($httpCode !== 200) {
-        // non‐timeout + non‐200 → abort
         throw new Exception("Account creation failed (HTTP Status {$httpCode})");
     } else {
         // successful → parse & validate JSON
         $resData = json_decode($result, true);
-        if (!is_array($resData)) {
-            throw new Exception("Invalid JSON response from account service.");
+        if (!is_array($resData) || empty($resData['success'])) {
+            throw new Exception("Account creation failed: ".($resData['message'] ?? 'Invalid response'));
         }
-        if (empty($resData['success'])) {
-            throw new Exception("Account creation failed: ".($resData['message'] ?? 'Unknown'));
+        if (!empty($resData['accounts']) && is_array($resData['accounts'])) {
+            $createdAccounts = $resData['accounts'];
+        } elseif (!empty($resData['account'])) {
+            $createdAccounts = [ $resData['account'] ];
+        } else {
+            throw new Exception("Account creation response missing account data.");
         }
-        // use returned creds
-        $username = $resData['account']['username'];
-        $password = $resData['account']['password'];
     }
 
     // 6. Update Transaction History
@@ -270,25 +269,16 @@ try {
 
     // --- Prepare final response ---
     $responseMessage = 'Transaction #' . $transaction_id . ' approved.';
-    $accountDetails = null;
-
     if ($accountCreationFailedDueToTimeout) {
         $responseMessage .= ' However, the account creation request timed out. Please verify account status manually.';
-        $accountDetails = ['username' => 'Pending (Timeout)', 'password' => 'Pending (Timeout)'];
-    } elseif ($username && $password) {
-        $responseMessage .= ' Account created successfully.';
-        $accountDetails = ['username' => $username, 'password' => $password];
     } else {
-         // This case might occur if the create_account script succeeded but didn't return expected data (should have been caught earlier)
-         error_log("Warning: Transaction approved but account details missing for registration ID $transaction_id without explicit timeout.");
-         $responseMessage .= ' Account details might be missing or pending.';
-         $accountDetails = ['username' => 'Unknown', 'password' => 'Unknown'];
+        $count = count($createdAccounts);
+        $responseMessage .= " {$count} account(s) created successfully.";
     }
-
     echo json_encode([
         'success' => true,
         'message' => $responseMessage,
-        'account' => $accountDetails
+        'accounts' => $createdAccounts
     ]);
 
 } catch (Exception $e) {

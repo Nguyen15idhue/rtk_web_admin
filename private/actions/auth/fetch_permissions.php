@@ -17,7 +17,7 @@ if (!in_array($role, $validRoles)) {
 }
 
 try {
-    $db = new Database();
+    $db = Database::getInstance();
     $conn = $db->getConnection();
     // Fetch permissions
     $stmt = $conn->prepare('SELECT permission, allowed FROM role_permissions WHERE role = :role');
