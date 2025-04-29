@@ -11,7 +11,7 @@ $response = ['success' => false, 'message' => 'An unexpected error occurred.']; 
 
 try {
     // Authorization Check (Admin only)
-    if (!isset($_SESSION['admin_id']) || !in_array($_SESSION['admin_role'] ?? '', ['superadmin', 'admin'])) {
+    if (!isset($_SESSION['admin_id']) || !in_array($_SESSION['admin_role'] ?? '', ['admin', 'admin'])) {
         http_response_code(403);
         $response['message'] = 'Unauthorized access.';
         echo json_encode($response);

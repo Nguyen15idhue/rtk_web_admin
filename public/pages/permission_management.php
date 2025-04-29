@@ -6,8 +6,8 @@ $private_includes_path = __DIR__ . '/../../private/includes/';
 $user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 $base_path = '/'; // Adjust if necessary
 
-// Check if current user is SuperAdmin for editing
-$is_super_admin = (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] === 'superadmin');
+// Check if current user is Admin for editing
+$is_super_admin = (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] === 'admin');
 
 // Fetch admin accounts for listing
 require_once __DIR__ . '/../../private/config/database.php';
@@ -24,7 +24,9 @@ if ($dbConn) {
         include $private_includes_path . 'admin_sidebar.php';
         include $private_includes_path . 'admin_header.php';
     ?>
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/pages/permission_management.css">
 
     <main class="content-wrapper">
         <div class="content-header">
@@ -48,23 +50,6 @@ if ($dbConn) {
             <!-- Permission Cards: Responsive Grid -->
             <div class="stats-grid">  <!-- Use dashboard.css stat-card grid -->
 
-                <!-- Supper Admin stat card -->
-                <div class="stat-card">
-                    <div class="icon bg-red-200 text-red-600"><i class="fas fa-crown"></i></div>
-                    <div>
-                        <h3>Super Admin</h3>
-                        <p>Toàn quyền truy cập.</p>
-                        <ul>
-                            <li>QL Người dùng (KH)</li>
-                            <li>QL TK Đo đạc</li>
-                            <!-- ... các quyền khác ... -->
-                            <li>QL Phân quyền</li>
-                            <li>QL Doanh thu</li>
-                        </ul>
-                        <button class="btn btn-secondary" disabled>Không thể sửa</button>
-                    </div>
-                </div>
-
                 <!-- Admin stat card -->
                 <div class="stat-card">
                     <div class="icon bg-blue-200 text-blue-600"><i class="fas fa-user-shield"></i></div>
@@ -72,74 +57,68 @@ if ($dbConn) {
                         <h3>Quản trị viên</h3>
                         <p>Quản lý hoạt động hàng ngày.</p>
                         <form>
-                            <div class="space-y-2 text-xs max-h-40 sm:max-h-48 overflow-y-auto pr-2 border-t border-b py-2 my-2">
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" checked disabled> Dashboard
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" checked data-role="Admin" data-permission="user_management"> QL User (KH)
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" checked data-role="Admin" data-permission="account_management"> QL TK Đo đạc
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" checked data-role="Admin" data-permission="invoice_management"> QL Giao dịch
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" checked data-role="Admin" data-permission="referral_management"> QL Giới thiệu
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" checked data-role="Admin" data-permission="reports"> Xem Báo cáo
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" data-role="Admin" data-permission="revenue_management"> QL Doanh thu
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2 h-3 w-3" disabled data-role="Admin" data-permission="permission_management"> QL Phân quyền
-                                </label>
-                                <!-- ... các quyền khác ... -->
-                            </div>
-                            <button type="button" class="btn btn-primary mt-2 text-xs" onclick="savePermissions('Admin', event)" data-permission="permission_edit">
-                                Lưu quyền Admin
-                            </button>
+                            <fieldset disabled style="border:none;">
+                                <div class="space-y-2 text-xs max-h-40 sm:max-h-48 overflow-y-auto pr-2 border-t border-b py-2 my-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" checked disabled> Dashboard
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" checked data-role="Admin" data-permission="user_management"> QL User (KH)
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" checked data-role="Admin" data-permission="account_management"> QL TK Đo đạc
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" checked data-role="Admin" data-permission="invoice_management"> QL Giao dịch
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" checked data-role="Admin" data-permission="referral_management"> QL Giới thiệu
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" checked data-role="Admin" data-permission="reports"> Xem Báo cáo
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" data-role="Admin" data-permission="revenue_management"> QL Doanh thu
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2 h-3 w-3" disabled data-role="Admin" data-permission="permission_management"> QL Phân quyền
+                                    </label>
+                                </div>
+                                <button type="button" class="btn btn-primary mt-2 text-xs" disabled>
+                                    Lưu quyền Admin
+                                </button>
+                            </fieldset>
                         </form>
                     </div>
                 </div>
 
-                <!-- Operator stat card -->
+                <!-- Customer Care stat card -->
                 <div class="stat-card">
-                    <div class="icon bg-green-200 text-green-600"><i class="fas fa-user-cog"></i></div>
+                    <div class="icon bg-green-200 text-green-600"><i class="fas fa-headset"></i></div>
                     <div>
-                        <h3>Vận hành</h3>
-                        <p>Xem thông tin, hỗ trợ cơ bản.</p>
+                        <h3>Chăm sóc khách hàng</h3>
+                        <p>Chỉ xem và hỗ trợ cơ bản.</p>
                         <form>
                             <div class="space-y-2 text-xs max-h-40 sm:max-h-48 overflow-y-auto pr-2 border-t border-b py-2 my-2">
                                 <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" checked disabled> Dashboard (Xem)
+                                    <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" data-role="CustomerCare" data-permission="dashboard" disabled> Dashboard
                                 </label>
                                 <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" checked data-role="Operator" data-permission="user_management"> QL User (Xem)
-                                </label>
-                                <!-- ... các quyền khác ... -->
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" checked data-role="Operator" data-permission="reports"> Xem Báo cáo
+                                    <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" data-role="CustomerCare" data-permission="user_management"> QL User (Xem)
                                 </label>
                                 <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" data-role="Operator" data-permission="revenue_management"> QL Doanh thu
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2 h-3 w-3" disabled data-role="Operator" data-permission="permission_management"> QL Phân quyền
+                                    <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" data-role="CustomerCare" data-permission="invoice_management"> QL Giao dịch
                                 </label>
                             </div>
-                            <button type="button" class="btn btn-primary mt-2 text-xs" onclick="savePermissions('Operator', event)" data-permission="permission_edit">
-                                Lưu quyền Vận hành
+                            <button type="button" class="btn btn-primary mt-2 text-xs" onclick="savePermissions('CustomerCare', event)" data-permission="permission_edit">
+                                Lưu quyền CSKH
                             </button>
                         </form>
                     </div>
                 </div>
 
             </div> <!-- end stats-grid -->
-            <p class="text-xs text-red-600 mt-4 italic">*Lưu ý: Chỉ Super Admin có thể thay đổi quyền. TK mới tạo cần đổi MK mặc định.</p>
+            <p class="text-xs text-red-600 mt-4 italic">*Lưu ý: Chỉ Admin có thể thay đổi quyền. TK mới tạo cần đổi MK mặc định.</p>
         </div>
 
         <!-- Admin Accounts List -->
@@ -148,7 +127,7 @@ if ($dbConn) {
             <table class="transactions-table" id="adminAccountsTable">
                 <thead>
                     <tr>
-                        <th>ID</th><th>Tên</th><th>Username</th><th>Vai trò</th><th>Ngày tạo</th><th class="actions">Hành động</th>
+                        <th>ID</th><th>Tên</th><th>Username</th><th>Vai trò</th><th>Ngày tạo</th><th class="actions" style="text-align:center">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -157,7 +136,7 @@ if ($dbConn) {
                         <td><?php echo htmlspecialchars($admin['id']); ?></td>
                         <td><?php echo htmlspecialchars($admin['name']); ?></td>
                         <td><?php echo htmlspecialchars($admin['admin_username']); ?></td>
-                        <td><?php echo htmlspecialchars(ucfirst($admin['role'])); ?></td>
+                        <td><?php echo htmlspecialchars($admin['role']==='customercare' ? 'Chăm sóc khách hàng' : 'Quản trị viên'); ?></td>
                         <td><?php echo htmlspecialchars($admin['created_at']); ?></td>
                         <td class="actions">
                             <button class="btn btn-secondary btn-sm" onclick="openEditAdminModal(<?php echo $admin['id']; ?>)">Sửa</button>
@@ -170,44 +149,13 @@ if ($dbConn) {
         </div>
     </main>
 
-<style>
-   .modal {
-     display: none;
-     position: fixed;
-     top: 0; left: 0;
-     width: 100%; height: 100%;
-     background: rgba(0,0,0,0.5);
-     align-items: center;
-     justify-content: center;
-     z-index: 999;
-   }
-   .modal-content {
-     background: #fff;
-     padding: 1rem;
-     border-radius: 0.5rem;
-     max-width: 500px;
-     width: 90%;
-   }
-
-   /* Card base style (from shared HTML template) */
-   .card {
-     background-color: #fff;
-     padding: 1rem;
-     border-radius: 0.5rem;
-     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-     border: 1px solid #e5e7eb;
-   }
-   @media (min-width: 640px) {
-     .card { padding: 1.25rem; }
-   }
-</style>
-
 <script>
     const basePath = '<?php echo $base_path; ?>';
     const adminsData = <?php echo json_encode($admins); ?>;
 
     // Load current permissions for each role on page load
-    ['Admin','Operator'].forEach(role => {
+    const rolesToLoad = ['Admin','CustomerCare'];
+    rolesToLoad.forEach(role => {
         fetch(`${basePath}private/actions/auth/fetch_permissions.php?role=${role.toLowerCase()}`)
             .then(res => res.json())
             .then(result => {
@@ -235,7 +183,7 @@ if ($dbConn) {
         fetch(`${basePath}private/actions/auth/process_permissions_update.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ role: role.toLowerCase(), permissions })
+            body: JSON.stringify({ role: role === 'Admin' ? 'admin' : 'customercare', permissions })
         })
         .then(res => res.json())
         .then(data => {
@@ -387,7 +335,6 @@ if ($dbConn) {
     <div class="modal-content">
         <div class="modal-header">
             <h4>Thêm QTV/Vận hành</h4>
-            <span class="modal-close" onclick="closeModal('createRoleModal')">&times;</span>
         </div>
         <form id="createRoleForm">
             <div class="modal-body">
@@ -408,7 +355,7 @@ if ($dbConn) {
                     <select id="roleType" name="role" required class="w-full">
                         <option value="">Chọn vai trò</option>
                         <option value="admin">Quản trị viên</option>
-                        <option value="operator">Vận hành</option>
+                        <option value="customercare">Chăm sóc khách hàng</option>
                     </select>
                 </div>
             </div>
@@ -426,7 +373,6 @@ if ($dbConn) {
         <form id="editAdminForm">
             <div class="modal-header">
                 <h4>Chỉnh sửa Admin</h4>
-                <span class="modal-close" onclick="closeModal('editAdminModal')">&times;</span>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="editAdminId" name="id">
@@ -446,7 +392,7 @@ if ($dbConn) {
                     <label for="editAdminRole">Vai trò:</label>
                     <select id="editAdminRole" name="role" required class="w-full form-input">
                         <option value="admin">Admin</option>
-                        <option value="operator">Operator</option>
+                        <option value="customercare">Customer Care</option>
                     </select>
                 </div>
             </div>
@@ -463,7 +409,6 @@ if ($dbConn) {
     <div class="modal-content">
         <div class="modal-header">
             <h4>Xác nhận xóa</h4>
-            <span class="modal-close" onclick="closeModal('deleteAdminModal')">&times;</span>
         </div>
         <div class="modal-body">
             <p>Bạn có chắc muốn xóa tài khoản này?</p>

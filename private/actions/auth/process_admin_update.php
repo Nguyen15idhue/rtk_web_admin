@@ -3,7 +3,7 @@ session_start();
 header('Content-Type: application/json');
 
 // Chỉ SuperAdmin được phép
-if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'superadmin') {
+if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'admin') {
     echo json_encode(['success' => false, 'message' => 'Không có quyền thực hiện hành động này.']);
     exit;
 }
@@ -21,7 +21,7 @@ $name     = trim($input['name'] ?? '');
 $password = $input['password'] ?? '';
 $role     = $input['role'] ?? '';
 
-if (!$id || !$name || !in_array($role, ['admin','operator'])) {
+if (!$id || !$name || !in_array($role, ['admin','customercare'])) {
     echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ.']);
     exit;
 }

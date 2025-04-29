@@ -51,30 +51,8 @@
     justify-content: center;
 }
 
-/* Icon buttons */
-.content-wrapper .transactions-table td .btn-icon {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.4rem;
-    font-size: 1.1rem;
-    line-height: 1;
-    border-radius: var(--rounded-full);
-    color: var(--gray-500);
-    transition: background-color var(--transition-speed) ease-in-out, color var(--transition-speed) ease-in-out;
-}
-
-.content-wrapper .transactions-table td .btn-icon:hover {
-    background-color: var(--gray-100);
-    color: var(--gray-700);
-}
-
-.content-wrapper .transactions-table td .btn-view:hover { color: var(--info-600); background-color: rgba(14, 165, 233, 0.1); }
-.content-wrapper .transactions-table td .btn-edit:hover { color: var(--warning-600); background-color: rgba(245, 158, 11, 0.1); }
-.content-wrapper .transactions-table td .btn-secondary i.fa-toggle-off { color: var(--danger-600); }
-.content-wrapper .transactions-table td .btn-success i.fa-toggle-on { color: var(--success-600); }
-.content-wrapper .transactions-table td .btn-secondary:hover i.fa-toggle-off { color: var(--danger-700); background-color: rgba(220, 38, 38, 0.1); }
-.content-wrapper .transactions-table td .btn-success:hover i.fa-toggle-on { color: var(--success-700); background-color: rgba(5, 150, 105, 0.1); }
+/* import mọi quy tắc liên quan đến button */
+@import url('./tables-buttons.css');
 
 /* Status badge */
 .content-wrapper .status-badge {

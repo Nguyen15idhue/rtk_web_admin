@@ -3,7 +3,7 @@ session_start();
 header('Content-Type: application/json');
 
 // Check SuperAdmin
-if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'superadmin') {
+if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'admin') {
     echo json_encode(['success' => false, 'message' => 'Không có quyền.']);
     exit;
 }

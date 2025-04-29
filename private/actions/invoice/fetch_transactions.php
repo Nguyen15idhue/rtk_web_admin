@@ -7,6 +7,11 @@ if (basename(__FILE__) == basename($_SERVER["SCRIPT_FILENAME"])) {
      http_response_code(403);
      die("Forbidden: Direct access is not allowed.");
 }
+// Prevent PHP from outputting HTML errors directly
+error_reporting(E_ALL); // Report all errors for logging
+ini_set('display_errors', 0); // Keep off for browser output
+ini_set('log_errors', 1); // Ensure errors are logged
+ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
 
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../classes/Database.php';
@@ -19,7 +24,9 @@ require_once __DIR__ . '/../../utils/functions.php'; // Include helpers
  *                       'search' => string (searches registration ID and user email),
  *                       'status' => string ('pending', 'approved', 'rejected', ''), 'approved' maps to 'active' in DB.
  *                       'date_from' => string (Y-m-d),
- *                       'date_to' => string (Y-m-d)
+ *                       'date_to' => string (Y-m-d),
+ *                       'package_id' => int (ID of the package),
+ *                       'province' => string (Province name)
  * @param int $page Current page number (1-based).
  * @param int $per_page Number of items per page.
  * @return array An array containing 'transactions', 'total_count', 'current_page', 'per_page', 'total_pages'. Returns empty array on error.
@@ -59,14 +66,16 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
         $data_query = $base_select . $base_from . $base_where;
 
         $where_clauses = [];
-        $params = [];
+        $params = []; // Parameters for filtering (used in both count and data queries)
 
         // Apply filters
         if (!empty($filters['search'])) {
             $search_term = '%' . trim($filters['search']) . '%';
-            // Cast registration ID to CHAR for reliable LIKE comparison across DB versions
-            $where_clauses[] = "(CAST(r.id AS CHAR) LIKE :search OR u.email LIKE :search)";
-            $params[':search'] = $search_term;
+            // Use distinct placeholders for each part of the OR condition
+            $where_clauses[] = "(CAST(r.id AS CHAR) LIKE :search_id OR u.email LIKE :search_email)";
+            // Add both parameters to the array, even if they use the same value
+            $params[':search_id'] = $search_term;
+            $params[':search_email'] = $search_term;
         }
         if (!empty($filters['status'])) {
             // Map UI 'approved' back to DB 'active'
@@ -87,6 +96,16 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
             $params[':date_to'] = $filters['date_to'];
         }
 
+        // --- MỞ RỘNG FILTERS: package_id và province ---
+        if (!empty($filters['package_id'])) {
+            $where_clauses[] = "r.package_id = :package_id";
+            $params[':package_id'] = (int)$filters['package_id'];
+        }
+        if (!empty($filters['province'])) {
+            $where_clauses[] = "l.province = :province";
+            $params[':province'] = $filters['province'];
+        }
+
         // Append filter conditions to queries
         if (!empty($where_clauses)) {
             $where_sql = " AND " . implode(" AND ", $where_clauses);
@@ -94,9 +113,14 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
             $data_query .= $where_sql;
         }
 
+        // --- LOGGING START ---
+        error_log("Admin Transactions - Count Query: " . $count_query);
+        error_log("Admin Transactions - Count Params: " . print_r($params, true));
+        // --- LOGGING END ---
+
         // Get total count for pagination
         $stmt_count = $db->prepare($count_query);
-        $stmt_count->execute($params);
+        $stmt_count->execute($params); // Execute count query with filter params
         $total_count = (int) $stmt_count->fetchColumn();
         $total_pages = ($per_page > 0) ? ceil($total_count / $per_page) : 0;
         // Ensure page number is valid
@@ -106,20 +130,31 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
         // Add ordering and pagination to the data query
         $data_query .= " ORDER BY r.created_at DESC"; // Order by request date, newest first
         $offset = ($page - 1) * $per_page;
-        $data_query .= " LIMIT :limit OFFSET :offset";
+        // IMPORTANT: Use named parameters for LIMIT and OFFSET that don't conflict with filter params
+        $data_query .= " LIMIT :limit_val OFFSET :offset_val";
 
-        // Prepare and execute the data query
+        // Prepare the data query
         $stmt_data = $db->prepare($data_query);
 
-        // Bind parameters (including LIMIT and OFFSET as integers)
-        foreach ($params as $key => &$val) {
-             $stmt_data->bindParam($key, $val); // Bind filter params
+        // Bind filter parameters explicitly
+        foreach ($params as $key => $val) {
+            $stmt_data->bindValue($key, $val); // Use bindValue for simplicity here
         }
-        unset($val); // break reference
-        $stmt_data->bindValue(':limit', $per_page, PDO::PARAM_INT);
-        $stmt_data->bindValue(':offset', $offset, PDO::PARAM_INT);
 
+        // Bind pagination parameters explicitly as integers
+        $limit_val = (int)$per_page;
+        $offset_val = (int)$offset;
+        $stmt_data->bindValue(':limit_val', $limit_val, PDO::PARAM_INT);
+        $stmt_data->bindValue(':offset_val', $offset_val, PDO::PARAM_INT);
+
+        // --- LOGGING START ---
+        error_log("Admin Transactions - Data Query (Recheck): " . $data_query);
+        error_log("Admin Transactions - All Params (bound via bindValue): " . print_r(array_merge($params, [':limit_val' => $limit_val, ':offset_val' => $offset_val]), true));
+        // --- LOGGING END ---
+
+        // Execute the data query (no arguments needed as all params are bound)
         $stmt_data->execute();
+
         $transactions = $stmt_data->fetchAll(PDO::FETCH_ASSOC);
 
         return [
@@ -131,8 +166,8 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
         ];
 
     } catch (PDOException $e) {
-        // Log the error
-        error_log("Database error in fetch_admin_transactions: " . $e->getMessage());
+        // Log the error including the specific PDO error code if available
+        error_log("Database error in fetch_admin_transactions: " . $e->getMessage() . " (Code: " . $e->getCode() . ")");
         // Return an empty structure or throw exception depending on desired error handling
         return [
             'transactions' => [], 'total_count' => 0, 'current_page' => 1,

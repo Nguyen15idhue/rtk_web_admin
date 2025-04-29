@@ -9,7 +9,7 @@ header('Content-Type: application/json');
 // Wrap main logic in try-catch to ensure JSON output even for early errors
 try {
     // Authorization Check (Admin only)
-    if (!isset($_SESSION['admin_id']) || !in_array($_SESSION['admin_role'] ?? '', ['superadmin', 'admin'])) {
+    if (!isset($_SESSION['admin_id']) || !in_array($_SESSION['admin_role'] ?? '', ['admin', 'admin'])) {
         http_response_code(403);
         echo json_encode(['success' => false, 'message' => 'Unauthorized access.']);
         exit;

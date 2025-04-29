@@ -6,8 +6,8 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
 header('Content-Type: application/json');
-// Only Super Admin can create other admins/operators
-if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'superadmin') {
+// Only Super Admin can create other admins/customercares
+if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
     $currentRole = $_SESSION['admin_role'] ?? '(none)';
     echo json_encode([
         'success'      => false,
@@ -34,7 +34,7 @@ $username = trim($input['username'] ?? '');
 $password = $input['password'] ?? '';
 $role = $input['role'] ?? '';
 // Basic validation
-if (!$name || !$username || !$password || !in_array($role, ['admin','operator'])) {
+if (!$name || !$username || !$password || !in_array($role, ['admin','customercare'])) {
     echo json_encode(['success' => false, 'message' => 'Missing or invalid fields.']);
     exit;
 }

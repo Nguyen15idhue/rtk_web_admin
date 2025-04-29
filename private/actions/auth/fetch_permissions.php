@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../classes/Database.php';
 
 $role = $_GET['role'] ?? '';
-$validRoles = ['superadmin','admin','operator'];
+$validRoles = ['admin','customercare'];
 if (!in_array($role, $validRoles)) {
     echo json_encode(['success' => false, 'message' => 'Invalid role']);
     exit;

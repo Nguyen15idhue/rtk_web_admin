@@ -15,9 +15,12 @@ $private_includes = __DIR__ . '/../../private/includes/';
 $page_title = 'Quản lý Guide';
 include $private_includes . 'admin_header.php';
 ?>
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables.css">
+<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
+<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables.css">
+<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-buttons.css">
+<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
 <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
-
+<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/badges.css">
 <style>
 /* Modal overlay */
 .modal {
@@ -48,7 +51,7 @@ include $private_includes . 'admin_header.php';
     <div class="content-section">
         <div class="header-actions">
             <h3>Danh sách Guide</h3>
-            <button class="btn btn-primary" onclick="openCreateGuideModal()">
+            <button class="btn btn-primary" onclick="window.location.href='edit_guide.php'">
                 <i class="fas fa-plus"></i> Thêm mới
             </button>
         </div>
@@ -62,64 +65,13 @@ include $private_includes . 'admin_header.php';
             <table class="transactions-table" id="tbl-guides">
                 <thead>
                     <tr>
-                        <th>ID</th><th>Tiêu đề</th><th>Tác giả</th><th>Trạng thái</th><th class="actions">Hành động</th>
+                        <th>ID</th><th>Tiêu đề</th><th>Tác giả</th><th class="status" style="text-align:center">Trạng thái</th><th class="actions" style="text-align:center">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- rows populated by JS -->
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <!-- Modal form tạo/sửa -->
-    <div id="modal-form" class="modal">
-        <div class="modal-content">
-            <form id="frm-guide">
-                <div class="modal-header">
-                    <h4 id="modal-title">Thêm/Sửa Guide</h4>
-                    <span class="modal-close" onclick="closeModal('modal-form')">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="id">
-                    <div class="form-group">
-                        <label for="guideTitle">Tiêu đề</label>
-                        <input type="text" id="guideTitle" name="title" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="guideSlug">Slug</label>
-                        <input type="text" id="guideSlug" name="slug" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="guideTopic">Topic</label>
-                        <input type="text" id="guideTopic" name="topic" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="guideStatus">Status</label>
-                        <select id="guideStatus" name="status" class="form-control">
-                            <option value="draft">Draft</option>
-                            <option value="published">Published</option>
-                            <option value="archived">Archived</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="guideThumbnail">Thumbnail URL</label>
-                        <input type="text" id="guideThumbnail" name="thumbnail" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="guideImage">Image URL</label>
-                        <input type="text" id="guideImage" name="image" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="guideContent">Nội dung</label>
-                        <textarea id="guideContent" name="content" class="form-control" rows="5"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-form')">Hủy</button>
-                    <button type="submit" class="btn btn-primary">Lưu</button>
-                </div>
-            </form>
         </div>
     </div>
 </main>
@@ -132,13 +84,20 @@ function loadData(q='') {
         let rows = data.map(g => `<tr>
             <td>${g.id}</td>
             <td>${g.title}</td>
-            <td>${g.author_name}</td>
-            <td>${g.status}</td>
+            <td>${g.author_name 
+                    ? g.author_name 
+                    : '<em>Chưa rõ</em>'}</td>
+            <td class="status" style="text-align:center">
+                ${g.status==='published'
+                    ? '<span class="status-badge badge-success">Đã xuất bản</span>'
+                    : '<span class="status-badge badge-secondary">Bản nháp</span>'}
+            </td>
             <td class="actions">
                 <button class="btn-icon btn-edit" title="Sửa" data-id="${g.id}">
                     <i class="fas fa-edit"></i>
                 </button>
-                <button class="btn-icon btn-toggle" title="${g.status==='published'?'Chuyển sang Draft':'Xuất bản'}"
+                <button class="btn-icon btn-toggle ${g.status==='published'?'btn-success':'btn-secondary'}"
+                        title="${g.status==='published'?'Chuyển sang Nháp':'Xuất bản'}"
                         data-id="${g.id}" data-status="${g.status==='published'?'draft':'published'}">
                     <i class="fas fa-toggle-${g.status==='published'?'on':'off'}"></i>
                 </button>
@@ -147,48 +106,23 @@ function loadData(q='') {
         $('#tbl-guides tbody').html(rows);
     });
 }
-function openCreateGuideModal(){
-    $('#modal-title').text('Thêm mới Guide');
-    $('#frm-guide')[0].reset();
-    $('input[name=id]').val(''); // đảm bảo clear id cũ
-    document.getElementById('modal-form').style.display = 'block';
-}
-function closeModal(modalId='modal-form'){
-    document.getElementById(modalId).style.display = 'none';
-}
+
 $(function(){
     loadData($('input[name=search]').val());
     $('input[name=search]').on('input', ()=> loadData($('input[name=search]').val()));
 
+    // Chuyển sang trang edit_guide.php
     $(document).on('click','.btn-edit',function(){
-        $('#modal-title').text('Sửa Guide');
-        $.getJSON(basePath + '/private/actions/guide/get_guide_details.php',{id:$(this).data('id')},function(d){
-            for(let k in d) $(`[name=${k}]`).val(d[k]);
-            document.getElementById('modal-form').style.display = 'block';
-        });
+        window.location.href = 'edit_guide.php?id=' + $(this).data('id');
     });
 
-    $('#frm-guide').submit(function(e){
-        e.preventDefault();
-        let url = $('input[name=id]').val() ? 'update_guide.php' : 'create_guide.php';
-        $.post(basePath + '/private/actions/guide/'+url, $(this).serialize(), function(res){
-            if(res.success){ $('#modal-form').hide(); loadData(); }
-        },'json');
-    });
-
+    // giữ nguyên toggle status
     $(document).on('click','.btn-toggle',function(){
         let id=$(this).data('id'), st=$(this).data('status');
         $.post(basePath + '/private/actions/guide/toggle_guide_status.php',{id, status:st},function(r){
             if(r.success) loadData($('input[name=search]').val());
         },'json');
     });
-
-    // đóng modal khi click ngoài
-    window.onclick = function(event) {
-        if (event.target == document.getElementById('modal-form')) {
-            closeModal('modal-form');
-        }
-    };
 });
 </script>
 

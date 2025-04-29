@@ -75,63 +75,12 @@ try {
     <title>Quản lý Giao dịch - Admin</title>
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/base.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary-500: #3b82f6; --primary-600: #2563eb; --primary-700: #1d4ed8;
-            --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-300: #d1d5db;
-            --gray-400: #9ca3af; --gray-500: #6b7280; --gray-600: #4b5563; --gray-700: #374151;
-            --gray-800: #1f2937; --gray-900: #111827;
-            --success-500: #10b981; --success-600: #059669;
-            --danger-500: #ef4444; --danger-600: #dc2626;
-            --warning-500: #f59e0b;
-            --info-600: #0ea5e9;
-            --badge-green-bg: #ecfdf5; --badge-green-text: #065f46;
-            --badge-red-bg: #fef2f2; --badge-red-text: #991b1b;
-            --badge-yellow-bg: #fffbeb; --badge-yellow-text: #b45309; --badge-yellow-border: #fde68a;
-            --rounded-md: 0.375rem; --rounded-lg: 0.5rem; --rounded-full: 9999px;
-            --font-size-xs: 0.75rem; --font-size-sm: 0.875rem; --font-size-base: 1rem; --font-size-lg: 1.125rem;
-            --font-medium: 500; --font-semibold: 600;
-            --border-color: var(--gray-200);
-        }
-        body { font-family: sans-serif; background-color: var(--gray-100); color: var(--gray-800); }
-        .content-wrapper { flex-grow: 1; padding: 1.5rem; }
-        .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding: 1rem 1.5rem; background: white; border-radius: var(--rounded-lg); box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
-        .content-header h2 { font-size: 1.5rem; font-weight: var(--font-semibold); color: var(--gray-800); }
-        .user-info { display: flex; align-items: center; gap: 1rem; font-size: var(--font-size-sm); }
-        .user-info span .highlight { color: var(--primary-600); font-weight: var(--font-semibold); }
-        .user-info a { color: var(--primary-600); text-decoration: none; }
-        .user-info a:hover { text-decoration: underline; }
-        .content-section { background: white; border-radius: var(--rounded-lg); padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
-        .content-section h3 { font-size: var(--font-size-lg); font-weight: var(--font-semibold); color: var(--gray-700); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem; }
-        .filter-bar { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; }
-        .filter-bar input, .filter-bar select { padding: 0.6rem 0.8rem; border: 1px solid var(--gray-300); border-radius: var(--rounded-md); font-size: var(--font-size-sm); }
-        .filter-bar input:focus, .filter-bar select:focus { outline: none; border-color: var(--primary-500); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
-        .filter-bar button, .filter-bar a.btn-secondary { padding: 0.6rem 1rem; font-size: var(--font-size-sm); }
-
-        /* Status‑badge color variants */
-        .status-approved {
-            background: var(--badge-green-bg);
-            color: var(--badge-green-text);
-            border-color: #a7f3d0;
-        }
-        .status-pending {
-            background: var(--badge-yellow-bg);
-            color: var(--badge-yellow-text);
-            border-color: var(--badge-yellow-border);
-        }
-        .status-rejected {
-            background: var(--badge-red-bg);
-            color: var(--badge-red-text);
-            border-color: #fecaca;
-        }
-        .status-unknown {
-            background: var(--gray-100);
-            color: var(--gray-500);
-            border-color: var(--gray-300);
-        }
-
         .stats-container { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; }
         .stats-box {
             flex: 1;
@@ -208,9 +157,23 @@ try {
                         <?php else: foreach ($transactions as $tx): ?>
                             <?php
                                 $status = htmlspecialchars($tx['registration_status']);
-                                $text = ucfirst($status);
+                                // Việt hóa trạng thái
+                                switch ($status) {
+                                    case 'active':
+                                        $text = 'Thành công';
+                                        break;
+                                    case 'pending':
+                                        $text = 'Đang chờ';
+                                        break;
+                                    case 'rejected':
+                                        $text = 'Bị từ chối';
+                                        break;
+                                    default:
+                                        $text = ucfirst($status);
+                                }
                                 $cls = $status === 'active' ? 'status-approved'
-                                      : ($status==='pending'?'status-pending':($status==='rejected'?'status-rejected':'status-unknown'));
+                                      : ($status === 'pending' ? 'status-pending'
+                                      : ($status === 'rejected' ? 'status-rejected' : 'status-unknown'));
                             ?>
                             <tr>
                                 <td><?php echo htmlspecialchars($tx['registration_id']); ?></td>
