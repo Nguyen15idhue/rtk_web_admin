@@ -2265,3 +2265,1618 @@
 [29-Apr-2025 09:48:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
 [29-Apr-2025 09:50:17 UTC] [DEBUG] Search keyword: 
 [29-Apr-2025 09:50:17 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:02:46 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:02:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:09:34 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:09:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:09:39 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:09:39 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:09:39 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:09:39 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:10:25 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:10:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:10:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:10:39 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:10:39 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:10:39 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:10:39 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:10:39 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:10:39 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:10:39 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:10:39 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:10:39 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:10:44 UTC] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from E:\Application\laragon\www\rtk_web_admin\public\actions\invoice\index.php on line 2) in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php on line 12
+[29-Apr-2025 10:10:44 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:10:44 UTC] [PTA] Start approve transaction_id=20
+[29-Apr-2025 10:10:44 UTC] [PTA] Transaction begun
+[29-Apr-2025 10:10:44 UTC] [PTA] check SQL executed, rowCount=1
+[29-Apr-2025 10:10:44 UTC] [PTA] fetched registration={"status":"rejected","user_id":88,"num_account":2,"start_time":"2025-04-29 15:48:57","end_time":"2025-07-29 15:48:57","location_id":63,"package_id":2}
+[29-Apr-2025 10:10:44 UTC] [PTA] update registration executed, affectedRows=1
+[29-Apr-2025 10:10:44 UTC] [PTA] update payment executed, affectedRows=1
+[29-Apr-2025 10:10:44 UTC] [PTA] activate survey_account executed, affectedRows=0
+[29-Apr-2025 10:10:44 UTC] Warning: No survey accounts found or enabled for approved registration ID: 20
+[29-Apr-2025 10:10:44 UTC] [PTA] province_code=YBI, lastUser=YBI108, nextSeq=109, username=YBI109, password=0999999445
+[29-Apr-2025 10:10:44 UTC] [PTA] cURL timeout set to 3s; calling URL=http://localhost:3000/private/actions/account/create_account.php with payload={"registration_id":20,"username_acc":"YBI109","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-04-29 17:10:44","end_time":"2025-07-29 17:10:44","enabled":1,"concurrent_user":1,"account_count":2}
+[29-Apr-2025 10:10:44 UTC] DEBUG [Account Creation] URL: http://localhost:3000/private/actions/account/create_account.php
+[29-Apr-2025 10:10:44 UTC] DEBUG [Account Creation] Payload: {"registration_id":20,"username_acc":"YBI109","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-04-29 17:10:44","end_time":"2025-07-29 17:10:44","enabled":1,"concurrent_user":1,"account_count":2}
+[29-Apr-2025 10:10:47 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 3013 milliseconds with 0 bytes received","totalTime":3.013476}
+[29-Apr-2025 10:10:47 UTC] [PTA] TransactionHistoryService updated
+[29-Apr-2025 10:10:47 UTC] [PTA] Transaction committed successfully
+[29-Apr-2025 10:10:47 UTC] PHP Warning:  Undefined variable $createdAccounts in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php on line 281
+[29-Apr-2025 10:10:47 UTC] [CA] Start create_account request
+[29-Apr-2025 10:10:47 UTC] [CA] Raw input: {"registration_id":20,"username_acc":"YBI109","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-04-29 17:10:44","end_time":"2025-07-29 17:10:44","enabled":1,"concurrent_user":1,"account_count":2}
+[29-Apr-2025 10:10:47 UTC] [CA] registration_id=20, username_acc=YBI109, password_len=10
+[29-Apr-2025 10:10:47 UTC] [CA] location_input=63
+[29-Apr-2025 10:10:47 UTC] [CA] computed start_time_db=2025-04-29 17:10:44, end_time_db=2025-07-29 17:10:44
+[29-Apr-2025 10:10:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:10:47 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
+[29-Apr-2025 10:10:47 UTC] [CA] Retrieved userId=88
+[29-Apr-2025 10:10:47 UTC] [CA] Price=270000.00 => normal flow
+[29-Apr-2025 10:10:47 UTC] Debug: Non-trial account creation path for registration_id=20
+[29-Apr-2025 10:10:47 UTC] [CA] RTK API payload for YBI109: {"name":"YBI109","userPwd":"0999999445","startTime":1745921444000,"endTime":1753783844000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[29-Apr-2025 10:10:47 UTC] [CA] RTK API response for YBI109: {"success":true,"data":{"id":888,"name":"YBI109","userPwd":"0999999445","startTime":1745921444000,"endTime":1753783844000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[29-Apr-2025 10:10:47 UTC] [CA] RTK API payload for YBI110: {"name":"YBI110","userPwd":"0999999445","startTime":1745921444000,"endTime":1753783844000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[29-Apr-2025 10:10:47 UTC] [CA] RTK API response for YBI110: {"success":true,"data":{"id":889,"name":"YBI110","userPwd":"0999999445","startTime":1745921444000,"endTime":1753783844000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[29-Apr-2025 10:12:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:12:34 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:12:34 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:12:34 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:12:34 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:12:35 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:12:35 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:12:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:12:35 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:12:35 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:12:35 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:12:35 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:18:37 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:18:37 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:18:37 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:18:37 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:18:37 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:18:43 UTC] Error rejecting transaction ID 20: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'sa.activation_date' in 'field list'
+[29-Apr-2025 10:18:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:18:46 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:18:46 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:18:46 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:18:46 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:18:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:18:47 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:18:47 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:18:47 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:18:47 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:18:48 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:18:48 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:18:49 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:18:49 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:18:50 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:18:50 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:19:44 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:19:44 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:22:29 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:22:29 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:22:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:22:30 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:22:30 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:22:30 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:22:30 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:22:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:22:34 UTC] Error reverting transaction ID 20: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'sa.activation_date' in 'field list'
+[29-Apr-2025 10:22:42 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:22:42 UTC] Error reverting transaction ID 20: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'sa.activation_date' in 'field list'
+[29-Apr-2025 10:31:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:31:27 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:31:27 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:31:27 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:31:27 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:31:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:31:34 UTC] [Revert Transaction 20] Calling RTK API for account 888 with payload: {"id":"888","name":"YBI109","userPwd":"0999999445","startTime":1745946644000,"endTime":1753809044000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[29-Apr-2025 10:31:34 UTC] [Revert Transaction 20] RTK API response for account 888: {"success":true,"data":true,"error":null}
+[29-Apr-2025 10:31:34 UTC] [Revert Transaction 20] Calling RTK API for account 889 with payload: {"id":"889","name":"YBI110","userPwd":"0999999445","startTime":1745946644000,"endTime":1753809044000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[29-Apr-2025 10:31:34 UTC] [Revert Transaction 20] RTK API response for account 889: {"success":true,"data":true,"error":null}
+[29-Apr-2025 10:31:37 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:31:37 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:32:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:32:04 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:32:04 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:32:04 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:32:04 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:32:05 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:32:05 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:32:05 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:32:05 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:32:08 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:32:08 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:32:08 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:32:08 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:32:08 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:32:11 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:32:11 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:32:11 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:32:11 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:32:14 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:32:14 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:32:14 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:32:14 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:32:14 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:32:15 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:32:15 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:32:17 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:32:17 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:32:17 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:32:17 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:32:17 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:32:21 UTC] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from E:\Application\laragon\www\rtk_web_admin\public\actions\invoice\index.php on line 2) in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php on line 12
+[29-Apr-2025 10:32:21 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:32:21 UTC] [PTA] Start approve transaction_id=20
+[29-Apr-2025 10:32:21 UTC] [PTA] Transaction begun
+[29-Apr-2025 10:32:21 UTC] [PTA] check SQL executed, rowCount=1
+[29-Apr-2025 10:32:21 UTC] [PTA] fetched registration={"status":"pending","user_id":88,"num_account":2,"start_time":"2025-04-29 17:10:44","end_time":"2025-07-29 17:10:44","location_id":63,"package_id":2}
+[29-Apr-2025 10:32:21 UTC] [PTA] update registration executed, affectedRows=1
+[29-Apr-2025 10:32:21 UTC] [PTA] update payment executed, affectedRows=1
+[29-Apr-2025 10:32:21 UTC] [PTA] activate survey_account executed, affectedRows=2
+[29-Apr-2025 10:32:21 UTC] [PTA] province_code=YBI, lastUser=YBI110, nextSeq=111, username=YBI111, password=0999999445
+[29-Apr-2025 10:32:21 UTC] [PTA] cURL timeout set to 3s; calling URL=http://localhost:3000/private/actions/account/create_account.php with payload={"registration_id":20,"username_acc":"YBI111","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-04-29 17:32:21","end_time":"2025-07-29 17:32:21","enabled":1,"concurrent_user":1,"account_count":2}
+[29-Apr-2025 10:32:21 UTC] DEBUG [Account Creation] URL: http://localhost:3000/private/actions/account/create_account.php
+[29-Apr-2025 10:32:21 UTC] DEBUG [Account Creation] Payload: {"registration_id":20,"username_acc":"YBI111","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-04-29 17:32:21","end_time":"2025-07-29 17:32:21","enabled":1,"concurrent_user":1,"account_count":2}
+[29-Apr-2025 10:32:24 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 3000 milliseconds with 0 bytes received","totalTime":3.000945}
+[29-Apr-2025 10:32:24 UTC] [PTA] TransactionHistoryService updated
+[29-Apr-2025 10:32:24 UTC] [PTA] Transaction committed successfully
+[29-Apr-2025 10:32:24 UTC] PHP Warning:  Undefined variable $createdAccounts in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php on line 281
+[29-Apr-2025 10:32:24 UTC] [CA] Start create_account request
+[29-Apr-2025 10:32:24 UTC] [CA] Raw input: {"registration_id":20,"username_acc":"YBI111","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-04-29 17:32:21","end_time":"2025-07-29 17:32:21","enabled":1,"concurrent_user":1,"account_count":2}
+[29-Apr-2025 10:32:24 UTC] [CA] registration_id=20, username_acc=YBI111, password_len=10
+[29-Apr-2025 10:32:24 UTC] [CA] location_input=63
+[29-Apr-2025 10:32:24 UTC] [CA] computed start_time_db=2025-04-29 17:32:21, end_time_db=2025-07-29 17:32:21
+[29-Apr-2025 10:32:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:32:24 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
+[29-Apr-2025 10:32:24 UTC] [CA] Retrieved userId=88
+[29-Apr-2025 10:32:24 UTC] [CA] Price=270000.00 => normal flow
+[29-Apr-2025 10:32:24 UTC] Debug: Non-trial account creation path for registration_id=20
+[29-Apr-2025 10:32:24 UTC] [CA] RTK API payload for YBI111: {"name":"YBI111","userPwd":"0999999445","startTime":1745922741000,"endTime":1753785141000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[29-Apr-2025 10:32:24 UTC] [CA] RTK API response for YBI111: {"success":true,"data":{"id":892,"name":"YBI111","userPwd":"0999999445","startTime":1745922741000,"endTime":1753785141000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[29-Apr-2025 10:32:24 UTC] [CA] RTK API payload for YBI112: {"name":"YBI112","userPwd":"0999999445","startTime":1745922741000,"endTime":1753785141000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[29-Apr-2025 10:32:24 UTC] [CA] RTK API response for YBI112: {"success":true,"data":{"id":893,"name":"YBI112","userPwd":"0999999445","startTime":1745922741000,"endTime":1753785141000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[29-Apr-2025 10:32:26 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:32:26 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:32:28 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:32:28 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:32:43 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:32:43 UTC] RTK API Payload: {"id":"892","name":"YBI111","userPwd":"0999999445","startTime":1745947941000,"endTime":1753810341000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[29-Apr-2025 10:32:43 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[29-Apr-2025 10:32:43 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:32:43 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:32:45 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:32:45 UTC] RTK API Payload: {"id":"893","name":"YBI112","userPwd":"0999999445","startTime":1745947941000,"endTime":1753810341000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[29-Apr-2025 10:32:45 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[29-Apr-2025 10:32:45 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:32:45 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:32:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:32:48 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:33:54 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:33:54 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:33:54 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:33:54 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:33:56 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:33:56 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:33:56 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:33:56 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:33:56 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:34:15 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:34:15 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:34:15 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:34:15 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:34:15 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:34:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:34:20 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:34:20 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:34:21 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:34:21 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:34:21 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:34:21 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:34:21 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:35:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:35:27 UTC] [Revert Transaction 20] Calling RTK API for account 888 with payload: {"id":"888","name":"YBI109","userPwd":"0999999445","startTime":1745947941000,"endTime":1753810341000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[29-Apr-2025 10:35:27 UTC] [Revert Transaction 20] RTK API response for account 888: {"success":true,"data":true,"error":null}
+[29-Apr-2025 10:35:27 UTC] [Revert Transaction 20] Calling RTK API for account 889 with payload: {"id":"889","name":"YBI110","userPwd":"0999999445","startTime":1745947941000,"endTime":1753810341000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[29-Apr-2025 10:35:27 UTC] [Revert Transaction 20] RTK API response for account 889: {"success":true,"data":true,"error":null}
+[29-Apr-2025 10:35:29 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:35:29 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:35:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:35:30 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:35:30 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:35:30 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:35:30 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:35:33 UTC] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from E:\Application\laragon\www\rtk_web_admin\public\actions\invoice\index.php on line 2) in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php on line 12
+[29-Apr-2025 10:35:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:35:33 UTC] [PTA] Start approve transaction_id=21
+[29-Apr-2025 10:35:33 UTC] [PTA] Transaction begun
+[29-Apr-2025 10:35:33 UTC] [PTA] check SQL executed, rowCount=1
+[29-Apr-2025 10:35:33 UTC] [PTA] fetched registration={"status":"rejected","user_id":88,"num_account":1,"start_time":"2025-04-29 11:45:26","end_time":"2025-05-06 11:45:26","location_id":4,"package_id":7}
+[29-Apr-2025 10:35:33 UTC] [PTA] update registration executed, affectedRows=1
+[29-Apr-2025 10:35:33 UTC] [PTA] update payment executed, affectedRows=0
+[29-Apr-2025 10:35:33 UTC] [PTA] activate survey_account executed, affectedRows=0
+[29-Apr-2025 10:35:33 UTC] Warning: No survey accounts found or enabled for approved registration ID: 21
+[29-Apr-2025 10:35:33 UTC] [PTA] province_code=BKN, lastUser=, nextSeq=1, username=BKN001, password=0999999445
+[29-Apr-2025 10:35:33 UTC] [PTA] cURL timeout set to 3s; calling URL=http://localhost:3000/private/actions/account/create_account.php with payload={"registration_id":21,"username_acc":"BKN001","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":4,"package_id":7,"start_time":"2025-04-29 17:35:33","end_time":"2025-05-06 17:35:33","enabled":1,"concurrent_user":1,"account_count":1}
+[29-Apr-2025 10:35:33 UTC] DEBUG [Account Creation] URL: http://localhost:3000/private/actions/account/create_account.php
+[29-Apr-2025 10:35:33 UTC] DEBUG [Account Creation] Payload: {"registration_id":21,"username_acc":"BKN001","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":4,"package_id":7,"start_time":"2025-04-29 17:35:33","end_time":"2025-05-06 17:35:33","enabled":1,"concurrent_user":1,"account_count":1}
+[29-Apr-2025 10:35:36 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 3006 milliseconds with 0 bytes received","totalTime":3.006125}
+[29-Apr-2025 10:35:36 UTC] [PTA] TransactionHistoryService updated
+[29-Apr-2025 10:35:36 UTC] [PTA] Transaction committed successfully
+[29-Apr-2025 10:35:36 UTC] PHP Warning:  Undefined variable $createdAccounts in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php on line 281
+[29-Apr-2025 10:35:36 UTC] [CA] Start create_account request
+[29-Apr-2025 10:35:36 UTC] [CA] Raw input: {"registration_id":21,"username_acc":"BKN001","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":4,"package_id":7,"start_time":"2025-04-29 17:35:33","end_time":"2025-05-06 17:35:33","enabled":1,"concurrent_user":1,"account_count":1}
+[29-Apr-2025 10:35:36 UTC] [CA] registration_id=21, username_acc=BKN001, password_len=10
+[29-Apr-2025 10:35:36 UTC] [CA] location_input=4
+[29-Apr-2025 10:35:36 UTC] [CA] computed start_time_db=2025-04-29 17:35:33, end_time_db=2025-05-06 17:35:33
+[29-Apr-2025 10:35:36 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:35:36 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
+[29-Apr-2025 10:35:36 UTC] [CA] Retrieved userId=88
+[29-Apr-2025 10:35:36 UTC] [CA] Price=0.00 => trial flow
+[29-Apr-2025 10:35:36 UTC] Debug: Entering trial flow for registration_id=21
+[29-Apr-2025 10:35:36 UTC] Using default mount points for location ID: 4 - [44]
+[29-Apr-2025 10:35:36 UTC] [CA] RTK API payload: {"name":"Long2004","userPwd":"dcb925bc5a818481","startTime":1745922933000,"endTime":1746527733000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44]}
+[29-Apr-2025 10:35:36 UTC] [CA] RTK API response: {"success":true,"data":{"id":894,"name":"Long2004","userPwd":"dcb925bc5a818481","startTime":1745922933000,"endTime":1746527733000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[29-Apr-2025 10:35:36 UTC] [CA] Inserting survey_account id=894
+[29-Apr-2025 10:35:36 UTC] [CA] survey_account insert rowCount=1
+[29-Apr-2025 10:35:36 UTC] [CA] registration status updated
+[29-Apr-2025 10:35:36 UTC] [CA] transaction_history status updated
+[29-Apr-2025 10:35:38 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:35:38 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:35:39 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:35:39 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:35:39 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:35:39 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:35:39 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:35:40 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:35:40 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:35:40 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:35:40 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:35:40 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:35:40 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:35:40 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:35:41 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:35:41 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:35:44 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:35:44 UTC] Using default mount points for location ID: 4 - [44]
+[29-Apr-2025 10:35:44 UTC] RTK API Payload: {"id":"894","name":"Long2004","userPwd":"dcb925bc5a818481","startTime":1745948133000,"endTime":1746552933000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44]}
+[29-Apr-2025 10:35:44 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[29-Apr-2025 10:35:44 UTC] Executing SQL: 
+        SELECT
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            u.id as user_id, u.email AS user_email, u.username AS user_username,
+            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
+            l.id as location_id, l.province AS location_name
+        FROM survey_account sa
+        JOIN registration r ON sa.registration_id = r.id
+        JOIN user u ON r.user_id = u.id
+        LEFT JOIN package p ON r.package_id = p.id
+        JOIN location l ON r.location_id = l.id
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
+[29-Apr-2025 10:35:44 UTC] With parameters: Array
+(
+    [:limit] => 10
+    [:offset] => 0
+)
+
+[29-Apr-2025 10:35:48 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:35:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:35:54 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:35:54 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:35:54 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:35:54 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:36:11 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:36:11 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:36:11 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:36:11 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:36:14 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:36:14 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:36:14 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:36:14 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:36:15 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:36:15 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:36:15 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:36:15 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:36:15 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:36:16 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:36:16 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:36:16 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:36:16 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:36:19 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:36:19 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:36:19 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:36:19 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:36:19 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:36:19 UTC] Admin Transactions - Count Query: SELECT COUNT(r.id) 
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL 
+[29-Apr-2025 10:36:19 UTC] Admin Transactions - Count Params: Array
+(
+)
+
+[29-Apr-2025 10:36:19 UTC] Admin Transactions - Data Query (Recheck): 
+            SELECT
+                r.id as registration_id,
+                r.created_at as request_date,
+                r.total_price as amount,
+                r.status as registration_status,
+                r.rejection_reason, -- Fetch rejection reason
+                u.email as user_email,
+                p.name as package_name,
+                pay.payment_image, -- Get proof image filename from payment table
+                r.location_id,
+                l.province AS province
+        
+            FROM registration r
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
+            LEFT JOIN location l ON l.id = r.location_id
+         WHERE r.deleted_at IS NULL  ORDER BY r.created_at DESC LIMIT :limit_val OFFSET :offset_val
+[29-Apr-2025 10:36:19 UTC] Admin Transactions - All Params (bound via bindValue): Array
+(
+    [:limit_val] => 15
+    [:offset_val] => 0
+)
+
+[29-Apr-2025 10:41:12 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:41:12 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:41:21 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:41:21 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:41:29 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:41:29 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:42:19 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:42:19 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:42:23 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:42:23 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:42:23 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:42:23 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:43:01 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:43:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:43:01 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:43:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:43:38 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:43:38 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:43:39 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:43:39 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:43:39 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:43:39 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:45:04 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:45:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:45:32 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:45:32 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:45:33 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:45:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:45:52 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:45:52 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:46:35 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:46:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[29-Apr-2025 10:46:51 UTC] [DEBUG] Search keyword: 
+[29-Apr-2025 10:46:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.

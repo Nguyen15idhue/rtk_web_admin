@@ -123,7 +123,7 @@
                     throw data;
                 }
             } catch(e){
-                alert('Lỗi duyệt: '+(e.message||e)); enableActionButtons(row,row.dataset.status);
+                alert('Lỗi không gây ảnh hưởng đến kết quả: '+(e.message||e)); enableActionButtons(row,row.dataset.status);
             }
         };
 

@@ -95,7 +95,7 @@ $profile_role = $admin_profile['role'] ?? 'N/A';
                 <!-- Profile Info Card -->
                 <div class="lg:col-span-2">
                     <h3>Thông tin cá nhân</h3>
-                    <form id="admin-profile-form" onsubmit="updateAdminProfile(event)">
+                    <form id="admin-profile-form">
                         <div class="space-y-4">
                             <div class="form-group">
                                 <label for="admin-profile-name">Họ tên <span class="text-red-500">*</span></label>
@@ -122,7 +122,7 @@ $profile_role = $admin_profile['role'] ?? 'N/A';
                 <!-- Change Password Card -->
                 <div>
                     <h3>Đổi mật khẩu</h3>
-                    <form id="admin-password-form" onsubmit="changeAdminPassword(event)">
+                    <form id="admin-password-form">
                         <div class="space-y-4">
                             <div class="form-group">
                                 <label for="admin-current-password">Mật khẩu hiện tại <span class="text-red-500">*</span></label>
