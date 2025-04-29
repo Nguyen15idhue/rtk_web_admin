@@ -1,5 +1,4 @@
 <?php
-session_start();
 // Set header immediately to ensure JSON output even on early errors
 header('Content-Type: application/json');
 

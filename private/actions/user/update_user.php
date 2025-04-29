@@ -1,5 +1,4 @@
 <?php
-session_start();
 // Correct the paths relative to the current file's directory (private/actions/setting)
 require_once __DIR__ . '/../../config/database.php'; // Go up two levels to 'private', then into 'config'
 require_once __DIR__ . '/../../classes/Database.php'; // Go up two levels to 'private', then into 'classes'

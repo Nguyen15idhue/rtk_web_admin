@@ -1,5 +1,4 @@
 <?php
-session_start();
 header('Content-Type: application/json');
 // Only Super Admin can update permissions
 if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {

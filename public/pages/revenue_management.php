@@ -13,6 +13,8 @@ $user_display_name= $bootstrap_data['user_display_name'];
 $private_includes_path = $bootstrap_data['private_includes_path'];
 
 require_once __DIR__ . '/../../private/actions/invoice/fetch_transactions.php';
+// Include new action for revenue sums
+require_once __DIR__ . '/../../private/actions/invoice/get_revenue_sums.php';
 
 // Lấy params phân trang & filter
 $current_page  = max(1, (int)($_GET['page'] ?? 1));
@@ -32,40 +34,8 @@ $total_pages  = $data['total_pages'];
 $current_page = $data['current_page'];
 $pagination_base = '?' . http_build_query(array_filter($filters));
 
-// Tính tổng doanh thu trong khoảng
-try {
-    $sumSql = "
-        SELECT SUM(r.total_price) 
-        FROM registration r
-        WHERE r.deleted_at IS NULL
-        " . (!empty($filters['date_from']) ? "AND DATE(r.created_at) >= :df " : '') . "
-        " . (!empty($filters['date_to'])   ? "AND DATE(r.created_at) <= :dt " : '');
-    $stmt = $db->prepare($sumSql);
-    if (!empty($filters['date_from'])) $stmt->bindValue(':df', $filters['date_from']);
-    if (!empty($filters['date_to']))   $stmt->bindValue(':dt', $filters['date_to']);
-    $stmt->execute();
-    $total_revenue = (float)$stmt->fetchColumn();
-} catch (Exception $e) {
-    $total_revenue = 0;
-}
-
-// Add calculation of total for successful (active) transactions
-try {
-    $sumSuccessSql = "
-        SELECT SUM(r.total_price)
-        FROM registration r
-        WHERE r.deleted_at IS NULL
-          AND LOWER(r.status) = 'active'
-        " . (!empty($filters['date_from']) ? "AND DATE(r.created_at) >= :df " : '') . "
-        " . (!empty($filters['date_to'])   ? "AND DATE(r.created_at) <= :dt " : '');
-    $stmt2 = $db->prepare($sumSuccessSql);
-    if (!empty($filters['date_from'])) $stmt2->bindValue(':df', $filters['date_from']);
-    if (!empty($filters['date_to']))   $stmt2->bindValue(':dt', $filters['date_to']);
-    $stmt2->execute();
-    $successful_revenue = (float)$stmt2->fetchColumn();
-} catch (Exception $e) {
-    $successful_revenue = 0;
-}
+// Get total and successful revenue using private action
+list($total_revenue, $successful_revenue) = get_revenue_sums($filters);
 ?>
 <!DOCTYPE html>
 <html lang="vi">

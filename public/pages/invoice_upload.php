@@ -50,7 +50,7 @@ $base_path = $protocol
             <h2><i class="fas fa-file-upload"></i> Upload Hóa đơn #<?php echo $invoiceId; ?></h2>
         </div>
         <div class="card-body">
-            <form action="../../private/actions/invoice/process_invoice_send.php"
+            <form action="../actions/invoice_requests/index.php?action=process_invoice_send"
                   method="post" enctype="multipart/form-data"
                   class="form-section">
                 <input type="hidden" name="invoice_id" value="<?php echo $invoiceId; ?>">

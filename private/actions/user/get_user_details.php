@@ -1,10 +1,9 @@
 <?php
-session_start();
+header('Content-Type: application/json');
+
 // Correct the paths relative to the current file's directory (private/actions/setting)
 require_once __DIR__ . '/../../config/database.php'; // Go up two levels to 'private', then into 'config'
 require_once __DIR__ . '/../../classes/Database.php'; // Go up two levels to 'private', then into 'classes'
-
-header('Content-Type: application/json');
 
 // Authorization Check (Admin only)
 if (!isset($_SESSION['admin_id']) || !in_array($_SESSION['admin_role'] ?? '', ['admin', 'admin', 'customercare'])) {
@@ -13,13 +12,13 @@ if (!isset($_SESSION['admin_id']) || !in_array($_SESSION['admin_role'] ?? '', ['
     exit;
 }
 
-if (!isset($_GET['user_id']) || !filter_var($_GET['user_id'], FILTER_VALIDATE_INT)) {
+if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Invalid or missing user ID.']);
     exit;
 }
 
-$user_id = (int)$_GET['user_id'];
+$user_id = (int)$_GET['id'];
 
 $db = Database::getInstance();
 $conn = $db->getConnection();

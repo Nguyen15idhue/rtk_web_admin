@@ -1,5 +1,4 @@
 <?php
-session_start();
 header('Content-Type: application/json');
 // Only logged-in admins
 if (!isset($_SESSION['admin_id'])) {
