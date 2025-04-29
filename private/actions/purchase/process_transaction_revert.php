@@ -43,7 +43,7 @@ if ($transaction_id === false || $transaction_id <= 0) {
 }
 
 // --- Processing ---
-$db = (new Database())->getConnection();
+$db = (Database::getInstance())->getConnection();
 if (!$db) {
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Database connection failed.']);

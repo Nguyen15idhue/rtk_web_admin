@@ -48,7 +48,7 @@ if ($project_folder_index === -1) {
 $base_path = $protocol . $host . $base_path_segment;
 
 // --- Database Connection ---
-$database = new Database();
+$database = Database::getInstance();
 $db = $database->getConnection();
 
 if (!$db) {

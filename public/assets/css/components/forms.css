@@ -1,0 +1,74 @@
+.form-group {
+    margin-bottom: 1rem;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: var(--font-medium);
+    color: var(--gray-700);
+    font-size: var(--font-size-sm);
+}
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="date"],
+.form-group input[type="number"],
+.form-group input[type="tel"],
+.form-group select {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--rounded-md);
+    font-size: var(--font-size-sm);
+    box-sizing: border-box;
+}
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+.form-group input:disabled,
+.form-group input[readonly] {
+    background-color: var(--gray-100);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+.form-group .error-message {
+    color: var(--danger-600);
+    font-size: var(--font-size-sm);
+    margin-top: 0.5rem;
+    text-align: left;
+}
+.form-group .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.form-group .checkbox-group input[type="checkbox"] {
+    margin: 0;
+}
+.form-group .text-xs {
+    font-size: var(--font-size-xs);
+    color: var(--gray-500);
+    margin-top: 0.25rem;
+}
+
+/* company‐fields show/hide */
+#editUserForm .company-fields,
+#createUserForm .company-fields {
+    display: none;
+}
+#editUserForm .company-fields.visible,
+#createUserForm .company-fields.visible {
+    display: block;
+}
+
+.status-message {
+    margin-left: 1rem;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-medium);
+}
+.status-success { color: var(--success-600); }
+.status-error   { color: var(--danger-600); }
+.status-loading { color: var(--info-600); }

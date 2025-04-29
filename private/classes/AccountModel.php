@@ -1,4 +1,9 @@
 <?php
+// Prevent PHP from outputting HTML errors directly
+error_reporting(E_ALL); // Report all errors for logging
+ini_set('display_errors', 0); // Keep off for browser output
+ini_set('log_errors', 1); // Ensure errors are logged
+ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
 
 class AccountModel {
     private $db;
@@ -61,12 +66,13 @@ class AccountModel {
      */
     private function applyFilters(string &$sql, array &$params, array $filters): void {
         if (!empty($filters['search'])) {
-            $sql .= " AND (sa.id LIKE :search OR sa.username_acc LIKE :search OR u.email LIKE :search OR u.username LIKE :search OR l.province LIKE :search)";
+            // use CONCAT_WS to search across all relevant fields with one placeholder
+            $sql .= " AND CONCAT_WS(' ', sa.id, sa.username_acc, u.email, u.username, l.province) LIKE :search";
             $params[':search'] = '%' . $filters['search'] . '%';
         }
         if (!empty($filters['package'])) {
-            $sql .= " AND p.name = :package_name";
-            $params[':package_name'] = $filters['package'];
+            $sql .= " AND p.id = :package_id";
+            $params[':package_id'] = (int)$filters['package'];
         }
         if (!empty($filters['location'])) {
             $sql .= " AND l.id = :location_id";
@@ -140,6 +146,10 @@ class AccountModel {
         $sql .= " LIMIT :limit OFFSET :offset";
         $params[':limit'] = $limit;
         $params[':offset'] = $offset;
+
+        // Debugging: Log the final SQL query and parameters
+        error_log("Executing SQL: " . $sql);
+        error_log("With parameters: " . print_r($params, true));
 
         try {
             $stmt = $this->db->prepare($sql);

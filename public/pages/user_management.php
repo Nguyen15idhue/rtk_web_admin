@@ -84,29 +84,15 @@ $private_includes_path = __DIR__ . '/../../private/includes/';
 
 include $private_includes_path . 'admin_header.php';
 ?>
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables.css">
+<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables.css">
+<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-buttons.css">
+<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
 <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
+<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/forms.css">
+<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
 
 <!-- Page Specific Styles -->
 <style>
-/* Scoped phần còn lại bên trong content-wrapper */
-.content-wrapper .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding: 1rem 1.5rem; background: white; border-radius: var(--rounded-lg); box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
-.content-wrapper .content-header h2 { font-size: 1.5rem; font-weight: var(--font-semibold); color: var(--gray-800); }
-.content-wrapper .user-info { display: flex; align-items: center; gap: 1rem; font-size: var(--font-size-sm); }
-.content-wrapper .user-info span .highlight { color: var(--primary-600); font-weight: var(--font-semibold); }
-.content-wrapper .user-info a { color: var(--primary-600); text-decoration: none; }
-.content-wrapper .user-info a:hover { text-decoration: underline; }
-.content-wrapper .content-section { background: white; border-radius: var(--rounded-lg); padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
-.content-wrapper .content-section h3 { font-size: var(--font-size-lg); font-weight: var(--font-semibold); color: var(--gray-700); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem; }
-.content-wrapper .filter-bar { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; }
-.content-wrapper .filter-bar input, .content-wrapper .filter-bar select { padding: 0.6rem 0.8rem; border: 1px solid var(--gray-300); border-radius: var(--rounded-md); font-size: var(--font-size-sm); }
-.content-wrapper .filter-bar input:focus, .content-wrapper .filter-bar select:focus { outline: none; border-color: var(--primary-500); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
-.content-wrapper .filter-bar button, .content-wrapper .filter-bar a.btn-secondary { padding: 0.6rem 1rem; font-size: var(--font-size-sm); }
-.content-wrapper .status-badge.active { color: var(--success-600); font-weight: bold; }
-.content-wrapper .status-badge.inactive { color: var(--danger-600); font-weight: bold; }
-.content-wrapper .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
-.content-wrapper .header-actions h3 { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
-.content-wrapper .header-actions .btn-primary { font-size: var(--font-size-sm); }
 .content-wrapper .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
 .content-wrapper .modal-content { background-color: #fefefe; margin: 10% auto; padding: 25px; border: 1px solid #888; width: 80%; max-width: 600px; border-radius: var(--rounded-lg); position: relative; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19); }
 .content-wrapper .modal-header { padding-bottom: 15px; border-bottom: 1px solid var(--border-color); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
@@ -119,23 +105,6 @@ include $private_includes_path . 'admin_header.php';
 .content-wrapper .modal-body .detail-value { color: var(--gray-800); }
 .content-wrapper .modal-footer { padding-top: 15px; border-top: 1px solid var(--border-color); text-align: right; }
 .content-wrapper .modal-footer .btn { margin-left: 0.5rem; }
-.content-wrapper .form-group { margin-bottom: 1rem; }
-.content-wrapper .form-group label { display: block; margin-bottom: 0.5rem; font-weight: var(--font-medium); color: var(--gray-700); font-size: var(--font-size-sm); }
-.content-wrapper .form-group input[type="text"], .content-wrapper .form-group input[type="email"], .content-wrapper .form-group input[type="tel"], .content-wrapper .form-group input[type="password"] {
-    width: 100%;
-    padding: 0.6rem 0.8rem;
-    border: 1px solid var(--gray-300);
-    border-radius: var(--rounded-md);
-    font-size: var(--font-size-sm);
-    box-sizing: border-box;
-}
-.content-wrapper .form-group input:focus { outline: none; border-color: var(--primary-500); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
-.content-wrapper .form-group .checkbox-group { display: flex; align-items: center; gap: 0.5rem; }
-.content-wrapper .form-group .checkbox-group input[type="checkbox"] { margin: 0; }
-.content-wrapper #editUserForm .company-fields,
-.content-wrapper #createUserForm .company-fields { display: none; }
-.content-wrapper #editUserForm .company-fields.visible,
-.content-wrapper #createUserForm .company-fields.visible { display: block; }
 .content-wrapper #createUserForm .form-actions {
     display: flex;
     justify-content: flex-end;
@@ -173,7 +142,7 @@ include $private_includes_path . 'admin_sidebar.php';
     <div id="admin-user-management" class="content-section">
         <div class="header-actions">
              <h3>Quản lý người dùng (KH)</h3>
-            <?php if ($admin_role !== 'operator'): ?>
+            <?php if ($admin_role !== 'customercare'): ?>
                 <button class="btn btn-primary" onclick="openCreateUserModal()" data-permission="user_create">
                     <i class="fas fa-plus"></i> Thêm người dùng
                 </button>
@@ -226,7 +195,7 @@ include $private_includes_path . 'admin_sidebar.php';
                                 <td class="actions">
                                     <div class="action-buttons">
                                         <button class="btn-icon btn-view" title="Xem chi tiết" onclick="viewUserDetails('<?php echo htmlspecialchars($user['id']); ?>')"><i class="fas fa-eye"></i></button>
-                                        <?php if ($admin_role !== 'operator'): ?>
+                                        <?php if ($admin_role !== 'customercare'): ?>
                                             <button class="btn-icon btn-edit" title="Sửa" onclick="openEditUserModal('<?php echo htmlspecialchars($user['id']); ?>')" data-permission="user_edit"><i class="fas fa-pencil-alt"></i></button>
                                             <?php
                                                 $is_inactive = isset($user['deleted_at']) && $user['deleted_at'] !== null && $user['deleted_at'] !== '';

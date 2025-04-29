@@ -23,7 +23,7 @@ if (!$userId) {
 }
 
 try {
-    $database = new Database();
+    $database = Database::getInstance();
     $db = $database->getConnection();
     if (!$db) {
         throw new Exception('Database connection failed.');

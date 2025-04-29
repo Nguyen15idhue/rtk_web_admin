@@ -136,18 +136,18 @@ function get_account_action_buttons(array $account): string {
     switch ($status) {
         case 'active': // Is currently active (enabled=1, not expired, reg=active)
             // Button to Suspend (Set enabled=0)
-            $buttons .= '<button class="btn-icon btn-secondary" title="Đình chỉ (Disable)" onclick="toggleAccountStatus(\'' . $id . '\', \'suspend\', event)" data-permission="account_status_toggle"><i class="fas fa-ban"></i></button>';
+            $buttons .= '<button class="btn-icon btn-reject" title="Đình chỉ (Disable)" onclick="toggleAccountStatus(\'' . $id . '\', \'suspend\', event)" data-permission="account_status_toggle"><i class="fas fa-ban"></i></button>';
             break;
         case 'suspended': // Is currently suspended (enabled=0, reg=active)
             // Button to Reactivate (Set enabled=1)
-            $buttons .= '<button class="btn-icon btn-success" title="Kích hoạt lại (Enable)" onclick="toggleAccountStatus(\'' . $id . '\', \'reactivate\', event)" data-permission="account_status_toggle"><i class="fas fa-play-circle"></i></button>';
+            $buttons .= '<button class="btn-icon btn-approve" title="Kích hoạt lại (Enable)" onclick="toggleAccountStatus(\'' . $id . '\', \'reactivate\', event)" data-permission="account_status_toggle"><i class="fas fa-play-circle"></i></button>';
             break;
         case 'expired':
             break;
         case 'rejected':
             break;
         case 'pending':
-             $buttons .= '<button class="btn-icon btn-success" title="Kích hoạt lại (Enable)" onclick="toggleAccountStatus(\'' . $id . '\', \'reactivate\', event)" data-permission="account_status_toggle"><i class="fas fa-play-circle"></i></button>';
+             $buttons .= '<button class="btn-icon btn-approve" title="Kích hoạt lại (Enable)" onclick="toggleAccountStatus(\'' . $id . '\', \'reactivate\', event)" data-permission="account_status_toggle"><i class="fas fa-play-circle"></i></button>';
              break;
         case 'unknown':
             // Log error, maybe show delete button?

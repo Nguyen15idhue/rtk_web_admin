@@ -2,7 +2,7 @@
 session_start();
 header('Content-Type: application/json');
 // Only Super Admin can update permissions
-if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'superadmin') {
+if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
     $currentRole = $_SESSION['admin_role'] ?? '(none)';
     echo json_encode([
         'success'      => false,
@@ -21,14 +21,14 @@ if (!is_array($data) || empty($data['role']) || !is_array($data['permissions']))
     exit;
 }
 $role = $data['role'];
-$validRoles = ['admin','operator'];
+$validRoles = ['admin','customercare'];
 if (!in_array($role, $validRoles)) {
     echo json_encode(['success' => false, 'message' => 'Invalid role']);
     exit;
 }
 $permissions = $data['permissions'];
 try {
-    $db = new Database();
+    $db = Database::getInstance();
     $conn = $db->getConnection();
     $stmt = $conn->prepare('UPDATE role_permissions SET allowed = :allowed WHERE role = :role AND permission = :perm');
     foreach ($permissions as $perm => $allow) {

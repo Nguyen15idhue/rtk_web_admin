@@ -1,0 +1,95 @@
+/* Icon buttons */
+.content-wrapper .transactions-table td .btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.4rem;
+    font-size: 1.1rem;
+    line-height: 1;
+    border-radius: var(--rounded-full);
+    color: var(--gray-500);
+    transition: background-color var(--transition-speed) ease-in-out, color var(--transition-speed) ease-in-out;
+}
+
+/* Màu mặc định cho nút xem */
+.content-wrapper .transactions-table td .btn-view {
+    color: var(--info-600);
+}
+
+/* Màu mặc định cho nút sửa */
+.content-wrapper .transactions-table td .btn-edit {
+    color: var(--warning-600);
+}
+
+/* Màu mặc định cho nút xem minh chứng */
+.content-wrapper .transactions-table td .btn-view-proof {
+    color: var(--info-600);
+}
+
+/* Hover states */
+.content-wrapper .transactions-table td .btn-icon:hover {
+    background-color: var(--gray-100);
+    color: var(--gray-700);
+}
+.content-wrapper .transactions-table td .btn-view:hover {
+    color: var(--info-600);
+    background-color: rgba(14, 165, 233, 0.1);
+}
+.content-wrapper .transactions-table td .btn-edit:hover {
+    color: var(--warning-600);
+    background-color: rgba(245, 158, 11, 0.1);
+}
+.content-wrapper .transactions-table td .btn-view-proof:hover {
+    color: var(--info-600);
+    background-color: rgba(14, 165, 233, 0.1);
+}
+
+/* Toggle buttons */
+.content-wrapper .transactions-table td .btn-secondary i.fa-toggle-off {
+    color: var(--danger-600);
+}
+.content-wrapper .transactions-table td .btn-success i.fa-toggle-on {
+    color: var(--success-600);
+}
+.content-wrapper .transactions-table td .btn-secondary:hover i.fa-toggle-off {
+    color: var(--danger-700);
+    background-color: rgba(220, 38, 38, 0.1);
+}
+.content-wrapper .transactions-table td .btn-success:hover i.fa-toggle-on {
+    color: var(--success-700);
+    background-color: rgba(5, 150, 105, 0.1);
+}
+
+/* Additional action buttons */
+.content-wrapper .transactions-table td .btn-approve {
+    color: var(--success-600);
+}
+.content-wrapper .transactions-table td .btn-approve:hover {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success-700);
+}
+
+.content-wrapper .transactions-table td .btn-reject {
+    color: var(--danger-600);
+}
+.content-wrapper .transactions-table td .btn-reject:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger-700);
+}
+
+.content-wrapper .transactions-table td .btn-revert {
+    color: var(--warning-600);
+}
+.content-wrapper .transactions-table td .btn-revert:hover {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--warning-700);
+}
+
+/* Disabled button */
+.content-wrapper .transactions-table td .btn-disabled {
+    color: var(--gray-400);
+    cursor: not-allowed;
+}
+.content-wrapper .transactions-table td .btn-disabled:hover {
+    background-color: transparent;
+}

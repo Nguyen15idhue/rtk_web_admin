@@ -27,7 +27,7 @@ $admin_id = $_SESSION['admin_id'];
 $user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 
 // Fetch admin profile data
-$db = new Database();
+$db = Database::getInstance();
 $conn = $db->getConnection();
 $admin_profile = null;
 
@@ -59,75 +59,12 @@ $profile_role = $admin_profile['role'] ?? 'N/A';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hồ sơ Quản trị - Admin</title>
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/base.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/forms.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Copied styles from user_management.php */
-        :root {
-            --primary-500: #3b82f6; --primary-600: #2563eb; --primary-700: #1d4ed8;
-            --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-300: #d1d5db;
-            --gray-400: #9ca3af; --gray-500: #6b7280; --gray-600: #4b5563; --gray-700: #374151;
-            --gray-800: #1f2937; --gray-900: #111827;
-            --success-500: #10b981; --success-600: #059669; --success-700: #047857;
-            --danger-500: #ef4444; --danger-600: #dc2626; --danger-700: #b91c1c;
-            --warning-500: #f59e0b; --warning-600: #d97706;
-            --info-500: #0ea5e9; --info-600: #0284c7;
-            --badge-green-bg: #ecfdf5; --badge-green-text: #065f46;
-            --badge-red-bg: #fef2f2; --badge-red-text: #991b1b;
-            --badge-yellow-bg: #fffbeb; --badge-yellow-text: #b45309; --badge-yellow-border: #fde68a;
-            --rounded-md: 0.375rem; --rounded-lg: 0.5rem; --rounded-full: 9999px;
-            --font-size-xs: 0.75rem; --font-size-sm: 0.875rem; --font-size-base: 1rem; --font-size-lg: 1.125rem;
-            --font-medium: 500; --font-semibold: 600;
-            --border-color: var(--gray-200);
-            --transition-speed: 150ms;
-        }
-        body {
-            overflow-x: hidden;
-            font-family: sans-serif;
-            background-color: var(--gray-100);
-            color: var(--gray-800);
-        }
-        .content-wrapper {
-            flex-grow: 1;
-            width: 100%;
-            max-width: 1500px;
-            margin: 0 auto;
-            padding: 1.5rem 0;
-        }
-        .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding: 1rem 1.5rem; background: white; border-radius: var(--rounded-lg); box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
-        .content-header h2 { font-size: 1.5rem; font-weight: var(--font-semibold); color: var(--gray-800); }
-        .user-info { display: flex; align-items: center; gap: 1rem; font-size: var(--font-size-sm); }
-        .user-info span .highlight { color: var(--primary-600); font-weight: var(--font-semibold); }
-        .user-info a { color: var(--primary-600); text-decoration: none; }
-        .user-info a:hover { text-decoration: underline; }
-        .content-section { background: white; border-radius: var(--rounded-lg); padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
-        .content-section h3 { font-size: var(--font-size-lg); font-weight: var(--font-semibold); color: var(--gray-700); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: var(--font-medium); color: var(--gray-700); font-size: var(--font-size-sm); }
-        .form-group input[type="text"], .form-group input[type="email"], .form-group input[type="tel"], .form-group input[type="password"] {
-            width: 100%;
-            padding: 0.6rem 0.8rem;
-            border: 1px solid var(--gray-300);
-            border-radius: var(--rounded-md);
-            font-size: var(--font-size-sm);
-            box-sizing: border-box; /* Include padding and border in the element's total width and height */
-        }
-        .form-group input:focus { outline: none; border-color: var(--primary-500); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
-        .form-group input:disabled, .form-group input[readonly] {
-            background-color: var(--gray-100);
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-        .form-group .text-xs { font-size: var(--font-size-xs); color: var(--gray-500); margin-top: 0.25rem; }
-        .status-message {
-            margin-left: 1rem;
-            font-size: var(--font-size-sm);
-            font-weight: var(--font-medium);
-        }
-        .status-success { color: var(--success-600); }
-        .status-error { color: var(--danger-600); }
-        .status-loading { color: var(--info-600); }
         .grid { display: grid; }
         .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
         .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } /* Adjust breakpoint if needed */

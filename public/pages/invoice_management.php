@@ -19,6 +19,13 @@ require_once __DIR__ . '/../../private/classes/Database.php';
 require_once __DIR__ . '/../../private/utils/functions.php';
 require_once __DIR__ . '/../../private/actions/invoice/fetch_transactions.php';
 
+// --- LẤY DỮ LIỆU CHO FILTERS MỚI ---
+$db = Database::getInstance()->getConnection();
+$packages_stmt = $db->query("SELECT id, name FROM package WHERE is_active=1 ORDER BY display_order");
+$packages = $packages_stmt->fetchAll(PDO::FETCH_ASSOC);
+$provinces_stmt = $db->query("SELECT province FROM location WHERE status=1 ORDER BY province");
+$provinces = $provinces_stmt->fetchAll(PDO::FETCH_COLUMN);
+
 // --- Define the correct base URL for the image host ---
 // !!! IMPORTANT: Replace this with the actual URL where your images are hosted !!!
 define('IMAGE_HOST_BASE_URL', 'http://localhost:8000/'); // Example URL
@@ -28,10 +35,12 @@ $user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 $current_page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $items_per_page = 15;
 $filters = [
-    'search' => trim($_GET['search'] ?? ''),
-    'status' => trim($_GET['status'] ?? ''),
+    'search'    => trim($_GET['search']    ?? ''),
+    'status'    => trim($_GET['status']    ?? ''),
     'date_from' => trim($_GET['date_from'] ?? ''),
-    'date_to' => trim($_GET['date_to'] ?? ''),
+    'date_to'   => trim($_GET['date_to']   ?? ''),
+    'package_id'=> trim($_GET['package_id']?? ''),
+    'province'  => trim($_GET['province']  ?? ''),
 ];
 
 $transaction_data = fetch_admin_transactions($filters, $current_page, $items_per_page);
@@ -51,46 +60,11 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
     <title>Quản lý Giao dịch - Admin</title>
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/base.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
     <style>
-        :root {
-            --primary-500: #3b82f6; --primary-600: #2563eb; --primary-700: #1d4ed8;
-            --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-300: #d1d5db;
-            --gray-400: #9ca3af; --gray-500: #6b7280; --gray-600: #4b5563; --gray-700: #374151;
-            --gray-800: #1f2937; --gray-900: #111827;
-            --success-500: #10b981; --success-600: #059669;
-            --danger-500: #ef4444; --danger-600: #dc2626;
-            --warning-500: #f59e0b;
-            --info-600: #0ea5e9;
-            --badge-green-bg: #ecfdf5; --badge-green-text: #065f46;
-            --badge-red-bg: #fef2f2; --badge-red-text: #991b1b;
-            --badge-yellow-bg: #fffbeb; --badge-yellow-text: #b45309; --badge-yellow-border: #fde68a;
-            --rounded-md: 0.375rem; --rounded-lg: 0.5rem; --rounded-full: 9999px;
-            --font-size-xs: 0.75rem; --font-size-sm: 0.875rem; --font-size-base: 1rem; --font-size-lg: 1.125rem;
-            --font-medium: 500; --font-semibold: 600;
-            --border-color: var(--gray-200);
-        }
-        body { font-family: sans-serif; background-color: var(--gray-100); color: var(--gray-800); }
-        .content-wrapper { flex-grow: 1; padding: 1.5rem; }
-        .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding: 1rem 1.5rem; background: white; border-radius: var(--rounded-lg); box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
-        .content-header h2 { font-size: 1.5rem; font-weight: var(--font-semibold); color: var(--gray-800); }
-        .user-info { display: flex; align-items: center; gap: 1rem; font-size: var(--font-size-sm); }
-        .user-info span .highlight { color: var(--primary-600); font-weight: var(--font-semibold); }
-        .user-info a { color: var(--primary-600); text-decoration: none; }
-        .user-info a:hover { text-decoration: underline; }
-        .content-section { background: white; border-radius: var(--rounded-lg); padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
-        .content-section h3 { font-size: var(--font-size-lg); font-weight: var(--font-semibold); color: var(--gray-700); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem; }
-        .filter-bar { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; }
-        .filter-bar input, .filter-bar select { padding: 0.6rem 0.8rem; border: 1px solid var(--gray-300); border-radius: var(--rounded-md); font-size: var(--font-size-sm); }
-        .filter-bar input:focus, .filter-bar select:focus { outline: none; border-color: var(--primary-500); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
-        .filter-bar button, .filter-bar a.btn-secondary { padding: 0.6rem 1rem; font-size: var(--font-size-sm); }
-
-        /* Invoice‑specific status‑badge colors */
-        .status-approved { background: var(--badge-green-bg); color: var(--badge-green-text); border-color: #a7f3d0; }
-        .status-pending  { background: var(--badge-yellow-bg); color: var(--badge-yellow-text); border-color: var(--badge-yellow-border); }
-        .status-rejected { background: var(--badge-red-bg); color: var(--badge-red-text);    border-color: #fecaca; }
-        .status-unknown  { background: var(--gray-100);     color: var(--gray-500);         border-color: var(--gray-300); }
-
         /* Modal styling */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
@@ -128,17 +102,41 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
 
             <form method="GET" action="">
                 <div class="filter-bar">
-                    <input type="search" placeholder="Tìm Mã GD, Email, Tên gói..." id="searchInput" name="search" value="<?php echo htmlspecialchars($filters['search']); ?>">
+                    <!-- 1. Date range first -->
+                    <input type="date" id="dateFrom" name="date_from" value="<?php echo htmlspecialchars($filters['date_from']); ?>" title="Từ ngày">
+                    <input type="date" id="dateTo" name="date_to" value="<?php echo htmlspecialchars($filters['date_to']); ?>" title="Đến ngày">
+                    <!-- 2. Status filter -->
                     <select id="statusFilter" name="status">
                         <option value="" <?php echo ($filters['status'] == '') ? 'selected' : ''; ?>>Tất cả trạng thái</option>
                         <option value="pending" <?php echo ($filters['status'] == 'pending') ? 'selected' : ''; ?>>Chờ duyệt</option>
-                        <option value="approved" <?php echo ($filters['status'] == 'approved') ? 'selected' : ''; ?>>Đã duyệt</option>
+                        <option value="active" <?php echo ($filters['status'] == 'active') ? 'selected' : ''; ?>>Đã duyệt</option>
                         <option value="rejected" <?php echo ($filters['status'] == 'rejected') ? 'selected' : ''; ?>>Bị từ chối</option>
                     </select>
-                    <input type="date" id="dateFrom" name="date_from" value="<?php echo htmlspecialchars($filters['date_from']); ?>" title="Từ ngày">
-                    <input type="date" id="dateTo" name="date_to" value="<?php echo htmlspecialchars($filters['date_to']); ?>" title="Đến ngày">
+                    <!-- 3. Package filter -->
+                    <select id="packageFilter" name="package_id">
+                        <option value="" <?php echo ($filters['package_id'] === '') ? 'selected' : ''; ?>>Tất cả Gói</option>
+                        <?php foreach($packages as $pkg): ?>
+                            <option value="<?php echo $pkg['id']; ?>" <?php echo ($filters['package_id'] == $pkg['id']) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($pkg['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <!-- 4. Province filter -->
+                    <select id="provinceFilter" name="province">
+                        <option value="" <?php echo ($filters['province'] === '') ? 'selected' : ''; ?>>Tất cả Tỉnh</option>
+                        <?php foreach($provinces as $prov): ?>
+                            <option value="<?php echo htmlspecialchars($prov); ?>" <?php echo ($filters['province'] == $prov) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($prov); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <!-- 5. Search input last -->
+                    <input type="search" placeholder="Tìm Mã GD, Email..." id="searchInput" name="search" value="<?php echo htmlspecialchars($filters['search']); ?>">
+                    <!-- buttons -->
                     <button class="btn btn-primary" type="submit"><i class="fas fa-filter"></i> Lọc</button>
-                    <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary" style="text-decoration: none;"><i class="fas fa-times"></i> Xóa lọc</a>
+                    <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary" style="text-decoration: none;">
+                        <i class="fas fa-times"></i> Xóa lọc
+                    </a>
                 </div>
             </form>
 

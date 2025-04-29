@@ -3,7 +3,7 @@ session_start();
 header('Content-Type: application/json');
 
 // Chỉ SuperAdmin được phép
-if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'superadmin') {
+if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'admin') {
     echo json_encode(['success' => false, 'message' => 'Không có quyền thực hiện hành động này.']);
     exit;
 }
@@ -11,7 +11,7 @@ if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'superadmin')
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../classes/Database.php';
 
-$db = (new Database())->getConnection();
+$db = (Database::getInstance())->getConnection();
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $input = json_decode(file_get_contents('php://input'), true);
 
@@ -21,7 +21,7 @@ $name     = trim($input['name'] ?? '');
 $password = $input['password'] ?? '';
 $role     = $input['role'] ?? '';
 
-if (!$id || !$name || !in_array($role, ['admin','operator'])) {
+if (!$id || !$name || !in_array($role, ['admin','customercare'])) {
     echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ.']);
     exit;
 }

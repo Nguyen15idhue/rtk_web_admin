@@ -22,7 +22,7 @@ require_once __DIR__ . '/../../classes/Database.php';
 
 $conn = null; // Initialize $conn to null
 try {
-    $db = new Database();
+    $db = Database::getInstance();;
     $conn = $db->getConnection();
     // Optional: Log successful connection for debugging
     // error_log("Database connection successful in process_user_create.php");

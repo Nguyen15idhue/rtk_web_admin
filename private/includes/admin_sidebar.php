@@ -8,10 +8,12 @@ $admin_nav_items = [
     ['label' => 'Dashboard', 'icon' => 'fa-tachometer-alt', 'url' => '/public/pages/dashboard.php', 'active_check' => 'dashboard.php', 'permission' => 'dashboard'],
     ['label' => 'QL người dùng', 'icon' => 'fa-users', 'url' => '/public/pages/user_management.php', 'active_check' => 'user_management.php', 'permission' => 'user_management'],
     ['label' => 'QL TK đo đạc', 'icon' => 'fa-ruler-combined', 'url' => '/public/pages/account_management.php', 'active_check' => 'account_management.php', 'permission' => 'account_management'],
-    ['label' => 'QL hóa đơn/GD', 'icon' => 'fa-file-invoice-dollar', 'url' => '/public/pages/invoice_management.php', 'active_check' => 'invoice_management.php', 'permission' => 'invoice_management'],
+    ['label' => 'QL giao dịch', 'icon' => 'fa-file-invoice-dollar', 'url' => '/public/pages/invoice_management.php', 'active_check' => 'invoice_management.php', 'permission' => 'invoice_management'],
     ['label' => 'QL doanh thu', 'icon' => 'fa-dollar-sign', 'url' => '/public/pages/revenue_management.php', 'active_check' => 'revenue_management.php', 'permission' => 'revenue_management'],
     ['label' => 'QL người giới thiệu', 'icon' => 'fa-network-wired', 'url' => '/public/pages/referral_management.php', 'active_check' => 'referral_management.php', 'permission' => 'referral_management'],
     ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => '/public/pages/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports'],
+    ['label' => 'QL hướng dẫn', 'icon' => 'fa-book', 'url' => '/public/pages/guide_management.php', 'active_check' => 'guide_management.php', 'permission' => 'guide_management'],
+    ['label' => 'Phê duyệt hóa đơn', 'icon' => 'fa-file-invoice', 'url' => '/public/pages/invoice_review.php', 'active_check' => 'invoice_review.php', 'permission' => 'invoice_review'],
     ['label' => 'QL phân quyền', 'icon' => 'fa-user-lock', 'url' => '/public/pages/permission_management.php', 'active_check' => 'permission_management.php', 'permission' => 'permission_management'],
     ['type' => 'section', 'label' => 'Cài đặt'],
     ['label' => 'Thông tin tài khoản', 'icon' => 'fa-id-card', 'url' => '/public/pages/profile.php', 'active_check' => 'profile.php', 'permission' => 'settings'],
@@ -20,8 +22,10 @@ $admin_nav_items = [
 
 // Load DB and fetch allowed permissions for current role
 require_once __DIR__ . '/../classes/Database.php';
-$db = new Database();
-$pdo = $db->connect();
+// Replace direct constructor call with singleton
+$db  = Database::getInstance();
+$pdo = $db->getConnection();
+
 $role = isset($_SESSION['admin_role']) ? strtolower($_SESSION['admin_role']) : '';
 $allowed_perms = [];
 if ($pdo && $role) {

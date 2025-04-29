@@ -30,10 +30,7 @@ $packagesStmt = $db->query("SELECT id, name FROM package WHERE is_active = 1 ORD
 $packages = $packagesStmt->fetchAll(PDO::FETCH_ASSOC);
 
 // --- Include Helpers needed for the View ---
-// dashboard_helpers contains functions like get_account_status_badge, get_account_action_buttons
 require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
-// functions.php was included in bootstrap, but ensure format_date is available
-// If format_date is in functions.php, it's already included.
 
 ?>
 <!DOCTYPE html>
@@ -44,62 +41,13 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
     <title>Quản lý TK Đo đạc - Admin</title>
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/base.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/forms.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary-500: #3b82f6; --primary-600: #2563eb; --primary-700: #1d4ed8;
-            --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-300: #d1d5db;
-            --gray-400: #9ca3af; --gray-500: #6b7280; --gray-600: #4b5563; --gray-700: #374151;
-            --gray-800: #1f2937; --gray-900: #111827;
-            --success-500: #10b981; --success-600: #059669; --success-700: #047857;
-            --danger-500: #ef4444; --danger-600: #dc2626; --danger-700: #b91c1c;
-            --warning-500: #f59e0b; --warning-600: #d97706;
-            --info-500: #0ea5e9; --info-600: #0284c7;
-            --badge-green-bg: #ecfdf5; --badge-green-text: #065f46;
-            --badge-red-bg: #fef2f2; --badge-red-text: #991b1b;
-            --badge-yellow-bg: #fffbeb; --badge-yellow-text: #b45309; --badge-yellow-border: #fde68a;
-            --badge-gray-bg: #f3f4f6; --badge-gray-text: #374151; --badge-gray-border: #d1d5db;
-            --rounded-md: 0.375rem; --rounded-lg: 0.5rem; --rounded-full: 9999px;
-            --font-size-xs: 0.75rem; --font-size-sm: 0.875rem; --font-size-base: 1rem; --font-size-lg: 1.125rem;
-            --font-medium: 500; --font-semibold: 600;
-            --border-color: var(--gray-200);
-            --transition-speed: 150ms;
-        }
-        body { font-family: sans-serif; background-color: var(--gray-100); color: var(--gray-800); }
-        .content-wrapper { flex-grow: 1; padding: 1.5rem; }
-        .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding: 1rem 1.5rem; background: white; border-radius: var(--rounded-lg); box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
-        .content-header h2 { font-size: 1.5rem; font-weight: var(--font-semibold); color: var(--gray-800); }
-        .user-info { display: flex; align-items: center; gap: 1rem; font-size: var(--font-size-sm); }
-        .user-info span .highlight { color: var(--primary-600); font-weight: var(--font-semibold); }
-        .user-info a { color: var(--primary-600); text-decoration: none; }
-        .user-info a:hover { text-decoration: underline; }
-        .content-section { background: white; border-radius: var(--rounded-lg); padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
-        .content-section h3 { font-size: var(--font-size-lg); font-weight: var(--font-semibold); color: var(--gray-700); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem; }
-        .filter-bar { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; }
-        .filter-bar input, .filter-bar select { padding: 0.6rem 0.8rem; border: 1px solid var(--gray-300); border-radius: var(--rounded-md); font-size: var(--font-size-sm); }
-        .filter-bar input:focus, .filter-bar select:focus { outline: none; border-color: var(--primary-500); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
-        .filter-bar button, .filter-bar a.btn-secondary { padding: 0.6rem 1rem; font-size: var(--font-size-sm); }
-        /* button styles moved to components/buttons.css */
-        .status-badge { padding: 0.3rem 0.8rem; border-radius: var(--rounded-full); font-size: 0.8rem; display: inline-block; font-weight: var(--font-medium); text-align: center; min-width: 90px; border: 1px solid transparent; }
-        .status-badge.badge-green { background-color: var(--badge-green-bg); color: var(--badge-green-text); border-color: var(--success-500); }
-        .status-badge.badge-yellow { background-color: var(--badge-yellow-bg); color: var(--badge-yellow-text); border-color: var(--badge-yellow-border); }
-        .status-badge.badge-red { background-color: var(--badge-red-bg); color: var(--badge-red-text); border-color: var(--danger-500); }
-        .status-badge.badge-gray { background-color: var(--badge-gray-bg); color: var(--badge-gray-text); border-color: var(--badge-gray-border); }
-
-        .pagination-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: var(--font-size-sm); color: var(--gray-600); }
-        .pagination-controls { display: flex; gap: 0.3rem; }
-        .pagination-controls button, .pagination-controls span { padding: 0.4rem 0.8rem; border: 1px solid var(--gray-300); background-color: #fff; border-radius: var(--rounded-md); font-size: var(--font-size-sm); display: inline-flex; align-items: center; justify-content: center; min-width: 32px; }
-        .pagination-controls button { cursor: pointer; }
-        .pagination-controls button:disabled { background-color: var(--gray-100); color: var(--gray-400); cursor: not-allowed; }
-        .pagination-controls button.active { background-color: var(--primary-500); color: #fff; border-color: var(--primary-500); font-weight: bold; }
-        .pagination-controls span { background-color: transparent; border: none; color: var(--gray-500); }
-
-        #no-results-row td { text-align: center; padding: 3rem; color: var(--gray-500); font-size: var(--font-size-base); }
-        .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
-        .header-actions h3 { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
-        .header-actions .btn-primary { font-size: var(--font-size-sm); }
-
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
         .modal-content { background-color: #fefefe; margin: 2% auto; padding: 25px; border: 1px solid #888; width: 80%; max-width: 600px; border-radius: var(--rounded-lg); position: relative; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19); }
         .modal-header { padding-bottom: 15px; border-bottom: 1px solid var(--border-color); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
@@ -112,28 +60,6 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
         .modal-body .detail-value { color: var(--gray-800); white-space: pre-wrap; word-break: break-word; }
         .modal-footer { padding-top: 15px; border-top: 1px solid var(--border-color); text-align: right; }
         .modal-footer .btn { margin-left: 0.5rem; }
-
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: var(--font-medium); color: var(--gray-700); font-size: var(--font-size-sm); }
-        .form-group input[type="text"],
-        .form-group input[type="email"],
-        .form-group input[type="password"],
-        .form-group input[type="date"],
-        .form-group select {
-            width: 100%;
-            padding: 0.6rem 0.8rem;
-            border: 1px solid var(--gray-300);
-            border-radius: var(--rounded-md);
-            font-size: var(--font-size-sm);
-            box-sizing: border-box;
-        }
-        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary-500); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
-        .form-group .error-message {
-            color: var(--danger-600);
-            font-size: var(--font-size-sm);
-            margin-top: 0.5rem;
-            text-align: left;
-        }
 
         /* Toast styles */
         #toast-container {
@@ -168,12 +94,6 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
         .toast-warning { background-color: var(--warning-500); color: var(--gray-900); }
         .toast-info { background-color: var(--info-500); }
 
-        /* highlight readonly field and indicate non-editable */
-        .form-group input[readonly] {
-            background-color: var(--gray-200);
-            color: var(--gray-500);
-            cursor: not-allowed;
-        }
     </style>
 </head>
 <body>
@@ -208,13 +128,12 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
                     <input type="search" placeholder="Tìm ID TK, Username, Email..." name="search" value="<?php echo htmlspecialchars($filters['search'] ?? ''); ?>">
                     <select name="package">
                         <option value="">Tất cả gói</option>
-                        <?php
-                        $package_options = ["Gói 1 Tháng", "Gói 3 Tháng", "Gói 6 Tháng", "Gói 1 Năm", "Gói Vĩnh Viễn"];
-                        foreach ($package_options as $pkg_name) {
-                            $selected = (($filters['package'] ?? '') == $pkg_name) ? 'selected' : '';
-                            echo "<option value=\"" . htmlspecialchars($pkg_name) . "\" $selected>" . htmlspecialchars($pkg_name) . "</option>";
-                        }
-                        ?>
+                        <?php foreach ($packages as $pkg): ?>
+                            <option value="<?php echo htmlspecialchars($pkg['id']); ?>"
+                                <?php echo (isset($filters['package']) && $filters['package'] == $pkg['id']) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($pkg['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                     <select name="status">
                         <option value="">Tất cả trạng thái</option>
@@ -395,7 +314,11 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
                         <option value="suspended">Đình chỉ</option>
                     </select>
                 </div>
-                 <div class="form-group error-message" id="createAccountError"></div>
+                <div class="form-group">
+                    <label for="create-account-count">Số lượng TK:</label>
+                    <input type="number" id="create-account-count" name="account_count" min="1" value="1">
+                </div>
+                <div class="form-group error-message" id="createAccountError"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="closeModal('createAccountModal')">Hủy</button>

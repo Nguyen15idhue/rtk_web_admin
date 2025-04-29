@@ -3,7 +3,7 @@ session_start();
 header('Content-Type: application/json');
 
 // Check SuperAdmin
-if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'superadmin') {
+if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'admin') {
     echo json_encode(['success' => false, 'message' => 'Không có quyền.']);
     exit;
 }
@@ -19,7 +19,7 @@ if (!$id || !is_numeric($id)) {
 // DB connection
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../classes/Database.php';
-$db = (new Database())->getConnection();
+$db = (Database::getInstance())->getConnection();
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 try {

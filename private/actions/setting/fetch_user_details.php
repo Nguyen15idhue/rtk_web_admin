@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../classes/Database.php'; // Go up two levels to 'pr
 header('Content-Type: application/json');
 
 // Authorization Check (Admin only)
-if (!isset($_SESSION['admin_id']) || !in_array($_SESSION['admin_role'] ?? '', ['superadmin', 'admin', 'operator'])) {
+if (!isset($_SESSION['admin_id']) || !in_array($_SESSION['admin_role'] ?? '', ['admin', 'admin', 'customercare'])) {
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Unauthorized access.']);
     exit;
@@ -21,7 +21,7 @@ if (!isset($_GET['user_id']) || !filter_var($_GET['user_id'], FILTER_VALIDATE_IN
 
 $user_id = (int)$_GET['user_id'];
 
-$db = new Database();
+$db = Database::getInstance();
 $conn = $db->getConnection();
 
 if (!$conn) {
