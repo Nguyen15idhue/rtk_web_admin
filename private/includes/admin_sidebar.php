@@ -28,15 +28,34 @@ $pdo = $db->getConnection();
 
 $role = isset($_SESSION['admin_role']) ? strtolower($_SESSION['admin_role']) : '';
 $allowed_perms = [];
-if ($pdo && $role) {
-    $stmt = $pdo->prepare('SELECT permission FROM role_permissions WHERE role=? AND allowed=1');
-    $stmt->execute([$role]);
-    $allowed_perms = $stmt->fetchAll(PDO::FETCH_COLUMN);
+$admin_db_name = 'Admin'; // Default name
+
+if ($pdo && $role && isset($_SESSION['admin_username'])) {
+    // Fetch allowed permissions
+    $stmt_perms = $pdo->prepare('SELECT permission FROM role_permissions WHERE role=? AND allowed=1');
+    $stmt_perms->execute([$role]);
+    $allowed_perms = $stmt_perms->fetchAll(PDO::FETCH_COLUMN);
+
+    // Fetch user's name from admin table
+    $stmt_name = $pdo->prepare('SELECT name FROM admin WHERE admin_username = ?');
+    $stmt_name->execute([$_SESSION['admin_username']]);
+    $admin_name_result = $stmt_name->fetch(PDO::FETCH_ASSOC);
+    if ($admin_name_result && isset($admin_name_result['name'])) {
+        $admin_db_name = htmlspecialchars($admin_name_result['name']);
+    }
 }
 
-// Placeholder for admin user info (replace with actual session/database data if available)
-$admin_user_name = isset($_SESSION['admin_username']) ? htmlspecialchars($_SESSION['admin_username']) : 'Admin';
-$admin_user_role = isset($_SESSION['admin_role']) ? ucfirst(htmlspecialchars($_SESSION['admin_role'])) : 'Administrator';
+// Vietnamese role mapping
+$role_vietnamese = [
+    'admin' => 'Quản trị viên',
+    'customercare' => 'Chăm sóc khách hàng',
+    // Add other roles here if needed
+];
+
+// Use the name fetched from DB
+$admin_user_name = $admin_db_name;
+// Use Vietnamese role name if available, otherwise fallback to capitalized English role
+$admin_user_role = isset($role_vietnamese[$role]) ? $role_vietnamese[$role] : ucfirst(htmlspecialchars($role));
 ?>
 <!-- Hamburger button (Positioned fixed via CSS) -->
 <button id="hamburger-btn" class="hamburger-btn" onclick="toggleSidebar()">

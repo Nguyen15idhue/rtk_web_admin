@@ -218,8 +218,8 @@ if ($dbConn) {
                 <div class="form-group">
                     <label for="editAdminRole">Vai trò:</label>
                     <select id="editAdminRole" name="role" required class="w-full form-input">
-                        <option value="admin">Admin</option>
-                        <option value="customercare">Customer Care</option>
+                        <option value="admin">Quản trị viên</option>
+                        <option value="customercare">Chăm sóc khách hàng</option>
                     </select>
                 </div>
             </div>

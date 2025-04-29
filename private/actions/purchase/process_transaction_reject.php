@@ -22,6 +22,8 @@ require_once __DIR__ . '/../../classes/Database.php';
 // require_once __DIR__ . '/../../utils/logger.php'; // Example: For logging actions
 // require_once __DIR__ . '/../../utils/permissions.php'; // Example: For permission checks
 require_once __DIR__ . '/../../services/TransactionHistoryService.php'; // Service to manage transaction history
+require_once __DIR__ . '/../../api/rtk_system/account_api.php'; // Added for RTK API
+require_once __DIR__ . '/../../utils/functions.php';           // Added for getMountPointsByLocationId
 
 // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -66,7 +68,11 @@ $db->beginTransaction();
 
 try {
     // 1. Verify Transaction Exists and is Pending or Active (Allow rejecting approved)
-    $stmt_check = $db->prepare("SELECT status, user_id FROM registration WHERE id = :id AND deleted_at IS NULL FOR UPDATE"); // Lock row
+    $stmt_check = $db->prepare("
+        SELECT r.status, r.user_id, r.location_id, r.start_time, r.end_time
+        FROM registration r
+        WHERE r.id = :id AND r.deleted_at IS NULL FOR UPDATE
+    "); // Lock row, fetch location_id, start/end times
     $stmt_check->bindParam(':id', $transaction_id, PDO::PARAM_INT);
     $stmt_check->execute();
     $registration = $stmt_check->fetch(PDO::FETCH_ASSOC);
@@ -79,6 +85,20 @@ try {
          throw new Exception("Transaction cannot be rejected (Current Status: " . $registration['status'] . "). Only pending or active transactions can be rejected.");
     }
     $old_status = $registration['status']; // Store old status for logging
+
+    // --- Fetch associated survey accounts BEFORE updates (needed if rejecting an 'active' transaction) ---
+    $accounts = [];
+    if ($old_status === 'active') {
+        $stmt_accounts = $db->prepare("
+            SELECT id, username_acc, password_acc, concurrent_user, customerBizType
+            FROM survey_account
+            WHERE registration_id = :reg_id AND deleted_at IS NULL
+        ");
+        $stmt_accounts->bindParam(':reg_id', $transaction_id, PDO::PARAM_INT);
+        $stmt_accounts->execute();
+        $accounts = $stmt_accounts->fetchAll(PDO::FETCH_ASSOC);
+    }
+    // --- End Fetch ---
 
     // 2. Update Registration Status and Add Rejection Reason
     $sql_update = "UPDATE registration SET status = 'rejected', rejection_reason = :reason, updated_at = NOW() WHERE id = :id";
@@ -93,7 +113,7 @@ try {
 
     // 3. If it was previously active, handle deactivation steps (like revert)
     if ($old_status === 'active') {
-        // Deactivate Survey Account(s)
+        // Deactivate Survey Account(s) in DB
         $stmt_deactivate_acc = $db->prepare("UPDATE survey_account SET enabled = 0, updated_at = NOW() WHERE registration_id = :id AND deleted_at IS NULL");
         $stmt_deactivate_acc->bindParam(':id', $transaction_id, PDO::PARAM_INT);
         $stmt_deactivate_acc->execute(); // Proceed even if no accounts found
@@ -102,15 +122,42 @@ try {
         $stmt_unconfirm_pay = $db->prepare("UPDATE payment SET confirmed = 0, confirmed_at = NULL, updated_at = NOW() WHERE registration_id = :id");
         $stmt_unconfirm_pay->bindParam(':id', $transaction_id, PDO::PARAM_INT);
         $stmt_unconfirm_pay->execute();
+
+        // --- New: Call RTK API to disable accounts ---
+        if (!empty($accounts)) {
+            $locationId = $registration['location_id'];
+            $mountIds = getMountPointsByLocationId($locationId); // Get mount points
+
+            foreach ($accounts as $account) {
+                $apiPayload = [
+                    'id'              => $account['id'],
+                    'name'            => $account['username_acc'],
+                    'userPwd'         => $account['password_acc'], // Assuming password doesn't change
+                    'startTime'       => strtotime($registration['start_time']) * 1000, // Use original times
+                    'endTime'         => strtotime($registration['end_time']) * 1000,
+                    'enabled'         => 0, // <<< Set to disabled
+                    'numOnline'       => $account['concurrent_user'] ?? 1,
+                    'customerBizType' => $account['customerBizType'] ?? 1,
+                    'mountIds'        => $mountIds,
+                    // Other fields like userId, customerName etc., might be needed if API requires them
+                ];
+                error_log("[Reject Transaction {$transaction_id}] Calling RTK API for account {$account['id']} with payload: " . json_encode($apiPayload));
+                $apiResult = updateRtkAccount($apiPayload);
+                error_log("[Reject Transaction {$transaction_id}] RTK API response for account {$account['id']}: " . json_encode($apiResult));
+
+                if (!$apiResult['success']) {
+                    // Throw exception to rollback DB changes if API fails
+                    throw new Exception("Failed to disable account {$account['id']} via RTK API during rejection: " . ($apiResult['error'] ?? 'Unknown API error'));
+                }
+            }
+        } else {
+             error_log("[Reject Transaction {$transaction_id}] No associated survey accounts found to disable via API (was active).");
+        }
+        // --- End RTK API Call ---
     }
 
     // 4. Update Transaction History
-    // Use a service or direct update
     TransactionHistoryService::updateStatusByRegistrationId($db, $transaction_id, 'failed');
-    // Example direct update:
-    // $stmt_update_th = $db->prepare("UPDATE transaction_history SET status = 'failed', updated_at = NOW() WHERE registration_id = :id AND (status = 'pending' OR status = 'completed')"); // Update if pending or completed
-    // $stmt_update_th->bindParam(':id', $transaction_id, PDO::PARAM_INT);
-    // $stmt_update_th->execute();
 
     // 5. Log Activity
     // log_admin_activity($_SESSION['admin_id'], 'reject_transaction', 'registration', $transaction_id, ['old_status' => $old_status], ['new_status' => 'rejected', 'reason' => $reason]); // Example
@@ -119,7 +166,11 @@ try {
 
     // --- Commit Transaction ---
     $db->commit();
-    echo json_encode(['success' => true, 'message' => 'Transaction #' . $transaction_id . ' rejected successfully.']);
+    $message = 'Transaction #' . $transaction_id . ' rejected successfully.';
+    if ($old_status === 'active') {
+        $message .= ' Associated accounts disabled.';
+    }
+    echo json_encode(['success' => true, 'message' => $message]);
 
 } catch (Exception $e) {
     $db->rollBack();
