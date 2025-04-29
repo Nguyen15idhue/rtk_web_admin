@@ -45,7 +45,6 @@ $private_includes_path = __DIR__ . '/../../private/includes/';
         .status-pending { color: #f59e0b; }
         .status-approved { color: #10b981; }
         .status-rejected { color: #ef4444; }
-        .actions button { margin-right: .5rem; }
     </style>
 </head>
 <body>
@@ -103,22 +102,6 @@ $private_includes_path = __DIR__ . '/../../private/includes/';
         </div>
     </div>
 </main>
-<script>
-function rejectInvoice(id) {
-    const reason = prompt('Nhập lý do từ chối:');
-    if (!reason) return;
-    fetch('../../private/actions/invoice/process_invoice_reject.php', {
-        method: 'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({invoice_id:id, reason:reason.trim()})
-    }).then(r=>r.json()).then(data=>{
-        if (data.success) {
-            const row=document.querySelector('tr[data-id="'+id+'"]');
-            row.querySelector('td:nth-child(6)').textContent='Rejected';
-            row.querySelector('td:nth-child(8)').textContent=reason;
-            row.querySelector('td:nth-child(9)').innerHTML='<span>Đã từ chối</span>';
-        } else alert('Lỗi: '+(data.message||''));
-    });
-}
-</script>
+<script src="<?php echo $base_path; ?>public/assets/js/pages/invoice_requests/invoice_review.js"></script>
 </body>
 </html>

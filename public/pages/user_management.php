@@ -90,37 +90,8 @@ include $private_includes_path . 'admin_header.php';
 <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
 <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/forms.css">
 <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
-
-<!-- Page Specific Styles -->
-<style>
-.content-wrapper .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
-.content-wrapper .modal-content { background-color: #fefefe; margin: 10% auto; padding: 25px; border: 1px solid #888; width: 80%; max-width: 600px; border-radius: var(--rounded-lg); position: relative; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19); }
-.content-wrapper .modal-header { padding-bottom: 15px; border-bottom: 1px solid var(--border-color); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-.content-wrapper .modal-header h4 { margin: 0; font-size: 1.25rem; font-weight: var(--font-semibold); color: var(--gray-800); }
-.content-wrapper .modal-close { color: var(--gray-400); font-size: 1.5rem; font-weight: bold; cursor: pointer; border: none; background: none; line-height: 1; padding: 0.5rem; border-radius: var(--rounded-full); transition: color var(--transition-speed) ease-in-out, background-color var(--transition-speed) ease-in-out; }
-.content-wrapper .modal-close:hover, .content-wrapper .modal-close:focus { color: var(--gray-700); background-color: var(--gray-100); text-decoration: none; outline: none; }
-.content-wrapper .modal-body { margin-bottom: 20px; }
-.content-wrapper .modal-body .detail-row { display: flex; margin-bottom: 10px; font-size: var(--font-size-sm); }
-.content-wrapper .modal-body .detail-label { font-weight: var(--font-semibold); color: var(--gray-600); width: 150px; flex-shrink: 0; }
-.content-wrapper .modal-body .detail-value { color: var(--gray-800); }
-.content-wrapper .modal-footer { padding-top: 15px; border-top: 1px solid var(--border-color); text-align: right; }
-.content-wrapper .modal-footer .btn { margin-left: 0.5rem; }
-.content-wrapper #createUserForm .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
-}
-.content-wrapper #createUserForm .error-message {
-    color: var(--danger-600);
-    font-size: var(--font-size-sm);
-    margin-top: 1rem;
-    text-align: left;
-}
-/* button styles moved to components/buttons.css */
-</style>
+<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/modals.css">
+<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/pages/user-management.css">
 
 <?php
 include $private_includes_path . 'admin_sidebar.php';
@@ -148,7 +119,7 @@ include $private_includes_path . 'admin_sidebar.php';
                 </button>
             <?php endif; ?>
         </div>
-         <p class="text-xs sm:text-sm text-gray-600 mb-4" style="font-size: var(--font-size-sm); color: var(--gray-600); margin-bottom: 1rem;">Quản lý tài khoản người dùng đăng ký (không phải tài khoản quản trị).</p>
+         <p class="filter-description">Quản lý tài khoản người dùng đăng ký (không phải tài khoản quản trị).</p>
 
         <form method="GET" action="">
             <div class="filter-bar">
@@ -159,7 +130,7 @@ include $private_includes_path . 'admin_sidebar.php';
                     <option value="inactive" <?php echo ($filters['status'] == 'inactive') ? 'selected' : ''; ?>>Vô hiệu hóa</option>
                 </select>
                 <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Tìm</button>
-                <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary" style="text-decoration: none;"><i class="fas fa-times"></i> Xóa lọc</a>
+                <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary btn-clear"><i class="fas fa-times"></i> Xóa lọc</a>
             </div>
         </form>
 
@@ -175,8 +146,8 @@ include $private_includes_path . 'admin_sidebar.php';
                         <th>Tên công ty</th>
                         <th>Mã số thuế</th>
                         <th>Ngày tạo</th>
-                        <th style="text-align: center;">Trạng thái</th>
-                        <th class="actions" style="text-align: center;">Hành động</th>
+                        <th class="text-center">Trạng thái</th>
+                        <th class="actions text-center">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -358,362 +329,18 @@ include $private_includes_path . 'admin_sidebar.php';
 
 </main> <!-- End content-wrapper -->
 
-<!-- Page Specific Scripts -->
+<!-- pass basePath into JS -->
 <script>
-    const viewModal = document.getElementById('viewUserModal');
-    const editModal = document.getElementById('editUserModal');
-    const createModal = document.getElementById('createUserModal');
-    const viewDetailsBody = document.getElementById('viewUserDetailsBody');
-    const editUserForm = document.getElementById('editUserForm');
-    const createUserForm = document.getElementById('createUserForm');
-    const editCompanyFields = document.getElementById('editCompanyFields');
-    const createCompanyFields = document.getElementById('createCompanyFields');
-    const editUserError = document.getElementById('editUserError');
-    const createUserError = document.getElementById('createUserError');
-    const basePath = '<?php echo rtrim($base_path, '/'); ?>'; // Ensure no trailing slash for JS fetch
-
-    function closeModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.style.display = 'none';
-        }
-        // Reset forms and errors when closing
-        if (modalId === 'editUserModal') {
-            editUserForm.reset();
-            editCompanyFields.classList.remove('visible');
-            editUserError.textContent = ''; // Clear previous errors
-            // Ensure required attributes are reset if needed
-             document.getElementById('editCompanyName').required = false;
-             document.getElementById('editTaxCode').required = false;
-        } else if (modalId === 'createUserModal') {
-            createUserForm.reset();
-            createCompanyFields.classList.remove('visible');
-            createUserError.textContent = ''; // Clear previous errors
-             // Ensure required attributes are reset if needed
-             document.getElementById('createCompanyName').required = false;
-             document.getElementById('createTaxCode').required = false;
-        }
-    }
-
-    function toggleCompanyFields(formType) {
-        const isCompanyCheckbox = document.getElementById(`${formType}IsCompany`);
-        const companyFieldsDiv = document.getElementById(`${formType}CompanyFields`);
-        const companyNameInput = document.getElementById(`${formType}CompanyName`);
-        const taxCodeInput = document.getElementById(`${formType}TaxCode`);
-
-        if (isCompanyCheckbox.checked) {
-            companyFieldsDiv.classList.add('visible');
-            companyNameInput.required = true;
-            taxCodeInput.required = true;
-        } else {
-            companyFieldsDiv.classList.remove('visible');
-            companyNameInput.required = false;
-            taxCodeInput.required = false;
-            // Optionally clear the fields when unchecked
-            // companyNameInput.value = '';
-            // taxCodeInput.value = '';
-        }
-    }
-
-    // Close modal if clicking outside of it
-    window.onclick = function(event) {
-        if (event.target == viewModal) {
-            closeModal('viewUserModal');
-        }
-        if (event.target == editModal) {
-            closeModal('editUserModal');
-        }
-        if (event.target == createModal) {
-             closeModal('createUserModal');
-        }
-    }
-
-    function openCreateUserModal() {
-        // Reset form before showing
-        createUserForm.reset();
-        createCompanyFields.classList.remove('visible');
-        createUserError.textContent = '';
-        document.getElementById('createCompanyName').required = false; // Reset required status
-        document.getElementById('createTaxCode').required = false;    // Reset required status
-        createModal.style.display = 'block';
-    }
-
-    createUserForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        createUserError.textContent = ''; // Clear previous errors
-        const submitButton = this.querySelector('button[type="submit"]');
-        submitButton.disabled = true;
-        submitButton.textContent = 'Đang thêm...';
-
-        const formData = new FormData(createUserForm);
-        // Convert FormData to plain object for JSON stringify
-        const data = {};
-        formData.forEach((value, key) => {
-            // Handle checkbox value explicitly
-            if (key === 'is_company') {
-                data[key] = 1; // Set to 1 if checked
-            } else {
-                data[key] = value;
-            }
-        });
-        // If checkbox was not checked, 'is_company' won't be in formData, so set default
-        if (!formData.has('is_company')) {
-            data['is_company'] = 0;
-        }
-
-
-        fetch(`${basePath}/private/actions/setting/process_user_create.php`, { // Use basePath variable
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(data),
-        })
-        .then(response => {
-            // ... (rest of the fetch logic remains the same) ...
-             return response.text().then(text => {
-                const ct = response.headers.get("content-type") || "";
-                if (response.ok && ct.includes("application/json")) {
-                    try {
-                        return JSON.parse(text);
-                    } catch (e) {
-                        throw new Error('Phản hồi JSON không hợp lệ từ máy chủ: ' + text);
-                    }
-                } else {
-                    let errorMsg = `Lỗi HTTP ${response.status}: ${response.statusText}`;
-                    if (text) {
-                        // Try to parse potential JSON error message from server
-                        try {
-                            const errorJson = JSON.parse(text);
-                            if (errorJson && errorJson.message) {
-                                errorMsg += ` - ${errorJson.message}`;
-                            } else {
-                                errorMsg += ` - Phản hồi từ máy chủ: ${text.substring(0, 200)}${text.length > 200 ? '...' : ''}`;
-                            }
-                        } catch(e) {
-                             errorMsg += ` - Phản hồi từ máy chủ: ${text.substring(0, 200)}${text.length > 200 ? '...' : ''}`;
-                        }
-                    }
-                    throw new Error(errorMsg);
-                }
-            });
-        })
-        .then(result => {
-            if (result.success) {
-                closeModal('createUserModal');
-                alert('Thêm người dùng thành công!');
-                location.reload(); // Reload to see the new user
-            } else {
-                // Display specific error message from server if available
-                createUserError.textContent = 'Lỗi: ' + (result.message || 'Không thể thêm người dùng. Vui lòng kiểm tra lại thông tin.');
-            }
-        })
-        .catch(err => {
-            console.error('Error creating user:', err);
-            // Display more user-friendly error
-            createUserError.textContent = 'Đã xảy ra lỗi khi gửi yêu cầu: ' + err.message;
-        })
-        .finally(() => {
-            // Re-enable button and restore text
-            submitButton.disabled = false;
-            submitButton.textContent = 'Thêm người dùng';
-        });
-    });
-
-    function viewUserDetails(userId) {
-        viewDetailsBody.innerHTML = '<p>Đang tải...</p>';
-        viewModal.style.display = 'block';
-
-        fetch(`${basePath}/private/actions/setting/fetch_user_details.php?user_id=${userId}`) // Use basePath
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(result => {
-                if (result.success && result.data) {
-                    const user = result.data;
-                    let detailsHtml = `
-                        <div class="detail-row"><span class="detail-label">ID:</span> <span class="detail-value">${user.id}</span></div>
-                        <div class="detail-row"><span class="detail-label">Tên đăng nhập:</span> <span class="detail-value">${user.username || '-'}</span></div>
-                        <div class="detail-row"><span class="detail-label">Email:</span> <span class="detail-value">${user.email}</span></div>
-                        <div class="detail-row"><span class="detail-label">Số điện thoại:</span> <span class="detail-value">${user.phone || '-'}</span></div>
-                        <div class="detail-row"><span class="detail-label">Loại tài khoản:</span> <span class="detail-value">${user.account_type_text}</span></div>
-                    `;
-                    if (user.is_company == 1) { // Check against 1
-                        detailsHtml += `
-                            <div class="detail-row"><span class="detail-label">Tên công ty:</span> <span class="detail-value">${user.company_name || '-'}</span></div>
-                            <div class="detail-row"><span class="detail-label">Mã số thuế:</span> <span class="detail-value">${user.tax_code || '-'}</span></div>
-                        `;
-                    }
-                    detailsHtml += `
-                        <div class="detail-row"><span class="detail-label">Ngày tạo:</span> <span class="detail-value">${user.created_at_formatted}</span></div>
-                        <div class="detail-row"><span class="detail-label">Cập nhật lần cuối:</span> <span class="detail-value">${user.updated_at_formatted || '-'}</span></div>
-                        <div class="detail-row"><span class="detail-label">Trạng thái:</span> <span class="detail-value">${user.status_text} ${user.deleted_at_formatted ? '(' + user.deleted_at_formatted + ')' : ''}</span></div>
-                    `;
-                    viewDetailsBody.innerHTML = detailsHtml;
-                } else {
-                    viewDetailsBody.innerHTML = `<p style="color: red;">Lỗi: ${result.message || 'Không thể tải thông tin người dùng.'}</p>`;
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching user details:', error);
-                viewDetailsBody.innerHTML = `<p style="color: red;">Đã xảy ra lỗi khi tải dữ liệu: ${error.message}</p>`;
-            });
-    }
-
-    function openEditUserModal(userId) {
-        // Reset form before fetching new data
-        editUserForm.reset();
-        editCompanyFields.classList.remove('visible');
-        editUserError.textContent = '';
-        document.getElementById('editCompanyName').required = false; // Reset required status
-        document.getElementById('editTaxCode').required = false;    // Reset required status
-        editModal.style.display = 'block';
-
-        fetch(`${basePath}/private/actions/setting/fetch_user_details.php?user_id=${userId}`) // Use basePath
-            .then(response => response.ok ? response.json() : Promise.reject(`HTTP error! status: ${response.status}`))
-            .then(result => {
-                if (result.success && result.data) {
-                    const user = result.data;
-                    document.getElementById('editUserId').value = user.id;
-                    document.getElementById('editUsername').value = user.username || '';
-                    document.getElementById('editEmail').value = user.email || '';
-                    document.getElementById('editPhone').value = user.phone || '';
-                    // Set checkbox state based on numeric value
-                    document.getElementById('editIsCompany').checked = (user.is_company == 1);
-                    // Trigger change handler to show/hide fields and set required attributes
-                    toggleCompanyFields('edit');
-                    // Populate company fields if applicable
-                    if (user.is_company == 1) {
-                        document.getElementById('editCompanyName').value = user.company_name || '';
-                        document.getElementById('editTaxCode').value = user.tax_code || '';
-                    }
-                } else {
-                    // Display error inside the modal for better UX
-                    editUserError.textContent = `Lỗi tải dữ liệu: ${result.message || 'Không thể lấy thông tin người dùng.'}`;
-                    // Optionally disable form fields or show a more prominent error
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching user details for edit:', error);
-                 // Display error inside the modal
-                editUserError.textContent = `Đã xảy ra lỗi khi tải dữ liệu: ${error}`;
-            });
-    }
-
-    editUserForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        editUserError.textContent = ''; // Clear previous errors
-        const formData = new FormData(this);
-        const submitButton = this.querySelector('button[type="submit"]');
-        submitButton.disabled = true;
-        submitButton.textContent = 'Đang lưu...';
-
-        // Ensure is_company is sent even if unchecked
-        if (!formData.has('is_company')) {
-            formData.set('is_company', '0');
-        } else {
-             formData.set('is_company', '1'); // Ensure value is 1 if checked
-        }
-
-        fetch(`${basePath}/private/actions/setting/process_user_update.php`, { // Use basePath
-            method: 'POST',
-            body: formData // FormData handles content type automatically
-        })
-        .then(response => {
-             // Check content type before parsing JSON
-             const contentType = response.headers.get("content-type");
-             if (contentType && contentType.indexOf("application/json") !== -1) {
-                 return response.json();
-             } else {
-                 return response.text().then(text => {
-                     throw new Error("Phản hồi không phải JSON: " + text);
-                 });
-             }
-        })
-        .then(data => {
-            if (data.success) {
-                alert(data.message || 'Cập nhật thành công!');
-                closeModal('editUserModal');
-                window.location.reload(); // Reload to see changes
-            } else {
-                // Display specific error message from server if available
-                editUserError.textContent = 'Lỗi: ' + (data.message || 'Không thể cập nhật người dùng. Vui lòng kiểm tra lại thông tin.');
-            }
-        })
-        .catch(error => {
-            console.error('Error updating user:', error);
-             // Display error inside the modal
-            editUserError.textContent = 'Đã xảy ra lỗi khi gửi yêu cầu: ' + error.message;
-        })
-        .finally(() => {
-             // Re-enable button and restore text
-             submitButton.disabled = false;
-             submitButton.textContent = 'Lưu thay đổi';
-        });
-    });
-
-    function toggleUserStatus(userId, action) {
-        const actionText = action === 'disable' ? 'vô hiệu hóa' : 'kích hoạt';
-        if (confirm(`Bạn có chắc muốn ${actionText} người dùng ID ${userId} không?`)) {
-            fetch(`${basePath}/private/actions/setting/process_user_toggle_status.php`, { // Use basePath
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded', // Keep as form data
-                    'Accept': 'application/json'
-                },
-                body: `user_id=${encodeURIComponent(userId)}&action=${encodeURIComponent(action)}`
-            })
-            .then(response => {
-                // ... (rest of the fetch logic remains the same) ...
-                const ct = response.headers.get("content-type") || "";
-                return response.text().then(text => {
-                    const firstChar = text.trim()[0];
-                    if (response.ok && ct.includes("application/json") &&
-                        (firstChar === "{" || firstChar === "[")) {
-                       try {
-                           return JSON.parse(text);
-                       } catch (e) {
-                            throw new Error("Phản hồi JSON không hợp lệ: " + text);
-                       }
-                    }
-                    // Attempt to parse JSON even on error for potential error messages
-                    if (ct.includes("application/json")) {
-                         try {
-                            const errorJson = JSON.parse(text);
-                            if (errorJson && errorJson.message) {
-                                throw new Error(`Lỗi ${response.status}: ${errorJson.message}`);
-                            }
-                         } catch(e) { /* Ignore parsing error if not JSON */ }
-                    }
-                    // Fallback error message
-                    let msg = `Lỗi HTTP ${response.status}: ${response.statusText}`;
-                    msg += ` – Server response:\n${text.substr(0,200)}`;
-                    throw new Error(msg);
-                });
-            })
-            .then(data => {
-                if (data.success) {
-                    alert(data.message || 'Thao tác thành công!');
-                    window.location.reload(); // Reload to reflect status change
-                } else {
-                    // Show specific error from server response
-                    alert('Lỗi: ' + (data.message || 'Không thể thay đổi trạng thái người dùng.'));
-                }
-            })
-            .catch(error => {
-                console.error('Error toggling user status:', error);
-                // Provide more context in the alert
-                alert('Đã xảy ra lỗi khi thực hiện thao tác: ' + error.message + '. Vui lòng thử lại hoặc kiểm tra console.');
-            });
-        }
-    }
+    window.appConfig = {
+        basePath: '<?php echo rtrim($base_path, '/'); ?>'
+    };
 </script>
 
+<!-- load JS utilities and page logic -->
+<script src="<?php echo $base_path; ?>public/assets/js/utils/api.js"></script>
+<script src="<?php echo $base_path; ?>public/assets/js/utils/helpers.js"></script>
+<script src="<?php echo $base_path; ?>public/assets/js/pages/user/user_management.js"></script>
+
 <?php
-// Include Footer
 include $private_includes_path . 'admin_footer.php';
 ?>

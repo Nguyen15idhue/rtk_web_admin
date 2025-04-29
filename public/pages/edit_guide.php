@@ -27,7 +27,8 @@ include $private_includes . 'admin_sidebar.php';
                 <h2 class="mb-0"><?php echo $page_title; ?></h2>
             </div>
             <div class="card-body">
-                <form id="frm-guide" class="row g-3" enctype="multipart/form-data">
+                <form id="frm-guide" class="row g-3" enctype="multipart/form-data"
+                      data-base-path="<?php echo rtrim($base_path, '/'); ?>">
                     <input type="hidden" name="id" value="<?php echo intval($_GET['id'] ?? 0); ?>">
                     <input type="hidden" name="existing_thumbnail" value="">
 
@@ -74,47 +75,14 @@ include $private_includes . 'admin_sidebar.php';
     </div>
 </main>
 
+<!-- Thêm jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.tiny.cloud/1/no‑api‑key/tinymce/5/tinymce.min.js"></script>
-<script>
-tinymce.init({ selector:'#guideContent', height:400, menubar:false });
-
-const basePath = '<?php echo rtrim($base_path,'/'); ?>';
-$(function(){
-    const id = parseInt($('input[name=id]').val(), 10);
-    if (id) {
-        $.getJSON(basePath + '/private/actions/guide/get_guide_details.php',{id}, d=>{
-            for(let k in d) if(k!=='thumbnail') $(`[name=${k}]`).val(d[k]);
-            $(`[name=existing_thumbnail]`).val(d.thumbnail||'');
-            tinymce.get('guideContent').setContent(d.content||'');
-        });
-    }
-
-    // replace serialize() with FormData for file upload
-    $('#frm-guide').submit(function(e){
-        e.preventDefault();
-        const url = id ? 'update_guide.php' : 'create_guide.php';
-        const formData = new FormData(this);
-        $.ajax({
-            url: basePath + '/private/actions/guide/' + url,
-            type: 'POST',
-            data: formData,
-            dataType: 'json',
-            processData: false,
-            contentType: false,
-            success: function(res){
-                if(res.success){
-                    alert('Lưu thành công');
-                    window.location.href = 'guide_management.php';
-                } else {
-                    alert('Có lỗi xảy ra');
-                }
-            }
-        });
-    });
-});
-</script>
+<!-- Thêm TinyMCE -->
+<script src="https://cdn.jsdelivr.net/npm/tinymce@5/tinymce.min.js"></script>
 <!-- Thêm Bootstrap JS bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- include JS riêng cho edit_guide -->
+<script src="<?php echo $base_path; ?>public/assets/js/pages/guide/edit_guide.js"></script>
 
 <?php include $private_includes . 'admin_footer.php'; ?>

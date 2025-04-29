@@ -1,0 +1,94 @@
+.content-wrapper .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+.content-wrapper .modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 25px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: var(--rounded-lg);
+    position: relative;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.content-wrapper .modal-header {
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.content-wrapper .modal-header h4 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: var(--font-semibold);
+    color: var(--gray-800);
+}
+.content-wrapper .modal-close {
+    color: var(--gray-400);
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    background: none;
+    line-height: 1;
+    padding: 0.5rem;
+    border-radius: var(--rounded-full);
+    transition: color var(--transition-speed) ease-in-out, background-color var(--transition-speed) ease-in-out;
+}
+.content-wrapper .modal-close:hover,
+.content-wrapper .modal-close:focus {
+    color: var(--gray-700);
+    background-color: var(--gray-100);
+    text-decoration: none;
+    outline: none;
+}
+.content-wrapper .modal-body {
+    margin-bottom: 20px;
+}
+.content-wrapper .modal-body .detail-row {
+    display: flex;
+    margin-bottom: 10px;
+    font-size: var(--font-size-sm);
+}
+.content-wrapper .modal-body .detail-label {
+    font-weight: var(--font-semibold);
+    color: var(--gray-600);
+    width: 150px;
+    flex-shrink: 0;
+}
+.content-wrapper .modal-body .detail-value {
+    color: var(--gray-800);
+}
+.content-wrapper .modal-footer {
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+    text-align: right;
+}
+.content-wrapper .modal-footer .btn {
+    margin-left: 0.5rem;
+}
+.content-wrapper #createUserForm .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+.content-wrapper #createUserForm .error-message {
+    color: var(--danger-600);
+    font-size: var(--font-size-sm);
+    margin-top: 1rem;
+    text-align: left;
+}

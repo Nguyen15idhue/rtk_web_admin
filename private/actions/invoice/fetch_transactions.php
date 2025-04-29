@@ -2,7 +2,6 @@
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\invoice\fetch_transactions.php
 declare(strict_types=1);
 
-// Ensure this script is not accessed directly if it's meant to be included
 if (basename(__FILE__) == basename($_SERVER["SCRIPT_FILENAME"])) {
      http_response_code(403);
      die("Forbidden: Direct access is not allowed.");

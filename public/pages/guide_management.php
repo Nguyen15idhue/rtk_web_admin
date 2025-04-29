@@ -13,6 +13,8 @@ $base_seg = $idx!==false? implode('/',array_slice($parts,0,$idx+1)).'/':'/';
 $base_path = $protocol.$host.$base_seg;
 $private_includes = __DIR__ . '/../../private/includes/';
 $page_title = 'Quản lý Guide';
+$bootstrap_data = require_once __DIR__ . '/../../private/includes/page_bootstrap.php';
+$user_display_name = $bootstrap_data['user_display_name'];
 include $private_includes . 'admin_header.php';
 ?>
 <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
@@ -46,7 +48,11 @@ include $private_includes . 'admin_header.php';
 <main class="content-wrapper">
     <div class="content-header">
         <h2><?php echo $page_title; ?></h2>
-        <!-- ...optionally user info here... -->
+        <div class="user-info">
+                <span>Chào mừng, <span class="highlight"><?php echo $user_display_name; // Already HTML-escaped in bootstrap ?></span>!</span>
+                <a href="<?php echo $base_path; ?>public/pages/profile.php">Hồ sơ</a>
+                <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
+            </div>
     </div>
     <div class="content-section">
         <div class="header-actions">
@@ -78,52 +84,9 @@ include $private_includes . 'admin_header.php';
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-const basePath = '<?php echo rtrim($base_path,'/'); ?>';
-function loadData(q='') {
-    $.getJSON(basePath + '/private/actions/guide/fetch_guides.php', {search: q}, function(data){
-        let rows = data.map(g => `<tr>
-            <td>${g.id}</td>
-            <td>${g.title}</td>
-            <td>${g.author_name 
-                    ? g.author_name 
-                    : '<em>Chưa rõ</em>'}</td>
-            <td class="status" style="text-align:center">
-                ${g.status==='published'
-                    ? '<span class="status-badge badge-success">Đã xuất bản</span>'
-                    : '<span class="status-badge badge-secondary">Bản nháp</span>'}
-            </td>
-            <td class="actions">
-                <button class="btn-icon btn-edit" title="Sửa" data-id="${g.id}">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn-icon btn-toggle ${g.status==='published'?'btn-success':'btn-secondary'}"
-                        title="${g.status==='published'?'Chuyển sang Nháp':'Xuất bản'}"
-                        data-id="${g.id}" data-status="${g.status==='published'?'draft':'published'}">
-                    <i class="fas fa-toggle-${g.status==='published'?'on':'off'}"></i>
-                </button>
-            </td>
-        </tr>`).join('');
-        $('#tbl-guides tbody').html(rows);
-    });
-}
-
-$(function(){
-    loadData($('input[name=search]').val());
-    $('input[name=search]').on('input', ()=> loadData($('input[name=search]').val()));
-
-    // Chuyển sang trang edit_guide.php
-    $(document).on('click','.btn-edit',function(){
-        window.location.href = 'edit_guide.php?id=' + $(this).data('id');
-    });
-
-    // giữ nguyên toggle status
-    $(document).on('click','.btn-toggle',function(){
-        let id=$(this).data('id'), st=$(this).data('status');
-        $.post(basePath + '/private/actions/guide/toggle_guide_status.php',{id, status:st},function(r){
-            if(r.success) loadData($('input[name=search]').val());
-        },'json');
-    });
-});
+    // expose basePath for external script
+    window.basePath = '<?php echo rtrim($base_path,'/'); ?>';
 </script>
+<script src="<?php echo $base_path; ?>public/assets/js/pages/guide/guide_management.js"></script>
 
 <?php include $private_includes . 'admin_footer.php'; ?>

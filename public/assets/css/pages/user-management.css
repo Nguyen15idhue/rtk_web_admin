@@ -1,0 +1,12 @@
+/* Page-specific styles for User Management */
+.filter-description {
+    font-size: var(--font-size-sm);
+    color: var(--gray-600);
+    margin-bottom: 1rem;
+}
+.btn-clear {
+    text-decoration: none;
+}
+.transactions-table th.text-center {
+    text-align: center;
+}
