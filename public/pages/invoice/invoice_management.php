@@ -3,7 +3,7 @@
 // --- Includes and Setup ---
 session_start();
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: auth/admin_login.php');
+    header('Location: ../auth/admin_login.php');
     exit;
 }
 
