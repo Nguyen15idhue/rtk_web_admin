@@ -1,6 +1,10 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\account\account_management.php
-
+session_start();
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: ../auth/admin_login.php');
+    exit;
+}
 // --- Bootstrap and Initialization ---
 // Includes session start, auth check, DB connection, base path, etc.
 $bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';

@@ -1,6 +1,10 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\auth\permission_management.php
 session_start();
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: ../auth/admin_login.php');
+    exit;
+}
 require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php';
 $private_includes_path = __DIR__ . '/../../../private/includes/';
 $user_display_name = $_SESSION['admin_username'] ?? 'Admin';

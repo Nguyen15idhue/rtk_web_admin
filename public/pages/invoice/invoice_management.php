@@ -3,7 +3,7 @@
 // --- Includes and Setup ---
 session_start();
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: auth/admin_login.php');
+    header('Location: ../auth/admin_login.php');
     exit;
 }
 
@@ -28,7 +28,7 @@ $provinces = $provinces_stmt->fetchAll(PDO::FETCH_COLUMN);
 
 // --- Define the correct base URL for the image host ---
 // !!! IMPORTANT: Replace this with the actual URL where your images are hosted !!!
-define('IMAGE_HOST_BASE_URL', 'http://localhost:8000/'); // Example URL
+define('IMAGE_HOST_BASE_URL', 'https://taikhoandodac.vn/'); // Example URL
 
 $user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 

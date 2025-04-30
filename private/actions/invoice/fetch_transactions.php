@@ -112,11 +112,6 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
             $data_query .= $where_sql;
         }
 
-        // --- LOGGING START ---
-        error_log("Admin Transactions - Count Query: " . $count_query);
-        error_log("Admin Transactions - Count Params: " . print_r($params, true));
-        // --- LOGGING END ---
-
         // Get total count for pagination
         $stmt_count = $db->prepare($count_query);
         $stmt_count->execute($params); // Execute count query with filter params
@@ -145,11 +140,6 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
         $offset_val = (int)$offset;
         $stmt_data->bindValue(':limit_val', $limit_val, PDO::PARAM_INT);
         $stmt_data->bindValue(':offset_val', $offset_val, PDO::PARAM_INT);
-
-        // --- LOGGING START ---
-        error_log("Admin Transactions - Data Query (Recheck): " . $data_query);
-        error_log("Admin Transactions - All Params (bound via bindValue): " . print_r(array_merge($params, [':limit_val' => $limit_val, ':offset_val' => $offset_val]), true));
-        // --- LOGGING END ---
 
         // Execute the data query (no arguments needed as all params are bound)
         $stmt_data->execute();

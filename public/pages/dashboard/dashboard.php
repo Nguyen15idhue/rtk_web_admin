@@ -1,5 +1,9 @@
 <?php
 session_start(); // Start session if not already started
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: ../auth/admin_login.php');
+    exit;
+}
 // Include necessary files
 require_once __DIR__ . '/../../../private/actions/dashboard/fetch_dashboard_data.php';
 require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php'; // Include the helpers
