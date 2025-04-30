@@ -20,7 +20,8 @@ $total_referrers = $data['total_referrers'] ?? 0;
 $referred_registrations = $data['referred_registrations'] ?? 0;
 $total_commission_paid = $data['total_commission_paid'] ?? 0;
 $recent_activities = $data['recent_activities'] ?? [];
-$new_registrations_chart_data = $data['new_registrations_chart_data'] ?? ['labels' => [], 'data' => []]; // Ensure chart data exists
+$new_registrations_chart_data = $data['new_registrations_chart_data'] ?? ['labels' => [], 'data' => []];
+$referral_chart_data = $data['referral_chart_data'] ?? ['labels' => [], 'data' => []]; // added
 
 // Get display name (assuming admin might have a session name)
 $user_display_name = $_SESSION['admin_username'] ?? 'Admin'; // Adjust session variable if needed
@@ -34,7 +35,6 @@ $page_title = 'Admin Dashboard';
 include $private_includes_path . 'admin_header.php';
 include $private_includes_path . 'admin_sidebar.php';
 ?>
-
 
 <!-- Main Content Area -->
 <main class="content-wrapper">
@@ -120,8 +120,8 @@ include $private_includes_path . 'admin_sidebar.php';
         </section>
         <section class="content-section">
             <h3>Giới thiệu HĐ (7 ngày)</h3>
-            <div class="chart-container placeholder">
-                Biểu đồ giới thiệu (Cần JS & Canvas ID)
+            <div class="chart-container">
+                <canvas id="referralChart"></canvas>  <!-- swapped in real canvas -->
             </div>
         </section>
     </div><!-- End Charts Section -->
@@ -159,92 +159,15 @@ include $private_includes_path . 'admin_sidebar.php';
     </section>
 </main> <!-- End content-wrapper -->
 
-<!-- Add Chart.js library -->
+<!-- include Chart.js + expose data + pick up our new module -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // --- New Registrations Chart ---
-    const newRegCtx = document.getElementById('newRegistrationsChart');
-    if (newRegCtx) {
-        const newRegistrationsData = <?php echo json_encode($new_registrations_chart_data); ?>;
-
-        // Basic check if data exists
-        if (newRegistrationsData && newRegistrationsData.labels && newRegistrationsData.labels.length > 0) {
-            new Chart(newRegCtx, {
-                type: 'line', // Or 'bar'
-                data: {
-                    labels: newRegistrationsData.labels,
-                    datasets: [{
-                        label: 'Đăng ký mới',
-                        data: newRegistrationsData.data,
-                        borderColor: 'rgb(59, 130, 246)', // var(--primary-500)
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        tension: 0.1,
-                        fill: true,
-                        pointBackgroundColor: 'rgb(59, 130, 246)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(59, 130, 246)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                precision: 0 // Ensure whole numbers for counts
-                            },
-                            grid: {
-                                color: 'rgba(229, 231, 235, 0.5)' // var(--gray-200) with opacity
-                            }
-                        },
-                        x: {
-                             grid: {
-                                display: false // Hide vertical grid lines
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false // Hide legend if only one dataset
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            backgroundColor: 'rgba(17, 24, 39, 0.8)', // var(--gray-900) with opacity
-                            titleFont: { weight: 'bold' },
-                            bodyFont: { size: 12 },
-                            padding: 10,
-                            cornerRadius: 4,
-                            displayColors: false // Hide color box in tooltip
-                        }
-                    },
-                    hover: {
-                        mode: 'nearest',
-                        intersect: true
-                    }
-                }
-            });
-        } else {
-             // Optional: Display a message if no chart data
-             const chartContainer = newRegCtx.parentNode;
-             chartContainer.innerHTML = '<p style="text-align: center; color: var(--gray-500); padding: 2rem 0;">Không có dữ liệu biểu đồ.</p>';
-        }
-    }
-
-    // --- Placeholder for Referral Chart ---
-    // Add similar logic here for the "Giới thiệu HĐ (7 ngày)" chart
-    // const referralCtx = document.getElementById('referralChart'); // Add an ID to its canvas in HTML
-    // if (referralCtx) {
-    //    // Fetch referral chart data (similar to new registrations)
-    //    const referralChartData = <?php /* echo json_encode($data['referral_chart_data'] ?? ['labels' => [], 'data' => []]); */ ?>;
-    //    // ... create new Chart(referralCtx, { ... }); ...
-    // }
-});
+  window.dashboardData = {
+    newRegistrations: <?php echo json_encode($new_registrations_chart_data); ?>,
+    referral:         <?php echo json_encode($referral_chart_data);         ?>
+  };
 </script>
+<script src="<?php echo $base_path; ?>public/assets/js/pages/dashboard/dashboard.js"></script>
 
 <?php
 // Include Footer

@@ -1,10 +1,6 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\user_management.php
 session_start();
-error_reporting(E_ALL); // Report all errors for logging
-ini_set('display_errors', 0); // Keep off for browser output
-ini_set('log_errors', 1); // Ensure errors are logged
-ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
 
 // --- Includes and Setup ---
 if (!isset($_SESSION['admin_id'])) {

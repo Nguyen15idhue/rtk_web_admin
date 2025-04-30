@@ -12,7 +12,7 @@ $idx = array_search('rtk_web_admin',$parts);
 $base_seg = $idx!==false? implode('/',array_slice($parts,0,$idx+1)).'/':'/';
 $base_path = $protocol.$host.$base_seg;
 $private_includes = __DIR__ . '/../../private/includes/';
-$page_title = isset($_GET['id']) ? 'Sửa Guide' : 'Tạo Guide';
+$page_title = isset($_GET['id']) ? 'Sửa hướng dẫn' : 'Tạo hướng dẫn';
 include $private_includes . 'admin_header.php';
 include $private_includes . 'admin_sidebar.php';
 ?>
@@ -37,27 +37,27 @@ include $private_includes . 'admin_sidebar.php';
                         <input type="text" name="title" class="form-control" required>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Slug</label>
+                        <label class="form-label">Đường dẫn tĩnh (Slug)</label>
                         <input type="text" name="slug" class="form-control">
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Topic</label>
+                        <label class="form-label">Chủ đề</label>
                         <input type="text" name="topic" class="form-control">
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Status</label>
+                        <label class="form-label">Trạng thái</label>
                         <select name="status" class="form-select">
-                            <option value="draft">Draft</option>
-                            <option value="published">Published</option>
-                            <option value="archived">Archived</option>
+                            <option value="draft">Bản nháp</option>
+                            <option value="published">Đã xuất bản</option>
+                            <option value="archived">Lưu trữ</option>
                         </select>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Thumbnail</label>
+                        <label class="form-label">Ảnh đại diện</label>
                         <input type="file" name="thumbnail" class="form-control">
                     </div>
                     <div class="col-12 mb-3">
-                        <label class="form-label">Image URL</label>
+                        <label class="form-label">Đường dẫn ảnh</label>
                         <input type="text" name="image" class="form-control">
                     </div>
                     <div class="col-12 mb-3">

@@ -34,7 +34,7 @@
             // proof link
             const proofLink = document.getElementById('modal-tx-proof-link');
             if(data.proof_image){
-                proofLink.innerHTML = `<a href="${data.proof_image}" target="_blank">Xem hình ảnh</a>
+                proofLink.innerHTML = `<a href="${data.proof_image}" target="_blank">Xem hình ảnh&nbsp;</a>
                     | <button class="btn-link" onclick="viewProofModal('${data.id}','${data.proof_image}'); closeDetailsModal();">Xem trong modal</button>`;
             } else proofLink.textContent = 'Không có';
 

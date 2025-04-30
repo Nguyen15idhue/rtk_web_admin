@@ -12,7 +12,7 @@ $idx = array_search('rtk_web_admin',$parts);
 $base_seg = $idx!==false? implode('/',array_slice($parts,0,$idx+1)).'/':'/';
 $base_path = $protocol.$host.$base_seg;
 $private_includes = __DIR__ . '/../../private/includes/';
-$page_title = 'Quản lý Guide';
+$page_title = 'Quản lý hướng dẫn';
 $bootstrap_data = require_once __DIR__ . '/../../private/includes/page_bootstrap.php';
 $user_display_name = $bootstrap_data['user_display_name'];
 include $private_includes . 'admin_header.php';
@@ -23,26 +23,6 @@ include $private_includes . 'admin_header.php';
 <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
 <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
 <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/badges.css">
-<style>
-/* Modal overlay */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 1000;
-}
-/* Modal box */
-.modal-content {
-    background: #fff;
-    margin: 5% auto;
-    padding: 20px;
-    border-radius: 4px;
-    width: 80%;
-    max-width: 600px;
-}
-</style>
 <?php include $private_includes . 'admin_sidebar.php'; ?>
 
 <main class="content-wrapper">
