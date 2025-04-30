@@ -1,0 +1,19 @@
+# Tăng giới hạn upload cho PHP
+php_value upload_max_filesize 15M
+php_value post_max_size 15M
+php_value memory_limit 256M
+php_value max_execution_time 300
+php_value max_input_time 300
+
+# Enable keep-alive
+<IfModule mod_headers.c>
+    Header set Connection keep-alive
+</IfModule>
+
+# Tăng buffer size cho upload lớn
+<IfModule mod_fcgid.c>
+  FcgidMaxRequestLen 15728640
+</IfModule>
+
+# Tắt tính năng output_buffering cho upload file lớn
+php_value output_buffering Off
