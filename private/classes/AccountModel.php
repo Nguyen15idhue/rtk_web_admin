@@ -19,7 +19,7 @@ class AccountModel {
         JOIN user u ON r.user_id = u.id
         LEFT JOIN package p ON r.package_id = p.id
         JOIN location l ON r.location_id = l.id
-        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL 
     "; // Updated base query to include more fields for editing
 
     /**
@@ -113,7 +113,7 @@ class AccountModel {
                 JOIN user u ON r.user_id = u.id
                 LEFT JOIN package p ON r.package_id = p.id
                 JOIN location l ON r.location_id = l.id
-                WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL";
+                WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL";
         $params = [];
 
         $this->applyFilters($sql, $params, $filters);

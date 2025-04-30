@@ -5,9 +5,9 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-require_once __DIR__ . '/../../private/config/database.php';
-require_once __DIR__ . '/../../private/classes/Database.php';
-require_once __DIR__ . '/../../private/actions/invoice/fetch_invoices.php';
+require_once __DIR__ . '/../../../private/config/database.php';
+require_once __DIR__ . '/../../../private/classes/Database.php';
+require_once __DIR__ . '/../../../private/actions/invoice/fetch_invoices.php';
 
 // --- Base Path Calculation for assets ---
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']!=='off' || $_SERVER['SERVER_PORT']==443) ? 'https://' : 'http://';
@@ -27,7 +27,7 @@ $invoices = $data['invoices'];
 $total = $data['total_count'];
 $total_pages = $data['total_pages'];
 $current_page = $data['current_page'];
-$private_includes_path = __DIR__ . '/../../private/includes/';
+$private_includes_path = __DIR__ . '/../../../private/includes/';
 ?>
 <!DOCTYPE html>
 <html lang="vi">

@@ -1,9 +1,9 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\account_management.php
+// filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\account\account_management.php
 
 // --- Bootstrap and Initialization ---
 // Includes session start, auth check, DB connection, base path, etc.
-$bootstrap_data = require_once __DIR__ . '/../../private/includes/page_bootstrap.php';
+$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
 $db = $bootstrap_data['db'];
 $base_path = $bootstrap_data['base_path'];
 $user_display_name = $bootstrap_data['user_display_name'];
@@ -12,7 +12,7 @@ $private_includes_path = $bootstrap_data['private_includes_path'];
 
 // --- Include Page-Specific Logic ---
 // Handles filtering, pagination, and data fetching for accounts
-$account_list_data = require __DIR__ . '/../../private/actions/account/handle_account_list.php';
+$account_list_data = require __DIR__ . '/../../../private/actions/account/handle_account_list.php';
 $filters = $account_list_data['filters'];
 $accounts = $account_list_data['accounts'];
 $total_items = $account_list_data['total_items'];
@@ -30,7 +30,7 @@ $packagesStmt = $db->query("SELECT id, name FROM package WHERE is_active = 1 ORD
 $packages = $packagesStmt->fetchAll(PDO::FETCH_ASSOC);
 
 // --- Include Helpers needed for the View ---
-require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
+require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php';
 
 ?>
 <!DOCTYPE html>
@@ -61,7 +61,7 @@ require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
             <h2>Quản lý TK Đo đạc</h2>
             <div class="user-info">
                 <span>Chào mừng, <span class="highlight"><?php echo $user_display_name; // Already HTML-escaped in bootstrap ?></span>!</span>
-                <a href="<?php echo $base_path; ?>public/pages/profile.php">Hồ sơ</a>
+                <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
                 <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
             </div>
         </div>

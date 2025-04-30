@@ -1,11 +1,11 @@
 <?php
 session_start(); // Start session if not already started
 // Include necessary files
-require_once __DIR__ . '/../../private/actions/dashboard/fetch_dashboard_data.php';
-require_once __DIR__ . '/../../private/utils/dashboard_helpers.php'; // Include the helpers
+require_once __DIR__ . '/../../../private/actions/dashboard/fetch_dashboard_data.php';
+require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php'; // Include the helpers
 
 // Define paths
-$private_includes_path = __DIR__ . '/../../private/includes/';
+$private_includes_path = __DIR__ . '/../../../private/includes/';
 $base_path = '/'; // Define base path for header include if needed
 
 // Fetch dashboard data (Admin data)
@@ -44,7 +44,7 @@ include $private_includes_path . 'admin_sidebar.php';
         <div class="user-info">
             <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
             <!-- Link to Profile Settings (Adjust path if needed) -->
-            <a href="<?php echo $base_path; ?>public/pages/profile.php">Hồ sơ</a>
+            <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
             <!-- Logout Link (Adjust path if needed) -->
             <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php" class="text-gray-600">Đăng xuất</a>
         </div>

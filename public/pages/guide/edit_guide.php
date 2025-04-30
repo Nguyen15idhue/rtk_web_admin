@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['admin_id'])) {
-    header('Location: auth/admin_login.php');
+    header('Location: ../auth/admin_login.php');
     exit;
 }
 // --- Base Path & Includes ---
@@ -11,7 +11,8 @@ $parts = explode('/', $_SERVER['SCRIPT_NAME']);
 $idx = array_search('rtk_web_admin',$parts);
 $base_seg = $idx!==false? implode('/',array_slice($parts,0,$idx+1)).'/':'/';
 $base_path = $protocol.$host.$base_seg;
-$private_includes = __DIR__ . '/../../private/includes/';
+// now 3 levels up to reach private/includes
+$private_includes = __DIR__ . '/../../../private/includes/';
 $page_title = isset($_GET['id']) ? 'Sửa hướng dẫn' : 'Tạo hướng dẫn';
 include $private_includes . 'admin_header.php';
 include $private_includes . 'admin_sidebar.php';

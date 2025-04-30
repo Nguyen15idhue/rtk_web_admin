@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\invoice_management.php
+// filepath: e:\Application\laragon\www\rtk_web_admin\public\pages/invoice/invoice_management.php
 // --- Includes and Setup ---
 session_start();
 if (!isset($_SESSION['admin_id'])) {
@@ -14,10 +14,10 @@ $project_folder_index = array_search('rtk_web_admin', $script_name_parts);
 $base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_folder_index + 1)) . '/';
 $base_path = $protocol . $host . $base_path_segment;
 
-require_once __DIR__ . '/../../private/config/database.php';
-require_once __DIR__ . '/../../private/classes/Database.php';
-require_once __DIR__ . '/../../private/utils/functions.php';
-require_once __DIR__ . '/../../private/actions/invoice/fetch_transactions.php';
+require_once __DIR__ . '/../../../private/config/database.php';
+require_once __DIR__ . '/../../../private/classes/Database.php';
+require_once __DIR__ . '/../../../private/utils/functions.php';
+require_once __DIR__ . '/../../../private/actions/invoice/fetch_transactions.php';
 
 // --- LẤY DỮ LIỆU CHO FILTERS MỚI ---
 $db = Database::getInstance()->getConnection();
@@ -82,15 +82,15 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
 <body>
 
 
-    <?php include __DIR__ . '/../../private/includes/admin_header.php'; ?>
-    <?php include __DIR__ . '/../../private/includes/admin_sidebar.php'; ?>
+    <?php include __DIR__ . '/../../../private/includes/admin_header.php'; ?>
+    <?php include __DIR__ . '/../../../private/includes/admin_sidebar.php'; ?>
 
     <main class="content-wrapper">
         <div class="content-header">
             <h2>Quản lý Giao dịch</h2>
             <div class="user-info">
                 <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-                <a href="<?php echo $base_path; ?>public/pages/profile.php">Hồ sơ</a>
+                <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
                 <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
             </div>
         </div>

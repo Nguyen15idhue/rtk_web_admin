@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: auth/admin_login.php');
+    header('Location: ../auth/admin_login.php');
     exit;
 }
 // --- Base Path & Includes ---
@@ -11,9 +11,9 @@ $parts = explode('/', $_SERVER['SCRIPT_NAME']);
 $idx = array_search('rtk_web_admin',$parts);
 $base_seg = $idx!==false? implode('/',array_slice($parts,0,$idx+1)).'/':'/';
 $base_path = $protocol.$host.$base_seg;
-$private_includes = __DIR__ . '/../../private/includes/';
+$private_includes = __DIR__ . '/../../../private/includes/';
 $page_title = 'Quản lý hướng dẫn';
-$bootstrap_data = require_once __DIR__ . '/../../private/includes/page_bootstrap.php';
+$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
 $user_display_name = $bootstrap_data['user_display_name'];
 include $private_includes . 'admin_header.php';
 ?>
@@ -30,7 +30,7 @@ include $private_includes . 'admin_header.php';
         <h2><?php echo $page_title; ?></h2>
         <div class="user-info">
                 <span>Chào mừng, <span class="highlight"><?php echo $user_display_name; // Already HTML-escaped in bootstrap ?></span>!</span>
-                <a href="<?php echo $base_path; ?>public/pages/profile.php">Hồ sơ</a>
+                <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
                 <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
             </div>
     </div>

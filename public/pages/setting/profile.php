@@ -1,8 +1,7 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\profile.php
 session_start();
-require_once __DIR__ . '/../../private/utils/dashboard_helpers.php'; // Include the helpers
-require_once __DIR__ . '/../../private/classes/Database.php'; // Include Database class
+require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php'; // Include the helpers
+require_once __DIR__ . '/../../../private/classes/Database.php'; // Include Database class
 
 // --- Base Path Calculation ---
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
@@ -13,7 +12,7 @@ $base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_fo
 $base_path = $protocol . $host . $base_path_segment;
 
 // --- Define Includes Path ---
-$private_includes_path = __DIR__ . '/../../private/includes/';
+$private_includes_path = __DIR__ . '/../../../private/includes/';
 
 // Check if admin is logged in
 if (!isset($_SESSION['admin_id'])) {
@@ -64,7 +63,7 @@ $profile_role = '';
             <h2>Hồ sơ Quản trị</h2>
             <div class="user-info">
                 <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-                <a href="<?php echo $base_path; ?>public/pages/profile.php">Hồ sơ</a>
+                <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
                 <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
             </div>
         </div>

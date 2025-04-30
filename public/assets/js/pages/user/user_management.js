@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     const { getJson, postJson, postForm }      = window.api;
 
     // Thay thế base path cho API
-    const apiBasePath = '../actions/user/index.php';
+    const apiBasePath = '../../actions/user/index.php';
 
     // CREATE USER
     const createForm = document.getElementById('createUserForm');
