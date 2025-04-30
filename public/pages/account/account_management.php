@@ -1,5 +1,6 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\account\account_management.php
+session_start();
 if (!isset($_SESSION['admin_id'])) {
     header('Location: ../auth/admin_login.php');
     exit;
