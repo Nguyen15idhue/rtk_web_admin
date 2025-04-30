@@ -5,18 +5,18 @@
 
 // Admin navigation items - Updated structure
 $admin_nav_items = [
-    ['label' => 'Dashboard', 'icon' => 'fa-tachometer-alt', 'url' => '/public/pages/dashboard.php', 'active_check' => 'dashboard.php', 'permission' => 'dashboard'],
-    ['label' => 'QL người dùng', 'icon' => 'fa-users', 'url' => '/public/pages/user_management.php', 'active_check' => 'user_management.php', 'permission' => 'user_management'],
+    ['label' => 'Dashboard', 'icon' => 'fa-tachometer-alt', 'url' => '/public/pages/dashboard/dashboard.php', 'active_check' => 'dashboard.php', 'permission' => 'dashboard'],
+    ['label' => 'QL người dùng', 'icon' => 'fa-users', 'url' => '/public/pages/user/user_management.php', 'active_check' => 'user_management.php', 'permission' => 'user_management'],
     ['label' => 'QL TK đo đạc', 'icon' => 'fa-ruler-combined', 'url' => '/public/pages/account_management.php', 'active_check' => 'account_management.php', 'permission' => 'account_management'],
-    ['label' => 'QL giao dịch', 'icon' => 'fa-file-invoice-dollar', 'url' => '/public/pages/invoice_management.php', 'active_check' => 'invoice_management.php', 'permission' => 'invoice_management'],
-    ['label' => 'QL doanh thu', 'icon' => 'fa-dollar-sign', 'url' => '/public/pages/revenue_management.php', 'active_check' => 'revenue_management.php', 'permission' => 'revenue_management'],
+    ['label' => 'QL giao dịch', 'icon' => 'fa-file-invoice-dollar', 'url' => '/public/pages/invoice/invoice_management.php', 'active_check' => 'invoice_management.php', 'permission' => 'invoice_management'],
+    ['label' => 'QL doanh thu', 'icon' => 'fa-dollar-sign', 'url' => '/public/pages/invoice/revenue_management.php', 'active_check' => 'revenue_management.php', 'permission' => 'revenue_management'],
     ['label' => 'QL người giới thiệu', 'icon' => 'fa-network-wired', 'url' => '/public/pages/referral_management.php', 'active_check' => 'referral_management.php', 'permission' => 'referral_management'],
     ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => '/public/pages/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports'],
-    ['label' => 'QL hướng dẫn', 'icon' => 'fa-book', 'url' => '/public/pages/guide_management.php', 'active_check' => 'guide_management.php', 'permission' => 'guide_management'],
-    ['label' => 'Phê duyệt hóa đơn', 'icon' => 'fa-file-invoice', 'url' => '/public/pages/invoice_review.php', 'active_check' => 'invoice_review.php', 'permission' => 'invoice_review'],
-    ['label' => 'QL phân quyền', 'icon' => 'fa-user-lock', 'url' => '/public/pages/permission_management.php', 'active_check' => 'permission_management.php', 'permission' => 'permission_management'],
+    ['label' => 'QL hướng dẫn', 'icon' => 'fa-book', 'url' => '/public/pages/guide/guide_management.php', 'active_check' => 'guide_management.php', 'permission' => 'guide_management'],
+    ['label' => 'Phê duyệt hóa đơn', 'icon' => 'fa-file-invoice', 'url' => '/public/pages/invoice_requests/invoice_review.php', 'active_check' => 'invoice_review.php', 'permission' => 'invoice_review'],
+    ['label' => 'QL phân quyền', 'icon' => 'fa-user-lock', 'url' => '/public/pages/auth/permission_management.php', 'active_check' => 'permission_management.php', 'permission' => 'permission_management'],
     ['type' => 'section', 'label' => 'Cài đặt'],
-    ['label' => 'Thông tin tài khoản', 'icon' => 'fa-id-card', 'url' => '/public/pages/profile.php', 'active_check' => 'profile.php', 'permission' => 'settings'],
+    ['label' => 'Thông tin tài khoản', 'icon' => 'fa-id-card', 'url' => '/public/pages/setting/profile.php', 'active_check' => 'profile.php', 'permission' => 'settings'],
     ['label' => 'Đăng xuất', 'icon' => 'fa-sign-out-alt', 'url' => '/public/pages/auth/admin_logout.php', 'class' => 'logout-link']
 ];
 
@@ -66,7 +66,7 @@ $admin_user_role = isset($role_vietnamese[$role]) ? $role_vietnamese[$role] : uc
     <!-- Logo & Toggle -->
     <div class="sidebar-header">
          <!-- Link to admin dashboard or # -->
-        <a href="<?php echo $base_path; ?>public/pages/dashboard.php" class="logo-link"> <!-- Updated link -->
+        <a href="<?php echo $base_path; ?>public/pages/dashboard/dashboard.php" class="logo-link"> <!-- Updated link -->
             <i class="logo-icon fas fa-user-shield"></i>
             <span class="logo-text">Trang Quản Trị</span>
         </a>

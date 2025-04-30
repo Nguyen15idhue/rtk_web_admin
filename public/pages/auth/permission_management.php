@@ -1,8 +1,8 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\permission_management.php
+// filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\auth\permission_management.php
 session_start();
-require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
-$private_includes_path = __DIR__ . '/../../private/includes/';
+require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php';
+$private_includes_path = __DIR__ . '/../../../private/includes/';
 $user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 $base_path = '/'; // Adjust if necessary
 
@@ -10,8 +10,8 @@ $base_path = '/'; // Adjust if necessary
 $is_super_admin = (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] === 'admin');
 
 // Fetch admin accounts for listing
-require_once __DIR__ . '/../../private/config/database.php';
-require_once __DIR__ . '/../../private/classes/Database.php';
+require_once __DIR__ . '/../../../private/config/database.php';
+require_once __DIR__ . '/../../../private/classes/Database.php';
 $dbConn = Database::getInstance()->getConnection();
 $admins = [];
 if ($dbConn) {
@@ -33,7 +33,7 @@ if ($dbConn) {
             <h2 class="text-2xl font-semibold">Quản lý Phân quyền</h2>
             <div class="user-info">
                 <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-                <a href="<?php echo $base_path; ?>public/pages/profile.php">Hồ sơ</a>
+                <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
                 <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
             </div>
         </div>

@@ -5,8 +5,8 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-require_once __DIR__ . '/../../private/config/database.php';
-require_once __DIR__ . '/../../private/classes/Database.php';
+require_once __DIR__ . '/../../../private/config/database.php';
+require_once __DIR__ . '/../../../private/classes/Database.php';
 
 $invoiceId = isset($_GET['invoice_id']) ? (int)$_GET['invoice_id'] : 0;
 if ($invoiceId <= 0) {
@@ -14,7 +14,7 @@ if ($invoiceId <= 0) {
     exit;
 }
 
-$private_includes_path = __DIR__ . '/../../private/includes/';
+$private_includes_path = __DIR__ . '/../../../private/includes/';
 
 // --- Base Path Calculation for assets (from invoice_review.php) ---
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']!=='off' || $_SERVER['SERVER_PORT']==443)
@@ -50,7 +50,7 @@ $base_path = $protocol
             <h2><i class="fas fa-file-upload"></i> Upload Hóa đơn #<?php echo $invoiceId; ?></h2>
         </div>
         <div class="card-body">
-            <form action="../actions/invoice_requests/index.php?action=process_invoice_send"
+            <form action="../../actions/invoice_requests/index.php?action=process_invoice_send"
                   method="post" enctype="multipart/form-data"
                   class="form-section">
                 <input type="hidden" name="invoice_id" value="<?php echo $invoiceId; ?>">

@@ -34,7 +34,7 @@
             // proof link
             const proofLink = document.getElementById('modal-tx-proof-link');
             if(data.proof_image){
-                proofLink.innerHTML = `<a href="${data.proof_image}" target="_blank">Xem hình ảnh</a>
+                proofLink.innerHTML = `<a href="${data.proof_image}" target="_blank">Xem hình ảnh&nbsp;</a>
                     | <button class="btn-link" onclick="viewProofModal('${data.id}','${data.proof_image}'); closeDetailsModal();">Xem trong modal</button>`;
             } else proofLink.textContent = 'Không có';
 
@@ -64,7 +64,7 @@
         });
 
         // API URLs
-        const apiBasePath = '../actions/invoice/index.php';
+        const apiBasePath = `${appBase}public/actions/invoice/index.php`;
         const approveUrl = `${apiBasePath}?action=process_transaction_approve`;
         const rejectUrl  = `${apiBasePath}?action=process_transaction_reject`;
         const revertUrl  = `${apiBasePath}?action=process_transaction_revert`;

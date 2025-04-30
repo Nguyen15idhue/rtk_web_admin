@@ -91,7 +91,7 @@ $commission_pending = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 
             <h2 class="text-2xl font-semibold">Báo cáo Tổng hợp</h2>
             <div class="user-info">
                 <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-                <a href="<?php echo $base_path; ?>public/pages/profile.php">Hồ sơ</a>
+                <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
                 <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
             </div>
         </div>

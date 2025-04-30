@@ -1,8 +1,7 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\profile.php
 session_start();
-require_once __DIR__ . '/../../private/utils/dashboard_helpers.php'; // Include the helpers
-require_once __DIR__ . '/../../private/classes/Database.php'; // Include Database class
+require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php'; // Include the helpers
+require_once __DIR__ . '/../../../private/classes/Database.php'; // Include Database class
 
 // --- Base Path Calculation ---
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
@@ -13,7 +12,7 @@ $base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_fo
 $base_path = $protocol . $host . $base_path_segment;
 
 // --- Define Includes Path ---
-$private_includes_path = __DIR__ . '/../../private/includes/';
+$private_includes_path = __DIR__ . '/../../../private/includes/';
 
 // Check if admin is logged in
 if (!isset($_SESSION['admin_id'])) {
@@ -26,31 +25,10 @@ $admin_id = $_SESSION['admin_id'];
 // Use 'admin_name' consistent with user_management.php if available, otherwise fallback
 $user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 
-// Fetch admin profile data
-$db = Database::getInstance();
-$conn = $db->getConnection();
-$admin_profile = null;
-
-if ($conn) {
-    try {
-        $stmt = $conn->prepare("SELECT id, name, admin_username, role FROM admin WHERE id = :id");
-        $stmt->bindParam(':id', $admin_id, PDO::PARAM_INT);
-        $stmt->execute();
-        $admin_profile = $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        error_log("Error fetching admin profile: " . $e->getMessage());
-        $admin_profile = null; // Ensure profile is null on error
-    } finally {
-        $db->close(); // Close connection
-    }
-} else {
-    error_log("Failed to connect to database for admin profile.");
-}
-
-// Set default values if profile fetch failed or returned no data
-$profile_name = $admin_profile['name'] ?? 'N/A';
-$profile_username = $admin_profile['admin_username'] ?? 'N/A'; // Use fetched username
-$profile_role = $admin_profile['role'] ?? 'N/A';
+// Initialize empty placeholders; actual data will be loaded via AJAX
+$profile_name = '';
+$profile_username = '';
+$profile_role = '';
 
 ?>
 <!DOCTYPE html>
@@ -85,7 +63,7 @@ $profile_role = $admin_profile['role'] ?? 'N/A';
             <h2>Hồ sơ Quản trị</h2>
             <div class="user-info">
                 <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-                <a href="<?php echo $base_path; ?>public/pages/profile.php">Hồ sơ</a>
+                <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
                 <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
             </div>
         </div>
@@ -107,7 +85,7 @@ $profile_role = $admin_profile['role'] ?? 'N/A';
                             </div>
                             <div class="form-group">
                                 <label for="admin-profile-role">Vai trò</label>
-                                <input type="text" id="admin-profile-role" name="role" readonly disabled value="<?php echo htmlspecialchars(ucfirst($profile_role)); // Capitalize first letter ?>">
+                                <input type="text" id="admin-profile-role" name="role" readonly disabled value="<?php echo htmlspecialchars($profile_role); ?>">
                             </div>
                         </div>
                         <div class="mt-6">

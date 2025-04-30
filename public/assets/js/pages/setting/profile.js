@@ -105,5 +105,19 @@ async function changeAdminPassword(event) {
     }
 }
 
-profileForm.addEventListener('submit', updateAdminProfile);
-passwordForm.addEventListener('submit', changeAdminPassword);
+document.addEventListener('DOMContentLoaded', () => {
+    fetch(`${basePath}public/actions/setting/index.php?action=process_profile_fetch`)
+        .then(r => r.json())
+        .then(res => {
+            if (res.success && res.data) {
+                const d = res.data;
+                document.getElementById('admin-profile-name').value     = d.name || '';
+                document.getElementById('admin-profile-email').value    = d.admin_username || '';
+                document.getElementById('admin-profile-role').value     = d.role.charAt(0).toUpperCase() + d.role.slice(1);
+            }
+        })
+        .catch(console.error);
+
+    profileForm.addEventListener('submit', updateAdminProfile);
+    passwordForm.addEventListener('submit', changeAdminPassword);
+});

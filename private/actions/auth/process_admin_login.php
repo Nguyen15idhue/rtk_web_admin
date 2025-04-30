@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $conn->close();
 
                     // Redirect to admin dashboard
-                    header("Location: ../../../public/pages/dashboard.php"); // Adjust path if needed
+                    header("Location: ../../../public/pages/dashboard/dashboard.php"); // Adjust path if needed
                     exit();
                 } else {
                     // Incorrect password

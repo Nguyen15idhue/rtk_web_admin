@@ -4,8 +4,9 @@ header('Content-Type: application/json');
 
 $action = basename($_GET['action'] ?? '');
 $allowed = [
-    'process_password_change',
-    'process_profile_update'
+    'process_profile_fetch',        // <-- add this
+    'process_profile_update',
+    'process_password_change'
 ];
 if (!in_array($action, $allowed, true)) {
     http_response_code(400);

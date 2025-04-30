@@ -3,7 +3,7 @@
 if (!isset($base_path) || !is_string($base_path)) {
     // Attempt to determine base path dynamically if possible, otherwise default
     // This might need adjustment based on your server setup / framework
-    $script_name = $_SERVER['SCRIPT_NAME']; // e.g., /rtk_web_admin/public/pages/dashboard.php
+    $script_name = $_SERVER['SCRIPT_NAME']; // e.g., /rtk_web_admin/public/pages/dashboard/dashboard.php
     $base_path_parts = explode('/', $script_name);
     // Assuming structure is /project_root/public/pages/file.php
     // Adjust the slice index based on your actual structure

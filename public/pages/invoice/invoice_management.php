@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\invoice_management.php
+// filepath: e:\Application\laragon\www\rtk_web_admin\public\pages/invoice/invoice_management.php
 // --- Includes and Setup ---
 session_start();
 if (!isset($_SESSION['admin_id'])) {
@@ -14,10 +14,10 @@ $project_folder_index = array_search('rtk_web_admin', $script_name_parts);
 $base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_folder_index + 1)) . '/';
 $base_path = $protocol . $host . $base_path_segment;
 
-require_once __DIR__ . '/../../private/config/database.php';
-require_once __DIR__ . '/../../private/classes/Database.php';
-require_once __DIR__ . '/../../private/utils/functions.php';
-require_once __DIR__ . '/../../private/actions/invoice/fetch_transactions.php';
+require_once __DIR__ . '/../../../private/config/database.php';
+require_once __DIR__ . '/../../../private/classes/Database.php';
+require_once __DIR__ . '/../../../private/utils/functions.php';
+require_once __DIR__ . '/../../../private/actions/invoice/fetch_transactions.php';
 
 // --- LẤY DỮ LIỆU CHO FILTERS MỚI ---
 $db = Database::getInstance()->getConnection();
@@ -65,34 +65,32 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
     <style>
-        /* Modal styling */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-content { background: white; padding: 1.5rem 2rem; border-radius: var(--rounded-lg); box-shadow: 0 5px 15px rgba(0,0,0,0.2); width: 90%; max-width: 600px; position: relative; transform: scale(0.9); transition: transform 0.3s ease; }
-        .modal-overlay.active .modal-content { transform: scale(1); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--gray-200); padding-bottom: 0.8rem; margin-bottom: 1rem; }
-        .modal-header h4 { font-size: var(--font-size-lg); font-weight: var(--font-semibold); color: var(--gray-800); }
-        .modal-close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gray-500); padding: 0.2rem; line-height: 1; }
-        .modal-close-btn:hover { color: var(--gray-700); }
-        .modal-body p { margin-bottom: 0.75rem; font-size: var(--font-size-sm); color: var(--gray-700); line-height: 1.6; display: flex; }
-        .modal-body strong { font-weight: var(--font-semibold); color: var(--gray-900); min-width: 140px; display: inline-block; margin-right: 0.5rem; }
-        .modal-body span { flex-grow: 1; }
-        .modal-body .status-badge-modal { margin-left: 5px; vertical-align: middle; }
-        #proofModalImage { max-width: 100%; height: auto; display: block; margin: 1rem auto; border: 1px solid var(--gray-300); border-radius: var(--rounded-md); }
+        /* Add style for detail labels similar to account management */
+        .detail-label {
+            font-weight: 600; /* semi-bold */
+            min-width: 150px; /* Adjust as needed */
+            display: inline-block;
+        }
+        .detail-row {
+            margin-bottom: 0.5rem; /* Add some spacing between rows */
+        }
+        .status-badge-modal { /* Ensure badge alignment is good */
+             vertical-align: middle;
+        }
     </style>
 </head>
 <body>
 
 
-    <?php include __DIR__ . '/../../private/includes/admin_header.php'; ?>
-    <?php include __DIR__ . '/../../private/includes/admin_sidebar.php'; ?>
+    <?php include __DIR__ . '/../../../private/includes/admin_header.php'; ?>
+    <?php include __DIR__ . '/../../../private/includes/admin_sidebar.php'; ?>
 
     <main class="content-wrapper">
         <div class="content-header">
             <h2>Quản lý Giao dịch</h2>
             <div class="user-info">
                 <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-                <a href="<?php echo $base_path; ?>public/pages/profile.php">Hồ sơ</a>
+                <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
                 <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
             </div>
         </div>
@@ -284,7 +282,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
     <div class="modal-content">
         <div class="modal-header">
             <h4 id="proofModalTitle">Minh chứng Giao dịch</h4>
-            <button class="modal-close-btn" onclick="closeProofModal()">&times;</button>
+            <button class="modal-close" onclick="closeProofModal()">&times;</button>
         </div>
         <div class="modal-body" style="text-align: center;">
              <img id="proofModalImage" src="" alt="Minh chứng thanh toán">
@@ -296,21 +294,49 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
     <div class="modal-content">
         <div class="modal-header">
             <h4 id="modal-title">Chi Tiết Giao Dịch</h4>
-            <button class="modal-close-btn" onclick="closeDetailsModal()">&times;</button>
+            <button class="modal-close" onclick="closeDetailsModal()">&times;</button>
         </div>
         <div class="modal-body">
-            <p><strong>Mã Giao dịch:</strong> <span id="modal-tx-id"></span></p>
-            <p><strong>Email Người dùng:</strong> <span id="modal-tx-email"></span></p>
-            <p><strong>Gói đăng ký:</strong> <span id="modal-tx-package"></span></p>
-            <p><strong>Số tiền:</strong> <span id="modal-tx-amount"></span></p>
-            <p><strong>Ngày yêu cầu:</strong> <span id="modal-tx-request-date"></span></p>
-            <p><strong>Trạng thái:</strong>
-                <span id="modal-tx-status-badge" class="status-badge status-badge-modal">
-                    <span id="modal-tx-status-text"></span>
+            <!-- NOTE: Ensure your showTransactionDetails JS function populates these new spans -->
+            <div class="detail-row">
+                <span class="detail-label">Mã Giao dịch:</span>
+                <span class="detail-value" id="modal-tx-id"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Email Người dùng:</span>
+                <span class="detail-value" id="modal-tx-email"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Gói đăng ký:</span>
+                <span class="detail-value" id="modal-tx-package"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Số tiền:</span>
+                <span class="detail-value" id="modal-tx-amount"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Ngày yêu cầu:</span>
+                <span class="detail-value" id="modal-tx-request-date"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Trạng thái:</span>
+                <span class="detail-value">
+                    <span id="modal-tx-status-badge" class="status-badge status-badge-modal">
+                        <span id="modal-tx-status-text"></span>
+                    </span>
                 </span>
-            </p>
-            <p id="modal-tx-rejection-reason-container" style="display: none;"><strong>Lý do từ chối:</strong> <span id="modal-tx-rejection-reason" style="color: var(--danger-600);"></span></p>
-            <p><strong>Minh chứng:</strong> <span id="modal-tx-proof-link"></span></p>
+            </div>
+            <div class="detail-row" id="modal-tx-rejection-reason-container" style="display: none;">
+                <span class="detail-label">Lý do từ chối:</span>
+                <span class="detail-value" id="modal-tx-rejection-reason" style="color: var(--danger-600);"></span>
+            </div>
+             <div class="detail-row">
+                <span class="detail-label">Minh chứng:</span>
+                <span class="detail-value" id="modal-tx-proof-link"></span>
+            </div>
+        </div>
+        <div class="modal-footer">
+             <button class="btn btn-secondary" onclick="closeDetailsModal()">Đóng</button>
         </div>
     </div>
 </div>
