@@ -31,7 +31,7 @@
             // (Desktop sidebar is controlled differently, usually always visible or collapsible)
             // We only force close if the 'open' state was specifically for mobile toggle
             if (sidebar && sidebar.classList.contains('open')) { // Check if mobile state was open
-                 toggleSidebar(); // Use the toggle function to reset state
+                toggleSidebar(); // Use the toggle function to reset state
             }
         }
         // No need to manually handle hamburger visibility here, CSS does it

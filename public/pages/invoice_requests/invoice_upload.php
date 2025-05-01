@@ -71,3 +71,6 @@ $base_path = $protocol
 </main>
 </body>
 </html>
+<?php
+include $private_includes_path . 'admin_footer.php';
+?>

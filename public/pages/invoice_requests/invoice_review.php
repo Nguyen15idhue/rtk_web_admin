@@ -27,19 +27,26 @@ $invoices = $data['invoices'];
 $total = $data['total_count'];
 $total_pages = $data['total_pages'];
 $current_page = $data['current_page'];
+
 $private_includes_path = __DIR__ . '/../../../private/includes/';
+// --- add page bootstrap & title ---
+$page_title = 'Phê duyệt Hóa đơn';
+$bootstrap_data = require_once $private_includes_path . 'page_bootstrap.php';
+$user_display_name = $bootstrap_data['user_display_name'];
 ?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phê duyệt Hóa đơn</title>
+    <title><?php echo $page_title; ?></title>
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/base.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-buttons.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/badges.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         .status-pending { color: #f59e0b; }
@@ -53,14 +60,33 @@ $private_includes_path = __DIR__ . '/../../../private/includes/';
     include $private_includes_path . 'admin_sidebar.php';
 ?>
 <main class="content-wrapper">
+    <div class="content-header">
+        <h2><?php echo $page_title; ?></h2>
+        <div class="user-info">
+            <span>Chào mừng, <span class="highlight"><?php echo $user_display_name; ?></span>!</span>
+            <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
+            <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
+        </div>
+    </div>
     <div class="content-section">
-        <h2>Danh sách Yêu cầu Xuất Hóa đơn</h2>
+        <div class="header-actions">
+            <h3>Danh sách Yêu cầu Xuất Hóa đơn</h3>
+        </div>
+        <form method="GET" class="filter-bar">
+            <select name="status">
+                <option value="" <?php echo $filters['status']==''?'selected':''; ?>>Tất cả trạng thái</option>
+                <option value="pending" <?php echo $filters['status']=='pending'?'selected':''; ?>>Chờ duyệt</option>
+                <option value="approved" <?php echo $filters['status']=='approved'?'selected':''; ?>>Đã duyệt</option>
+                <option value="rejected" <?php echo $filters['status']=='rejected'?'selected':''; ?>>Từ chối</option>
+            </select>
+            <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+            <a href="<?php echo strtok($_SERVER['REQUEST_URI'],'?'); ?>" class="btn btn-secondary"><i class="fas fa-times"></i> Xóa</a>
+        </form>
         <div class="transactions-table-wrapper">
             <table class="transactions-table">
                 <thead>
                     <tr>
-                        <th>ID</th><th>GD#</th><th>Email</th><th>Gói</th><th>Yêu cầu</th><th>Trạng thái</th><th>File</th><th>Lý do</th>
-                        <th style="text-align:center;">Thao tác</th>
+                        <th>ID</th><th>GD#</th><th>Email</th><th>Gói</th><th>Yêu cầu</th><th>Trạng thái</th><th>File</th><th>Lý do</th><th class="actions" style="text-align:center;">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,11 +108,11 @@ $private_includes_path = __DIR__ . '/../../../private/includes/';
                         <td class="actions" style="text-align:center;">
                             <?php if ($inv['status'] === 'pending'): ?>
                                 <a href="invoice_upload.php?invoice_id=<?php echo $inv['invoice_id']; ?>">
-                                    <button type="button" title="Upload & Approve">
+                                    <button type="button" class="btn-icon btn-approve" title="Upload & Approve">
                                         <i class="fas fa-upload"></i>
                                     </button>
                                 </a>
-                                <button onclick="rejectInvoice(<?php echo $inv['invoice_id']; ?>)" title="Từ chối">
+                                <button class="btn-icon btn-reject" onclick="rejectInvoice(<?php echo $inv['invoice_id']; ?>)" title="Từ chối">
                                     <i class="fas fa-times"></i>
                                 </button>
                             <?php elseif ($inv['status'] === 'approved'): ?>
@@ -102,6 +128,10 @@ $private_includes_path = __DIR__ . '/../../../private/includes/';
         </div>
     </div>
 </main>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+// expose basePath for external script
+window.basePath = '<?php echo rtrim($base_path,'/'); ?>';
+</script>
 <script src="<?php echo $base_path; ?>public/assets/js/pages/invoice_requests/invoice_review.js"></script>
-</body>
-</html>
+<?php include $private_includes_path . 'admin_footer.php'; ?>

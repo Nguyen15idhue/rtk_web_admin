@@ -11,7 +11,6 @@ $bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootst
 $db = $bootstrap_data['db'];
 $base_path = $bootstrap_data['base_path'];
 $user_display_name = $bootstrap_data['user_display_name'];
-// Note: $private_includes_path now points to the 'includes' directory itself
 $private_includes_path = $bootstrap_data['private_includes_path'];
 
 // --- Include Page-Specific Logic ---
@@ -380,3 +379,7 @@ require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php';
 
 </body>
 </html>
+
+<?php
+include $private_includes_path . 'admin_footer.php';
+?>

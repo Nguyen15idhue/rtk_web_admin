@@ -13,6 +13,7 @@ $script_name_parts = explode('/', $_SERVER['SCRIPT_NAME']);
 $project_folder_index = array_search('rtk_web_admin', $script_name_parts);
 $base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_folder_index + 1)) . '/';
 $base_path = $protocol . $host . $base_path_segment;
+$private_includes_path = __DIR__ . '/../../../private/includes/';
 
 require_once __DIR__ . '/../../../private/config/database.php';
 require_once __DIR__ . '/../../../private/classes/Database.php';
@@ -57,7 +58,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý Giao dịch - Admin</title>
+    <title>Quản lý Giao dịch</title>
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/base.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables.css">
@@ -348,3 +349,6 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
 <script src="<?php echo $base_path; ?>public/assets/js/pages/invoice/invoice_management.js"></script>
 </body>
 </html>
+<?php
+include $private_includes_path . 'admin_footer.php';
+?>

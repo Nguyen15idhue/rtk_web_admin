@@ -177,3 +177,6 @@ list($total_revenue, $successful_revenue) = get_revenue_sums($filters);
     </main>
 </body>
 </html>
+<?php
+include $private_includes_path . 'admin_footer.php';
+?>

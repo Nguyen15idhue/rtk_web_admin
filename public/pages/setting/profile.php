@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php'; // Include the helpers
-require_once __DIR__ . '/../../../private/classes/Database.php'; // Include Database class
 
 // --- Base Path Calculation ---
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
@@ -11,7 +10,6 @@ $project_folder_index = array_search('rtk_web_admin', $script_name_parts);
 $base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_folder_index + 1)) . '/';
 $base_path = $protocol . $host . $base_path_segment;
 
-// --- Define Includes Path ---
 $private_includes_path = __DIR__ . '/../../../private/includes/';
 
 // Check if admin is logged in
@@ -73,14 +71,14 @@ $profile_role = '';
                 <!-- Profile Info Card -->
                 <div class="lg:col-span-2">
                     <h3>Thông tin cá nhân</h3>
-                    <form id="admin-profile-form">
+                    <form id="admin-profile-form" novalidate autocomplete="off">
                         <div class="space-y-4">
                             <div class="form-group">
                                 <label for="admin-profile-name">Họ tên <span class="text-red-500">*</span></label>
                                 <input type="text" id="admin-profile-name" name="name" required value="<?php echo htmlspecialchars($profile_name); ?>">
                             </div>
                             <div class="form-group">
-                                <label for="admin-profile-email">Email (Tên đăng nhập)</label>
+                                <label for="admin-profile-email">Tên đăng nhập</label>
                                 <input type="text" id="admin-profile-email" name="admin_username" readonly disabled value="<?php echo htmlspecialchars($profile_username); ?>">
                             </div>
                             <div class="form-group">
@@ -100,7 +98,7 @@ $profile_role = '';
                 <!-- Change Password Card -->
                 <div>
                     <h3>Đổi mật khẩu</h3>
-                    <form id="admin-password-form">
+                    <form id="admin-password-form" novalidate autocomplete="off">
                         <div class="space-y-4">
                             <div class="form-group">
                                 <label for="admin-current-password">Mật khẩu hiện tại <span class="text-red-500">*</span></label>
@@ -108,12 +106,12 @@ $profile_role = '';
                             </div>
                             <div class="form-group">
                                 <label for="admin-new-password">Mật khẩu mới <span class="text-red-500">*</span></label>
-                                <input type="password" id="admin-new-password" name="new_password" required minlength="6">
+                                <input type="password" id="admin-new-password" name="new_password" required minlength="6" autocomplete="new-password">
                                 <p class="text-xs">Ít nhất 6 ký tự.</p>
                             </div>
                             <div class="form-group">
                                 <label for="admin-confirm-password">Xác nhận mật khẩu mới <span class="text-red-500">*</span></label>
-                                <input type="password" id="admin-confirm-password" name="confirm_password" required>
+                                <input type="password" id="admin-confirm-password" name="confirm_password" required autocomplete="new-password">
                             </div>
                         </div>
                         <div class="mt-6">
@@ -132,7 +130,7 @@ $profile_role = '';
     <script>
         const basePath = '<?php echo $base_path; ?>';
     </script>
-    <script src="<?php echo $base_path; ?>public/assets/js/pages/setting/profile.js"></script>
+    <script defer src="<?php echo $base_path; ?>public/assets/js/pages/setting/profile.js"></script>
 
-</body>
-</html>
+<?php
+include $private_includes_path . 'admin_footer.php';

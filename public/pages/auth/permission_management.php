@@ -1,44 +1,35 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\auth\permission_management.php
 session_start();
 if (!isset($_SESSION['admin_id'])) {
     header('Location: ../auth/admin_login.php');
     exit;
 }
 require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php';
-$private_includes_path = __DIR__ . '/../../../private/includes/';
-$user_display_name = $_SESSION['admin_username'] ?? 'Admin';
-$base_path = '/'; // Adjust if necessary
-
-// Check if current user is Admin for editing
-$is_super_admin = (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] === 'admin');
-
-// Fetch admin accounts for listing
 require_once __DIR__ . '/../../../private/config/database.php';
 require_once __DIR__ . '/../../../private/classes/Database.php';
-$dbConn = Database::getInstance()->getConnection();
-$admins = [];
-if ($dbConn) {
-    $stmt = $dbConn->query("SELECT id, name, admin_username, role, created_at FROM admin");
-    $admins = $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+$private_includes = __DIR__ . '/../../../private/includes/';
+$user_display_name = $_SESSION['admin_username'] ?? 'Admin';
+$base_path = '/';
+$is_super_admin = ($_SESSION['admin_role'] ?? '') === 'admin';
+$db = Database::getInstance()->getConnection();
+$admins = $db ? $db->query("SELECT id,name,admin_username,role,created_at FROM admin")->fetchAll(PDO::FETCH_ASSOC) : [];
+$css = ['layouts/header.css', 'components/buttons.css', 'pages/permission_management.css'];
+$nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php' => 'Đăng xuất'];
 ?>
 
-    <?php 
-        include $private_includes_path . 'admin_sidebar.php';
-        include $private_includes_path . 'admin_header.php';
-    ?>
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/pages/permission_management.css">
+    <?php include $private_includes . 'admin_sidebar.php'; include $private_includes . 'admin_header.php'; ?>
+    <?php foreach ($css as $f): ?>
+        <link rel="stylesheet" href="<?= $base_path ?>public/assets/css/<?= $f ?>">
+    <?php endforeach; ?>
 
     <main class="content-wrapper">
         <div class="content-header">
             <h2 class="text-2xl font-semibold">Quản lý Phân quyền</h2>
             <div class="user-info">
-                <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-                <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
-                <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
+                <span>Chào mừng, <span class="highlight"><?= htmlspecialchars($user_display_name) ?></span>!</span>
+                <?php foreach ($nav as $u => $t): ?>
+                    <a href="<?= $base_path ?>public/<?= $u ?>"><?= $t ?></a>
+                <?php endforeach; ?>
             </div>
         </div>
 
@@ -135,16 +126,16 @@ if ($dbConn) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($admins as $admin): ?>
+                    <?php foreach ($admins as $a): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($admin['id']); ?></td>
-                        <td><?php echo htmlspecialchars($admin['name']); ?></td>
-                        <td><?php echo htmlspecialchars($admin['admin_username']); ?></td>
-                        <td><?php echo htmlspecialchars($admin['role']==='customercare' ? 'Chăm sóc khách hàng' : 'Quản trị viên'); ?></td>
-                        <td><?php echo htmlspecialchars($admin['created_at']); ?></td>
+                        <td><?= htmlspecialchars($a['id']) ?></td>
+                        <td><?= htmlspecialchars($a['name']) ?></td>
+                        <td><?= htmlspecialchars($a['admin_username']) ?></td>
+                        <td><?= ($a['role'] === 'customercare' ? 'Chăm sóc khách hàng' : 'Quản trị viên') ?></td>
+                        <td><?= htmlspecialchars($a['created_at']) ?></td>
                         <td class="actions">
-                            <button class="btn btn-secondary btn-sm" onclick="openEditAdminModal(<?php echo $admin['id']; ?>)">Sửa</button>
-                            <button class="btn btn-danger btn-sm" onclick="openDeleteAdminModal(<?php echo $admin['id']; ?>)">Xóa</button>
+                            <button class="btn btn-secondary btn-sm" onclick="openEditAdminModal(<?= $a['id'] ?>)">Sửa</button>
+                            <button class="btn btn-danger btn-sm" onclick="openDeleteAdminModal(<?= $a['id'] ?>)">Xóa</button>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -155,11 +146,11 @@ if ($dbConn) {
 
     <!-- Export PHP vars and load external JS -->
     <script>
-        window.basePath     = '<?php echo $base_path; ?>';
-        window.adminsData   = <?php echo json_encode($admins); ?>;
-        window.isSuperAdmin = <?php echo json_encode($is_super_admin); ?>;
+        window.basePath = '<?= $base_path ?>';
+        window.adminsData = <?= json_encode($admins) ?>;
+        window.isSuperAdmin = <?= json_encode($is_super_admin) ?>;
     </script>
-    <script src="<?php echo $base_path; ?>public/assets/js/pages/auth/permission_management.js"></script>
+    <script src="<?= $base_path ?>public/assets/js/pages/auth/permission_management.js"></script>
 
 <!-- Create Admin/Operator Modal -->
 <div id="createRoleModal" class="modal" style="display: none;">
@@ -250,3 +241,6 @@ if ($dbConn) {
         </div>
     </div>
 </div>
+<?php
+include $private_includes . 'admin_footer.php';
+?>

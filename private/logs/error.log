@@ -1,73 +1,117 @@
-[30-Apr-2025 09:33:50 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 09:33:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 09:33:51 UTC] Executing SQL: 
-        SELECT
-            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
-            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
-            u.id as user_id, u.email AS user_email, u.username AS user_username,
-            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
-            l.id as location_id, l.province AS location_name
-        FROM survey_account sa
-        JOIN registration r ON sa.registration_id = r.id
-        JOIN user u ON r.user_id = u.id
-        LEFT JOIN package p ON r.package_id = p.id
-        JOIN location l ON r.location_id = l.id
-        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL 
-     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
-[30-Apr-2025 09:33:51 UTC] With parameters: Array
-(
-    [:limit] => 10
-    [:offset] => 0
-)
-
-[30-Apr-2025 09:33:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 09:43:56 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 09:43:56 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 09:43:56 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 09:43:59 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 09:44:27 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 09:44:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 09:44:30 UTC] Executing SQL: 
-        SELECT
-            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
-            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
-            u.id as user_id, u.email AS user_email, u.username AS user_username,
-            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
-            l.id as location_id, l.province AS location_name
-        FROM survey_account sa
-        JOIN registration r ON sa.registration_id = r.id
-        JOIN user u ON r.user_id = u.id
-        LEFT JOIN package p ON r.package_id = p.id
-        JOIN location l ON r.location_id = l.id
-        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL 
-     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
-[30-Apr-2025 09:44:30 UTC] With parameters: Array
-(
-    [:limit] => 10
-    [:offset] => 0
-)
-
-[30-Apr-2025 09:44:38 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 09:44:38 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 09:44:40 UTC] Executing SQL: 
-        SELECT
-            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
-            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
-            u.id as user_id, u.email AS user_email, u.username AS user_username,
-            p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
-            l.id as location_id, l.province AS location_name
-        FROM survey_account sa
-        JOIN registration r ON sa.registration_id = r.id
-        JOIN user u ON r.user_id = u.id
-        LEFT JOIN package p ON r.package_id = p.id
-        JOIN location l ON r.location_id = l.id
-        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL 
-     ORDER BY sa.created_at DESC LIMIT :limit OFFSET :offset
-[30-Apr-2025 09:44:40 UTC] With parameters: Array
-(
-    [:limit] => 10
-    [:offset] => 0
-)
-
-[30-Apr-2025 09:45:10 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 09:45:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 14:52:16 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 14:52:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 14:52:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 14:52:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 14:52:23 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 14:52:23 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 14:52:24 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 14:52:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 14:52:27 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 14:52:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 14:52:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 14:53:05 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 14:53:29 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 15:54:20 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 15:54:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 15:56:07 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 15:56:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 16:07:28 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 16:07:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 16:07:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 16:07:36 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 16:07:36 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 16:10:02 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 16:10:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 16:10:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 16:10:58 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 16:10:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 16:22:11 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 16:22:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 16:22:27 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 16:22:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 16:22:30 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 16:22:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 16:23:22 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 16:23:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 16:27:04 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 16:27:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 16:30:10 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 16:30:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 16:30:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[30-Apr-2025 16:34:56 UTC] [DEBUG] Search keyword: 
+[30-Apr-2025 16:34:56 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 01:22:00 UTC] [DEBUG] Search keyword: 
+[01-May-2025 01:22:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 01:23:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 01:50:02 UTC] [DEBUG] Search keyword: 
+[01-May-2025 01:50:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 01:50:24 UTC] [DEBUG] Search keyword: 
+[01-May-2025 01:50:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 01:52:25 UTC] [DEBUG] Search keyword: 
+[01-May-2025 01:52:25 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 01:58:11 UTC] [DEBUG] Search keyword: 
+[01-May-2025 01:58:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:01:37 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:01:37 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:01:38 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:01:38 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:01:55 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:01:55 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:02:02 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:02:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:02:42 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:02:42 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:02:46 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:02:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:04:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:04:11 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:04:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:14:37 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:14:37 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:14:46 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:14:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:15:10 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:15:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:33:54 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:33:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:35:48 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:35:48 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:37:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:38:32 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:38:32 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:38:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:38:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:39:30 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:39:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:42:00 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:42:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:43:26 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:43:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:47:48 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:47:48 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:49:16 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:49:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:49:22 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:49:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 02:55:28 UTC] [DEBUG] Search keyword: 
+[01-May-2025 02:55:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:01:55 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:28:18 UTC] [DEBUG] Search keyword: 
+[01-May-2025 03:28:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:28:22 UTC] [DEBUG] Search keyword: 
+[01-May-2025 03:28:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:29:06 UTC] [DEBUG] Search keyword: 
+[01-May-2025 03:29:06 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:29:07 UTC] [DEBUG] Search keyword: 
+[01-May-2025 03:29:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:29:10 UTC] [DEBUG] Search keyword: 
+[01-May-2025 03:29:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:29:30 UTC] [DEBUG] Search keyword: 
+[01-May-2025 03:29:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:29:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:29:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:31:08 UTC] [DEBUG] Search keyword: 
+[01-May-2025 03:31:08 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:31:14 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:31:29 UTC] [DEBUG] Search keyword: 
+[01-May-2025 03:31:29 UTC] [Database Connect] Connection to database 'surveying_account' successful.
