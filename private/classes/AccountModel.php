@@ -1,4 +1,9 @@
 <?php
+// Prevent PHP from outputting HTML errors directly
+error_reporting(E_ALL); // Report all errors for logging
+ini_set('display_errors', 0); // Keep off for browser output
+ini_set('log_errors', 1); // Ensure errors are logged
+ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
 
 class AccountModel {
     private $db;
@@ -12,9 +17,9 @@ class AccountModel {
         FROM survey_account sa
         JOIN registration r ON sa.registration_id = r.id
         JOIN user u ON r.user_id = u.id
-        JOIN package p ON r.package_id = p.id
+        LEFT JOIN package p ON r.package_id = p.id
         JOIN location l ON r.location_id = l.id
-        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL 
     "; // Updated base query to include more fields for editing
 
     /**
@@ -61,12 +66,13 @@ class AccountModel {
      */
     private function applyFilters(string &$sql, array &$params, array $filters): void {
         if (!empty($filters['search'])) {
-            $sql .= " AND (sa.id LIKE :search OR sa.username_acc LIKE :search OR u.email LIKE :search OR u.username LIKE :search OR l.province LIKE :search)";
+            // use CONCAT_WS to search across all relevant fields with one placeholder
+            $sql .= " AND CONCAT_WS(' ', sa.id, sa.username_acc, u.email, u.username, l.province) LIKE :search";
             $params[':search'] = '%' . $filters['search'] . '%';
         }
         if (!empty($filters['package'])) {
-            $sql .= " AND p.name = :package_name";
-            $params[':package_name'] = $filters['package'];
+            $sql .= " AND p.id = :package_id";
+            $params[':package_id'] = (int)$filters['package'];
         }
         if (!empty($filters['location'])) {
             $sql .= " AND l.id = :location_id";
@@ -105,9 +111,9 @@ class AccountModel {
                 FROM survey_account sa
                 JOIN registration r ON sa.registration_id = r.id
                 JOIN user u ON r.user_id = u.id
-                JOIN package p ON r.package_id = p.id
+                LEFT JOIN package p ON r.package_id = p.id
                 JOIN location l ON r.location_id = l.id
-                WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL AND u.deleted_at IS NULL";
+                WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL";
         $params = [];
 
         $this->applyFilters($sql, $params, $filters);
@@ -225,12 +231,15 @@ class AccountModel {
             return false;
         }
 
-        $accountId = 'MANUAL_' . $data['registration_id'] . '_' . strtoupper(substr(md5(uniqid()), 0, 6));
-        $hashedPassword = password_hash($data['password_acc'], PASSWORD_DEFAULT);
-        if ($hashedPassword === false) {
-            error_log("Create account failed: Password hashing failed.");
-            return false;
+        // Use provided ID or default to RTK_…
+        if (!empty($data['id'])) {
+            $accountId = $data['id'];
+        } else {
+            $accountId = 'RTK_' . $data['registration_id'] . '_' . time();
         }
+
+        // dùng thẳng mật khẩu input
+        $password = $data['password_acc'];
 
         $sql = "INSERT INTO survey_account (
                     id, registration_id, username_acc, password_acc, concurrent_user, enabled,
@@ -246,7 +255,7 @@ class AccountModel {
                 ':id'               => $accountId,
                 ':registration_id'  => $data['registration_id'],
                 ':username_acc'     => $data['username_acc'],
-                ':password_acc'     => $hashedPassword,
+                ':password_acc'     => $password,
                 ':concurrent_user'  => $data['concurrent_user'] ?? 1,
                 ':enabled'          => isset($data['enabled']) ? (int)$data['enabled'] : 1,
                 ':caster'           => $data['caster'] ?? null,
@@ -266,7 +275,7 @@ class AccountModel {
      *
      * @param string $accountId The ID of the account to update.
      * @param array $data Associative array of data to update. Can include:
-     *                    'username_acc', 'password_acc' (will be hashed if provided),
+     *                    'username_acc', 'password_acc',
      *                    'concurrent_user', 'enabled', 'caster', 'user_type',
      *                    'regionIds', 'customerBizType', 'area'.
      *                    Does NOT update 'registration_id'.
@@ -284,14 +293,9 @@ class AccountModel {
             $setClauses[] = "username_acc = :username_acc";
             $params[':username_acc'] = $data['username_acc'];
         }
-        if (isset($data['password_acc']) && !empty($data['password_acc'])) {
-            $hashedPassword = password_hash($data['password_acc'], PASSWORD_DEFAULT);
-            if ($hashedPassword === false) {
-                error_log("Update account ($accountId) failed: Password hashing failed.");
-                return false;
-            }
+        if (isset($data['password_acc']) && $data['password_acc'] !== '') {
             $setClauses[] = "password_acc = :password_acc";
-            $params[':password_acc'] = $hashedPassword;
+            $params[':password_acc'] = $data['password_acc'];
         }
         if (isset($data['concurrent_user'])) {
             $setClauses[] = "concurrent_user = :concurrent_user";
@@ -367,15 +371,30 @@ class AccountModel {
             return false;
         }
 
-        $sql = "UPDATE survey_account SET enabled = :enabled, updated_at = NOW() WHERE id = :id AND deleted_at IS NULL";
-
         try {
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindValue(':enabled', (int)$enable, PDO::PARAM_INT);
-            $stmt->bindValue(':id', $accountId, PDO::PARAM_STR);
-            return $stmt->execute();
+            // 1. Cập nhật survey_account
+            $sql1 = "UPDATE survey_account 
+                     SET enabled = :enabled, updated_at = NOW() 
+                     WHERE id = :id AND deleted_at IS NULL";
+            $stmt1 = $this->db->prepare($sql1);
+            $stmt1->bindValue(':enabled', (int)$enable, PDO::PARAM_INT);
+            $stmt1->bindValue(':id', $accountId, PDO::PARAM_STR);
+            $stmt1->execute();
+
+            // 2. Nếu đang bật account thì ép luôn registration.status = 'active'
+            if ($enable) {
+                $sql2 = "UPDATE registration r
+                         JOIN survey_account sa ON sa.registration_id = r.id
+                         SET r.status = 'active', r.updated_at = NOW()
+                         WHERE sa.id = :id AND r.deleted_at IS NULL";
+                $stmt2 = $this->db->prepare($sql2);
+                $stmt2->bindValue(':id', $accountId, PDO::PARAM_STR);
+                $stmt2->execute();
+            }
+
+            return true;
         } catch (PDOException $e) {
-            error_log("Toggle status for account ($accountId) to " . ($enable ? 'enabled' : 'disabled') . " failed: " . $e->getMessage());
+            error_log("Toggle status for account ($accountId) failed: " . $e->getMessage());
             return false;
         }
     }
@@ -426,6 +445,65 @@ class AccountModel {
         } catch (PDOException $e) {
             error_log("Error checking username existence: " . $e->getMessage());
             return true;
+        }
+    }
+
+    /**
+     * Get RTK accounts for a specific user, including mount point details.
+     *
+     * @param int $userId
+     * @return array
+     */
+    public function getAccountsByUserId(int $userId): array {
+        try {
+            $sql = "SELECT sa.*, r.start_time AS start_date, r.end_time AS end_date,"
+                 . " r.status AS reg_status, p.name AS package_name,"
+                 . " DATEDIFF(r.end_time, r.start_time) AS duration_days,"
+                 . " sa.username_acc AS username"
+                 . " FROM survey_account sa"
+                 . " JOIN registration r ON sa.registration_id = r.id"
+                 . " LEFT JOIN package p ON r.package_id = p.id"
+                 . " WHERE r.user_id = :user_id AND sa.deleted_at IS NULL"
+                 . " ORDER BY sa.created_at DESC";
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+            $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($accounts as &$account) {
+                $account['stations'] = $this->getMountPointsForAccount($account['id']);
+            }
+            unset($account);
+
+            return $accounts;
+        } catch (PDOException $e) {
+            error_log("Error fetching RTK accounts by user ($userId): " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Fetch mount point entries for a given account.
+     *
+     * @param string $accountId
+     * @return array
+     */
+    private function getMountPointsForAccount(string $accountId): array {
+        try {
+            $sql = "SELECT mp.id, mp.ip, mp.port, mp.mountpoint"
+                 . " FROM survey_account sa"
+                 . " JOIN registration r ON sa.registration_id = r.id"
+                 . " JOIN mount_point mp ON mp.location_id = r.location_id"
+                 . " WHERE sa.id = :account_id";
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':account_id', $accountId, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Error fetching mount points for account ' . $accountId . ': ' . $e->getMessage());
+            return [];
         }
     }
 }

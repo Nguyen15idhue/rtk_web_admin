@@ -1,25 +1,28 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\referral\referral_management.php
 session_start();
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: auth/admin_login.php');
+    exit;
+}
 require_once __DIR__ . '/../../private/utils/dashboard_helpers.php'; // Include the helpers
 $private_includes_path = __DIR__ . '/../../private/includes/';
 $user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 $base_path = '/'; // Adjust if necessary
-
-// TODO: Fetch actual referral data here
 
 ?>
 
 <div class="dashboard-wrapper">
     <!-- Include Sidebar -->
     <?php include $private_includes_path . 'admin_sidebar.php'; ?>
+    <?php include $private_includes_path . 'admin_header.php'; ?>
 
     <main class="content-wrapper">
         <div class="content-header">
             <h2 class="text-2xl font-semibold">Quản lý Giới thiệu</h2>
             <div class="user-info">
                 <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-                <a href="<?php echo $base_path; ?>public/pages/profile.php">Hồ sơ</a>
+                <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
                 <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
             </div>
         </div>
@@ -240,3 +243,6 @@ $base_path = '/'; // Adjust if necessary
         // Add AJAX logic
     }
 </script>
+<?php
+include $private_includes_path . 'admin_footer.php';
+?>

@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once __DIR__ . '/../../classes/Database.php';
 require_once __DIR__ . '/../../utils/functions.php'; // For send_json_response
 
@@ -28,7 +27,7 @@ if (empty($name)) {
     exit;
 }
 
-$db = new Database();
+$db = Database::getInstance();
 $conn = $db->getConnection();
 
 if (!$conn) {

@@ -7,7 +7,11 @@ class Database {
     private $password;
     private $conn;
 
-    public function __construct() {
+    // Singleton instance
+    private static $instance = null;
+
+    // Make constructor private to enforce singleton
+    private function __construct() {
         // Check if the constants from config/database.php are defined
         if (!defined('DB_SERVER') || !defined('DB_NAME') || !defined('DB_USERNAME') || !defined('DB_PASSWORD')) {
             // Include config file if constants are not defined yet
@@ -30,6 +34,17 @@ class Database {
         $this->db_name = DB_NAME;
         $this->username = DB_USERNAME; // Use DB_USERNAME
         $this->password = DB_PASSWORD; // Use DB_PASSWORD
+
+        // Establish connection
+        $this->connect();
+    }
+
+    // Return or create the single instance
+    public static function getInstance() {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
     /**

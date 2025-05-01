@@ -1,5 +1,4 @@
 <?php
-session_start();
 header('Content-Type: application/json');
 // Only logged-in admins
 if (!isset($_SESSION['admin_id'])) {
@@ -10,14 +9,14 @@ require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../classes/Database.php';
 
 $role = $_GET['role'] ?? '';
-$validRoles = ['superadmin','admin','operator'];
+$validRoles = ['admin','customercare'];
 if (!in_array($role, $validRoles)) {
     echo json_encode(['success' => false, 'message' => 'Invalid role']);
     exit;
 }
 
 try {
-    $db = new Database();
+    $db = Database::getInstance();
     $conn = $db->getConnection();
     // Fetch permissions
     $stmt = $conn->prepare('SELECT permission, allowed FROM role_permissions WHERE role = :role');

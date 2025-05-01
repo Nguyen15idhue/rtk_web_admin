@@ -1,0 +1,45 @@
+.status-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--rounded-full);
+    font-size: 0.8rem;
+    display: inline-block;
+    font-weight: var(--font-medium);
+    text-align: center;
+    min-width: 90px;
+    border: 1px solid transparent;
+}
+/* gộp badge-green và badge-success */
+.status-badge.badge-green,
+.status-badge.badge-success,
+.status-badge.status-approved {
+    background-color: var(--badge-green-bg);
+    color: var(--badge-green-text);
+    border-color: var(--success-500);
+}
+/* gộp badge-yellow và badge-warning */
+.status-badge.badge-yellow,
+.status-badge.badge-warning,
+.status-badge.status-pending {
+    background-color: var(--badge-yellow-bg);
+    color: var(--badge-yellow-text);
+    border-color: var(--badge-yellow-border);
+}
+/* gộp badge-red và badge-danger */
+.status-badge.badge-red,
+.status-badge.badge-danger,
+.status-badge.status-rejected {
+    background-color: var(--badge-red-bg);
+    color: var(--badge-red-text);
+    border-color: var(--danger-500);
+}
+/* gộp badge-gray và badge-secondary */
+.status-badge.badge-gray,
+.status-badge.badge-secondary,
+.status-badge.status-unknown {
+    background-color: var(--badge-gray-bg);
+    color: var(--badge-gray-text);
+    border-color: var(--badge-gray-border);
+}
+/*  */
+.status-badge.active { color: var(--success-600); font-weight: bold; }
+.status-badge.inactive { color: var(--danger-600); font-weight: bold; }

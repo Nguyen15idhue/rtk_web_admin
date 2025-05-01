@@ -25,7 +25,7 @@ function fetch_dashboard_data(): array
     ];
 
     try {
-        $database = new Database();
+        $database = Database::getInstance();
         $pdo = $database->getConnection();
 
         if ($pdo === null) {

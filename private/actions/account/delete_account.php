@@ -1,6 +1,5 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\delete_account.php
-session_start();
 header('Content-Type: application/json');
 
 // Check admin login
@@ -12,6 +11,7 @@ if (!isset($_SESSION['admin_id'])) {
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../classes/Database.php';
 require_once __DIR__ . '/../../classes/AccountModel.php';
+require_once __DIR__ . '/../../api/rtk_system/account_api.php';
 
 // Get input data
 $rawInput = file_get_contents('php://input');
@@ -27,7 +27,7 @@ if (!$input || !isset($input['id'])) {
 
 $accountId = filter_var($input['id'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-$database = new Database();
+$database = Database::getInstance();
 $db = $database->getConnection();
 
 if (!$db) {
@@ -46,6 +46,12 @@ try {
     $success = $accountModel->deleteAccount($accountId);
 
     if ($success) {
+        // call centralized API function
+        $apiResult = deleteRtkAccount([$accountId]);
+        if (!$apiResult['success']) {
+            throw new Exception('External API delete failed: '.$apiResult['error']);
+        }
+
         // Log activity (implement logging function)
         // log_activity($_SESSION['admin_id'], 'delete', 'survey_account', $accountId, null, null);
 
