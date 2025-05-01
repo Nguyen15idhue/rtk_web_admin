@@ -1,23 +1,27 @@
 <?php
-// Define the base path relative to the location of the files including this sidebar
-// Assuming the including file is in public/pages/, the path to public/ is ../
-// Adjust this if the including file location is different.
+// Make sure functions.php is included to use the standardized path functions
+if (!function_exists('get_base_path')) {
+    require_once __DIR__ . '/../utils/functions.php';
+}
 
-// Admin navigation items - Updated structure
+// Use standardized base_path function rather than hardcoded paths
+$base_path = get_base_path(false); // Use false to get only the path segment without protocol/host
+
+// Admin navigation items - Updated structure with dynamic paths
 $admin_nav_items = [
-    ['label' => 'Dashboard', 'icon' => 'fa-tachometer-alt', 'url' => '/public/pages/dashboard/dashboard.php', 'active_check' => 'dashboard.php', 'permission' => 'dashboard'],
-    ['label' => 'QL người dùng', 'icon' => 'fa-users', 'url' => '/public/pages/user/user_management.php', 'active_check' => 'user_management.php', 'permission' => 'user_management'],
-    ['label' => 'QL TK đo đạc', 'icon' => 'fa-ruler-combined', 'url' => '/public/pages/account/account_management.php', 'active_check' => 'account_management.php', 'permission' => 'account_management'],
-    ['label' => 'QL giao dịch', 'icon' => 'fa-file-invoice-dollar', 'url' => '/public/pages/invoice/invoice_management.php', 'active_check' => 'invoice_management.php', 'permission' => 'invoice_management'],
-    ['label' => 'QL doanh thu', 'icon' => 'fa-dollar-sign', 'url' => '/public/pages/invoice/revenue_management.php', 'active_check' => 'revenue_management.php', 'permission' => 'revenue_management'],
-    ['label' => 'QL người giới thiệu', 'icon' => 'fa-network-wired', 'url' => '/public/pages/referral_management.php', 'active_check' => 'referral_management.php', 'permission' => 'referral_management'],
-    ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => '/public/pages/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports'],
-    ['label' => 'QL hướng dẫn', 'icon' => 'fa-book', 'url' => '/public/pages/guide/guide_management.php', 'active_check' => 'guide_management.php', 'permission' => 'guide_management'],
-    ['label' => 'Phê duyệt hóa đơn', 'icon' => 'fa-file-invoice', 'url' => '/public/pages/invoice_requests/invoice_review.php', 'active_check' => 'invoice_review.php', 'permission' => 'invoice_review'],
-    ['label' => 'QL phân quyền', 'icon' => 'fa-user-lock', 'url' => '/public/pages/auth/permission_management.php', 'active_check' => 'permission_management.php', 'permission' => 'permission_management'],
+    ['label' => 'Dashboard', 'icon' => 'fa-tachometer-alt', 'url' => $base_path . 'public/pages/dashboard/dashboard.php', 'active_check' => 'dashboard.php', 'permission' => 'dashboard'],
+    ['label' => 'QL người dùng', 'icon' => 'fa-users', 'url' => $base_path . 'public/pages/user/user_management.php', 'active_check' => 'user_management.php', 'permission' => 'user_management'],
+    ['label' => 'QL TK đo đạc', 'icon' => 'fa-ruler-combined', 'url' => $base_path . 'public/pages/account/account_management.php', 'active_check' => 'account_management.php', 'permission' => 'account_management'],
+    ['label' => 'QL giao dịch', 'icon' => 'fa-file-invoice-dollar', 'url' => $base_path . 'public/pages/invoice/invoice_management.php', 'active_check' => 'invoice_management.php', 'permission' => 'invoice_management'],
+    ['label' => 'QL doanh thu', 'icon' => 'fa-dollar-sign', 'url' => $base_path . 'public/pages/invoice/revenue_management.php', 'active_check' => 'revenue_management.php', 'permission' => 'revenue_management'],
+    ['label' => 'QL người giới thiệu', 'icon' => 'fa-network-wired', 'url' => $base_path . 'public/pages/referral_management.php', 'active_check' => 'referral_management.php', 'permission' => 'referral_management'],
+    ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => $base_path . 'public/pages/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports'],
+    ['label' => 'QL hướng dẫn', 'icon' => 'fa-book', 'url' => $base_path . 'public/pages/guide/guide_management.php', 'active_check' => 'guide_management.php', 'permission' => 'guide_management'],
+    ['label' => 'Phê duyệt hóa đơn', 'icon' => 'fa-file-invoice', 'url' => $base_path . 'public/pages/invoice_requests/invoice_review.php', 'active_check' => 'invoice_review.php', 'permission' => 'invoice_review'],
+    ['label' => 'QL phân quyền', 'icon' => 'fa-user-lock', 'url' => $base_path . 'public/pages/auth/permission_management.php', 'active_check' => 'permission_management.php', 'permission' => 'permission_management'],
     ['type' => 'section', 'label' => 'Cài đặt'],
-    ['label' => 'Thông tin tài khoản', 'icon' => 'fa-id-card', 'url' => '/public/pages/setting/profile.php', 'active_check' => 'profile.php', 'permission' => 'settings'],
-    ['label' => 'Đăng xuất', 'icon' => 'fa-sign-out-alt', 'url' => '/public/pages/auth/admin_logout.php', 'class' => 'logout-link']
+    ['label' => 'Thông tin tài khoản', 'icon' => 'fa-id-card', 'url' => $base_path . 'public/pages/setting/profile.php', 'active_check' => 'profile.php', 'permission' => 'settings'],
+    ['label' => 'Đăng xuất', 'icon' => 'fa-sign-out-alt', 'url' => $base_path . 'public/pages/auth/admin_logout.php', 'class' => 'logout-link']
 ];
 
 // Load DB and fetch allowed permissions for current role
@@ -127,7 +131,7 @@ $admin_user_role = isset($role_vietnamese[$role]) ? $role_vietnamese[$role] : uc
                     ?>
                         <li>
                              <!-- Use 'a' tag with href. Add active class dynamically -->
-                            <a href="<?php echo $base_path . ltrim($item['url'], '/'); ?>"
+                            <a href="<?php echo $item['url']; ?>"
                                class="nav-item <?php echo trim($item_class); ?>">
                                 <i class="icon fas <?php echo htmlspecialchars($item['icon']); ?>"></i>
                                 <span><?php echo htmlspecialchars($item['label']); ?></span>

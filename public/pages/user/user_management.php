@@ -8,25 +8,14 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// --- Base Path Calculation ---
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-$host = $_SERVER['HTTP_HOST'];
-$script_name_parts = explode('/', $_SERVER['SCRIPT_NAME']);
-$project_folder_index = array_search('rtk_web_admin', $script_name_parts);
-// Ensure base path ends with a slash if the project folder is found
-if ($project_folder_index !== false) {
-    $base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_folder_index + 1)) . '/';
-} else {
-    // Fallback if 'rtk_web_admin' is not in the path (e.g., running from root)
-    // This might need adjustment based on your server setup
-    $base_path_segment = '/';
-}
-$base_path = $protocol . $host . $base_path_segment;
-
-// --- Include Required Files ---
+// Include required files first
 require_once __DIR__ . '/../../../private/utils/functions.php'; // General helpers (includes format_date)
-require_once __DIR__ . '/../../../private/utils/user_helpers.php'; // User-specific helpers (includes get_user_status_display)
+require_once __DIR__ . '/../../../private/utils/user_helpers.php'; // User-specific helpers
 require_once __DIR__ . '/../../../private/actions/user/fetch_users.php'; // User fetching logic
+
+// Calculate base path using the new standardized function
+$base_path = get_base_path();
+$private_includes_path = get_private_path() . 'includes/';
 
 // Add current admin role for permission checks
 $admin_role = $_SESSION['admin_role'] ?? '';
@@ -76,7 +65,6 @@ if (strpos($pagination_base_url, '?') === false) {
 
 // --- Page Setup for Header/Sidebar ---
 $page_title = 'Quản lý Người dùng';
-$private_includes_path = __DIR__ . '/../../../private/includes/';
 
 include $private_includes_path . 'admin_header.php';
 ?>

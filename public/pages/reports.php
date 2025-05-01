@@ -5,11 +5,18 @@ if (!isset($_SESSION['admin_id'])) {
     header('Location: auth/admin_login.php');
     exit;
 }
+
+// Include functions.php first to get access to the standardized path functions
+require_once __DIR__ . '/../../private/utils/functions.php';
 require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
 require_once __DIR__ . '/../../private/classes/Database.php';
-$private_includes_path = __DIR__ . '/../../private/includes/';
+
+// Use standardized path functions
+$base_path = get_base_path();
+$private_path = get_private_path();
+$private_includes_path = $private_path . 'includes/';
+
 $user_display_name = $_SESSION['admin_username'] ?? 'Admin';
-$base_path = '/'; // Adjust if necessary
 
 $db = Database::getInstance();
 $pdo = $db->getConnection();

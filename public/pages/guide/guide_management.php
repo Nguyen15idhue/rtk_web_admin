@@ -4,17 +4,18 @@ if (!isset($_SESSION['admin_id'])) {
     header('Location: ../auth/admin_login.php');
     exit;
 }
-// --- Base Path & Includes ---
-$protocol = (!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off'||$_SERVER['SERVER_PORT']==443)?"https://":"http://";
-$host = $_SERVER['HTTP_HOST'];
-$parts = explode('/', $_SERVER['SCRIPT_NAME']);
-$idx = array_search('rtk_web_admin',$parts);
-$base_seg = $idx!==false? implode('/',array_slice($parts,0,$idx+1)).'/':'/';
-$base_path = $protocol.$host.$base_seg;
-$private_includes = __DIR__ . '/../../../private/includes/';
+
+// Include functions.php first to use standardized path functions
+require_once __DIR__ . '/../../../private/utils/functions.php';
+
+// Use the standardized base path function instead of manual calculation
+$base_path = get_base_path();
+$private_includes = get_private_path() . 'includes/';
+
 $page_title = 'Quản lý hướng dẫn';
-$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$bootstrap_data = require_once $private_includes . 'page_bootstrap.php';
 $user_display_name = $bootstrap_data['user_display_name'];
+
 include $private_includes . 'admin_header.php';
 ?>
 <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">

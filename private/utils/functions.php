@@ -8,6 +8,54 @@ function escape_html($string) {
 }
 
 /**
+ * Get the standardized base path for the application
+ * This eliminates hardcoded paths and ensures consistent path handling
+ * across different environments (local development, production)
+ * 
+ * @param bool $includeProtocol Whether to include protocol and host (default: true)
+ * @return string The base path with trailing slash
+ */
+function get_base_path($includeProtocol = true): string {
+    // Determine protocol based on server settings
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || 
+                $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+    
+    $host = $_SERVER['HTTP_HOST'];
+    $script_name_parts = explode('/', $_SERVER['SCRIPT_NAME']);
+    
+    // Find the index of the project folder name
+    $project_folder_index = array_search('rtk_web_admin', $script_name_parts);
+    
+    // Build the path segment
+    if ($project_folder_index !== false) {
+        $base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_folder_index + 1)) . '/';
+    } else {
+        // Fallback if the project folder isn't found
+        $base_path_segment = '/'; 
+    }
+    
+    return $includeProtocol ? ($protocol . $host . $base_path_segment) : $base_path_segment;
+}
+
+/**
+ * Get the application's private directory absolute path
+ * 
+ * @return string The private directory path with trailing slash
+ */
+function get_private_path(): string {
+    return dirname(__DIR__, 2) . '/private/';
+}
+
+/**
+ * Get the application's public directory absolute path
+ * 
+ * @return string The public directory path with trailing slash
+ */
+function get_public_path(): string {
+    return dirname(__DIR__, 2) . '/public/';
+}
+
+/**
  * Get display properties for admin transaction status.
  * Maps database status ('pending', 'active', 'rejected') to UI display.
  *

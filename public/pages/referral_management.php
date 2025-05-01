@@ -5,10 +5,15 @@ if (!isset($_SESSION['admin_id'])) {
     header('Location: auth/admin_login.php');
     exit;
 }
-require_once __DIR__ . '/../../private/utils/dashboard_helpers.php'; // Include the helpers
-$private_includes_path = __DIR__ . '/../../private/includes/';
+
+// Include functions.php first to use standardized path functions
+require_once __DIR__ . '/../../private/utils/functions.php';
+require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
+
+// Use the standardized path functions
+$base_path = get_base_path();
+$private_includes_path = get_private_path() . 'includes/';
 $user_display_name = $_SESSION['admin_username'] ?? 'Admin';
-$base_path = '/'; // Adjust if necessary
 
 ?>
 
@@ -208,28 +213,29 @@ $base_path = '/'; // Adjust if necessary
 </div>
 
 <script>
+    // Pass base path to JavaScript
+    window.basePath = '<?php echo $base_path; ?>';
+
     function switchReferralTab(event, tabId) {
         event.preventDefault();
         // Hide all content
-        document.querySelectorAll('.referral-content').forEach(content => content.style.display = 'none');
-        // Remove active class from all tabs
-        document.querySelectorAll('.referral-tab').forEach(tab => {
-            tab.classList.remove('border-primary-500', 'text-primary-600');
-            tab.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-            // Reset inline styles potentially added before
-            tab.style.color = '';
-            tab.style.borderBottomColor = '';
-        });
+        const contents = document.querySelectorAll('.referral-content');
+        contents.forEach(content => content.classList.remove('active'));
+        
         // Show selected content
-        document.getElementById(tabId).style.display = 'block';
-        // Set active class for the clicked tab
-        const activeTab = event.currentTarget;
-        activeTab.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-        activeTab.classList.add('border-primary-500', 'text-primary-600');
-        activeTab.setAttribute('aria-current', 'page');
+        document.getElementById(tabId).classList.add('active');
+        
+        // Update tab styling
+        const tabs = document.querySelectorAll('.referral-tab');
+        tabs.forEach(tab => {
+            tab.classList.remove('border-primary-500', 'text-primary-600');
+            tab.classList.add('border-transparent', 'text-gray-500');
+        });
+        
+        event.currentTarget.classList.remove('border-transparent', 'text-gray-500');
+        event.currentTarget.classList.add('border-primary-500', 'text-primary-600');
     }
 
-    // Add other JS functions (viewReferrerDetails, processReferralPayout, saveReferralSettings) if needed
     function viewReferrerDetails(refCode) { console.log('View details for', refCode); }
     function processReferralPayout(refCode, event) {
         if (confirm(`Thanh toán hoa hồng cho ${refCode}?`)) {

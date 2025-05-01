@@ -7,18 +7,19 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-$host = $_SERVER['HTTP_HOST'];
-$script_name_parts = explode('/', $_SERVER['SCRIPT_NAME']);
-$project_folder_index = array_search('rtk_web_admin', $script_name_parts);
-$base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_folder_index + 1)) . '/';
-$base_path = $protocol . $host . $base_path_segment;
-$private_includes_path = __DIR__ . '/../../../private/includes/';
-
-require_once __DIR__ . '/../../../private/config/database.php';
-require_once __DIR__ . '/../../../private/classes/Database.php';
+// Include functions.php first to get access to the standardized path functions
 require_once __DIR__ . '/../../../private/utils/functions.php';
-require_once __DIR__ . '/../../../private/actions/invoice/fetch_transactions.php';
+
+// Use standardized path functions
+$base_path = get_base_path();
+$private_path = get_private_path();
+$private_includes_path = $private_path . 'includes/';
+
+// Include required files
+require_once $private_path . 'config/database.php';
+require_once $private_path . 'classes/Database.php';
+require_once $private_path . 'utils/functions.php';
+require_once $private_path . 'actions/invoice/fetch_transactions.php';
 
 // --- LẤY DỮ LIỆU CHO FILTERS MỚI ---
 $db = Database::getInstance()->getConnection();
@@ -83,8 +84,8 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
 <body>
 
 
-    <?php include __DIR__ . '/../../../private/includes/admin_header.php'; ?>
-    <?php include __DIR__ . '/../../../private/includes/admin_sidebar.php'; ?>
+    <?php include $private_includes_path . 'admin_header.php'; ?>
+    <?php include $private_includes_path . 'admin_sidebar.php'; ?>
 
     <main class="content-wrapper">
         <div class="content-header">

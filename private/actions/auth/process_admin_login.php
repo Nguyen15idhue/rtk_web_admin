@@ -2,7 +2,13 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once __DIR__ . '/../../config/database.php'; // Adjust path as needed
+
+// Include standardized path functions
+require_once __DIR__ . '/../../utils/functions.php';
+require_once __DIR__ . '/../../config/database.php';
+
+// Get the base path for redirects
+$base_path = get_base_path();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $admin_username = trim($_POST['admin_username'] ?? '');
@@ -50,8 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->close();
                     $conn->close();
 
-                    // Redirect to admin dashboard
-                    header("Location: ../../../public/pages/dashboard/dashboard.php"); // Adjust path if needed
+                    // Redirect to admin dashboard using standardized path
+                    header("Location: " . $base_path . "public/pages/dashboard/dashboard.php");
                     exit();
                 } else {
                     // Incorrect password
@@ -71,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($conn && $conn->ping()) { // Check if connection is still alive before closing
              $conn->close();
         }
-        header("Location: ../../../public/pages/auth/admin_login.php"); // Redirect back to admin login page
+        header("Location: " . $base_path . "public/pages/auth/admin_login.php");
         exit();
     }
 
@@ -81,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 } else {
     // If not a POST request, redirect to admin login page
-    header("Location: ../../../public/pages/auth/admin_login.php");
+    header("Location: " . $base_path . "public/pages/auth/admin_login.php");
     exit();
 }
 ?>

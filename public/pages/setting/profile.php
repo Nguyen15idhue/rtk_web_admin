@@ -1,16 +1,11 @@
 <?php
 session_start();
+require_once __DIR__ . '/../../../private/utils/functions.php'; // Include helper functions with path standardization
 require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php'; // Include the helpers
 
-// --- Base Path Calculation ---
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-$host = $_SERVER['HTTP_HOST'];
-$script_name_parts = explode('/', $_SERVER['SCRIPT_NAME']);
-$project_folder_index = array_search('rtk_web_admin', $script_name_parts);
-$base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_folder_index + 1)) . '/';
-$base_path = $protocol . $host . $base_path_segment;
-
-$private_includes_path = __DIR__ . '/../../../private/includes/';
+// Get standardized base path
+$base_path = get_base_path();
+$private_includes_path = get_private_path() . 'includes/';
 
 // Check if admin is logged in
 if (!isset($_SESSION['admin_id'])) {
