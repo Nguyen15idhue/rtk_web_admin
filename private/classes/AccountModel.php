@@ -147,10 +147,6 @@ class AccountModel {
         $params[':limit'] = $limit;
         $params[':offset'] = $offset;
 
-        // Debugging: Log the final SQL query and parameters
-        error_log("Executing SQL: " . $sql);
-        error_log("With parameters: " . print_r($params, true));
-
         try {
             $stmt = $this->db->prepare($sql);
 

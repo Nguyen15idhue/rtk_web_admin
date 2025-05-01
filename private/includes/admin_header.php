@@ -8,9 +8,9 @@ if (!isset($base_path) || !is_string($base_path)) {
     // Assuming structure is /project_root/public/pages/file.php
     // Adjust the slice index based on your actual structure
     if (count($base_path_parts) >= 3) {
-         $base_path = '/' . $base_path_parts[1] . '/'; // Assumes project root is the first segment
+        $base_path = '/' . $base_path_parts[1] . '/'; // Assumes project root is the first segment
     } else {
-        $base_path = '/rtk_web_admin/'; // Fallback default
+        $base_path = '/'; // Fallback default
     }
 }
 

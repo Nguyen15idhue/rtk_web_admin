@@ -243,3 +243,6 @@ $base_path = '/'; // Adjust if necessary
         // Add AJAX logic
     }
 </script>
+<?php
+include $private_includes_path . 'admin_footer.php';
+?>

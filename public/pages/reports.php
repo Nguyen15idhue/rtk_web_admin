@@ -178,3 +178,6 @@ $commission_pending = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 
         window.location.search = urlParams.toString();
     });
 </script>
+<?php
+include $private_includes_path . 'admin_footer.php';
+?>
