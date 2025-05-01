@@ -1,1 +1,7 @@
-Options -MultiViews
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    # Nếu URL không bắt đầu bằng /public/ thì redirect vào public
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

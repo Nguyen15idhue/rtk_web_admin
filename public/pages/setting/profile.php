@@ -134,3 +134,4 @@ $profile_role = '';
 
 <?php
 include $private_includes_path . 'admin_footer.php';
+?>
