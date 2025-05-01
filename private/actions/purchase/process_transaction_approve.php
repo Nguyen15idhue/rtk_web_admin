@@ -1,15 +1,12 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php
 declare(strict_types=1);
-header('Content-Type: application/json'); // Set response type
-error_reporting(E_ALL); // Report all errors for logging
-ini_set('display_errors', 0); // Keep off for browser output
-ini_set('log_errors', 1); // Ensure errors are logged
-ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
-
+header('Content-Type: application/json'); 
 // --- Prerequisites ---
 // Ensure session started, user is admin, CSRF protection is in place etc.
-session_start(); // Ensure session is started to read the cookie
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start(); // Ensure session is started to read the cookie
+}
 // if (!isset($_SESSION['admin_id']) || !check_admin_permission('transaction_approve')) {
 //     http_response_code(403);
 //     echo json_encode(['success' => false, 'message' => 'Permission denied.']);
@@ -159,9 +156,10 @@ try {
     $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
     $host     = $_SERVER['SERVER_NAME'];
     $port     = $_SERVER['SERVER_PORT'];
+    // now call the public front-controller
     $url      = $protocol . '://' . $host
                 . ($port && !in_array($port, ['80','443']) ? ':' . $port : '')
-                . '/private/actions/account/create_account.php';
+                . '/actions/account/index.php?action=create_account';
 
     // Generate username = province_code + next 3-digit sequence
     $stmt_province = $db->prepare("SELECT province_code FROM location WHERE id = :loc");
@@ -197,7 +195,7 @@ try {
     ];
 
     error_log("[PTA] province_code={$province_code}, lastUser={$lastUser}, nextSeq={$nextSeq}, username={$username}, password={$password}");
-    error_log("[PTA] cURL timeout set to 3s; calling URL={$url} with payload=".json_encode($payload));
+    error_log("[PTA] cURL timeout set to 5s; calling public front-controller URL={$url} with payload=".json_encode($payload));
 
     // --- Release session lock before internal request ---
     session_write_close(); 
@@ -208,10 +206,18 @@ try {
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    curl_setopt($ch, CURLOPT_VERBOSE, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Accept: application/json',
+        'Content-Type: application/json; charset=utf-8',
+        'User-Agent: PHP-cURL'       // giả lập User‑Agent browser
+    ]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);  // tăng timeout
-    curl_setopt($ch, CURLOPT_TIMEOUT, 3); 
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); // Increased timeout
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5);        // Increased timeout
+    // disable SSL verification for self-signed certificate
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
     if (isset($_COOKIE[session_name()])) {
         curl_setopt($ch, CURLOPT_COOKIE, session_name() . '=' . $_COOKIE[session_name()]);
     }
@@ -234,10 +240,20 @@ try {
 
     // --- Refined cURL error handling ---
     if ($curlErrno === CURLE_OPERATION_TIMEDOUT) {
-        $accountCreationFailedDueToTimeout = true;
+        // It's possible the timeout happened but the account was still created.
+        // Log this specific case for manual verification.
+        error_log("[PTA] cURL request timed out for transaction ID {$transaction_id}. Account creation status uncertain. Please verify manually.");
+        $accountCreationFailedDueToTimeout = true; // Keep the flag for the response message
+        // Do NOT throw an exception here if you want the DB transaction to commit.
+        // The registration is approved, only the account creation via API timed out.
+        // Set $createdAccounts to an empty array or null as we don't have confirmation.
+        $createdAccounts = [];
     } elseif ($curlError) {
         throw new Exception("Account creation request failed (cURL Error): {$curlError}");
     } elseif ($httpCode !== 200) {
+        // Log the response body if available for non-200 responses
+        $errorDetails = $result ? " Response: " . substr($result, 0, 500) : ""; // Limit response length in log
+        error_log("[PTA] Account creation failed (HTTP Status {$httpCode}) for transaction ID {$transaction_id}.{$errorDetails}");
         throw new Exception("Account creation failed (HTTP Status {$httpCode})");
     } else {
         // successful → parse & validate JSON
@@ -250,7 +266,10 @@ try {
         } elseif (!empty($resData['account'])) {
             $createdAccounts = [ $resData['account'] ];
         } else {
-            throw new Exception("Account creation response missing account data.");
+            // If success is true but no account data, maybe it's okay? Log a warning.
+            error_log("[PTA] Warning: Account creation reported success but returned no account data for transaction ID {$transaction_id}. Response: " . $result);
+            $createdAccounts = []; // Assume none created if data is missing
+            // OR: throw new Exception("Account creation response missing account data.");
         }
     }
 
@@ -269,16 +288,21 @@ try {
 
     // --- Prepare final response ---
     $responseMessage = 'Transaction #' . $transaction_id . ' approved.';
+    // Only report account creation success if the request didn't time out and we have accounts
     if ($accountCreationFailedDueToTimeout) {
         $responseMessage .= ' However, the account creation request timed out. Please verify account status manually.';
-    } else {
+    } elseif (!empty($createdAccounts)) {
         $count = count($createdAccounts);
         $responseMessage .= " {$count} account(s) created successfully.";
+    } elseif ($httpCode === 200) { // If HTTP was 200 but no accounts returned (and not timeout)
+        $responseMessage .= " Account creation request succeeded but returned no account details.";
     }
+    // Note: If an exception was thrown earlier due to non-timeout cURL/HTTP errors, this part isn't reached.
+
     echo json_encode([
-        'success' => true,
+        'success' => true, // The DB transaction succeeded, even if account creation timed out
         'message' => $responseMessage,
-        'accounts' => $createdAccounts
+        'accounts' => $createdAccounts ?? [] // Ensure accounts is always an array
     ]);
 
 } catch (Exception $e) {

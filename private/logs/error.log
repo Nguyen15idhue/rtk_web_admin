@@ -115,3 +115,196 @@
 [01-May-2025 03:31:14 UTC] [Database Connect] Connection to database 'surveying_account' successful.
 [01-May-2025 03:31:29 UTC] [DEBUG] Search keyword: 
 [01-May-2025 03:31:29 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:36:50 UTC] [DEBUG] Search keyword: 
+[01-May-2025 03:36:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:36:52 UTC] [DEBUG] Search keyword: 
+[01-May-2025 03:36:52 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:36:56 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 03:52:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:17:25 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:17:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:17:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:17:33 UTC] [Reject Transaction 20] No associated survey accounts found to disable via API (was active).
+[01-May-2025 05:17:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:17:53 UTC] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from E:\Application\laragon\www\rtk_web_admin\public\actions\invoice\index.php on line 2) in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php on line 12
+[01-May-2025 05:17:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:17:53 UTC] [PTA] Start approve transaction_id=20
+[01-May-2025 05:17:53 UTC] [PTA] Transaction begun
+[01-May-2025 05:17:53 UTC] [PTA] check SQL executed, rowCount=1
+[01-May-2025 05:17:53 UTC] [PTA] fetched registration={"status":"rejected","user_id":88,"num_account":2,"start_time":"2025-04-29 00:00:00","end_time":"2026-04-29 23:59:59","location_id":63,"package_id":2}
+[01-May-2025 05:17:53 UTC] [PTA] update registration executed, affectedRows=1
+[01-May-2025 05:17:53 UTC] [PTA] update payment executed, affectedRows=1
+[01-May-2025 05:17:53 UTC] [PTA] activate survey_account executed, affectedRows=0
+[01-May-2025 05:17:53 UTC] Warning: No survey accounts found or enabled for approved registration ID: 20
+[01-May-2025 05:17:53 UTC] [PTA] province_code=YBI, lastUser=YBI112, nextSeq=113, username=YBI113, password=0999999445
+[01-May-2025 05:17:53 UTC] [PTA] cURL timeout set to 3s; calling URL=http://localhost:3000/private/actions/account/create_account.php with payload={"registration_id":20,"username_acc":"YBI113","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:17:53","end_time":"2026-05-02 12:17:52","enabled":1,"concurrent_user":1,"account_count":2}
+[01-May-2025 05:17:53 UTC] DEBUG [Account Creation] URL: http://localhost:3000/private/actions/account/create_account.php
+[01-May-2025 05:17:53 UTC] DEBUG [Account Creation] Payload: {"registration_id":20,"username_acc":"YBI113","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:17:53","end_time":"2026-05-02 12:17:52","enabled":1,"concurrent_user":1,"account_count":2}
+[01-May-2025 05:17:56 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 3006 milliseconds with 0 bytes received","totalTime":3.00675}
+[01-May-2025 05:17:56 UTC] [PTA] TransactionHistoryService updated
+[01-May-2025 05:17:56 UTC] [PTA] Transaction committed successfully
+[01-May-2025 05:17:56 UTC] PHP Warning:  Undefined variable $createdAccounts in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php on line 281
+[01-May-2025 05:17:57 UTC] [CA] Start create_account request
+[01-May-2025 05:17:57 UTC] [CA] Raw input: {"registration_id":20,"username_acc":"YBI113","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:17:53","end_time":"2026-05-02 12:17:52","enabled":1,"concurrent_user":1,"account_count":2}
+[01-May-2025 05:17:57 UTC] [CA] registration_id=20, username_acc=YBI113, password_len=10
+[01-May-2025 05:17:57 UTC] [CA] location_input=63
+[01-May-2025 05:17:57 UTC] [CA] computed start_time_db=2025-05-01 12:17:53, end_time_db=2026-05-02 12:17:52
+[01-May-2025 05:17:57 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:17:57 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
+[01-May-2025 05:17:57 UTC] [CA] Retrieved userId=88
+[01-May-2025 05:17:57 UTC] [CA] Price=270000.00 => normal flow
+[01-May-2025 05:17:57 UTC] Debug: Non-trial account creation path for registration_id=20
+[01-May-2025 05:17:57 UTC] [CA] RTK API payload for YBI113: {"name":"YBI113","userPwd":"0999999445","startTime":1746076673000,"endTime":1777699072000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[01-May-2025 05:17:57 UTC] [CA] RTK API response for YBI113: {"success":true,"data":{"id":903,"name":"YBI113","userPwd":"0999999445","startTime":1746076673000,"endTime":1777699072000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[01-May-2025 05:17:57 UTC] [CA] RTK API payload for YBI114: {"name":"YBI114","userPwd":"0999999445","startTime":1746076673000,"endTime":1777699072000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[01-May-2025 05:17:57 UTC] [CA] RTK API response for YBI114: {"success":true,"data":{"id":904,"name":"YBI114","userPwd":"0999999445","startTime":1746076673000,"endTime":1777699072000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[01-May-2025 05:18:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:18:05 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:40:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:40:11 UTC] RTK API Payload: {"id":"903","name":"YBI113","userPwd":"0999999445","startTime":1746101873000,"endTime":1777724272000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[01-May-2025 05:40:11 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[01-May-2025 05:40:13 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:40:13 UTC] RTK API Payload: {"id":"904","name":"YBI114","userPwd":"0999999445","startTime":1746101873000,"endTime":1777724272000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[01-May-2025 05:40:13 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[01-May-2025 05:40:21 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:40:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:40:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:40:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:40:36 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:40:36 UTC] [Reject Transaction 20] No associated survey accounts found to disable via API (was active).
+[01-May-2025 05:40:38 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:40:38 UTC] [PTA] Start approve transaction_id=20
+[01-May-2025 05:40:38 UTC] [PTA] Transaction begun
+[01-May-2025 05:40:38 UTC] [PTA] check SQL executed, rowCount=1
+[01-May-2025 05:40:38 UTC] [PTA] fetched registration={"status":"rejected","user_id":88,"num_account":2,"start_time":"2025-05-01 12:17:53","end_time":"2026-05-02 12:17:52","location_id":63,"package_id":2}
+[01-May-2025 05:40:38 UTC] [PTA] update registration executed, affectedRows=1
+[01-May-2025 05:40:38 UTC] [PTA] update payment executed, affectedRows=1
+[01-May-2025 05:40:38 UTC] [PTA] activate survey_account executed, affectedRows=0
+[01-May-2025 05:40:38 UTC] Warning: No survey accounts found or enabled for approved registration ID: 20
+[01-May-2025 05:40:38 UTC] [PTA] province_code=YBI, lastUser=YBI114, nextSeq=115, username=YBI115, password=0999999445
+[01-May-2025 05:40:38 UTC] [PTA] cURL timeout set to 3s; calling URL=http://localhost:3000/private/actions/account/create_account.php with payload={"registration_id":20,"username_acc":"YBI115","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:40:38","end_time":"2026-05-02 12:40:37","enabled":1,"concurrent_user":1,"account_count":2}
+[01-May-2025 05:40:38 UTC] DEBUG [Account Creation] URL: http://localhost:3000/private/actions/account/create_account.php
+[01-May-2025 05:40:38 UTC] DEBUG [Account Creation] Payload: {"registration_id":20,"username_acc":"YBI115","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:40:38","end_time":"2026-05-02 12:40:37","enabled":1,"concurrent_user":1,"account_count":2}
+[01-May-2025 05:40:41 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 3009 milliseconds with 0 bytes received","totalTime":3.009903}
+[01-May-2025 05:40:41 UTC] [PTA] TransactionHistoryService updated
+[01-May-2025 05:40:41 UTC] [PTA] Transaction committed successfully
+[01-May-2025 05:40:41 UTC] PHP Warning:  Undefined variable $createdAccounts in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php on line 281
+[01-May-2025 05:40:42 UTC] [CA] Start create_account request
+[01-May-2025 05:40:42 UTC] [CA] Raw input: {"registration_id":20,"username_acc":"YBI115","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:40:38","end_time":"2026-05-02 12:40:37","enabled":1,"concurrent_user":1,"account_count":2}
+[01-May-2025 05:40:42 UTC] [CA] registration_id=20, username_acc=YBI115, password_len=10
+[01-May-2025 05:40:42 UTC] [CA] location_input=63
+[01-May-2025 05:40:42 UTC] [CA] computed start_time_db=2025-05-01 12:40:38, end_time_db=2026-05-02 12:40:37
+[01-May-2025 05:40:42 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:40:42 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
+[01-May-2025 05:40:42 UTC] [CA] Retrieved userId=88
+[01-May-2025 05:40:42 UTC] [CA] Price=270000.00 => normal flow
+[01-May-2025 05:40:42 UTC] Debug: Non-trial account creation path for registration_id=20
+[01-May-2025 05:40:42 UTC] [CA] RTK API payload for YBI115: {"name":"YBI115","userPwd":"0999999445","startTime":1746078038000,"endTime":1777700437000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[01-May-2025 05:40:42 UTC] [CA] RTK API response for YBI115: {"success":true,"data":{"id":905,"name":"YBI115","userPwd":"0999999445","startTime":1746078038000,"endTime":1777700437000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[01-May-2025 05:40:42 UTC] [CA] RTK API payload for YBI116: {"name":"YBI116","userPwd":"0999999445","startTime":1746078038000,"endTime":1777700437000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[01-May-2025 05:40:42 UTC] [CA] RTK API response for YBI116: {"success":true,"data":{"id":906,"name":"YBI116","userPwd":"0999999445","startTime":1746078038000,"endTime":1777700437000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[01-May-2025 05:40:43 UTC] [DEBUG] Search keyword: 
+[01-May-2025 05:40:43 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:41:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:46:43 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:46:43 UTC] RTK API Payload: {"id":"905","name":"YBI115","userPwd":"0999999445","startTime":1746103238000,"endTime":1777725637000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[01-May-2025 05:46:43 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[01-May-2025 05:46:44 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:46:45 UTC] RTK API Payload: {"id":"906","name":"YBI116","userPwd":"0999999445","startTime":1746103238000,"endTime":1777725637000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[01-May-2025 05:46:45 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[01-May-2025 05:46:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:46:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:51:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:52:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:52:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:52:04 UTC] [Reject Transaction 20] No associated survey accounts found to disable via API (was active).
+[01-May-2025 05:52:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:52:07 UTC] [PTA] Start approve transaction_id=20
+[01-May-2025 05:52:07 UTC] [PTA] Transaction begun
+[01-May-2025 05:52:07 UTC] [PTA] check SQL executed, rowCount=1
+[01-May-2025 05:52:07 UTC] [PTA] fetched registration={"status":"rejected","user_id":88,"num_account":2,"start_time":"2025-05-01 12:40:38","end_time":"2026-05-02 12:40:37","location_id":63,"package_id":2}
+[01-May-2025 05:52:07 UTC] [PTA] update registration executed, affectedRows=1
+[01-May-2025 05:52:07 UTC] [PTA] update payment executed, affectedRows=1
+[01-May-2025 05:52:07 UTC] [PTA] activate survey_account executed, affectedRows=0
+[01-May-2025 05:52:07 UTC] Warning: No survey accounts found or enabled for approved registration ID: 20
+[01-May-2025 05:52:07 UTC] [PTA] province_code=YBI, lastUser=YBI116, nextSeq=117, username=YBI117, password=0999999445
+[01-May-2025 05:52:07 UTC] [PTA] cURL timeout set to 3s; calling URL=http://rtk_web_admin.test/private/actions/account/create_account.php with payload={"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:07","end_time":"2026-05-02 12:52:06","enabled":1,"concurrent_user":1,"account_count":2}
+[01-May-2025 05:52:07 UTC] DEBUG [Account Creation] URL: http://rtk_web_admin.test/private/actions/account/create_account.php
+[01-May-2025 05:52:07 UTC] DEBUG [Account Creation] Payload: {"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:07","end_time":"2026-05-02 12:52:06","enabled":1,"concurrent_user":1,"account_count":2}
+[01-May-2025 05:52:07 UTC] [PTA] cURL finished: {"httpCode":403,"errno":0,"error":"","totalTime":0.030867}
+[01-May-2025 05:52:07 UTC] Error approving transaction ID 20: Account creation failed (HTTP Status 403)
+[01-May-2025 05:52:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:52:20 UTC] [PTA] Start approve transaction_id=20
+[01-May-2025 05:52:20 UTC] [PTA] Transaction begun
+[01-May-2025 05:52:20 UTC] [PTA] check SQL executed, rowCount=1
+[01-May-2025 05:52:20 UTC] [PTA] fetched registration={"status":"rejected","user_id":88,"num_account":2,"start_time":"2025-05-01 12:40:38","end_time":"2026-05-02 12:40:37","location_id":63,"package_id":2}
+[01-May-2025 05:52:20 UTC] [PTA] update registration executed, affectedRows=1
+[01-May-2025 05:52:20 UTC] [PTA] update payment executed, affectedRows=1
+[01-May-2025 05:52:20 UTC] [PTA] activate survey_account executed, affectedRows=0
+[01-May-2025 05:52:20 UTC] Warning: No survey accounts found or enabled for approved registration ID: 20
+[01-May-2025 05:52:20 UTC] [PTA] province_code=YBI, lastUser=YBI116, nextSeq=117, username=YBI117, password=0999999445
+[01-May-2025 05:52:20 UTC] [PTA] cURL timeout set to 3s; calling URL=http://rtk_web_admin.test/private/actions/account/create_account.php with payload={"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:20","end_time":"2026-05-02 12:52:19","enabled":1,"concurrent_user":1,"account_count":2}
+[01-May-2025 05:52:20 UTC] DEBUG [Account Creation] URL: http://rtk_web_admin.test/private/actions/account/create_account.php
+[01-May-2025 05:52:20 UTC] DEBUG [Account Creation] Payload: {"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:20","end_time":"2026-05-02 12:52:19","enabled":1,"concurrent_user":1,"account_count":2}
+[01-May-2025 05:52:21 UTC] [PTA] cURL finished: {"httpCode":403,"errno":0,"error":"","totalTime":0.008519}
+[01-May-2025 05:52:21 UTC] Error approving transaction ID 20: Account creation failed (HTTP Status 403)
+[01-May-2025 05:52:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:52:26 UTC] [PTA] Start approve transaction_id=20
+[01-May-2025 05:52:26 UTC] [PTA] Transaction begun
+[01-May-2025 05:52:26 UTC] [PTA] check SQL executed, rowCount=1
+[01-May-2025 05:52:26 UTC] [PTA] fetched registration={"status":"rejected","user_id":88,"num_account":2,"start_time":"2025-05-01 12:40:38","end_time":"2026-05-02 12:40:37","location_id":63,"package_id":2}
+[01-May-2025 05:52:26 UTC] [PTA] update registration executed, affectedRows=1
+[01-May-2025 05:52:26 UTC] [PTA] update payment executed, affectedRows=1
+[01-May-2025 05:52:26 UTC] [PTA] activate survey_account executed, affectedRows=0
+[01-May-2025 05:52:26 UTC] Warning: No survey accounts found or enabled for approved registration ID: 20
+[01-May-2025 05:52:26 UTC] [PTA] province_code=YBI, lastUser=YBI116, nextSeq=117, username=YBI117, password=0999999445
+[01-May-2025 05:52:26 UTC] [PTA] cURL timeout set to 3s; calling URL=http://rtk_web_admin.test/private/actions/account/create_account.php with payload={"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:26","end_time":"2026-05-02 12:52:25","enabled":1,"concurrent_user":1,"account_count":2}
+[01-May-2025 05:52:26 UTC] DEBUG [Account Creation] URL: http://rtk_web_admin.test/private/actions/account/create_account.php
+[01-May-2025 05:52:26 UTC] DEBUG [Account Creation] Payload: {"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:26","end_time":"2026-05-02 12:52:25","enabled":1,"concurrent_user":1,"account_count":2}
+[01-May-2025 05:52:26 UTC] [PTA] cURL finished: {"httpCode":403,"errno":0,"error":"","totalTime":0.00844}
+[01-May-2025 05:52:26 UTC] Error approving transaction ID 20: Account creation failed (HTTP Status 403)
+[01-May-2025 05:52:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:52:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:52:58 UTC] [PTA] Start approve transaction_id=20
+[01-May-2025 05:52:58 UTC] [PTA] Transaction begun
+[01-May-2025 05:52:58 UTC] [PTA] check SQL executed, rowCount=1
+[01-May-2025 05:52:58 UTC] [PTA] fetched registration={"status":"rejected","user_id":88,"num_account":2,"start_time":"2025-05-01 12:40:38","end_time":"2026-05-02 12:40:37","location_id":63,"package_id":2}
+[01-May-2025 05:52:58 UTC] [PTA] update registration executed, affectedRows=1
+[01-May-2025 05:52:58 UTC] [PTA] update payment executed, affectedRows=1
+[01-May-2025 05:52:58 UTC] [PTA] activate survey_account executed, affectedRows=0
+[01-May-2025 05:52:58 UTC] Warning: No survey accounts found or enabled for approved registration ID: 20
+[01-May-2025 05:52:58 UTC] [PTA] province_code=YBI, lastUser=YBI116, nextSeq=117, username=YBI117, password=0999999445
+[01-May-2025 05:52:58 UTC] [PTA] cURL timeout set to 3s; calling public front-controller URL=http://rtk_web_admin.test/actions/account/index.php?action=create_account with payload={"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:58","end_time":"2026-05-02 12:52:57","enabled":1,"concurrent_user":1,"account_count":2}
+[01-May-2025 05:52:58 UTC] DEBUG [Account Creation] URL: http://rtk_web_admin.test/actions/account/index.php?action=create_account
+[01-May-2025 05:52:58 UTC] DEBUG [Account Creation] Payload: {"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:58","end_time":"2026-05-02 12:52:57","enabled":1,"concurrent_user":1,"account_count":2}
+[01-May-2025 05:52:58 UTC] [CA] Start create_account request
+[01-May-2025 05:52:58 UTC] [CA] Raw input: {"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:58","end_time":"2026-05-02 12:52:57","enabled":1,"concurrent_user":1,"account_count":2}
+[01-May-2025 05:52:58 UTC] [CA] registration_id=20, username_acc=YBI117, password_len=10
+[01-May-2025 05:52:58 UTC] [CA] location_input=63
+[01-May-2025 05:52:58 UTC] [CA] computed start_time_db=2025-05-01 12:52:58, end_time_db=2026-05-02 12:52:57
+[01-May-2025 05:52:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:52:58 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
+[01-May-2025 05:52:58 UTC] [CA] Retrieved userId=88
+[01-May-2025 05:52:58 UTC] [CA] Price=270000.00 => normal flow
+[01-May-2025 05:52:58 UTC] Debug: Non-trial account creation path for registration_id=20
+[01-May-2025 05:52:58 UTC] [CA] RTK API payload for YBI117: {"name":"YBI117","userPwd":"0999999445","startTime":1746078778000,"endTime":1777701177000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[01-May-2025 05:52:58 UTC] [CA] RTK API response for YBI117: {"success":true,"data":{"id":907,"name":"YBI117","userPwd":"0999999445","startTime":1746078778000,"endTime":1777701177000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[01-May-2025 05:53:01 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 3002 milliseconds with 0 bytes received","totalTime":3.002842}
+[01-May-2025 05:53:01 UTC] [PTA] TransactionHistoryService updated
+[01-May-2025 05:53:01 UTC] [PTA] Transaction committed successfully
+[01-May-2025 05:53:01 UTC] PHP Warning:  Undefined variable $createdAccounts in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php on line 282
+[01-May-2025 05:53:01 UTC] [CA] RTK API payload for YBI118: {"name":"YBI118","userPwd":"0999999445","startTime":1746078778000,"endTime":1777701177000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[01-May-2025 05:53:01 UTC] [CA] RTK API response for YBI118: {"success":true,"data":{"id":908,"name":"YBI118","userPwd":"0999999445","startTime":1746078778000,"endTime":1777701177000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[01-May-2025 05:54:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:54:50 UTC] RTK API Payload: {"id":"908","name":"YBI118","userPwd":"0999999445","startTime":1746103978000,"endTime":1777726377000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[01-May-2025 05:54:50 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[01-May-2025 05:54:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:54:51 UTC] RTK API Payload: {"id":"907","name":"YBI117","userPwd":"0999999445","startTime":1746103978000,"endTime":1777726377000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[01-May-2025 05:54:51 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[01-May-2025 05:54:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 05:54:55 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 10:01:11 UTC] [DEBUG] Search keyword: 
+[01-May-2025 10:01:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 10:01:31 UTC] [DEBUG] Search keyword: 
+[01-May-2025 10:01:31 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[01-May-2025 10:01:43 UTC] [Database Connect] Connection to database 'surveying_account' successful.

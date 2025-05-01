@@ -80,10 +80,11 @@ function createRtkAccount(array $accountData): array {
         }
         curl_setopt($ch, CURLOPT_HTTPHEADER, $curlHeaders);
 
-        // Add Timeouts for the external API call
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);  // Timeout for establishing connection (seconds)
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15);       // Timeout for the entire operation (seconds)
-
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        // disable SSL verification for self-signed certificate
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         // Execute request
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);

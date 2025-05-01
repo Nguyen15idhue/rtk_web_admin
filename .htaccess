@@ -1,7 +1,10 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /
-    # Nếu URL không bắt đầu bằng /public/ thì redirect vào public
+
+    # Chặn truy cập trực tiếp các thư mục nhạy cảm
+    RewriteRule ^(private|vendor|db|composer\\.json|composer\\.lock|\\.env)($|/) - [F,L,NC]
+
+    # Chuyển hướng mọi request sang thư mục public
     RewriteCond %{REQUEST_URI} !^/public/
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>

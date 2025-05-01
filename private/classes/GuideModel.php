@@ -28,11 +28,21 @@ class GuideModel {
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Properly transliterate UTF-8 strings to ASCII slugs
+     */
+    protected function slugify($string) {
+        // convert accented chars to ASCII, lowercase, replace non-alphanum with dashes
+        $slug = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
+        $slug = strtolower($slug);
+        $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
+        return trim($slug, '-');
+    }
+
     public function create($data) {
-        // tự sinh slug nếu trống
-        if (empty($data['slug'])) {
-            $data['slug'] = strtolower(trim(preg_replace('/[^A-Za-z0-9]+/', '-', $data['title']), '-'));
-        }
+        // generate slug from title with proper transliteration
+        $data['slug'] = $this->slugify($data['title']);
         $sql = "INSERT INTO guide(title, slug, content, author_id, topic, status, thumbnail, image)
                 VALUES(?,?,?,?,?,?,?,?)";
         $stmt = $this->db->prepare($sql);
@@ -48,9 +58,8 @@ class GuideModel {
         ]);
     }
     public function update($id, $data) {
-        // tự sinh slug nếu trống
-        if (empty($data['slug'])) {
-            $data['slug'] = strtolower(trim(preg_replace('/[^A-Za-z0-9]+/', '-', $data['title']), '-'));
+        if (!empty($data['title'])) {
+            $data['slug'] = $this->slugify($data['title']);
         }
         $sql = "UPDATE guide SET title=?, slug=?, content=?, topic=?, status=?, thumbnail=?, image=?, published_at=?
                 WHERE id=?";
