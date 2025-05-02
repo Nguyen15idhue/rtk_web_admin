@@ -563,8 +563,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!infoElement || !email) return;
 
         try {
-            // Use the search endpoint, assuming it returns full user details for an exact match
-            const response = await fetch(`${basePath}private/actions/account/search_users.php?email=${encodeURIComponent(email)}&exact=1`); // Add exact=1 maybe?
+            // endpoint URL fixed: use & to add email & exact, not ? inside action
+            const response = await fetch(`${basePath}public/actions/account/index.php?action=search_users&email=${encodeURIComponent(email)}&exact=1`);
             const result = await response.json();
             if (result.success && result.users && result.users.length > 0) {
                 const user = result.users[0]; // Assume exact match returns one user
@@ -604,7 +604,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             searchTimer = setTimeout(async () => {
                 try {
-                    const response = await fetch(`${basePath}private/actions/account/search_users.php?email=${encodeURIComponent(query)}`);
+                    // endpoint URL fixed: use & to add email, not ? inside action
+                    const response = await fetch(`${basePath}public/actions/account/index.php?action=search_users&email=${encodeURIComponent(query)}`);
                     const result = await response.json();
                     if (result.success && result.users) {
                         currentUsers = result.users; // Update cache
