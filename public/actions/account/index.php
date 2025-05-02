@@ -7,7 +7,8 @@ $action = basename($_GET['action'] ?? '');
 $allowed = [
     'create_account', 'delete_account', 'fetch_accounts',
     'get_account_details', 'handle_account_list',
-    'toggle_account_status', 'update_account'
+    'toggle_account_status', 'update_account',
+    'search_users'
 ];
 if (!in_array($action, $allowed, true)) {
     http_response_code(400);
