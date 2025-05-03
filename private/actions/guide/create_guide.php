@@ -1,6 +1,7 @@
 <?php
 session_start();
-require_once __DIR__ . '/../../classes/GuideModel.php';
+$paths = require __DIR__ . '/../../includes/page_bootstrap.php';
+$model = new GuideModel();
 // Require logged‑in admin
 if (empty($_SESSION['admin_id'])) {
     http_response_code(401);
@@ -10,7 +11,7 @@ if (empty($_SESSION['admin_id'])) {
 header('Content-Type: application/json');
 // handle file upload
 if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] === UPLOAD_ERR_OK) {
-    $up = __DIR__ . '/../../../public/uploads/guide/';
+    $up = $paths['base_path'] . '/../public/uploads/guide/';
     if (!is_dir($up)) mkdir($up, 0755, true);
     $ext = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
     $fname = uniqid('guide-') . '.' . $ext;
@@ -18,7 +19,6 @@ if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] === UPLOAD_ERR_
     $_POST['thumbnail'] = $fname;
 }
 // prepare data
-$model = new GuideModel();
 $data = $_POST;
 $data['author_id'] = $_SESSION['admin_id'];
 $ok = $model->create($data);

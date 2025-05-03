@@ -5,17 +5,16 @@ error_reporting(E_ALL); // Report all errors for logging
 ini_set('display_errors', 0); // Keep off for browser output
 ini_set('log_errors', 1); // Ensure errors are logged
 ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
+
+// Khởi bootstrap
+$bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
+$db        = $bootstrap['db'];
+
 // Check admin login
 if (!isset($_SESSION['admin_id'])) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;
 }
-
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
-require_once __DIR__ . '/../../classes/AccountModel.php'; // Uses updated deriveAccountStatus
-require_once __DIR__ . '/../../utils/functions.php'; // Uses updated get_account_action_buttons, get_account_status_badge
-require_once __DIR__ . '/../../api/rtk_system/account_api.php';
 
 // Get input data
 $rawInput = file_get_contents('php://input');
@@ -39,15 +38,6 @@ if (!in_array($action, ['suspend', 'reactivate'])) {
 }
 
 $enable = ($action === 'reactivate'); // true for reactivate (set enabled=1), false for suspend (set enabled=0)
-
-$database = Database::getInstance();
-$db = $database->getConnection();
-
-if (!$db) {
-    error_log("Database connection failed in toggle_status.php");
-    echo json_encode(['success' => false, 'message' => 'Database connection error.']);
-    exit;
-}
 
 $accountModel = new AccountModel($db);
 

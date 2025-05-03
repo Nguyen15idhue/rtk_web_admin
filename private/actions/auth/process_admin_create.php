@@ -13,8 +13,8 @@ if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin'
     ]);
     exit;
 }
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
+$bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$conn      = $bootstrap['db'];
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
@@ -34,15 +34,6 @@ $role = $input['role'] ?? '';
 // Basic validation
 if (!$name || !$username || !$password || !in_array($role, ['admin','customercare'])) {
     echo json_encode(['success' => false, 'message' => 'Missing or invalid fields.']);
-    exit;
-}
-// Connect to database
-try {
-    $db = Database::getInstance();
-    $conn = $db->getConnection();
-} catch (Exception $e) {
-    error_log('DB Connection Error in process_admin_create: ' . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Database connection error.']);
     exit;
 }
 // Check duplicate username

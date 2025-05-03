@@ -1,310 +1,569 @@
-[30-Apr-2025 14:52:16 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 14:52:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 14:52:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 14:52:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 14:52:23 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 14:52:23 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 14:52:24 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 14:52:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 14:52:27 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 14:52:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 14:52:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 14:53:05 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 14:53:29 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 15:54:20 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 15:54:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 15:56:07 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 15:56:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 16:07:28 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 16:07:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 16:07:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 16:07:36 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 16:07:36 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 16:10:02 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 16:10:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 16:10:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 16:10:58 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 16:10:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 16:22:11 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 16:22:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 16:22:27 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 16:22:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 16:22:30 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 16:22:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 16:23:22 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 16:23:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 16:27:04 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 16:27:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 16:30:10 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 16:30:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 16:30:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[30-Apr-2025 16:34:56 UTC] [DEBUG] Search keyword: 
-[30-Apr-2025 16:34:56 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 01:22:00 UTC] [DEBUG] Search keyword: 
-[01-May-2025 01:22:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 01:23:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 01:50:02 UTC] [DEBUG] Search keyword: 
-[01-May-2025 01:50:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 01:50:24 UTC] [DEBUG] Search keyword: 
-[01-May-2025 01:50:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 01:52:25 UTC] [DEBUG] Search keyword: 
-[01-May-2025 01:52:25 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 01:58:11 UTC] [DEBUG] Search keyword: 
-[01-May-2025 01:58:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:01:37 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:01:37 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:01:38 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:01:38 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:01:55 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:01:55 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:02:02 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:02:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:02:42 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:02:42 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:02:46 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:02:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:04:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:04:11 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:04:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:14:37 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:14:37 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:14:46 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:14:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:15:10 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:15:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:33:54 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:33:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:35:48 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:35:48 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:37:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:38:32 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:38:32 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:38:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:38:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:39:30 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:39:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:42:00 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:42:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:43:26 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:43:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:47:48 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:47:48 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:49:16 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:49:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:49:22 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:49:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 02:55:28 UTC] [DEBUG] Search keyword: 
-[01-May-2025 02:55:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:01:55 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:28:18 UTC] [DEBUG] Search keyword: 
-[01-May-2025 03:28:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:28:22 UTC] [DEBUG] Search keyword: 
-[01-May-2025 03:28:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:29:06 UTC] [DEBUG] Search keyword: 
-[01-May-2025 03:29:06 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:29:07 UTC] [DEBUG] Search keyword: 
-[01-May-2025 03:29:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:29:10 UTC] [DEBUG] Search keyword: 
-[01-May-2025 03:29:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:29:30 UTC] [DEBUG] Search keyword: 
-[01-May-2025 03:29:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:29:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:29:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:31:08 UTC] [DEBUG] Search keyword: 
-[01-May-2025 03:31:08 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:31:14 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:31:29 UTC] [DEBUG] Search keyword: 
-[01-May-2025 03:31:29 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:36:50 UTC] [DEBUG] Search keyword: 
-[01-May-2025 03:36:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:36:52 UTC] [DEBUG] Search keyword: 
-[01-May-2025 03:36:52 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:36:56 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 03:52:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:17:25 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:17:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:17:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:17:33 UTC] [Reject Transaction 20] No associated survey accounts found to disable via API (was active).
-[01-May-2025 05:17:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:17:53 UTC] PHP Notice:  session_start(): Ignoring session_start() because a session is already active (started from E:\Application\laragon\www\rtk_web_admin\public\actions\invoice\index.php on line 2) in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php on line 12
-[01-May-2025 05:17:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:17:53 UTC] [PTA] Start approve transaction_id=20
-[01-May-2025 05:17:53 UTC] [PTA] Transaction begun
-[01-May-2025 05:17:53 UTC] [PTA] check SQL executed, rowCount=1
-[01-May-2025 05:17:53 UTC] [PTA] fetched registration={"status":"rejected","user_id":88,"num_account":2,"start_time":"2025-04-29 00:00:00","end_time":"2026-04-29 23:59:59","location_id":63,"package_id":2}
-[01-May-2025 05:17:53 UTC] [PTA] update registration executed, affectedRows=1
-[01-May-2025 05:17:53 UTC] [PTA] update payment executed, affectedRows=1
-[01-May-2025 05:17:53 UTC] [PTA] activate survey_account executed, affectedRows=0
-[01-May-2025 05:17:53 UTC] Warning: No survey accounts found or enabled for approved registration ID: 20
-[01-May-2025 05:17:53 UTC] [PTA] province_code=YBI, lastUser=YBI112, nextSeq=113, username=YBI113, password=0999999445
-[01-May-2025 05:17:53 UTC] [PTA] cURL timeout set to 3s; calling URL=http://localhost:3000/private/actions/account/create_account.php with payload={"registration_id":20,"username_acc":"YBI113","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:17:53","end_time":"2026-05-02 12:17:52","enabled":1,"concurrent_user":1,"account_count":2}
-[01-May-2025 05:17:53 UTC] DEBUG [Account Creation] URL: http://localhost:3000/private/actions/account/create_account.php
-[01-May-2025 05:17:53 UTC] DEBUG [Account Creation] Payload: {"registration_id":20,"username_acc":"YBI113","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:17:53","end_time":"2026-05-02 12:17:52","enabled":1,"concurrent_user":1,"account_count":2}
-[01-May-2025 05:17:56 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 3006 milliseconds with 0 bytes received","totalTime":3.00675}
-[01-May-2025 05:17:56 UTC] [PTA] TransactionHistoryService updated
-[01-May-2025 05:17:56 UTC] [PTA] Transaction committed successfully
-[01-May-2025 05:17:56 UTC] PHP Warning:  Undefined variable $createdAccounts in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php on line 281
-[01-May-2025 05:17:57 UTC] [CA] Start create_account request
-[01-May-2025 05:17:57 UTC] [CA] Raw input: {"registration_id":20,"username_acc":"YBI113","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:17:53","end_time":"2026-05-02 12:17:52","enabled":1,"concurrent_user":1,"account_count":2}
-[01-May-2025 05:17:57 UTC] [CA] registration_id=20, username_acc=YBI113, password_len=10
-[01-May-2025 05:17:57 UTC] [CA] location_input=63
-[01-May-2025 05:17:57 UTC] [CA] computed start_time_db=2025-05-01 12:17:53, end_time_db=2026-05-02 12:17:52
-[01-May-2025 05:17:57 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:17:57 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
-[01-May-2025 05:17:57 UTC] [CA] Retrieved userId=88
-[01-May-2025 05:17:57 UTC] [CA] Price=270000.00 => normal flow
-[01-May-2025 05:17:57 UTC] Debug: Non-trial account creation path for registration_id=20
-[01-May-2025 05:17:57 UTC] [CA] RTK API payload for YBI113: {"name":"YBI113","userPwd":"0999999445","startTime":1746076673000,"endTime":1777699072000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
-[01-May-2025 05:17:57 UTC] [CA] RTK API response for YBI113: {"success":true,"data":{"id":903,"name":"YBI113","userPwd":"0999999445","startTime":1746076673000,"endTime":1777699072000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
-[01-May-2025 05:17:57 UTC] [CA] RTK API payload for YBI114: {"name":"YBI114","userPwd":"0999999445","startTime":1746076673000,"endTime":1777699072000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
-[01-May-2025 05:17:57 UTC] [CA] RTK API response for YBI114: {"success":true,"data":{"id":904,"name":"YBI114","userPwd":"0999999445","startTime":1746076673000,"endTime":1777699072000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
-[01-May-2025 05:18:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:18:05 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:40:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:40:11 UTC] RTK API Payload: {"id":"903","name":"YBI113","userPwd":"0999999445","startTime":1746101873000,"endTime":1777724272000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
-[01-May-2025 05:40:11 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[01-May-2025 05:40:13 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:40:13 UTC] RTK API Payload: {"id":"904","name":"YBI114","userPwd":"0999999445","startTime":1746101873000,"endTime":1777724272000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
-[01-May-2025 05:40:13 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[01-May-2025 05:40:21 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:40:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:40:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:40:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:40:36 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:40:36 UTC] [Reject Transaction 20] No associated survey accounts found to disable via API (was active).
-[01-May-2025 05:40:38 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:40:38 UTC] [PTA] Start approve transaction_id=20
-[01-May-2025 05:40:38 UTC] [PTA] Transaction begun
-[01-May-2025 05:40:38 UTC] [PTA] check SQL executed, rowCount=1
-[01-May-2025 05:40:38 UTC] [PTA] fetched registration={"status":"rejected","user_id":88,"num_account":2,"start_time":"2025-05-01 12:17:53","end_time":"2026-05-02 12:17:52","location_id":63,"package_id":2}
-[01-May-2025 05:40:38 UTC] [PTA] update registration executed, affectedRows=1
-[01-May-2025 05:40:38 UTC] [PTA] update payment executed, affectedRows=1
-[01-May-2025 05:40:38 UTC] [PTA] activate survey_account executed, affectedRows=0
-[01-May-2025 05:40:38 UTC] Warning: No survey accounts found or enabled for approved registration ID: 20
-[01-May-2025 05:40:38 UTC] [PTA] province_code=YBI, lastUser=YBI114, nextSeq=115, username=YBI115, password=0999999445
-[01-May-2025 05:40:38 UTC] [PTA] cURL timeout set to 3s; calling URL=http://localhost:3000/private/actions/account/create_account.php with payload={"registration_id":20,"username_acc":"YBI115","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:40:38","end_time":"2026-05-02 12:40:37","enabled":1,"concurrent_user":1,"account_count":2}
-[01-May-2025 05:40:38 UTC] DEBUG [Account Creation] URL: http://localhost:3000/private/actions/account/create_account.php
-[01-May-2025 05:40:38 UTC] DEBUG [Account Creation] Payload: {"registration_id":20,"username_acc":"YBI115","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:40:38","end_time":"2026-05-02 12:40:37","enabled":1,"concurrent_user":1,"account_count":2}
-[01-May-2025 05:40:41 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 3009 milliseconds with 0 bytes received","totalTime":3.009903}
-[01-May-2025 05:40:41 UTC] [PTA] TransactionHistoryService updated
-[01-May-2025 05:40:41 UTC] [PTA] Transaction committed successfully
-[01-May-2025 05:40:41 UTC] PHP Warning:  Undefined variable $createdAccounts in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php on line 281
-[01-May-2025 05:40:42 UTC] [CA] Start create_account request
-[01-May-2025 05:40:42 UTC] [CA] Raw input: {"registration_id":20,"username_acc":"YBI115","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:40:38","end_time":"2026-05-02 12:40:37","enabled":1,"concurrent_user":1,"account_count":2}
-[01-May-2025 05:40:42 UTC] [CA] registration_id=20, username_acc=YBI115, password_len=10
-[01-May-2025 05:40:42 UTC] [CA] location_input=63
-[01-May-2025 05:40:42 UTC] [CA] computed start_time_db=2025-05-01 12:40:38, end_time_db=2026-05-02 12:40:37
-[01-May-2025 05:40:42 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:40:42 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
-[01-May-2025 05:40:42 UTC] [CA] Retrieved userId=88
-[01-May-2025 05:40:42 UTC] [CA] Price=270000.00 => normal flow
-[01-May-2025 05:40:42 UTC] Debug: Non-trial account creation path for registration_id=20
-[01-May-2025 05:40:42 UTC] [CA] RTK API payload for YBI115: {"name":"YBI115","userPwd":"0999999445","startTime":1746078038000,"endTime":1777700437000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
-[01-May-2025 05:40:42 UTC] [CA] RTK API response for YBI115: {"success":true,"data":{"id":905,"name":"YBI115","userPwd":"0999999445","startTime":1746078038000,"endTime":1777700437000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
-[01-May-2025 05:40:42 UTC] [CA] RTK API payload for YBI116: {"name":"YBI116","userPwd":"0999999445","startTime":1746078038000,"endTime":1777700437000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
-[01-May-2025 05:40:42 UTC] [CA] RTK API response for YBI116: {"success":true,"data":{"id":906,"name":"YBI116","userPwd":"0999999445","startTime":1746078038000,"endTime":1777700437000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
-[01-May-2025 05:40:43 UTC] [DEBUG] Search keyword: 
-[01-May-2025 05:40:43 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:41:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:46:43 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:46:43 UTC] RTK API Payload: {"id":"905","name":"YBI115","userPwd":"0999999445","startTime":1746103238000,"endTime":1777725637000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
-[01-May-2025 05:46:43 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[01-May-2025 05:46:44 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:46:45 UTC] RTK API Payload: {"id":"906","name":"YBI116","userPwd":"0999999445","startTime":1746103238000,"endTime":1777725637000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
-[01-May-2025 05:46:45 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[01-May-2025 05:46:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:46:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:51:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:52:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:52:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:52:04 UTC] [Reject Transaction 20] No associated survey accounts found to disable via API (was active).
-[01-May-2025 05:52:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:52:07 UTC] [PTA] Start approve transaction_id=20
-[01-May-2025 05:52:07 UTC] [PTA] Transaction begun
-[01-May-2025 05:52:07 UTC] [PTA] check SQL executed, rowCount=1
-[01-May-2025 05:52:07 UTC] [PTA] fetched registration={"status":"rejected","user_id":88,"num_account":2,"start_time":"2025-05-01 12:40:38","end_time":"2026-05-02 12:40:37","location_id":63,"package_id":2}
-[01-May-2025 05:52:07 UTC] [PTA] update registration executed, affectedRows=1
-[01-May-2025 05:52:07 UTC] [PTA] update payment executed, affectedRows=1
-[01-May-2025 05:52:07 UTC] [PTA] activate survey_account executed, affectedRows=0
-[01-May-2025 05:52:07 UTC] Warning: No survey accounts found or enabled for approved registration ID: 20
-[01-May-2025 05:52:07 UTC] [PTA] province_code=YBI, lastUser=YBI116, nextSeq=117, username=YBI117, password=0999999445
-[01-May-2025 05:52:07 UTC] [PTA] cURL timeout set to 3s; calling URL=http://rtk_web_admin.test/private/actions/account/create_account.php with payload={"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:07","end_time":"2026-05-02 12:52:06","enabled":1,"concurrent_user":1,"account_count":2}
-[01-May-2025 05:52:07 UTC] DEBUG [Account Creation] URL: http://rtk_web_admin.test/private/actions/account/create_account.php
-[01-May-2025 05:52:07 UTC] DEBUG [Account Creation] Payload: {"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:07","end_time":"2026-05-02 12:52:06","enabled":1,"concurrent_user":1,"account_count":2}
-[01-May-2025 05:52:07 UTC] [PTA] cURL finished: {"httpCode":403,"errno":0,"error":"","totalTime":0.030867}
-[01-May-2025 05:52:07 UTC] Error approving transaction ID 20: Account creation failed (HTTP Status 403)
-[01-May-2025 05:52:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:52:20 UTC] [PTA] Start approve transaction_id=20
-[01-May-2025 05:52:20 UTC] [PTA] Transaction begun
-[01-May-2025 05:52:20 UTC] [PTA] check SQL executed, rowCount=1
-[01-May-2025 05:52:20 UTC] [PTA] fetched registration={"status":"rejected","user_id":88,"num_account":2,"start_time":"2025-05-01 12:40:38","end_time":"2026-05-02 12:40:37","location_id":63,"package_id":2}
-[01-May-2025 05:52:20 UTC] [PTA] update registration executed, affectedRows=1
-[01-May-2025 05:52:20 UTC] [PTA] update payment executed, affectedRows=1
-[01-May-2025 05:52:20 UTC] [PTA] activate survey_account executed, affectedRows=0
-[01-May-2025 05:52:20 UTC] Warning: No survey accounts found or enabled for approved registration ID: 20
-[01-May-2025 05:52:20 UTC] [PTA] province_code=YBI, lastUser=YBI116, nextSeq=117, username=YBI117, password=0999999445
-[01-May-2025 05:52:20 UTC] [PTA] cURL timeout set to 3s; calling URL=http://rtk_web_admin.test/private/actions/account/create_account.php with payload={"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:20","end_time":"2026-05-02 12:52:19","enabled":1,"concurrent_user":1,"account_count":2}
-[01-May-2025 05:52:20 UTC] DEBUG [Account Creation] URL: http://rtk_web_admin.test/private/actions/account/create_account.php
-[01-May-2025 05:52:20 UTC] DEBUG [Account Creation] Payload: {"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:20","end_time":"2026-05-02 12:52:19","enabled":1,"concurrent_user":1,"account_count":2}
-[01-May-2025 05:52:21 UTC] [PTA] cURL finished: {"httpCode":403,"errno":0,"error":"","totalTime":0.008519}
-[01-May-2025 05:52:21 UTC] Error approving transaction ID 20: Account creation failed (HTTP Status 403)
-[01-May-2025 05:52:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:52:26 UTC] [PTA] Start approve transaction_id=20
-[01-May-2025 05:52:26 UTC] [PTA] Transaction begun
-[01-May-2025 05:52:26 UTC] [PTA] check SQL executed, rowCount=1
-[01-May-2025 05:52:26 UTC] [PTA] fetched registration={"status":"rejected","user_id":88,"num_account":2,"start_time":"2025-05-01 12:40:38","end_time":"2026-05-02 12:40:37","location_id":63,"package_id":2}
-[01-May-2025 05:52:26 UTC] [PTA] update registration executed, affectedRows=1
-[01-May-2025 05:52:26 UTC] [PTA] update payment executed, affectedRows=1
-[01-May-2025 05:52:26 UTC] [PTA] activate survey_account executed, affectedRows=0
-[01-May-2025 05:52:26 UTC] Warning: No survey accounts found or enabled for approved registration ID: 20
-[01-May-2025 05:52:26 UTC] [PTA] province_code=YBI, lastUser=YBI116, nextSeq=117, username=YBI117, password=0999999445
-[01-May-2025 05:52:26 UTC] [PTA] cURL timeout set to 3s; calling URL=http://rtk_web_admin.test/private/actions/account/create_account.php with payload={"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:26","end_time":"2026-05-02 12:52:25","enabled":1,"concurrent_user":1,"account_count":2}
-[01-May-2025 05:52:26 UTC] DEBUG [Account Creation] URL: http://rtk_web_admin.test/private/actions/account/create_account.php
-[01-May-2025 05:52:26 UTC] DEBUG [Account Creation] Payload: {"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:26","end_time":"2026-05-02 12:52:25","enabled":1,"concurrent_user":1,"account_count":2}
-[01-May-2025 05:52:26 UTC] [PTA] cURL finished: {"httpCode":403,"errno":0,"error":"","totalTime":0.00844}
-[01-May-2025 05:52:26 UTC] Error approving transaction ID 20: Account creation failed (HTTP Status 403)
-[01-May-2025 05:52:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:52:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:52:58 UTC] [PTA] Start approve transaction_id=20
-[01-May-2025 05:52:58 UTC] [PTA] Transaction begun
-[01-May-2025 05:52:58 UTC] [PTA] check SQL executed, rowCount=1
-[01-May-2025 05:52:58 UTC] [PTA] fetched registration={"status":"rejected","user_id":88,"num_account":2,"start_time":"2025-05-01 12:40:38","end_time":"2026-05-02 12:40:37","location_id":63,"package_id":2}
-[01-May-2025 05:52:58 UTC] [PTA] update registration executed, affectedRows=1
-[01-May-2025 05:52:58 UTC] [PTA] update payment executed, affectedRows=1
-[01-May-2025 05:52:58 UTC] [PTA] activate survey_account executed, affectedRows=0
-[01-May-2025 05:52:58 UTC] Warning: No survey accounts found or enabled for approved registration ID: 20
-[01-May-2025 05:52:58 UTC] [PTA] province_code=YBI, lastUser=YBI116, nextSeq=117, username=YBI117, password=0999999445
-[01-May-2025 05:52:58 UTC] [PTA] cURL timeout set to 3s; calling public front-controller URL=http://rtk_web_admin.test/actions/account/index.php?action=create_account with payload={"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:58","end_time":"2026-05-02 12:52:57","enabled":1,"concurrent_user":1,"account_count":2}
-[01-May-2025 05:52:58 UTC] DEBUG [Account Creation] URL: http://rtk_web_admin.test/actions/account/index.php?action=create_account
-[01-May-2025 05:52:58 UTC] DEBUG [Account Creation] Payload: {"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:58","end_time":"2026-05-02 12:52:57","enabled":1,"concurrent_user":1,"account_count":2}
-[01-May-2025 05:52:58 UTC] [CA] Start create_account request
-[01-May-2025 05:52:58 UTC] [CA] Raw input: {"registration_id":20,"username_acc":"YBI117","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-01 12:52:58","end_time":"2026-05-02 12:52:57","enabled":1,"concurrent_user":1,"account_count":2}
-[01-May-2025 05:52:58 UTC] [CA] registration_id=20, username_acc=YBI117, password_len=10
-[01-May-2025 05:52:58 UTC] [CA] location_input=63
-[01-May-2025 05:52:58 UTC] [CA] computed start_time_db=2025-05-01 12:52:58, end_time_db=2026-05-02 12:52:57
-[01-May-2025 05:52:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:52:58 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
-[01-May-2025 05:52:58 UTC] [CA] Retrieved userId=88
-[01-May-2025 05:52:58 UTC] [CA] Price=270000.00 => normal flow
-[01-May-2025 05:52:58 UTC] Debug: Non-trial account creation path for registration_id=20
-[01-May-2025 05:52:58 UTC] [CA] RTK API payload for YBI117: {"name":"YBI117","userPwd":"0999999445","startTime":1746078778000,"endTime":1777701177000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
-[01-May-2025 05:52:58 UTC] [CA] RTK API response for YBI117: {"success":true,"data":{"id":907,"name":"YBI117","userPwd":"0999999445","startTime":1746078778000,"endTime":1777701177000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
-[01-May-2025 05:53:01 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 3002 milliseconds with 0 bytes received","totalTime":3.002842}
-[01-May-2025 05:53:01 UTC] [PTA] TransactionHistoryService updated
-[01-May-2025 05:53:01 UTC] [PTA] Transaction committed successfully
-[01-May-2025 05:53:01 UTC] PHP Warning:  Undefined variable $createdAccounts in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php on line 282
-[01-May-2025 05:53:01 UTC] [CA] RTK API payload for YBI118: {"name":"YBI118","userPwd":"0999999445","startTime":1746078778000,"endTime":1777701177000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
-[01-May-2025 05:53:01 UTC] [CA] RTK API response for YBI118: {"success":true,"data":{"id":908,"name":"YBI118","userPwd":"0999999445","startTime":1746078778000,"endTime":1777701177000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
-[01-May-2025 05:54:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:54:50 UTC] RTK API Payload: {"id":"908","name":"YBI118","userPwd":"0999999445","startTime":1746103978000,"endTime":1777726377000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
-[01-May-2025 05:54:50 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[01-May-2025 05:54:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:54:51 UTC] RTK API Payload: {"id":"907","name":"YBI117","userPwd":"0999999445","startTime":1746103978000,"endTime":1777726377000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
-[01-May-2025 05:54:51 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[01-May-2025 05:54:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 05:54:55 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 10:01:11 UTC] [DEBUG] Search keyword: 
-[01-May-2025 10:01:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 10:01:31 UTC] [DEBUG] Search keyword: 
-[01-May-2025 10:01:31 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[01-May-2025 10:01:43 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:39:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:39:28 UTC] Dashboard Data Fetch Error: Failed to connect to the database.
+[02-May-2025 15:42:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:42:31 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:43:19 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:43:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:43:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:43:21 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:43:21 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 149
+[02-May-2025 15:43:21 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 161
+[02-May-2025 15:43:21 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 162
+[02-May-2025 15:43:21 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 163
+[02-May-2025 15:43:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:43:31 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:43:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:43:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:43:36 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:43:44 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:43:45 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:43:45 UTC] PHP Warning:  Trying to access array offset on true in E:\Application\laragon\www\rtk_web_admin\private\actions\invoice\get_revenue_sums.php on line 12
+[02-May-2025 15:43:45 UTC] General error in fetch_admin_transactions: Failed to connect to the database.
+[02-May-2025 15:43:45 UTC] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in E:\Application\laragon\www\rtk_web_admin\private\actions\invoice\get_revenue_sums.php:31
+Stack trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\actions\invoice\get_revenue_sums.php(46): {closure}()
+#1 E:\Application\laragon\www\rtk_web_admin\public\pages\invoice\revenue_management.php(37): get_revenue_sums(Array)
+#2 {main}
+  thrown in E:\Application\laragon\www\rtk_web_admin\private\actions\invoice\get_revenue_sums.php on line 31
+[02-May-2025 15:43:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:44:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:44:08 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:44:08 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:44:09 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:44:09 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 149
+[02-May-2025 15:44:09 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 161
+[02-May-2025 15:44:09 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 162
+[02-May-2025 15:44:09 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 163
+[02-May-2025 15:44:09 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:44:09 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:44:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:45:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:49:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:56:25 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:56:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:56:29 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:56:31 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:56:57 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:56:59 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:57:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 15:58:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:10:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:10:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:10:02 UTC] [DEBUG] Search keyword: 
+[02-May-2025 16:10:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:10:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:10:05 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:10:06 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:10:06 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:10:15 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:10:15 UTC] Using default mount points for location ID: 12 - [42]
+[02-May-2025 16:10:15 UTC] [Revert Transaction 22] Calling RTK API for account 2029 with payload: {"id":"2029","name":"CMA019","userPwd":"0999999445","startTime":1746223947000,"endTime":1748988746000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[02-May-2025 16:10:15 UTC] [Revert Transaction 22] RTK API response for account 2029: {"success":true,"data":true,"error":null}
+[02-May-2025 16:10:15 UTC] [Revert Transaction 22] Calling RTK API for account 2030 with payload: {"id":"2030","name":"CMA020","userPwd":"0999999445","startTime":1746223947000,"endTime":1748988746000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[02-May-2025 16:10:15 UTC] [Revert Transaction 22] RTK API response for account 2030: {"success":true,"data":true,"error":null}
+[02-May-2025 16:10:15 UTC] [Revert Transaction 22] Calling RTK API for account 2031 with payload: {"id":"2031","name":"CMA021","userPwd":"0999999445","startTime":1746223947000,"endTime":1748988746000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[02-May-2025 16:10:15 UTC] [Revert Transaction 22] RTK API response for account 2031: {"success":true,"data":true,"error":null}
+[02-May-2025 16:10:15 UTC] PHP Fatal error:  Uncaught Error: Class "TransactionHistoryService" not found in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_revert.php:137
+Stack trace:
+#0 E:\Application\laragon\www\rtk_web_admin\public\actions\invoice\index.php(24): require_once()
+#1 {main}
+  thrown in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_revert.php on line 137
+[02-May-2025 16:10:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:10:22 UTC] Using default mount points for location ID: 12 - [42]
+[02-May-2025 16:10:22 UTC] [Revert Transaction 22] Calling RTK API for account 2029 with payload: {"id":"2029","name":"CMA019","userPwd":"0999999445","startTime":1746223947000,"endTime":1748988746000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[02-May-2025 16:10:22 UTC] [Revert Transaction 22] RTK API response for account 2029: {"success":true,"data":true,"error":null}
+[02-May-2025 16:10:22 UTC] [Revert Transaction 22] Calling RTK API for account 2030 with payload: {"id":"2030","name":"CMA020","userPwd":"0999999445","startTime":1746223947000,"endTime":1748988746000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[02-May-2025 16:10:22 UTC] [Revert Transaction 22] RTK API response for account 2030: {"success":true,"data":true,"error":null}
+[02-May-2025 16:10:22 UTC] [Revert Transaction 22] Calling RTK API for account 2031 with payload: {"id":"2031","name":"CMA021","userPwd":"0999999445","startTime":1746223947000,"endTime":1748988746000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[02-May-2025 16:10:22 UTC] [Revert Transaction 22] RTK API response for account 2031: {"success":true,"data":true,"error":null}
+[02-May-2025 16:10:22 UTC] PHP Fatal error:  Uncaught Error: Class "TransactionHistoryService" not found in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_revert.php:137
+Stack trace:
+#0 E:\Application\laragon\www\rtk_web_admin\public\actions\invoice\index.php(24): require_once()
+#1 {main}
+  thrown in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_revert.php on line 137
+[02-May-2025 16:11:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:11:34 UTC] Using default mount points for location ID: 12 - [42]
+[02-May-2025 16:11:34 UTC] [Revert Transaction 22] Calling RTK API for account 2029 with payload: {"id":"2029","name":"CMA019","userPwd":"0999999445","startTime":1746223947000,"endTime":1748988746000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[02-May-2025 16:11:34 UTC] [Revert Transaction 22] RTK API response for account 2029: {"success":true,"data":true,"error":null}
+[02-May-2025 16:11:34 UTC] [Revert Transaction 22] Calling RTK API for account 2030 with payload: {"id":"2030","name":"CMA020","userPwd":"0999999445","startTime":1746223947000,"endTime":1748988746000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[02-May-2025 16:11:34 UTC] [Revert Transaction 22] RTK API response for account 2030: {"success":true,"data":true,"error":null}
+[02-May-2025 16:11:34 UTC] [Revert Transaction 22] Calling RTK API for account 2031 with payload: {"id":"2031","name":"CMA021","userPwd":"0999999445","startTime":1746223947000,"endTime":1748988746000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[02-May-2025 16:11:34 UTC] [Revert Transaction 22] RTK API response for account 2031: {"success":true,"data":true,"error":null}
+[02-May-2025 16:11:34 UTC] PHP Fatal error:  Uncaught Error: Class "TransactionHistoryService" not found in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_revert.php:137
+Stack trace:
+#0 E:\Application\laragon\www\rtk_web_admin\public\actions\invoice\index.php(24): require_once()
+#1 {main}
+  thrown in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_revert.php on line 137
+[02-May-2025 16:16:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:16:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:16:51 UTC] Using default mount points for location ID: 12 - [42]
+[02-May-2025 16:16:51 UTC] [Revert Transaction 22] Calling RTK API for account 2029 with payload: {"id":"2029","name":"CMA019","userPwd":"0999999445","startTime":1746223947000,"endTime":1748988746000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[02-May-2025 16:16:51 UTC] [Revert Transaction 22] RTK API response for account 2029: {"success":true,"data":true,"error":null}
+[02-May-2025 16:16:51 UTC] [Revert Transaction 22] Calling RTK API for account 2030 with payload: {"id":"2030","name":"CMA020","userPwd":"0999999445","startTime":1746223947000,"endTime":1748988746000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[02-May-2025 16:16:51 UTC] [Revert Transaction 22] RTK API response for account 2030: {"success":true,"data":true,"error":null}
+[02-May-2025 16:16:51 UTC] [Revert Transaction 22] Calling RTK API for account 2031 with payload: {"id":"2031","name":"CMA021","userPwd":"0999999445","startTime":1746223947000,"endTime":1748988746000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[02-May-2025 16:16:51 UTC] [Revert Transaction 22] RTK API response for account 2031: {"success":true,"data":true,"error":null}
+[02-May-2025 16:16:51 UTC] PHP Fatal error:  Uncaught Error: Class "TransactionHistoryService" not found in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_revert.php:137
+Stack trace:
+#0 E:\Application\laragon\www\rtk_web_admin\public\actions\invoice\index.php(24): require_once()
+#1 {main}
+  thrown in E:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_revert.php on line 137
+[02-May-2025 16:17:14 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:17:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:17:16 UTC] Using default mount points for location ID: 12 - [42]
+[02-May-2025 16:17:16 UTC] [Revert Transaction 22] Calling RTK API for account 2029 with payload: {"id":"2029","name":"CMA019","userPwd":"0999999445","startTime":1746223947000,"endTime":1748988746000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[02-May-2025 16:17:16 UTC] [Revert Transaction 22] RTK API response for account 2029: {"success":true,"data":true,"error":null}
+[02-May-2025 16:17:16 UTC] [Revert Transaction 22] Calling RTK API for account 2030 with payload: {"id":"2030","name":"CMA020","userPwd":"0999999445","startTime":1746223947000,"endTime":1748988746000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[02-May-2025 16:17:16 UTC] [Revert Transaction 22] RTK API response for account 2030: {"success":true,"data":true,"error":null}
+[02-May-2025 16:17:16 UTC] [Revert Transaction 22] Calling RTK API for account 2031 with payload: {"id":"2031","name":"CMA021","userPwd":"0999999445","startTime":1746223947000,"endTime":1748988746000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[02-May-2025 16:17:16 UTC] [Revert Transaction 22] RTK API response for account 2031: {"success":true,"data":true,"error":null}
+[02-May-2025 16:17:21 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:17:23 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:17:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:17:32 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:17:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:17:36 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:17:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:18:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:18:08 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:18:08 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:23:45 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:23:45 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/private/includesadmin_header.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 26
+[02-May-2025 16:23:45 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/private/includesadmin_header.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 26
+[02-May-2025 16:23:45 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/private/includesadmin_sidebar.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 27
+[02-May-2025 16:23:45 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/private/includesadmin_sidebar.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 27
+[02-May-2025 16:23:45 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/private/includesadmin_footer.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 156
+[02-May-2025 16:23:45 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/private/includesadmin_footer.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 156
+[02-May-2025 16:24:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:24:33 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/private/includesadmin_header.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 26
+[02-May-2025 16:24:33 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/private/includesadmin_header.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 26
+[02-May-2025 16:24:33 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/private/includesadmin_sidebar.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 27
+[02-May-2025 16:24:33 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/private/includesadmin_sidebar.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 27
+[02-May-2025 16:24:33 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/private/includesadmin_footer.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 156
+[02-May-2025 16:24:33 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/private/includesadmin_footer.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 156
+[02-May-2025 16:24:48 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:25:12 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:25:12 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/includesadmin_header.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 26
+[02-May-2025 16:25:12 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/includesadmin_header.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 26
+[02-May-2025 16:25:12 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/includesadmin_sidebar.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 27
+[02-May-2025 16:25:12 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/includesadmin_sidebar.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 27
+[02-May-2025 16:25:12 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/includesadmin_footer.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 156
+[02-May-2025 16:25:12 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/includesadmin_footer.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 156
+[02-May-2025 16:25:15 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:25:15 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/includesadmin_header.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 26
+[02-May-2025 16:25:15 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/includesadmin_header.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 26
+[02-May-2025 16:25:15 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/includesadmin_sidebar.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 27
+[02-May-2025 16:25:15 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/includesadmin_sidebar.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 27
+[02-May-2025 16:25:15 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/includesadmin_footer.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 156
+[02-May-2025 16:25:15 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/includesadmin_footer.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 156
+[02-May-2025 16:25:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:26:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:26:18 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/admin_header.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 26
+[02-May-2025 16:26:18 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/admin_header.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 26
+[02-May-2025 16:26:18 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/admin_sidebar.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 27
+[02-May-2025 16:26:18 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/admin_sidebar.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 27
+[02-May-2025 16:26:18 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/admin_footer.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 156
+[02-May-2025 16:26:18 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/admin_footer.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 156
+[02-May-2025 16:26:36 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:27:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:27:37 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:27:37 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/private/includes/admin_header.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 26
+[02-May-2025 16:27:37 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/private/includes/admin_header.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 26
+[02-May-2025 16:27:37 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/private/includes/admin_sidebar.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 27
+[02-May-2025 16:27:37 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/private/includes/admin_sidebar.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 27
+[02-May-2025 16:27:37 UTC] PHP Warning:  include(E:\Application\laragon\www\rtk_web_admin\private/private/includes/admin_footer.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 156
+[02-May-2025 16:27:37 UTC] PHP Warning:  include(): Failed opening 'E:\Application\laragon\www\rtk_web_admin\private/private/includes/admin_footer.php' for inclusion (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\dashboard\dashboard.php on line 156
+[02-May-2025 16:28:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:28:31 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:28:32 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:28:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:28:33 UTC] [DEBUG] Search keyword: 
+[02-May-2025 16:28:37 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:28:39 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:28:44 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:37:08 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:37:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:37:10 UTC] [DEBUG] Search keyword: 
+[02-May-2025 16:37:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:37:23 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:37:23 UTC] [DEBUG] Search keyword: 
+[02-May-2025 16:38:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:38:00 UTC] [DEBUG] Search keyword: 
+[02-May-2025 16:38:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:38:05 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[02-May-2025 16:38:05 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:24:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:24:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:24:38 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:24:38 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:25:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:25:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:25:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:25:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:25:37 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:25:37 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:32:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:32:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:32:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:32:28 UTC] [DEBUG] Search keyword: 
+[03-May-2025 01:32:38 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:32:38 UTC] [DEBUG] Search keyword: 
+[03-May-2025 01:32:40 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:32:40 UTC] [DEBUG] Search keyword: 
+[03-May-2025 01:32:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:32:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:32:47 UTC] [DEBUG] Search keyword: 
+[03-May-2025 01:32:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:32:52 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:32:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:32:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:32:57 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:32:57 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:33:40 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:33:56 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:33:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:33:59 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:01 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 149
+[03-May-2025 01:34:01 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 161
+[03-May-2025 01:34:01 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 162
+[03-May-2025 01:34:01 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 163
+[03-May-2025 01:34:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:05 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:05 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:19 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:21 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:25 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:43 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:43 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:43 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:43 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:48 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:34:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:05 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:06 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:19 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:52 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:35:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:36:06 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:36:06 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:36:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:36:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:36:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:36:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:36:18 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 149
+[03-May-2025 01:36:18 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 161
+[03-May-2025 01:36:18 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 162
+[03-May-2025 01:36:18 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 163
+[03-May-2025 01:36:19 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:36:19 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:36:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:36:29 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:36:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:36:32 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:36:32 UTC] [PTA] Start approve transaction_id=22
+[03-May-2025 01:36:32 UTC] [PTA] Transaction begun
+[03-May-2025 01:36:32 UTC] [PTA] check SQL executed, rowCount=1
+[03-May-2025 01:36:32 UTC] [PTA] fetched registration={"status":"rejected","user_id":88,"num_account":3,"start_time":"2025-05-02 22:12:27","end_time":"2025-06-03 22:12:26","location_id":12,"package_id":2}
+[03-May-2025 01:36:32 UTC] [PTA] update registration executed, affectedRows=1
+[03-May-2025 01:36:32 UTC] [PTA] update payment executed, affectedRows=0
+[03-May-2025 01:36:32 UTC] [PTA] activate survey_account executed, affectedRows=0
+[03-May-2025 01:36:32 UTC] Warning: No survey accounts found or enabled for approved registration ID: 22
+[03-May-2025 01:36:32 UTC] [PTA] province_code=CMA, lastUser=CMA021, nextSeq=22, username=CMA022, password=0999999445
+[03-May-2025 01:36:32 UTC] [PTA] cURL timeout set to 5s; calling public front-controller URL=http://localhost:3000/public/actions/account/index.php?action=create_account with payload={"registration_id":22,"username_acc":"CMA022","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 08:36:32","end_time":"2025-06-04 08:36:31","enabled":1,"concurrent_user":1,"account_count":3}
+[03-May-2025 01:36:32 UTC] DEBUG [Account Creation] URL: http://localhost:3000/public/actions/account/index.php?action=create_account
+[03-May-2025 01:36:32 UTC] DEBUG [Account Creation] Payload: {"registration_id":22,"username_acc":"CMA022","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 08:36:32","end_time":"2025-06-04 08:36:31","enabled":1,"concurrent_user":1,"account_count":3}
+[03-May-2025 01:37:02 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 30007 milliseconds with 0 bytes received","totalTime":30.007353}
+[03-May-2025 01:37:02 UTC] [PTA] cURL request timed out for transaction ID 22. Account creation status uncertain. Please verify manually.
+[03-May-2025 01:37:02 UTC] [PTA] TransactionHistoryService updated
+[03-May-2025 01:37:02 UTC] [PTA] Transaction committed successfully
+[03-May-2025 01:37:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:37:02 UTC] [CA] Start create_account request
+[03-May-2025 01:37:02 UTC] [CA] Raw input: {"registration_id":22,"username_acc":"CMA022","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 08:36:32","end_time":"2025-06-04 08:36:31","enabled":1,"concurrent_user":1,"account_count":3}
+[03-May-2025 01:37:02 UTC] [CA] registration_id=22, username_acc=CMA022, password_len=10
+[03-May-2025 01:37:02 UTC] [CA] location_input=12
+[03-May-2025 01:37:02 UTC] [CA] computed start_time_db=2025-05-03 08:36:32, end_time_db=2025-06-04 08:36:31
+[03-May-2025 01:37:02 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
+[03-May-2025 01:37:02 UTC] [CA] Retrieved userId=88
+[03-May-2025 01:37:02 UTC] [CA] Price=270000.00 => normal flow
+[03-May-2025 01:37:02 UTC] Debug: Non-trial account creation path for registration_id=22
+[03-May-2025 01:37:02 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 01:37:02 UTC] [CA] RTK API payload for CMA022: {"name":"CMA022","userPwd":"0999999445","startTime":1746236192000,"endTime":1749000991000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[03-May-2025 01:37:02 UTC] [CA] RTK API response for CMA022: {"success":true,"data":{"id":2033,"name":"CMA022","userPwd":"0999999445","startTime":1746236192000,"endTime":1749000991000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[03-May-2025 01:37:02 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 01:37:02 UTC] [CA] RTK API payload for CMA023: {"name":"CMA023","userPwd":"0999999445","startTime":1746236192000,"endTime":1749000991000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[03-May-2025 01:37:02 UTC] [CA] RTK API response for CMA023: {"success":true,"data":{"id":2034,"name":"CMA023","userPwd":"0999999445","startTime":1746236192000,"endTime":1749000991000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[03-May-2025 01:37:02 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 01:37:02 UTC] [CA] RTK API payload for CMA024: {"name":"CMA024","userPwd":"0999999445","startTime":1746236192000,"endTime":1749000991000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[03-May-2025 01:37:02 UTC] [CA] RTK API response for CMA024: {"success":true,"data":{"id":2035,"name":"CMA024","userPwd":"0999999445","startTime":1746236192000,"endTime":1749000991000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[03-May-2025 01:37:06 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:37:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:37:33 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 01:37:33 UTC] RTK API Payload: {"id":"2033","name":"CMA022","userPwd":"0999999445","startTime":1746261392000,"endTime":1749026191000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[03-May-2025 01:37:33 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[03-May-2025 01:37:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:37:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:37:34 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 01:37:34 UTC] RTK API Payload: {"id":"2034","name":"CMA023","userPwd":"0999999445","startTime":1746261392000,"endTime":1749026191000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[03-May-2025 01:37:34 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[03-May-2025 01:37:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:37:38 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:37:40 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:37:42 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:37:42 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:37:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:37:47 UTC] [update_account] raw input: 
+[03-May-2025 01:37:47 UTC] [update_account] decoded input: Array
+(
+    [id] => 2034
+    [username_acc] => CMA023
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 1
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2025-06-03
+    [status] => suspended
+)
+
+[03-May-2025 01:37:47 UTC] [update_account] input customer_phone: <none>
+[03-May-2025 01:37:47 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => CMA023
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 1
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2025-06-03
+    [status] => suspended
+)
+
+[03-May-2025 01:37:48 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 01:37:48 UTC] [update_account] final customer_phone: 0999999445
+[03-May-2025 01:37:48 UTC] [update_account] final customer_name: 0999999445
+[03-May-2025 01:37:48 UTC] [update_account] RTK API payload: Array
+(
+    [id] => 2034
+    [name] => CMA023
+    [userPwd] => 0999999445
+    [startTime] => 1746230400000
+    [endTime] => 1748908800000
+    [enabled] => 0
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 88
+    [customerName] => Long2004
+    [customerPhone] => 0999999445
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 42
+        )
+
+)
+
+[03-May-2025 01:37:48 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[03-May-2025 01:37:48 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully.","account":{"id":"2034","username_acc":"CMA023","enabled":0,"created_at":"2025-05-03 08:37:02","password_acc":"0999999445","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"registration_id":22,"activation_date":"2025-05-03 00:00:00","expiry_date":"2025-06-03 23:59:59","registration_status":"active","num_account":3,"user_id":88,"user_email":"tranhailong2408@gmail.com","user_username":"Long2004","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"suspended"}}
+[03-May-2025 01:38:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:38:29 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:38:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:38:35 UTC] [update_account] raw input: 
+[03-May-2025 01:38:35 UTC] [update_account] decoded input: Array
+(
+    [id] => 2034
+    [username_acc] => CMA023
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 2
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2025-08-03
+    [status] => suspended
+)
+
+[03-May-2025 01:38:35 UTC] [update_account] input customer_phone: <none>
+[03-May-2025 01:38:35 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => CMA023
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 2
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2025-08-03
+    [status] => suspended
+)
+
+[03-May-2025 01:38:35 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 01:38:35 UTC] [update_account] final customer_phone: 0999999445
+[03-May-2025 01:38:35 UTC] [update_account] final customer_name: 0999999445
+[03-May-2025 01:38:35 UTC] [update_account] RTK API payload: Array
+(
+    [id] => 2034
+    [name] => CMA023
+    [userPwd] => 0999999445
+    [startTime] => 1746230400000
+    [endTime] => 1754179200000
+    [enabled] => 0
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 88
+    [customerName] => Long2004
+    [customerPhone] => 0999999445
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 42
+        )
+
+)
+
+[03-May-2025 01:38:35 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[03-May-2025 01:38:35 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully.","account":{"id":"2034","username_acc":"CMA023","enabled":0,"created_at":"2025-05-03 08:37:02","password_acc":"0999999445","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"registration_id":22,"activation_date":"2025-05-03 00:00:00","expiry_date":"2025-08-03 23:59:59","registration_status":"active","num_account":3,"user_id":88,"user_email":"tranhailong2408@gmail.com","user_username":"Long2004","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"suspended"}}
+[03-May-2025 01:38:44 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:38:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:38:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:38:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:38:49 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 01:38:49 UTC] RTK API Payload: {"id":"2034","name":"CMA023","userPwd":"0999999445","startTime":1746230400000,"endTime":1754265599000,"enabled":1,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[03-May-2025 01:38:49 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[03-May-2025 01:38:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:39:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:39:06 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:39:06 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:39:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:39:11 UTC] [update_account] raw input: 
+[03-May-2025 01:39:11 UTC] [update_account] decoded input: Array
+(
+    [id] => 2035
+    [username_acc] => CMA024
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 1
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2025-06-03
+    [status] => active
+)
+
+[03-May-2025 01:39:11 UTC] [update_account] input customer_phone: <none>
+[03-May-2025 01:39:11 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => CMA024
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 1
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2025-06-03
+    [status] => active
+)
+
+[03-May-2025 01:39:11 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 01:39:11 UTC] [update_account] final customer_phone: 0999999445
+[03-May-2025 01:39:11 UTC] [update_account] final customer_name: 0999999445
+[03-May-2025 01:39:11 UTC] [update_account] RTK API payload: Array
+(
+    [id] => 2035
+    [name] => CMA024
+    [userPwd] => 0999999445
+    [startTime] => 1746230400000
+    [endTime] => 1748908800000
+    [enabled] => 1
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 88
+    [customerName] => Long2004
+    [customerPhone] => 0999999445
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 42
+        )
+
+)
+
+[03-May-2025 01:39:11 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[03-May-2025 01:39:11 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully.","account":{"id":"2035","username_acc":"CMA024","enabled":1,"created_at":"2025-05-03 08:37:02","password_acc":"0999999445","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"registration_id":22,"activation_date":"2025-05-03 00:00:00","expiry_date":"2025-06-03 23:59:59","registration_status":"active","num_account":3,"user_id":88,"user_email":"tranhailong2408@gmail.com","user_username":"Long2004","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"active"}}
+[03-May-2025 01:39:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:39:20 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 01:39:20 UTC] RTK API Payload: {"id":"2034","name":"CMA023","userPwd":"0999999445","startTime":1746230400000,"endTime":1748995199000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[03-May-2025 01:39:20 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[03-May-2025 01:39:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:39:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:39:22 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 01:39:22 UTC] RTK API Payload: {"id":"2035","name":"CMA024","userPwd":"0999999445","startTime":1746230400000,"endTime":1748995199000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[03-May-2025 01:39:22 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[03-May-2025 01:39:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:39:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:39:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:39:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:39:37 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 01:39:37 UTC] [Revert Transaction 22] No associated survey accounts found to disable via API.
+[03-May-2025 01:39:39 UTC] [Database Connect] Connection to database 'surveying_account' successful.

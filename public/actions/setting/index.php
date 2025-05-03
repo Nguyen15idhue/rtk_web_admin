@@ -2,6 +2,9 @@
 session_start();
 header('Content-Type: application/json');
 
+// Thêm require constants để có PRIVATE_ACTIONS_PATH
+require_once __DIR__ . '/../../../private/config/constants.php';
+
 $action = basename($_GET['action'] ?? '');
 $allowed = [
     'process_profile_fetch',        // <-- add this
@@ -14,7 +17,9 @@ if (!in_array($action, $allowed, true)) {
     exit;
 }
 
-$privatePath = __DIR__ . '/../../../private/actions/setting/' . $action . '.php';
+// Dùng hằng số thay path cứng
+$privatePath = PRIVATE_ACTIONS_PATH . '/setting/' . $action . '.php';
+
 if (!file_exists($privatePath)) {
     http_response_code(404);
     echo json_encode(['success' => false, 'message' => 'Action not found']);

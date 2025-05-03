@@ -16,9 +16,8 @@ if (!$id || !is_numeric($id)) {
 }
 
 // DB connection
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
-$db = (Database::getInstance())->getConnection();
+$bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$db        = $bootstrap['db'];
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 try {

@@ -9,8 +9,9 @@ if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin'
     ]);
     exit;
 }
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
+
+$bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$conn      = $bootstrap['db'];
 
 // Read JSON input
 $raw = file_get_contents('php://input');
@@ -27,8 +28,6 @@ if (!in_array($role, $validRoles)) {
 }
 $permissions = $data['permissions'];
 try {
-    $db = Database::getInstance();
-    $conn = $db->getConnection();
     $stmt = $conn->prepare('UPDATE role_permissions SET allowed = :allowed WHERE role = :role AND permission = :perm');
     foreach ($permissions as $perm => $allow) {
         $allowed = $allow ? 1 : 0;

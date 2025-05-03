@@ -1,7 +1,7 @@
 <?php
 session_start();
 header('Content-Type: application/json');
-
+require_once __DIR__ . '/../../../private/config/constants.php';
 $action = basename($_GET['action'] ?? '');
 $allowed = [
     'process_admin_login',
@@ -18,7 +18,7 @@ if (!in_array($action, $allowed, true)) {
     exit;
 }
 
-$privatePath = __DIR__ . '/../../../private/actions/auth/' . $action . '.php';
+$privatePath = PRIVATE_ACTIONS_PATH . '/auth/' . $action . '.php';
 if (!file_exists($privatePath)) {
     http_response_code(404);
     echo json_encode(['success' => false, 'message' => 'Auth action not found']);

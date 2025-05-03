@@ -1,6 +1,9 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\dashboard\fetch_dashboard_data.php
 
+$config = require __DIR__ . '/../../includes/page_bootstrap.php';
+$pdo = $config['db'];
+
 /**
  * Fetches all necessary data for the admin dashboard.
  *
@@ -8,8 +11,7 @@
  */
 function fetch_dashboard_data(): array
 {
-    // Include the Database class
-    require_once __DIR__ . '/../../classes/Database.php';
+    global $pdo;
 
     $dashboard_data = [
         'total_web_users' => 0,
@@ -25,9 +27,6 @@ function fetch_dashboard_data(): array
     ];
 
     try {
-        $database = Database::getInstance();
-        $pdo = $database->getConnection();
-
         if ($pdo === null) {
             error_log("Dashboard Data Fetch Error: Failed to connect to the database.");
             return $dashboard_data; // Return default data on connection failure

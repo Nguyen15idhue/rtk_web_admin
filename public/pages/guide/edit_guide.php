@@ -4,18 +4,15 @@ if (empty($_SESSION['admin_id'])) {
     header('Location: ../auth/admin_login.php');
     exit;
 }
-// --- Base Path & Includes ---
-$protocol = (!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off'||$_SERVER['SERVER_PORT']==443)?"https://":"http://";
-$host = $_SERVER['HTTP_HOST'];
-$parts = explode('/', $_SERVER['SCRIPT_NAME']);
-$idx = array_search('rtk_web_admin',$parts);
-$base_seg = $idx!==false? implode('/',array_slice($parts,0,$idx+1)).'/':'/';
-$base_path = $protocol.$host.$base_seg;
-// now 3 levels up to reach private/includes
-$private_includes = __DIR__ . '/../../../private/includes/';
-$page_title = isset($_GET['id']) ? 'Sửa hướng dẫn' : 'Tạo hướng dẫn';
-include $private_includes . 'admin_header.php';
-include $private_includes . 'admin_sidebar.php';
+
+$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$base_path             = $bootstrap_data['base_path'];
+$private_includes_path = $bootstrap_data['private_includes_path'];
+$user_display_name     = $bootstrap_data['user_display_name'];
+$page_title            = isset($_GET['id']) ? 'Sửa hướng dẫn' : 'Tạo hướng dẫn';
+
+include $private_includes_path . 'admin_header.php';
+include $private_includes_path . 'admin_sidebar.php';
 ?>
 <!-- Thêm Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -85,5 +82,4 @@ include $private_includes . 'admin_sidebar.php';
 
 <!-- include JS riêng cho edit_guide -->
 <script src="<?php echo $base_path; ?>public/assets/js/pages/guide/edit_guide.js"></script>
-
-<?php include $private_includes . 'admin_footer.php'; ?>
+<?php include $private_includes_path . 'admin_footer.php'; ?>

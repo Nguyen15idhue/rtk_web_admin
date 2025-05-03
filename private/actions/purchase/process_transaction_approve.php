@@ -155,11 +155,14 @@ try {
     // build dynamic URL to include correct host & port
     $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
     $host     = $_SERVER['SERVER_NAME'];
-    $port     = $_SERVER['SERVER_PORT'];
-    // now call the public front-controller
-    $url      = $protocol . '://' . $host
-                . ($port && !in_array($port, ['80','443']) ? ':' . $port : '')
-                . '/actions/account/index.php?action=create_account';
+    $port     = $_SERVER['SERVER_PORT'] ?? '';
+    if ($port && !in_array($port, ['80','443'], true)) {
+        $host .= ':' . $port;
+    }
+    // derive base path (e.g. '/actions') from current script
+    $script   = $_SERVER['SCRIPT_NAME'];
+    $basePath = dirname(dirname($script));
+    $url      = "{$protocol}://{$host}{$basePath}/account/index.php?action=create_account";
 
     // Generate username = province_code + next 3-digit sequence
     $stmt_province = $db->prepare("SELECT province_code FROM location WHERE id = :loc");
@@ -213,8 +216,8 @@ try {
         'User-Agent: PHP-cURL'       // giả lập User‑Agent browser
     ]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); // Increased timeout
-    curl_setopt($ch, CURLOPT_TIMEOUT, 5);        // Increased timeout
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // give more time for connection
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);        // give the script more execution time
     // disable SSL verification for self-signed certificate
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);

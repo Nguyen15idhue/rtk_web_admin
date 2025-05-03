@@ -5,18 +5,13 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-require_once __DIR__ . '/../../../private/config/database.php';
-require_once __DIR__ . '/../../../private/classes/Database.php';
-require_once __DIR__ . '/../../../private/actions/invoice/fetch_invoices.php';
-
-// --- Base Path Calculation for assets ---
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']!=='off' || $_SERVER['SERVER_PORT']==443) ? 'https://' : 'http://';
-$host = $_SERVER['HTTP_HOST'];
-$parts = explode('/', $_SERVER['SCRIPT_NAME']);
-$idx = array_search('rtk_web_admin', $parts);
-$base_path = $protocol . $host . ($idx !== false ? implode('/', array_slice($parts, 0, $idx+1)) . '/' : '/');
-
-define('PDF_BASE_URL', $base_path . 'public/uploads/invoice/');
+// --- thay bằng page_bootstrap & gán lại PDF_BASE_URL ---
+$bootstrap_data        = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$db                     = $bootstrap_data['db'];
+$base_url               = $bootstrap_data['base_url'];
+$private_includes_path  = $bootstrap_data['private_includes_path'];
+require_once BASE_PATH . '/actions/invoice/fetch_invoices.php';
+define('PDF_BASE_URL', $base_url . 'public/uploads/invoice/');
 
 $current_page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $items_per_page = 10;
@@ -28,10 +23,8 @@ $total = $data['total_count'];
 $total_pages = $data['total_pages'];
 $current_page = $data['current_page'];
 
-$private_includes_path = __DIR__ . '/../../../private/includes/';
 // --- add page bootstrap & title ---
 $page_title = 'Phê duyệt Hóa đơn';
-$bootstrap_data = require_once $private_includes_path . 'page_bootstrap.php';
 $user_display_name = $bootstrap_data['user_display_name'];
 ?>
 <!DOCTYPE html>
@@ -40,13 +33,13 @@ $user_display_name = $bootstrap_data['user_display_name'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $page_title; ?></title>
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/base.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/badges.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/base.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/layouts/header.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-badges.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/badges.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         .status-pending { color: #f59e0b; }
@@ -64,8 +57,8 @@ $user_display_name = $bootstrap_data['user_display_name'];
         <h2><?php echo $page_title; ?></h2>
         <div class="user-info">
             <span>Chào mừng, <span class="highlight"><?php echo $user_display_name; ?></span>!</span>
-            <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
-            <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
+            <a href="<?php echo $base_url; ?>public/pages/setting/profile.php">Hồ sơ</a>
+            <a href="<?php echo $base_url; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
         </div>
     </div>
     <div class="content-section">
@@ -130,8 +123,7 @@ $user_display_name = $bootstrap_data['user_display_name'];
 </main>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-// expose basePath for external script
-window.basePath = '<?php echo rtrim($base_path,'/'); ?>';
+    window.basePath = '<?php echo rtrim($base_url,'/'); ?>';
 </script>
-<script src="<?php echo $base_path; ?>public/assets/js/pages/invoice_requests/invoice_review.js"></script>
+<script src="<?php echo $base_url; ?>public/assets/js/pages/invoice_requests/invoice_review.js"></script>
 <?php include $private_includes_path . 'admin_footer.php'; ?>

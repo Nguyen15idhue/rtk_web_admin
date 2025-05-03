@@ -5,28 +5,16 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-require_once __DIR__ . '/../../../private/config/database.php';
-require_once __DIR__ . '/../../../private/classes/Database.php';
+// --- thay bằng page_bootstrap ---
+$bootstrap_data          = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$private_includes_path   = $bootstrap_data['private_includes_path'];
+$base_url                = $bootstrap_data['base_url'];
 
 $invoiceId = isset($_GET['invoice_id']) ? (int)$_GET['invoice_id'] : 0;
 if ($invoiceId <= 0) {
     header('Location: invoice_review.php');
     exit;
 }
-
-$private_includes_path = __DIR__ . '/../../../private/includes/';
-
-// --- Base Path Calculation for assets (from invoice_review.php) ---
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']!=='off' || $_SERVER['SERVER_PORT']==443)
-             ? 'https://' : 'http://';
-$host = $_SERVER['HTTP_HOST'];
-$parts = explode('/', $_SERVER['SCRIPT_NAME']);
-$idx = array_search('rtk_web_admin', $parts);
-$base_path = $protocol
-             . $host
-             . ($idx !== false
-                ? implode('/', array_slice($parts, 0, $idx+1)) . '/'
-                : '/');
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -34,8 +22,8 @@ $base_path = $protocol
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Hóa đơn #<?php echo $invoiceId; ?></title>
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/base.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/pages/invoice_upload.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/base.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/pages/invoice_upload.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
@@ -50,7 +38,7 @@ $base_path = $protocol
             <h2><i class="fas fa-file-upload"></i> Upload Hóa đơn #<?php echo $invoiceId; ?></h2>
         </div>
         <div class="card-body">
-            <form action="../../actions/invoice_requests/index.php?action=process_invoice_send"
+            <form action="<?php echo $base_url; ?>public/actions/invoice_requests/index.php?action=process_invoice_send"
                   method="post" enctype="multipart/form-data"
                   class="form-section">
                 <input type="hidden" name="invoice_id" value="<?php echo $invoiceId; ?>">

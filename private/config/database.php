@@ -1,13 +1,9 @@
 <?php
 // filepath: e:\Application\laragon\www\surveying_account\private\config\database.php
-// define('DB_SERVER', '127.0.0.1');
-// define('DB_USERNAME', 'root'); // Thay bằng username của bạn
-// define('DB_PASSWORD', ''); // Thay bằng password của bạn
-// define('DB_NAME', 'sa_database');
-define('DB_SERVER', 'localhost'); // Địa chỉ máy chủ cơ sở dữ liệu
-define('DB_USERNAME', 'qeqlwgvdhosting_Nguyen1509'); // Thay bằng username của bạn
-define('DB_PASSWORD', 'Nguyen15092025@'); // Thay bằng password của bạn
-define('DB_NAME', 'qeqlwgvdhosting_sa_database');
+define('DB_SERVER', '127.0.0.1');
+define('DB_USERNAME', 'root'); // Thay bằng username của bạn
+define('DB_PASSWORD', ''); // Thay bằng password của bạn
+define('DB_NAME', 'surveying_account');
 
 // Tạo kết nối
 $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);

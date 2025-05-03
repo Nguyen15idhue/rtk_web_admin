@@ -3,6 +3,9 @@
 // Assuming the including file is in public/pages/, the path to public/ is ../
 // Adjust this if the including file location is different.
 
+// Include base constants
+require_once __DIR__ . '/../config/constants.php';
+
 // Admin navigation items - Updated structure
 $admin_nav_items = [
     ['label' => 'Dashboard', 'icon' => 'fa-tachometer-alt', 'url' => '/public/pages/dashboard/dashboard.php', 'active_check' => 'dashboard.php', 'permission' => 'dashboard'],
@@ -21,7 +24,7 @@ $admin_nav_items = [
 ];
 
 // Load DB and fetch allowed permissions for current role
-require_once __DIR__ . '/../classes/Database.php';
+require_once BASE_PATH . '/classes/Database.php';
 // Replace direct constructor call with singleton
 $db  = Database::getInstance();
 $pdo = $db->getConnection();
@@ -66,7 +69,7 @@ $admin_user_role = isset($role_vietnamese[$role]) ? $role_vietnamese[$role] : uc
     <!-- Logo & Toggle -->
     <div class="sidebar-header">
          <!-- Link to admin dashboard or # -->
-        <a href="<?php echo $base_path; ?>public/pages/dashboard/dashboard.php" class="logo-link"> <!-- Updated link -->
+        <a href="<?php echo $base_url; ?>public/pages/dashboard/dashboard.php" class="logo-link"> <!-- Updated link -->
             <i class="logo-icon fas fa-user-shield"></i>
             <span class="logo-text">Trang Quản Trị</span>
         </a>
@@ -127,7 +130,7 @@ $admin_user_role = isset($role_vietnamese[$role]) ? $role_vietnamese[$role] : uc
                     ?>
                         <li>
                              <!-- Use 'a' tag with href. Add active class dynamically -->
-                            <a href="<?php echo $base_path . ltrim($item['url'], '/'); ?>"
+                            <a href="<?php echo $base_url . ltrim($item['url'], '/'); ?>"
                                class="nav-item <?php echo trim($item_class); ?>">
                                 <i class="icon fas <?php echo htmlspecialchars($item['icon']); ?>"></i>
                                 <span><?php echo htmlspecialchars($item['label']); ?></span>

@@ -8,12 +8,11 @@ if (!isset($_SESSION['admin_id'])) {
 // Replace manual session and path setup with bootstrap
 $bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
 $db               = $bootstrap_data['db'];
-$base_path        = $bootstrap_data['base_path'];
+$base_url        = $bootstrap_data['base_url'];
 $user_display_name= $bootstrap_data['user_display_name'];
 $private_includes_path = $bootstrap_data['private_includes_path'];
 
 require_once __DIR__ . '/../../../private/actions/invoice/fetch_transactions.php';
-// Include new action for revenue sums
 require_once __DIR__ . '/../../../private/actions/invoice/get_revenue_sums.php';
 
 // Lấy params phân trang & filter
@@ -43,12 +42,12 @@ list($total_revenue, $successful_revenue) = get_revenue_sums($filters);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Giao dịch - Admin</title>
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/base.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/base.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-badges.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/layouts/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .stats-container { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; }
@@ -76,8 +75,8 @@ list($total_revenue, $successful_revenue) = get_revenue_sums($filters);
             <h2>Quản lý Doanh thu</h2>
             <div class="user-info">
                 <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-                <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
-                <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
+                <a href="<?php echo $base_url; ?>public/pages/setting/profile.php">Hồ sơ</a>
+                <a href="<?php echo $base_url; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
             </div>
         </div>
 

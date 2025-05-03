@@ -1,25 +1,10 @@
 <?php
-// Ensure $base_path is defined as a string (fallback to '/rtk_web_admin/')
-if (!isset($base_path) || !is_string($base_path)) {
-    // Attempt to determine base path dynamically if possible, otherwise default
-    // This might need adjustment based on your server setup / framework
-    $script_name = $_SERVER['SCRIPT_NAME']; // e.g., /rtk_web_admin/public/pages/dashboard/dashboard.php
-    $base_path_parts = explode('/', $script_name);
-    // Assuming structure is /project_root/public/pages/file.php
-    // Adjust the slice index based on your actual structure
-    if (count($base_path_parts) >= 3) {
-        $base_path = '/' . $base_path_parts[1] . '/'; // Assumes project root is the first segment
-    } else {
-        $base_path = '/'; // Fallback default
-    }
-}
+// Include base constants
+require_once __DIR__ . '/../config/constants.php';
 
-// Ensure $base_path ends with a slash
-if (substr($base_path, -1) !== '/') {
-    $base_path .= '/';
-}
-$public_assets_path = $base_path . 'public/assets/';
-
+// Override dynamic base path and assets path
+$base_path = BASE_URL;
+$public_assets_path = BASE_URL . 'public/assets/';
 ?>
 <!DOCTYPE html>
 <html lang="vi">

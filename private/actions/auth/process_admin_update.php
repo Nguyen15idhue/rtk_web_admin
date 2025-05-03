@@ -7,10 +7,9 @@ if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'admin') {
     exit;
 }
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
+$bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$db        = $bootstrap['db'];
 
-$db = (Database::getInstance())->getConnection();
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $input = json_decode(file_get_contents('php://input'), true);
 
