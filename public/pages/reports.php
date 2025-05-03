@@ -2,17 +2,16 @@
 // filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\reports.php
 session_start();
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: auth/admin_login.php');
+    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
     exit;
 }
-require_once __DIR__ . '/../../private/utils/dashboard_helpers.php';
-require_once __DIR__ . '/../../private/classes/Database.php';
-$private_includes_path = __DIR__ . '/../../private/includes/';
-$user_display_name = $_SESSION['admin_username'] ?? 'Admin';
-$base_path = '/'; // Adjust if necessary
+$bootstrap_data         = require_once __DIR__ . '/../../private/includes/page_bootstrap.php';
+$db                      = $bootstrap_data['db'];
+$base_url                = $bootstrap_data['base_url'];
+$private_includes_path   = $bootstrap_data['private_includes_path'];
+$user_display_name       = $bootstrap_data['user_display_name'];
 
-$db = Database::getInstance();
-$pdo = $db->getConnection();
+$pdo = $db;
 
 $start_date = $_GET['start_date'] ?? date('Y-m-01');
 $end_date = $_GET['end_date'] ?? date('Y-m-t');
@@ -95,8 +94,8 @@ $commission_pending = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 
             <h2 class="text-2xl font-semibold">Báo cáo Tổng hợp</h2>
             <div class="user-info">
                 <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-                <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
-                <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
+                <a href="<?php echo $base_url; ?>public/pages/setting/profile.php">Hồ sơ</a>
+                <a href="<?php echo $base_url; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
             </div>
         </div>
 
@@ -168,6 +167,8 @@ $commission_pending = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 
         </div>
     </main>
 </div>
+
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/buttons.css">
 
 <script>
     document.getElementById('report-filter-form').addEventListener('submit', function(event) {

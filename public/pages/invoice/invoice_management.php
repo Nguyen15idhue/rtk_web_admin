@@ -1,27 +1,15 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\public\pages/invoice/invoice_management.php
-// --- Includes and Setup ---
-session_start();
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ../auth/admin_login.php');
-    exit;
-}
+$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$db                    = $bootstrap_data['db'];
+$base_url             = $bootstrap_data['base_url'];
+$private_includes_path = $bootstrap_data['private_includes_path'];
+$private_actions_path = $bootstrap_data['private_actions_path'];
+$user_display_name     = $bootstrap_data['user_display_name'];
 
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-$host = $_SERVER['HTTP_HOST'];
-$script_name_parts = explode('/', $_SERVER['SCRIPT_NAME']);
-$project_folder_index = array_search('rtk_web_admin', $script_name_parts);
-$base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_folder_index + 1)) . '/';
-$base_path = $protocol . $host . $base_path_segment;
-$private_includes_path = __DIR__ . '/../../../private/includes/';
-
-require_once __DIR__ . '/../../../private/config/database.php';
-require_once __DIR__ . '/../../../private/classes/Database.php';
-require_once __DIR__ . '/../../../private/utils/functions.php';
-require_once __DIR__ . '/../../../private/actions/invoice/fetch_transactions.php';
+require_once $private_actions_path . 'invoice/fetch_transactions.php';
 
 // --- LẤY DỮ LIỆU CHO FILTERS MỚI ---
-$db = Database::getInstance()->getConnection();
 $packages_stmt = $db->query("SELECT id, name FROM package WHERE is_active=1 ORDER BY display_order");
 $packages = $packages_stmt->fetchAll(PDO::FETCH_ASSOC);
 $provinces_stmt = $db->query("SELECT province FROM location WHERE status=1 ORDER BY province");
@@ -30,8 +18,6 @@ $provinces = $provinces_stmt->fetchAll(PDO::FETCH_COLUMN);
 // --- Define the correct base URL for the image host ---
 // !!! IMPORTANT: Replace this with the actual URL where your images are hosted !!!
 define('IMAGE_HOST_BASE_URL', 'https://taikhoandodac.vn/'); // Example URL
-
-$user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 
 $current_page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $items_per_page = 15;
@@ -59,12 +45,12 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Giao dịch</title>
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/base.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/base.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-badges.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/layouts/header.css">
     <style>
         /* Add style for detail labels similar to account management */
         .detail-label {
@@ -83,16 +69,16 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
 <body>
 
 
-    <?php include __DIR__ . '/../../../private/includes/admin_header.php'; ?>
-    <?php include __DIR__ . '/../../../private/includes/admin_sidebar.php'; ?>
+    <?php include $private_includes_path . 'admin_header.php'; ?>
+    <?php include $private_includes_path . 'admin_sidebar.php'; ?>
 
     <main class="content-wrapper">
         <div class="content-header">
             <h2>Quản lý Giao dịch</h2>
             <div class="user-info">
                 <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-                <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
-                <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
+                <a href="<?php echo $base_url; ?>public/pages/setting/profile.php">Hồ sơ</a>
+                <a href="<?php echo $base_url; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
             </div>
         </div>
 
@@ -344,9 +330,9 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
 
 <!-- cung cấp basePath cho JS -->
 <script>
-    window.appConfig = { basePath: '<?php echo $base_path; ?>' };
+    window.appConfig = { basePath: '<?php echo $base_url; ?>' };
 </script>
-<script src="<?php echo $base_path; ?>public/assets/js/pages/invoice/invoice_management.js"></script>
+<script src="<?php echo $base_url; ?>public/assets/js/pages/invoice/invoice_management.js"></script>
 </body>
 </html>
 <?php

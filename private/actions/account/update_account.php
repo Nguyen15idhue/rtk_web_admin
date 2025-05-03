@@ -1,5 +1,9 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\update_account.php
+// Khởi bootstrap để có $db, BASE_PATH, BASE_URL
+$bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
+$db        = $bootstrap['db'];
+$base_path = $bootstrap['base_path'];
 header('Content-Type: application/json');
 error_reporting(E_ALL); // Report all errors for logging
 ini_set('display_errors', 0); // Keep off for browser output
@@ -10,10 +14,8 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
-require_once __DIR__ . '/../../classes/AccountModel.php';
-require_once __DIR__ . '/../../api/rtk_system/account_api.php';
+require_once BASE_PATH . '/classes/AccountModel.php';
+require_once BASE_PATH . '/api/rtk_system/account_api.php';
 
 $response = ['success' => false, 'message' => 'Invalid request'];
 
@@ -43,9 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                  : 'active';
 
     try {
-        $database = Database::getInstance();
-        $db = $database->getConnection();
-
         if (!$db) {
             throw new Exception("Database connection failed.");
         }

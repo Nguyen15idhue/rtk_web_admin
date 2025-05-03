@@ -1,5 +1,5 @@
 <?php
-
+require_once __DIR__ . '/../../config/constants.php';
 // Prevent PHP from outputting HTML errors directly
 error_reporting(E_ALL); // Report all errors for logging
 ini_set('display_errors', 0); // Keep off for browser output
@@ -134,8 +134,7 @@ function createRtkAccount(array $accountData): array {
  */
 function getMountPointsByLocationId(int $locationId): array {
     try {
-        // Use existing Database class for proper credentials
-        require_once dirname(__DIR__, 2) . '/classes/Database.php';
+        require_once BASE_PATH . '/classes/Database.php';
         $database = Database::getInstance();
         $pdo = $database->getConnection();
         if (!$pdo) {
@@ -431,7 +430,7 @@ function fetchStationDynamicInfo(array $ids): array {
  */
 function fetchAndUpdateStations(): void {
     global $conn; 
-    require dirname(__DIR__,2).'/config/database.php'; // init global $conn
+    require_once BASE_PATH . '/config/database.php'; // init global $conn
 
     if (!isset($conn) || $conn->connect_error) {
         error_log("DB connect failed");

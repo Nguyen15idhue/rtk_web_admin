@@ -1,37 +1,34 @@
 <?php
-session_start();
+$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$base_url = $bootstrap_data['base_url'];
+$user_display_name = $bootstrap_data['user_display_name'];
+$private_includes_path = $bootstrap_data['private_includes_path'];
+
+// Redirect nếu chưa đăng nhập
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: ../auth/admin_login.php');
+    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
     exit;
 }
-// --- Base Path & Includes ---
-$protocol = (!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off'||$_SERVER['SERVER_PORT']==443)?"https://":"http://";
-$host = $_SERVER['HTTP_HOST'];
-$parts = explode('/', $_SERVER['SCRIPT_NAME']);
-$idx = array_search('rtk_web_admin',$parts);
-$base_seg = $idx!==false? implode('/',array_slice($parts,0,$idx+1)).'/':'/';
-$base_path = $protocol.$host.$base_seg;
-$private_includes = __DIR__ . '/../../../private/includes/';
+
 $page_title = 'Quản lý hướng dẫn';
-$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
-$user_display_name = $bootstrap_data['user_display_name'];
-include $private_includes . 'admin_header.php';
+
+include $private_includes_path . 'admin_header.php';
 ?>
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-buttons.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/badges.css">
-<?php include $private_includes . 'admin_sidebar.php'; ?>
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/layouts/header.css">
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables.css">
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-buttons.css">
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-badges.css">
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/buttons.css">
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/badges.css">
+<?php include $private_includes_path . 'admin_sidebar.php'; ?>
 
 <main class="content-wrapper">
     <div class="content-header">
         <h2><?php echo $page_title; ?></h2>
         <div class="user-info">
                 <span>Chào mừng, <span class="highlight"><?php echo $user_display_name; // Already HTML-escaped in bootstrap ?></span>!</span>
-                <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
-                <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
+                <a href="<?php echo $base_url; ?>public/pages/setting/profile.php">Hồ sơ</a>
+                <a href="<?php echo $base_url; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
             </div>
     </div>
     <div class="content-section">
@@ -62,11 +59,11 @@ include $private_includes . 'admin_header.php';
     </div>
 </main>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // expose basePath for external script
-    window.basePath = '<?php echo rtrim($base_path,'/'); ?>';
+    window.basePath = '<?php echo rtrim($base_url,'/'); ?>';
 </script>
-<script src="<?php echo $base_path; ?>public/assets/js/pages/guide/guide_management.js"></script>
+<!-- Load jQuery first -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="<?php echo $base_url; ?>public/assets/js/pages/guide/guide_management.js"></script>
 
-<?php include $private_includes . 'admin_footer.php'; ?>
+<?php include $private_includes_path . 'admin_footer.php'; ?>

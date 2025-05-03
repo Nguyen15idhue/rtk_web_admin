@@ -1,19 +1,20 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\create_account.php
-session_start(); // ← add this
-header('Content-Type: application/json');
+$config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$db     = $config['db'];
+$base   = $config['base_path'];
 
+header('Content-Type: application/json');
+error_reporting(E_ALL); // Report all errors for logging
+ini_set('display_errors', 0); // Keep off for browser output
+ini_set('log_errors', 1); // Ensure errors are logged
+ini_set('error_log', __DIR__ . '/../../logs/error.log');
 // Basic security check
 if (!isset($_SESSION['admin_id'])) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;
 }
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
-require_once __DIR__ . '/../../classes/AccountModel.php';
-require_once __DIR__ . '/../../utils/functions.php'; 
-require_once __DIR__ . '/../../api/rtk_system/account_api.php';
 
 $response = ['success' => false, 'message' => 'Invalid request'];
 

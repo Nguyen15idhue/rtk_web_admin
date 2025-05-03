@@ -1,16 +1,16 @@
 <?php
 session_start();
-require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php'; // Include the helpers
 
-// --- Base Path Calculation ---
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-$host = $_SERVER['HTTP_HOST'];
-$script_name_parts = explode('/', $_SERVER['SCRIPT_NAME']);
-$project_folder_index = array_search('rtk_web_admin', $script_name_parts);
-$base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_folder_index + 1)) . '/';
-$base_path = $protocol . $host . $base_path_segment;
+// --- Bootstrap and Initialization ---
+$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$db = $bootstrap_data['db'];
+$base_path = $bootstrap_data['base_path'];
+$base_url = $bootstrap_data['base_url'];
+$user_display_name = $bootstrap_data['user_display_name'];
+$private_includes_path = $bootstrap_data['private_includes_path'];
 
-$private_includes_path = __DIR__ . '/../../../private/includes/';
+// --- Include Helpers ---
+require_once BASE_PATH . '/utils/dashboard_helpers.php';
 
 // Check if admin is logged in
 if (!isset($_SESSION['admin_id'])) {
@@ -20,8 +20,6 @@ if (!isset($_SESSION['admin_id'])) {
 }
 
 $admin_id = $_SESSION['admin_id'];
-// Use 'admin_name' consistent with user_management.php if available, otherwise fallback
-$user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 
 // Initialize empty placeholders; actual data will be loaded via AJAX
 $profile_name = '';
@@ -35,10 +33,10 @@ $profile_role = '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hồ sơ Quản trị - Admin</title>
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/base.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/forms.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/layouts/header.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/base.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/forms.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .grid { display: grid; }
@@ -128,9 +126,9 @@ $profile_role = '';
 
     <!-- Expose PHP basePath and load profile JS -->
     <script>
-        const basePath = '<?php echo $base_path; ?>';
+        const basePath = '<?php echo $base_url; ?>';
     </script>
-    <script defer src="<?php echo $base_path; ?>public/assets/js/pages/setting/profile.js"></script>
+    <script defer src="<?php echo $base_url; ?>public/assets/js/pages/setting/profile.js"></script>
 
 <?php
 include $private_includes_path . 'admin_footer.php';

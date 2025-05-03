@@ -1,8 +1,6 @@
 <?php
-// Start the session if it's not already started
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+// Include the bootstrap file
+$bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 
 // Unset all session variables
 $_SESSION = array();
@@ -17,10 +15,7 @@ if (ini_get("session.use_cookies")) {
 }
 session_destroy();
 
-// Define the base path for redirection (adjust if necessary)
-$base_path = '/public'; // Or determine dynamically if needed
-
 // Redirect to the login page
-header("Location: " . $base_path . "/pages/auth/admin_login.php");
+header("Location: " . $bootstrap['base_url'] . "public/pages/auth/admin_login.php");
 exit();
 ?>

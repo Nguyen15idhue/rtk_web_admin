@@ -1,6 +1,7 @@
 <?php
-require_once __DIR__ . '/../../classes/Database.php';
-require_once __DIR__ . '/../../utils/functions.php'; // For send_json_response
+require_once __DIR__ . '/../../config/constants.php';
+require_once BASE_PATH . '/classes/Database.php';
+require_once BASE_PATH . '/utils/functions.php'; 
 
 header('Content-Type: application/json');
 

@@ -8,8 +8,8 @@ if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
     exit('Forbidden');
 }
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
+$bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
+$db        = $bootstrap['db'];
 
 /**
  * Returns total and successful revenue sums based on filters.
@@ -18,7 +18,7 @@ require_once __DIR__ . '/../../classes/Database.php';
  * @return array [total_revenue, successful_revenue]
  */
 function get_revenue_sums(array $filters = []): array {
-    $db = Database::getInstance()->getConnection();
+    global $db;
     $total = 0.0;
     $success = 0.0;
 

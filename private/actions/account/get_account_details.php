@@ -1,5 +1,10 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\get_account_details.php
+
+// Khởi bootstrap
+$bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
+$db        = $bootstrap['db'];
+
 header('Content-Type: application/json');
 
 // Prevent PHP from outputting HTML errors directly
@@ -14,19 +19,12 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
-require_once __DIR__ . '/../../classes/AccountModel.php';
-
 $response = ['success' => false, 'message' => 'Invalid request', 'account' => null];
 
 if (isset($_GET['id'])) {
     $accountId = $_GET['id'];
 
     try {
-        $database = Database::getInstance();
-        $db = $database->getConnection();
-
         if (!$db) {
             throw new Exception("Database connection failed.");
         }

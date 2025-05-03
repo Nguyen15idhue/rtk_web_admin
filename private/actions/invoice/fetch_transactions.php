@@ -12,9 +12,8 @@ ini_set('display_errors', 0); // Keep off for browser output
 ini_set('log_errors', 1); // Ensure errors are logged
 ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
-require_once __DIR__ . '/../../utils/functions.php'; // Include helpers
+$bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
+$db        = $bootstrap['db'];
 
 /**
  * Fetches transactions for the admin invoice management page with filtering and pagination.
@@ -31,9 +30,8 @@ require_once __DIR__ . '/../../utils/functions.php'; // Include helpers
  * @return array An array containing 'transactions', 'total_count', 'current_page', 'per_page', 'total_pages'. Returns empty array on error.
  */
 function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_page = 10): array {
+    global $db;
     try {
-        // Instantiate Database and get connection
-        $db = Database::getInstance()->getConnection();
         if (!$db) {
             throw new Exception("Failed to connect to the database.");
         }

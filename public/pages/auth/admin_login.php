@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__DIR__, 3) . '/private/config/constants.php';
 session_start();
 
 // Display error message if set by process_admin_login.php
@@ -7,7 +8,8 @@ unset($_SESSION['admin_login_error']); // Clear error after displaying
 
 // If admin is already logged in, redirect to admin dashboard
 if (isset($_SESSION['admin_id'])) {
-    header("Location: ../dashboard.php"); // Adjust path if needed
+    // chuyển đến đúng file dashboard trong pages
+    header('Location: ' . BASE_URL . 'public/pages/dashboard/dashboard.php');
     exit();
 }
 ?>
@@ -17,7 +19,7 @@ if (isset($_SESSION['admin_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Đăng Nhập</title>
-    <link rel="stylesheet" href="../../assets/css/pages/auth/login.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/assets/css/pages/auth/login.css">
 </head>
 <body>
     <div class="login-container">
@@ -27,7 +29,7 @@ if (isset($_SESSION['admin_id'])) {
             <div class="error-message"><?php echo htmlspecialchars($error_message); ?></div>
         <?php endif; ?>
 
-        <form action="../../actions/auth/index.php?action=process_admin_login" method="POST">
+        <form action="<?= BASE_URL ?>public/actions/auth/index.php?action=process_admin_login" method="POST">
             <div class="form-group">
                 <label for="admin_username">Tên đăng nhập Admin:</label>
                 <input type="text" id="admin_username" name="admin_username" required>

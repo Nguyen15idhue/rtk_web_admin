@@ -1,6 +1,6 @@
 <?php
-// load the Database singleton
-require_once __DIR__ . '/Database.php';
+require_once __DIR__ . '/../config/constants.php';
+require_once BASE_PATH . '/classes/Database.php';
 
 // private/classes/GuideModel.php
 class GuideModel {

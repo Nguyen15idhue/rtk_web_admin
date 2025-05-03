@@ -1,7 +1,7 @@
 <?php
 session_start();
 header('Content-Type: application/json');
-
+require_once dirname(__DIR__, 3) . '/private/config/constants.php';
 $action = basename($_GET['action'] ?? '');
 $allowed = [
     'fetch_users',
@@ -16,7 +16,7 @@ if (!in_array($action, $allowed, true)) {
     exit;
 }
 
-$privatePath = __DIR__ . '/../../../private/actions/user/' . $action . '.php';
+$privatePath = PRIVATE_ACTIONS_PATH . '/user/' . $action . '.php';
 if (!file_exists($privatePath)) {
     http_response_code(404);
     echo json_encode(['success' => false, 'message' => 'Action not found']);

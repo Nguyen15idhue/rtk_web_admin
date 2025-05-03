@@ -6,19 +6,11 @@ if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
     die('Forbidden');
 }
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
+$bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
+$db        = $bootstrap['db'];
 
-/**
- * Fetches invoice requests for admin review with filtering and pagination.
- *
- * @param array $filters ['status']
- * @param int $page
- * @param int $per_page
- * @return array ['invoices', 'total_count', 'current_page', 'per_page', 'total_pages']
- */
 function fetch_admin_invoices(array $filters = [], int $page = 1, int $per_page = 10): array {
-    $db = Database::getInstance()->getConnection();
+    global $db;
     if (!$db) {
         return ['invoices'=>[], 'total_count'=>0, 'current_page'=>1, 'per_page'=>$per_page, 'total_pages'=>0];
     }

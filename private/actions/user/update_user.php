@@ -1,7 +1,7 @@
 <?php
-// Correct the paths relative to the current file's directory (private/actions/setting)
-require_once __DIR__ . '/../../config/database.php'; // Go up two levels to 'private', then into 'config'
-require_once __DIR__ . '/../../classes/Database.php'; // Go up two levels to 'private', then into 'classes'
+// Thay bằng bootstrap chung
+$config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$db     = $config['db'];
 
 header('Content-Type: application/json');
 
@@ -50,18 +50,15 @@ try {
     //     exit;
     // }
 
-    $db = Database::getInstance();;
-    $conn = $db->getConnection();
-
-    if (!$conn) {
+    if (!$db) {
         http_response_code(500);
-        echo json_encode(['success' => false, 'message' => 'Database connection failed.']);
+        echo json_encode(['success' => false, 'message' => 'Database dbection failed.']);
         exit;
     }
 
     // Inner try-catch for transaction handling remains
     try {
-        $conn->beginTransaction();
+        $db->beginTransaction();
 
         // Check if email or phone already exists for another user (ensure phone is checked only if provided)
         $check_sql = "SELECT id FROM user WHERE id != :id AND (email = :email";
@@ -72,11 +69,11 @@ try {
         }
         $check_sql .= ")";
 
-        $stmt_check = $conn->prepare($check_sql);
+        $stmt_check = $db->prepare($check_sql);
         $stmt_check->execute($params); // Execute with parameters array
 
         if ($stmt_check->fetch()) {
-            $conn->rollBack();
+            $db->rollBack();
             echo json_encode(['success' => false, 'message' => 'Email hoặc số điện thoại đã tồn tại cho người dùng khác.']);
             exit;
         }
@@ -92,7 +89,7 @@ try {
                     updated_at = NOW()
                 WHERE id = :id";
 
-        $stmt_update = $conn->prepare($sql);
+        $stmt_update = $db->prepare($sql);
         $stmt_update->bindParam(':username', $username);
         $stmt_update->bindParam(':email', $email);
         // Bind phone as null if empty, otherwise bind the value
@@ -109,11 +106,11 @@ try {
         if ($stmt_update->execute()) {
             // TODO: Add activity logging here if needed
             // log_activity($_SESSION['admin_id'], 'update_user', 'user', $user_id, $old_data, $_POST);
-            $conn->commit();
+            $db->commit();
             echo json_encode(['success' => true, 'message' => 'Cập nhật thông tin người dùng thành công.']);
             exit;
         } else {
-            $conn->rollBack();
+            $db->rollBack();
             error_log("Failed to update user ID: " . $user_id . " - Error: " . implode(":", $stmt_update->errorInfo()));
             http_response_code(500);
             echo json_encode(['success' => false, 'message' => 'Không thể cập nhật thông tin người dùng.']);
@@ -121,8 +118,8 @@ try {
         }
 
     } catch (PDOException $e) {
-        if ($conn->inTransaction()) {
-            $conn->rollBack();
+        if ($db->inTransaction()) {
+            $db->rollBack();
         }
         // Re-throw to be caught by the outer catch block
         throw $e;
@@ -130,7 +127,7 @@ try {
     // No need for inner catch (Exception $e) if outer one handles it
 
 } catch (PDOException $e) {
-    // Catch PDO exceptions from connection or inner try
+    // Catch PDO exceptions from dbection or inner try
     error_log("Database Error in process_user_update.php: " . $e->getMessage());
     http_response_code(500);
     // Ensure JSON output even if headers already sent by potential prior errors
@@ -150,9 +147,9 @@ try {
     echo json_encode(['success' => false, 'message' => 'Đã xảy ra lỗi không mong muốn: ' . $e->getMessage()]); // Include error message for debugging if needed
     exit;
 } finally {
-    // Close connection if it was successfully established
-    if (isset($conn)) {
-        $conn = null;
+    // Close dbection if it was successfully established
+    if (isset($db)) {
+        $db = null;
     }
 }
 

@@ -286,17 +286,17 @@ document.addEventListener('DOMContentLoaded', () => {
                  newAction = 'approve';
                  newIcon = 'fa-check-circle';
                  newTitle = 'Phê duyệt';
-                 newClass += 'btn-success';
+                 newClass += 'btn-approve';
              } else if (isSuspended) {
-                 newAction = 'unsuspend';
+                 newAction = 'approve';
                  newIcon = 'fa-play-circle';
                  newTitle = 'Bỏ đình chỉ';
-                 newClass += 'btn-success';
+                 newClass += 'btn-approve';
              } else { // active, expired, rejected (can be suspended)
                  newAction = 'suspend';
-                 newIcon = 'fa-pause-circle';
+                 newIcon = 'fa-ban';
                  newTitle = 'Đình chỉ';
-                 newClass += 'btn-warning';
+                 newClass += 'btn-reject';
              }
 
              toggleButton.title = newTitle;

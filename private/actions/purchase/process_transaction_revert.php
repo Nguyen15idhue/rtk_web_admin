@@ -16,12 +16,11 @@ header('Content-Type: application/json'); // Set response type
 //     exit;
 // }
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
-require_once __DIR__ . '/../../services/TransactionHistoryService.php'; // Service to manage transaction history
-// require_once __DIR__ . '/../../utils/logger.php'; // Example: For logging actions
-require_once __DIR__ . '/../../api/rtk_system/account_api.php'; // Added for RTK API
-require_once __DIR__ . '/../../utils/functions.php';           // Added for getMountPointsByLocationId
+require_once __DIR__ . '/../../config/constants.php';
+require_once BASE_PATH . '/classes/Database.php';
+require_once BASE_PATH . '/api/rtk_system/account_api.php';
+require_once BASE_PATH . '/utils/functions.php';
+require_once BASE_PATH . '/services/TransactionHistoryService.php'; 
 
 // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

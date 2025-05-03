@@ -5,8 +5,9 @@ if (!isset($_SESSION['admin_id'])) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;
 }
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
+
+$bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$conn      = $bootstrap['db'];
 
 $role = $_GET['role'] ?? '';
 $validRoles = ['admin','customercare'];
@@ -16,8 +17,6 @@ if (!in_array($role, $validRoles)) {
 }
 
 try {
-    $db = Database::getInstance();
-    $conn = $db->getConnection();
     // Fetch permissions
     $stmt = $conn->prepare('SELECT permission, allowed FROM role_permissions WHERE role = :role');
     $stmt->bindParam(':role', $role);

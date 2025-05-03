@@ -1,15 +1,17 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\account\account_management.php
+$require_constants = __DIR__ . '/../../../private/config/constants.php';
+require_once $require_constants;
 session_start();
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: ../auth/admin_login.php');
+    header('Location: ' . BASE_URL . 'public/pages/auth/admin_login.php');
     exit;
 }
 // --- Bootstrap and Initialization ---
 // Includes session start, auth check, DB connection, base path, etc.
 $bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
 $db = $bootstrap_data['db'];
-$base_path = $bootstrap_data['base_path'];
+$base_url = $bootstrap_data['base_url'];
 $user_display_name = $bootstrap_data['user_display_name'];
 $private_includes_path = $bootstrap_data['private_includes_path'];
 
@@ -42,14 +44,14 @@ require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý TK Đo đạc - Admin</title>
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/base.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/forms.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/toast.css"> <!-- Add link to toast.css -->
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/base.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-buttons.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-badges.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/forms.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/layouts/header.css">
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/toast.css"> <!-- Add link to toast.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -64,8 +66,8 @@ require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php';
             <h2>Quản lý TK Đo đạc</h2>
             <div class="user-info">
                 <span>Chào mừng, <span class="highlight"><?php echo $user_display_name; // Already HTML-escaped in bootstrap ?></span>!</span>
-                <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
-                <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
+                <a href="<?php echo $base_url; ?>public/pages/setting/profile.php">Hồ sơ</a>
+                <a href="<?php echo $base_url; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
             </div>
         </div>
 
@@ -342,7 +344,6 @@ require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php';
                     <label for="edit-status">Trạng thái:</label>
                     <select id="edit-status" name="status" required>
                         <option value="active">Hoạt động</option>
-                        <option value="pending">Chờ KH</option>
                         <option value="suspended">Đình chỉ</option>
                         <option value="rejected">Bị từ chối</option>
                     </select>
@@ -361,8 +362,8 @@ require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php';
 
 <!-- Define JS variables needed by the external script -->
 <script>
-    const apiBasePath = '<?php echo $base_path; ?>public/actions/account/index.php';
-    const basePath = '<?php echo $base_path; ?>';
+    const apiBasePath = '<?php echo $base_url; ?>public/actions/account/index.php';
+    const basePath = '<?php echo $base_url; ?>';
     // Pass package durations from PHP to JS
     const packageDurations = <?php echo json_encode([
         '1' => ['months' => 1],
@@ -375,7 +376,7 @@ require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php';
     ]); ?>;
 </script>
 <!-- Link external JavaScript file -->
-<script src="<?php echo $base_path; ?>public/assets/js/pages/account/account_management.js"></script>
+<script src="<?php echo $base_url; ?>public/assets/js/pages/account/account_management.js"></script>
 
 </body>
 </html>

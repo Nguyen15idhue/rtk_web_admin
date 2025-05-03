@@ -2,36 +2,27 @@
 // filepath: e:\Application\laragon\www\rtk_web_admin\public\pages/user/user_management.php
 session_start();
 
+// --- Bootstrap and Initialization ---
+$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$db                = $bootstrap_data['db'];
+$base_path         = $bootstrap_data['base_path'];
+$user_display_name = $bootstrap_data['user_display_name'];
+$private_includes_path = $bootstrap_data['private_includes_path'];
+$base_url          = $bootstrap_data['base_url'];
+
 // --- Includes and Setup ---
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: ../auth/admin_login.php');
+    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
     exit;
 }
 
-// --- Base Path Calculation ---
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-$host = $_SERVER['HTTP_HOST'];
-$script_name_parts = explode('/', $_SERVER['SCRIPT_NAME']);
-$project_folder_index = array_search('rtk_web_admin', $script_name_parts);
-// Ensure base path ends with a slash if the project folder is found
-if ($project_folder_index !== false) {
-    $base_path_segment = implode('/', array_slice($script_name_parts, 0, $project_folder_index + 1)) . '/';
-} else {
-    // Fallback if 'rtk_web_admin' is not in the path (e.g., running from root)
-    // This might need adjustment based on your server setup
-    $base_path_segment = '/';
-}
-$base_path = $protocol . $host . $base_path_segment;
-
 // --- Include Required Files ---
-require_once __DIR__ . '/../../../private/utils/functions.php'; // General helpers (includes format_date)
-require_once __DIR__ . '/../../../private/utils/user_helpers.php'; // User-specific helpers (includes get_user_status_display)
-require_once __DIR__ . '/../../../private/actions/user/fetch_users.php'; // User fetching logic
+require_once BASE_PATH . '/utils/functions.php'; // General helpers (includes format_date)
+require_once BASE_PATH . '/utils/user_helpers.php'; // User-specific helpers
+require_once BASE_PATH . '/actions/user/fetch_users.php'; // User fetching logic
 
 // Add current admin role for permission checks
 $admin_role = $_SESSION['admin_role'] ?? '';
-
-$user_display_name = $_SESSION['admin_username'] ?? 'Admin';
 
 // --- Get Filters ---
 $filters = [
@@ -76,12 +67,11 @@ if (strpos($pagination_base_url, '?') === false) {
 
 // --- Page Setup for Header/Sidebar ---
 $page_title = 'Quản lý Người dùng';
-$private_includes_path = __DIR__ . '/../../../private/includes/';
 
 include $private_includes_path . 'admin_header.php';
 ?>
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-buttons.css">
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables.css">
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-buttons.css">
 <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
 <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
 <link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/forms.css">
@@ -325,17 +315,17 @@ include $private_includes_path . 'admin_sidebar.php';
 
 </main> <!-- End content-wrapper -->
 
-<!-- pass basePath into JS -->
+<!-- pass baseUrl into JS -->
 <script>
     window.appConfig = {
-        basePath: '<?php echo rtrim($base_path, '/'); ?>'
+        baseUrl: '<?php echo rtrim($base_url, '/'); ?>'
     };
 </script>
 
 <!-- load JS utilities and page logic -->
 <script src="<?php echo $base_path; ?>public/assets/js/utils/api.js"></script>
 <script src="<?php echo $base_path; ?>public/assets/js/utils/helpers.js"></script>
-<script src="<?php echo $base_path; ?>public/assets/js/pages/user/user_management.js"></script>
+<script src="<?php echo $base_url; ?>public/assets/js/pages/user/user_management.js"></script>
 
 <?php
 include $private_includes_path . 'admin_footer.php';

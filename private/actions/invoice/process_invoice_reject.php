@@ -2,8 +2,8 @@
 declare(strict_types=1);
 header('Content-Type: application/json');
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
+$bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
+$db        = $bootstrap['db'];
 
 $input = json_decode(file_get_contents('php://input'), true);
 $invoiceId = isset($input['invoice_id']) ? (int)$input['invoice_id'] : 0;
@@ -15,7 +15,6 @@ if ($invoiceId <= 0 || $reason === '') {
 }
 
 try {
-    $db = Database::getInstance()->getConnection();
     $stmt = $db->prepare("UPDATE invoice SET status = 'rejected', rejected_reason = :reason WHERE id = :id");
     $stmt->execute([':reason' => $reason, ':id' => $invoiceId]);
     echo json_encode(['success' => true]);

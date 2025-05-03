@@ -1,5 +1,11 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\delete_account.php
+
+// Thay include thủ công bằng bootstrap chung
+$config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$db     = $config['db'];
+$base   = $config['base_path'];
+
 header('Content-Type: application/json');
 
 // Check admin login
@@ -8,10 +14,6 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
-require_once __DIR__ . '/../../classes/AccountModel.php';
-require_once __DIR__ . '/../../api/rtk_system/account_api.php';
 
 // Get input data
 $rawInput = file_get_contents('php://input');
@@ -26,9 +28,6 @@ if (!$input || !isset($input['id'])) {
 }
 
 $accountId = filter_var($input['id'], FILTER_SANITIZE_SPECIAL_CHARS);
-
-$database = Database::getInstance();
-$db = $database->getConnection();
 
 if (!$db) {
     error_log("Database connection failed in delete_account.php");

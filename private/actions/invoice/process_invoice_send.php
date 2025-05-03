@@ -7,8 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     die('Method Not Allowed.');
 }
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
+$bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
+$db        = $bootstrap['db'];
 
 $invoiceId = isset($_POST['invoice_id']) ? (int)$_POST['invoice_id'] : 0;
 if ($invoiceId <= 0 || empty($_FILES['invoice_file'])) {
@@ -34,14 +34,13 @@ if (!move_uploaded_file($file['tmp_name'], $target)) {
 }
 
 try {
-    $db = Database::getInstance()->getConnection();
     $stmt = $db->prepare(
       "UPDATE invoice 
          SET status = 'approved', invoice_file = :file 
        WHERE id = :id"
     );
     $stmt->execute([':file' => $fileName, ':id' => $invoiceId]);
-    header('Location: ../../../public/pages/invoice_requests/invoice_review.php');
+    header('Location: ' . $bootstrap['base_url'] . 'public/pages/invoice_requests/invoice_review.php');
     exit;
 } catch (PDOException $e) {
     error_log('Error in process_invoice_send: ' . $e->getMessage());

@@ -6,7 +6,6 @@ if (!isset($db)) {
     die("Database connection not available in handle_account_list.php");
 }
 
-require_once __DIR__ . '/../../classes/AccountModel.php'; // Include the AccountModel
 
 // --- Filtering ---
 $filters = [
