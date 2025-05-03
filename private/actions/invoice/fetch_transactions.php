@@ -23,12 +23,13 @@ register_shutdown_function(function() use (&$db) {
  * Fetches transactions for the admin invoice management page with filtering and pagination.
  *
  * @param array $filters Associative array of filters:
- *                       'search' => string (searches registration ID and user email),
- *                       'status' => string ('pending', 'approved', 'rejected', ''), 'approved' maps to 'active' in DB.
+ *                       'search' => string (searches transaction ID and user email),
+ *                       'status' => string ('pending', 'approved', 'rejected', ''), 'approved' maps to 'completed' in DB.
  *                       'date_from' => string (Y-m-d),
  *                       'date_to' => string (Y-m-d),
  *                       'package_id' => int (ID of the package),
- *                       'province' => string (Province name)
+ *                       'province' => string (Province name),
+ *                       'type' => string ('purchase', 'renewal')
  * @param int $page Current page number (1-based).
  * @param int $per_page Number of items per page.
  * @return array An array containing 'transactions', 'total_count', 'current_page', 'per_page', 'total_pages'. Returns empty array on error.
@@ -40,78 +41,86 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
             throw new Exception("Failed to connect to the database.");
         }
 
-        // Base query joining necessary tables
+        // --- Cập nhật SELECT từ transaction_history ---
         $base_select = "
             SELECT
-                r.id as registration_id,
-                r.created_at as request_date,
-                r.total_price as amount,
-                r.status as registration_status,
-                r.rejection_reason, -- Fetch rejection reason
-                u.email as user_email,
-                p.name as package_name,
-                pay.payment_image, -- Get proof image filename from payment table
-                r.location_id,
-                l.province AS province
+                th.id AS registration_id,                   /* dùng chung key để frontend không thay đổi */
+                th.transaction_type,                        /* purchase | renewal */
+                th.amount AS amount,                        /* amount for UI */
+                CASE 
+                    WHEN th.status = 'completed' THEN 'active'
+                    WHEN th.status = 'failed'    THEN 'rejected'
+                    ELSE th.status
+                END AS registration_status,               /* map to UI statuses */
+                th.created_at AS request_date,
+                r.rejection_reason,
+                u.email AS user_email,
+                p.name AS package_name,
+                pay.payment_image,
+                l.province
         ";
-        $base_from = "
-            FROM registration r
-            JOIN user u ON r.user_id = u.id
-            JOIN package p ON r.package_id = p.id
-            LEFT JOIN payment pay ON r.id = pay.registration_id -- Use LEFT JOIN in case payment proof hasn't been uploaded yet
-            LEFT JOIN location l ON l.id = r.location_id
+        $base_from  = "
+            FROM transaction_history th
+            JOIN registration r    ON th.registration_id = r.id AND r.deleted_at IS NULL
+            JOIN user u            ON r.user_id = u.id
+            JOIN package p         ON r.package_id = p.id
+            LEFT JOIN payment pay  ON r.id = pay.registration_id
+            LEFT JOIN location l   ON l.id = r.location_id
         ";
-        $base_where = " WHERE r.deleted_at IS NULL "; // Exclude soft-deleted registrations
+        $base_where = " WHERE 1=1 "; // always true, filters tiếp theo dùng AND
 
-        $count_query = "SELECT COUNT(r.id) " . $base_from . $base_where;
-        $data_query = $base_select . $base_from . $base_where;
+        // Đếm và data query
+        $count_query = "SELECT COUNT(th.id) " . $base_from . $base_where;
+        $data_query  = $base_select . $base_from . $base_where;
 
         $where_clauses = [];
-        $params = []; // Parameters for filtering (used in both count and data queries)
+        $params = [];
 
-        // Apply filters
+        // filter search
         if (!empty($filters['search'])) {
-            $search_term = '%' . trim($filters['search']) . '%';
-            // Use distinct placeholders for each part of the OR condition
-            $where_clauses[] = "(CAST(r.id AS CHAR) LIKE :search_id OR u.email LIKE :search_email)";
-            // Add both parameters to the array, even if they use the same value
-            $params[':search_id'] = $search_term;
-            $params[':search_email'] = $search_term;
+            $s = '%'.trim($filters['search']).'%';
+            $where_clauses[] = "(CAST(th.id AS CHAR) LIKE :search_id OR u.email LIKE :search_email)";
+            $params[':search_id']    = $s;
+            $params[':search_email'] = $s;
         }
+        // filter status (pending/approved/rejected)
         if (!empty($filters['status'])) {
-            // Map UI 'approved' back to DB 'active'
-            $db_status = ($filters['status'] === 'approved') ? 'active' : $filters['status'];
-            if (in_array($db_status, ['pending', 'active', 'rejected'])) {
-                $where_clauses[] = "r.status = :status";
-                $params[':status'] = $db_status;
-            }
+            // properly parenthesize nested ternary
+            $map = $filters['status'] === 'approved'
+                ? 'completed'
+                : ( $filters['status'] === 'rejected' ? 'failed' : $filters['status'] );
+            $where_clauses[] = "th.status = :status";
+            $params[':status'] = $map;
         }
+        // filter date_from/to
         if (!empty($filters['date_from'])) {
-            // Validate date format if needed
-            $where_clauses[] = "DATE(r.created_at) >= :date_from";
+            $where_clauses[] = "DATE(th.created_at) >= :date_from";
             $params[':date_from'] = $filters['date_from'];
         }
         if (!empty($filters['date_to'])) {
-            // Validate date format if needed
-            $where_clauses[] = "DATE(r.created_at) <= :date_to";
+            $where_clauses[] = "DATE(th.created_at) <= :date_to";
             $params[':date_to'] = $filters['date_to'];
         }
-
-        // --- MỞ RỘNG FILTERS: package_id và province ---
+        // filter package
         if (!empty($filters['package_id'])) {
             $where_clauses[] = "r.package_id = :package_id";
             $params[':package_id'] = (int)$filters['package_id'];
         }
+        // filter province
         if (!empty($filters['province'])) {
             $where_clauses[] = "l.province = :province";
             $params[':province'] = $filters['province'];
         }
+        // NEW: filter transaction type
+        if (!empty($filters['type'])) {
+            $where_clauses[] = "th.transaction_type = :tx_type";
+            $params[':tx_type'] = $filters['type'];
+        }
 
-        // Append filter conditions to queries
         if (!empty($where_clauses)) {
-            $where_sql = " AND " . implode(" AND ", $where_clauses);
-            $count_query .= $where_sql;
-            $data_query .= $where_sql;
+            $sql = " AND " . implode(" AND ", $where_clauses);
+            $count_query .= $sql;
+            $data_query  .= $sql;
         }
 
         // Get total count for pagination
@@ -122,9 +131,8 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
         // Ensure page number is valid
         $page = max(1, min($page, $total_pages > 0 ? $total_pages : 1));
 
-
         // Add ordering and pagination to the data query
-        $data_query .= " ORDER BY r.created_at DESC"; // Order by request date, newest first
+        $data_query .= " ORDER BY th.created_at DESC"; // Order by request date, newest first
         $offset = ($page - 1) * $per_page;
         // IMPORTANT: Use named parameters for LIMIT and OFFSET that don't conflict with filter params
         $data_query .= " LIMIT :limit_val OFFSET :offset_val";

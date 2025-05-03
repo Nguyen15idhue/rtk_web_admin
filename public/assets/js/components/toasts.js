@@ -6,20 +6,25 @@
         document.body.appendChild(container);
     }
     // ensure container is visible and non-overlapping, shifted to left
-    container.style.cssText = 
-        'position:fixed;top:20px;right:300px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;';
+    container.classList.add('toast-container');
 
     function showToast(message, type = 'error', duration = 5000) {
         if (!container) return;
         const toast = document.createElement('div');
-        // basic styling if no CSS loaded
-        toast.style.cssText = 'pointer-events:auto;padding:8px 12px;border-radius:4px;color:#fff;font-size:14px;opacity:0.9;';
-        toast.className = `toast toast--${type}`;
+        toast.className = `toast toast-${type}`;
         toast.textContent = message;
         container.appendChild(toast);
+        // trigger CSS animation in
+        requestAnimationFrame(() => toast.classList.add('show'));
         setTimeout(() => {
-            toast.classList.add('fade-out');
-            toast.addEventListener('transitionend', () => container.removeChild(toast));
+            // trigger CSS animation out
+            toast.classList.remove('show');
+            toast.addEventListener('transitionend', () => {
+                // only remove if still in container
+                if (container.contains(toast)) {
+                    container.removeChild(toast);
+                }
+            }, { once: true });
         }, duration);
     }
     window.showToast = showToast;

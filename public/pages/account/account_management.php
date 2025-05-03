@@ -50,7 +50,7 @@ require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php';
     <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-badges.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/forms.css">
     <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/layouts/header.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/toast.css"> <!-- Add link to toast.css -->
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/toast.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
