@@ -18,6 +18,13 @@ if (!isset($_SESSION['admin_id'])) {
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../classes/Database.php';
 
+// ensure DB is closed on script end
+register_shutdown_function(function() {
+    if (class_exists('Database')) {
+        Database::getInstance()->close();
+    }
+});
+
 $conn = null; // Initialize $conn to null
 try {
     $db = Database::getInstance();;

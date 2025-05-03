@@ -91,6 +91,8 @@
 <!-- Add other global scripts here if needed -->
 <?php
 // ...existing code for toasts & scripts...
+// Close DB connection explicitly (singleton)
+Database::getInstance()->close();
 ?>
 </div>  <!-- End .dashboard-wrapper -->
 </body>

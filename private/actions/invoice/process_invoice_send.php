@@ -10,6 +10,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
+// Đảm bảo đóng PDO khi script kết thúc
+register_shutdown_function(function() use (&$db) {
+    $db = null;
+});
+
 $invoiceId = isset($_POST['invoice_id']) ? (int)$_POST['invoice_id'] : 0;
 if ($invoiceId <= 0 || empty($_FILES['invoice_file'])) {
     die('Invalid request.');

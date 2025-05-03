@@ -4,6 +4,11 @@ header('Content-Type: application/json');
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
+// Đảm bảo đóng PDO khi script kết thúc
+register_shutdown_function(function() use (&$db) {
+    $db = null;
+});
+
 // Basic security check
 if (!isset($_SESSION['admin_id'])) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);

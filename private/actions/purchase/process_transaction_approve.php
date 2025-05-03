@@ -49,18 +49,19 @@ if ($transaction_id === false || $transaction_id <= 0) {
 }
 
 // --- Processing ---
-// Instantiate Database and get connection
-$db = (Database::getInstance())->getConnection();
+$database = Database::getInstance();
+$db       = $database->getConnection();
+
 if (!$db) {
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Database connection failed.']);
     error_log("Error approving transaction: Database connection failed.");
+    $database->close();
     exit;
 }
 
 error_log("[PTA] Start approve transaction_id={$transaction_id}");
 $db->beginTransaction();
-error_log("[PTA] Transaction begun");
 
 try {
     // 1. Verify Transaction Exists and is Pending or Rejected (Allow re-approval)
@@ -314,6 +315,8 @@ try {
     http_response_code(500); // Internal Server Error
     // Provide a generic error message to the client
     echo json_encode(['success' => false, 'message' => 'Failed to approve transaction: ' . $e->getMessage()]);
+} finally {
+    $database->close();
 }
 
 exit;

@@ -4,6 +4,11 @@ $config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $db     = $config['db'];
 $base   = $config['base_path'];
 
+// Đảm bảo đóng PDO khi script kết thúc
+register_shutdown_function(function() use (&$db) {
+    $db = null;
+});
+
 header('Content-Type: application/json');
 error_reporting(E_ALL); // Report all errors for logging
 ini_set('display_errors', 0); // Keep off for browser output

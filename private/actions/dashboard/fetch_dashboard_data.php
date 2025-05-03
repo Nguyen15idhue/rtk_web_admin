@@ -4,6 +4,11 @@
 $config = require __DIR__ . '/../../includes/page_bootstrap.php';
 $pdo = $config['db'];
 
+// Đảm bảo đóng PDO khi script kết thúc
+register_shutdown_function(function() use (&$db) {
+    $db = null;
+});
+
 /**
  * Fetches all necessary data for the admin dashboard.
  *

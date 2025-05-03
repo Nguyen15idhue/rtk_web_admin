@@ -16,6 +16,11 @@ if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin'
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $conn      = $bootstrap['db'];
 
+// Đảm bảo đóng PDO khi script kết thúc
+register_shutdown_function(function() use (&$conn) {
+    $conn = null;
+});
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
     exit;

@@ -44,17 +44,20 @@ if ($transaction_id === false || $transaction_id <= 0) {
 }
 
 // --- Processing ---
-$db = (Database::getInstance())->getConnection();
+$database = Database::getInstance();
+$db       = $database->getConnection();
+
 if (!$db) {
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Database connection failed.']);
     error_log("Error reverting transaction: Database connection failed.");
+    $database->close();
     exit;
 }
 
-$db->beginTransaction();
-
 try {
+    $db->beginTransaction();
+
     // 1. Verify Transaction Exists and is Active (Approved)
     $stmt_check = $db->prepare("
         SELECT r.status, r.user_id, r.location_id, r.start_time, r.end_time
@@ -149,6 +152,8 @@ try {
     error_log("Error reverting transaction ID $transaction_id: " . $e->getMessage()); // Log detailed error
     http_response_code(500); // Internal Server Error
     echo json_encode(['success' => false, 'message' => 'Failed to revert transaction. Please try again later or contact support.']);
+} finally {
+    $database->close();
 }
 
 exit;

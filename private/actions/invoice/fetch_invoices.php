@@ -9,6 +9,10 @@ if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
+// Đảm bảo đóng PDO khi script kết thúc
+register_shutdown_function(function() use (&$db) {
+    $db = null;
+});
 function fetch_admin_invoices(array $filters = [], int $page = 1, int $per_page = 10): array {
     global $db;
     if (!$db) {

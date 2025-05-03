@@ -3,6 +3,11 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require_once __DIR__ . '/../../config/database.php'; // Adjust path as needed
+register_shutdown_function(function() use (&$conn) {
+    if (isset($conn) && $conn instanceof mysqli) {
+        $conn->close();
+    }
+});
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $base_url  = $bootstrap['base_url'];
 

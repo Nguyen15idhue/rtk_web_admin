@@ -18,6 +18,12 @@ if (!$id || !is_numeric($id)) {
 // DB connection
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
+
+// Đảm bảo đóng PDO khi script kết thúc
+register_shutdown_function(function() use (&$db) {
+    $db = null;
+});
+
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 try {

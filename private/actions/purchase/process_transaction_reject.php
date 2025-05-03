@@ -53,12 +53,14 @@ if (empty($reason)) {
 // if (mb_strlen($reason) > 500) { ... }
 
 // --- Processing ---
-// Instantiate Database and get connection
-$db = (Database::getInstance())->getConnection();
+$database = Database::getInstance();
+$db       = $database->getConnection();
+
 if (!$db) {
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Database connection failed.']);
     error_log("Error rejecting transaction: Database connection failed.");
+    $database->close();
     exit;
 }
 
@@ -176,6 +178,8 @@ try {
     http_response_code(500); // Internal Server Error
     // Provide a generic error message to the client
     echo json_encode(['success' => false, 'message' => 'Failed to reject transaction. Please try again later or contact support.']);
+} finally {
+    $database->close();
 }
 
 exit;

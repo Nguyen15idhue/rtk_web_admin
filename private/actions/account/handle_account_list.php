@@ -5,7 +5,10 @@
 if (!isset($db)) {
     die("Database connection not available in handle_account_list.php");
 }
-
+// Đảm bảo đóng PDO khi script kết thúc
+register_shutdown_function(function() use (&$db) {
+    $db = null;
+});
 
 // --- Filtering ---
 $filters = [
