@@ -1,228 +1,255 @@
-[03-May-2025 05:10:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:10:30 UTC] [Database Close] Connection closed.
-[03-May-2025 05:10:31 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:10:31 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 05:10:31 UTC] [DEBUG] Search keyword: 
-[03-May-2025 05:10:31 UTC] [Database Close] Connection closed.
-[03-May-2025 05:10:31 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:10:31 UTC] [Database Close] Connection closed.
-[03-May-2025 05:10:32 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:10:32 UTC] [Database Close] Connection closed.
-[03-May-2025 05:10:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:10:33 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 05:10:33 UTC] [DEBUG] Search keyword: 
-[03-May-2025 05:10:33 UTC] [Database Close] Connection closed.
-[03-May-2025 05:10:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:10:33 UTC] [Database Close] Connection closed.
-[03-May-2025 05:10:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:10:34 UTC] [Database Close] Connection closed.
-[03-May-2025 05:12:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:12:58 UTC] [Database Close] Connection closed.
-[03-May-2025 05:13:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:13:00 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 05:13:00 UTC] [DEBUG] Search keyword: 
-[03-May-2025 05:13:00 UTC] [Database Close] Connection closed.
-[03-May-2025 05:13:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:13:00 UTC] [Database Close] Connection closed.
-[03-May-2025 05:13:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:13:00 UTC] [Database Close] Connection closed.
-[03-May-2025 05:13:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:13:10 UTC] [Database Close] Connection closed.
-[03-May-2025 05:13:14 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:13:14 UTC] PHP Fatal error:  Uncaught Error: mysqli object is already closed in E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php:7
-Stack trace:
-#0 E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php(7): mysqli->close()
-#1 [internal function]: {closure}()
-#2 {main}
-  thrown in E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php on line 7
-[03-May-2025 05:13:14 UTC] [Database Close] Connection closed.
-[03-May-2025 05:13:14 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:13:14 UTC] [Database Close] Connection closed.
-[03-May-2025 05:23:48 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:23:48 UTC] PHP Fatal error:  Uncaught Error: mysqli object is already closed in E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php:7
-Stack trace:
-#0 E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php(7): mysqli->close()
-#1 [internal function]: {closure}()
-#2 {main}
-  thrown in E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php on line 7
-[03-May-2025 05:23:48 UTC] [Database Close] Connection closed.
-[03-May-2025 05:23:48 UTC] [Database Close] Connection closed.
-[03-May-2025 05:24:01 UTC] [Database Close] Connection closed.
-[03-May-2025 05:24:03 UTC] [Database Close] Connection closed.
-[03-May-2025 05:24:04 UTC] [Database Close] Connection closed.
-[03-May-2025 06:02:39 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:02:39 UTC] PHP Fatal error:  Uncaught Error: mysqli object is already closed in E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php:7
-Stack trace:
-#0 E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php(7): mysqli->close()
-#1 [internal function]: {closure}()
-#2 {main}
-  thrown in E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php on line 7
-[03-May-2025 06:02:39 UTC] [Database Close] Connection closed.
-[03-May-2025 06:02:39 UTC] [Database Close] Connection closed.
-[03-May-2025 06:03:44 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 06:03:44 UTC] [DEBUG] Search keyword: 
-[03-May-2025 06:03:44 UTC] [Database Close] Connection closed.
-[03-May-2025 06:03:44 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:03:44 UTC] [Database Close] Connection closed.
-[03-May-2025 06:03:50 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 06:03:50 UTC] [DEBUG] Search keyword: 
-[03-May-2025 06:03:50 UTC] [Database Close] Connection closed.
-[03-May-2025 06:03:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:03:50 UTC] [Database Close] Connection closed.
-[03-May-2025 06:03:53 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 06:03:53 UTC] [DEBUG] Search keyword: 
-[03-May-2025 06:03:53 UTC] [Database Close] Connection closed.
-[03-May-2025 06:03:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:03:53 UTC] [Database Close] Connection closed.
-[03-May-2025 06:03:59 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:00 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 06:04:00 UTC] [DEBUG] Search keyword: 
-[03-May-2025 06:04:00 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:00 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:02 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:04 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:08 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:10 UTC] Using default mount points for location ID: 12 - [42]
-[03-May-2025 06:04:10 UTC] RTK API Payload: {"id":"2039","name":"CMA028","userPwd":"0999999445","startTime":1746230400000,"endTime":1777852799000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[03-May-2025 06:04:10 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[03-May-2025 06:04:10 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:10 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:21 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:25 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:27 UTC] [Revert Transaction 22] No associated survey accounts found to disable via API.
-[03-May-2025 06:04:28 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:29 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:32 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:33 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 152
-[03-May-2025 06:04:33 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 164
-[03-May-2025 06:04:33 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 165
-[03-May-2025 06:04:33 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 166
-[03-May-2025 06:04:33 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:33 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:34 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:34 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:35 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:35 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:35 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:35 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:36 UTC] PHP Warning:  Undefined variable $page_title in E:\Application\laragon\www\rtk_web_admin\public\pages\guide\edit_guide.php on line 24
-[03-May-2025 06:04:36 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:36 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:41 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:41 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:41 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:42 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:42 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:42 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:42 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:43 UTC] PHP Warning:  Undefined variable $page_title in E:\Application\laragon\www\rtk_web_admin\public\pages\guide\edit_guide.php on line 24
-[03-May-2025 06:04:43 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:43 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:45 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:45 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:45 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:45 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:46 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:49 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:49 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:49 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:50 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:15 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:16 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\invoice_requests\invoice_upload.php on line 6
-[03-May-2025 06:05:16 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:21 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:21 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:25 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:25 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:25 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:28 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:30 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:30 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:30 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:31 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:37 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:38 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:38 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:38 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:39 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:40 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:40 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:40 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:40 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:40 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:41 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:42 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:48 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:59 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:00 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 06:06:00 UTC] [DEBUG] Search keyword: 
-[03-May-2025 06:06:00 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:06:00 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:02 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:02 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:06 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:06:06 UTC] [PTA] Start approve transaction_id=22
-[03-May-2025 06:06:06 UTC] [PTA] check SQL executed, rowCount=1
-[03-May-2025 06:06:06 UTC] [PTA] fetched registration={"status":"pending","user_id":88,"num_account":3,"start_time":"2025-05-03 00:00:00","end_time":"2026-05-03 23:59:59","location_id":12,"package_id":2}
-[03-May-2025 06:06:06 UTC] [PTA] update registration executed, affectedRows=1
-[03-May-2025 06:06:06 UTC] [PTA] update payment executed, affectedRows=0
-[03-May-2025 06:06:06 UTC] [PTA] activate survey_account executed, affectedRows=0
-[03-May-2025 06:06:06 UTC] Warning: No survey accounts found or enabled for approved registration ID: 22
-[03-May-2025 06:06:06 UTC] [PTA] province_code=CMA, lastUser=CMA030, nextSeq=31, username=CMA031, password=0999999445
-[03-May-2025 06:06:06 UTC] [PTA] cURL timeout set to 5s; calling public front-controller URL=http://rtk_web_admin.test/public/actions/account/index.php?action=create_account with payload={"registration_id":22,"username_acc":"CMA031","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 13:06:06","end_time":"2026-05-04 13:06:05","enabled":1,"concurrent_user":1,"account_count":3}
-[03-May-2025 06:06:06 UTC] DEBUG [Account Creation] URL: http://rtk_web_admin.test/public/actions/account/index.php?action=create_account
-[03-May-2025 06:06:06 UTC] DEBUG [Account Creation] Payload: {"registration_id":22,"username_acc":"CMA031","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 13:06:06","end_time":"2026-05-04 13:06:05","enabled":1,"concurrent_user":1,"account_count":3}
-[03-May-2025 06:06:06 UTC] [CA] Start create_account request
-[03-May-2025 06:06:06 UTC] [CA] Raw input: {"registration_id":22,"username_acc":"CMA031","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 13:06:06","end_time":"2026-05-04 13:06:05","enabled":1,"concurrent_user":1,"account_count":3}
-[03-May-2025 06:06:06 UTC] [CA] registration_id=22, username_acc=CMA031, password_len=10
-[03-May-2025 06:06:06 UTC] [CA] location_input=12
-[03-May-2025 06:06:06 UTC] [CA] computed start_time_db=2025-05-03 13:06:06, end_time_db=2026-05-04 13:06:05
-[03-May-2025 06:06:06 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
-[03-May-2025 06:06:06 UTC] [CA] Retrieved userId=88
-[03-May-2025 06:06:06 UTC] [CA] Price=270000.00 => normal flow
-[03-May-2025 06:06:06 UTC] Debug: Non-trial account creation path for registration_id=22
-[03-May-2025 06:06:06 UTC] Using default mount points for location ID: 12 - [42]
-[03-May-2025 06:06:06 UTC] [CA] RTK API payload for CMA031: {"name":"CMA031","userPwd":"0999999445","startTime":1746252366000,"endTime":1777874765000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
-[03-May-2025 06:06:06 UTC] [CA] RTK API response for CMA031: {"success":true,"data":{"id":2043,"name":"CMA031","userPwd":"0999999445","startTime":1746252366000,"endTime":1777874765000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
-[03-May-2025 06:06:36 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 30007 milliseconds with 0 bytes received","totalTime":30.007443}
-[03-May-2025 06:06:36 UTC] [PTA] cURL request timed out for transaction ID 22. Account creation status uncertain. Please verify manually.
-[03-May-2025 06:06:36 UTC] [PTA] TransactionHistoryService updated
-[03-May-2025 06:06:36 UTC] [PTA] Transaction committed successfully
-[03-May-2025 06:06:36 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:36 UTC] Using default mount points for location ID: 12 - [42]
-[03-May-2025 06:06:36 UTC] [CA] RTK API payload for CMA032: {"name":"CMA032","userPwd":"0999999445","startTime":1746252366000,"endTime":1777874765000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
-[03-May-2025 06:06:36 UTC] [CA] RTK API response for CMA032: {"success":true,"data":{"id":2044,"name":"CMA032","userPwd":"0999999445","startTime":1746252366000,"endTime":1777874765000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
-[03-May-2025 06:06:36 UTC] Using default mount points for location ID: 12 - [42]
-[03-May-2025 06:06:36 UTC] [CA] RTK API payload for CMA033: {"name":"CMA033","userPwd":"0999999445","startTime":1746252366000,"endTime":1777874765000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
-[03-May-2025 06:06:36 UTC] [CA] RTK API response for CMA033: {"success":true,"data":{"id":2045,"name":"CMA033","userPwd":"0999999445","startTime":1746252366000,"endTime":1777874765000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
-[03-May-2025 06:06:36 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:56 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 06:06:56 UTC] [DEBUG] Search keyword: 
-[03-May-2025 06:06:56 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:56 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:06:56 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:56 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:07:18 UTC] Using default mount points for location ID: 12 - [42]
-[03-May-2025 06:07:18 UTC] RTK API Payload: {"id":"2044","name":"CMA032","userPwd":"0999999445","startTime":1746277566000,"endTime":1777899965000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[03-May-2025 06:07:18 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[03-May-2025 06:07:18 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:18 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:07:20 UTC] Using default mount points for location ID: 12 - [42]
-[03-May-2025 06:07:20 UTC] RTK API Payload: {"id":"2045","name":"CMA033","userPwd":"0999999445","startTime":1746277566000,"endTime":1777899965000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[03-May-2025 06:07:20 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[03-May-2025 06:07:20 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:20 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:24 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:32 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:33 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:38 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:39 UTC] [Database Close] Connection closed.
+[03-May-2025 10:30:37 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:30:37 UTC] [Database Close] Connection closed.
+[03-May-2025 10:30:48 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:30:48 UTC] [Database Close] Connection closed.
+[03-May-2025 10:30:52 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:30:52 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 10:30:52 UTC] [Revert Transaction 22] Calling RTK API for account 2043 with payload: {"id":"2043","name":"CMA031","userPwd":"0999999445","startTime":1746277566000,"endTime":1777899965000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[03-May-2025 10:30:52 UTC] [Revert Transaction 22] RTK API response for account 2043: {"success":true,"data":true,"error":null}
+[03-May-2025 10:30:52 UTC] [Revert Transaction 22] Calling RTK API for account 2044 with payload: {"id":"2044","name":"CMA032","userPwd":"0999999445","startTime":1746277566000,"endTime":1777899965000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[03-May-2025 10:30:52 UTC] [Revert Transaction 22] RTK API response for account 2044: {"success":true,"data":true,"error":null}
+[03-May-2025 10:30:52 UTC] [Database Close] Connection closed.
+[03-May-2025 10:39:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:39:24 UTC] [Database Close] Connection closed.
+[03-May-2025 10:39:29 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:39:29 UTC] [PTA] Start approve transaction_id=22
+[03-May-2025 10:39:29 UTC] [PTA] check SQL executed, rowCount=1
+[03-May-2025 10:39:29 UTC] [PTA] fetched registration={"status":"pending","user_id":88,"num_account":3,"start_time":"2025-05-03 13:06:06","end_time":"2026-05-04 13:06:05","location_id":12,"package_id":2}
+[03-May-2025 10:39:29 UTC] [PTA] update registration executed, affectedRows=1
+[03-May-2025 10:39:29 UTC] [PTA] update payment executed, affectedRows=0
+[03-May-2025 10:39:29 UTC] [PTA] activate survey_account executed, affectedRows=2
+[03-May-2025 10:39:29 UTC] [PTA] province_code=CMA, lastUser=CMA033, nextSeq=34, username=CMA034, password=0999999445
+[03-May-2025 10:39:29 UTC] [PTA] cURL timeout set to 5s; calling public front-controller URL=http://localhost:3000/public/actions/account/index.php?action=create_account with payload={"registration_id":22,"username_acc":"CMA034","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 17:39:29","end_time":"2026-05-04 17:39:28","enabled":1,"concurrent_user":1,"account_count":3}
+[03-May-2025 10:39:29 UTC] DEBUG [Account Creation] URL: http://localhost:3000/public/actions/account/index.php?action=create_account
+[03-May-2025 10:39:29 UTC] DEBUG [Account Creation] Payload: {"registration_id":22,"username_acc":"CMA034","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 17:39:29","end_time":"2026-05-04 17:39:28","enabled":1,"concurrent_user":1,"account_count":3}
+[03-May-2025 10:39:59 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 30005 milliseconds with 0 bytes received","totalTime":30.005369}
+[03-May-2025 10:39:59 UTC] [PTA] cURL request timed out for transaction ID 22. Account creation status uncertain. Please verify manually.
+[03-May-2025 10:39:59 UTC] [PTA] TransactionHistoryService updated
+[03-May-2025 10:39:59 UTC] [PTA] Transaction committed successfully
+[03-May-2025 10:39:59 UTC] [Database Close] Connection closed.
+[03-May-2025 10:39:59 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:39:59 UTC] [CA] Start create_account request
+[03-May-2025 10:39:59 UTC] [CA] Raw input: {"registration_id":22,"username_acc":"CMA034","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 17:39:29","end_time":"2026-05-04 17:39:28","enabled":1,"concurrent_user":1,"account_count":3}
+[03-May-2025 10:39:59 UTC] [CA] registration_id=22, username_acc=CMA034, password_len=10
+[03-May-2025 10:39:59 UTC] [CA] location_input=12
+[03-May-2025 10:39:59 UTC] [CA] computed start_time_db=2025-05-03 17:39:29, end_time_db=2026-05-04 17:39:28
+[03-May-2025 10:39:59 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
+[03-May-2025 10:39:59 UTC] [CA] Retrieved userId=88
+[03-May-2025 10:39:59 UTC] [CA] Price=270000.00 => normal flow
+[03-May-2025 10:39:59 UTC] Debug: Non-trial account creation path for registration_id=22
+[03-May-2025 10:39:59 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 10:39:59 UTC] [CA] RTK API payload for CMA034: {"name":"CMA034","userPwd":"0999999445","startTime":1746268769000,"endTime":1777891168000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[03-May-2025 10:39:59 UTC] [CA] RTK API response for CMA034: {"success":true,"data":{"id":2061,"name":"CMA034","userPwd":"0999999445","startTime":1746268769000,"endTime":1777891168000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[03-May-2025 10:39:59 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 10:39:59 UTC] [CA] RTK API payload for CMA035: {"name":"CMA035","userPwd":"0999999445","startTime":1746268769000,"endTime":1777891168000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[03-May-2025 10:39:59 UTC] [CA] RTK API response for CMA035: {"success":true,"data":{"id":2062,"name":"CMA035","userPwd":"0999999445","startTime":1746268769000,"endTime":1777891168000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[03-May-2025 10:39:59 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 10:39:59 UTC] [CA] RTK API payload for CMA036: {"name":"CMA036","userPwd":"0999999445","startTime":1746268769000,"endTime":1777891168000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[03-May-2025 10:39:59 UTC] [CA] RTK API response for CMA036: {"success":true,"data":{"id":2063,"name":"CMA036","userPwd":"0999999445","startTime":1746268769000,"endTime":1777891168000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[03-May-2025 10:39:59 UTC] [Database Close] Connection closed.
+[03-May-2025 10:41:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:41:50 UTC] [Database Close] Connection closed.
+[03-May-2025 10:41:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:41:54 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[03-May-2025 10:41:54 UTC] [DEBUG] Search keyword: 
+[03-May-2025 10:41:54 UTC] [Database Close] Connection closed.
+[03-May-2025 10:41:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:41:54 UTC] [Database Close] Connection closed.
+[03-May-2025 10:41:56 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:41:56 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:01 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 10:42:01 UTC] RTK API Payload: {"id":"2061","name":"CMA034","userPwd":"0999999445","startTime":1746293969000,"endTime":1777916368000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[03-May-2025 10:42:01 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[03-May-2025 10:42:01 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:01 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:02 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 10:42:02 UTC] RTK API Payload: {"id":"2062","name":"CMA035","userPwd":"0999999445","startTime":1746293969000,"endTime":1777916368000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[03-May-2025 10:42:02 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[03-May-2025 10:42:02 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:02 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:05 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:05 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 10:42:05 UTC] RTK API Payload: {"id":"2063","name":"CMA036","userPwd":"0999999445","startTime":1746293969000,"endTime":1777916368000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[03-May-2025 10:42:05 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[03-May-2025 10:42:05 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:05 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:05 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:07 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 10:42:07 UTC] RTK API Payload: {"id":"2044","name":"CMA032","userPwd":"0999999445","startTime":1746293969000,"endTime":1777916368000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[03-May-2025 10:42:07 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[03-May-2025 10:42:07 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:07 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:09 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:09 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 10:42:09 UTC] RTK API Payload: {"id":"2043","name":"CMA031","userPwd":"0999999445","startTime":1746293969000,"endTime":1777916368000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[03-May-2025 10:42:09 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[03-May-2025 10:42:09 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:09 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:09 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:12 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:12 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:13 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:14 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:16 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:18 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:20 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:23 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:23 UTC] [Database Close] Connection closed.
+[03-May-2025 10:42:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:42:26 UTC] [Revert Transaction 22] No associated survey accounts found to disable via API.
+[03-May-2025 10:42:26 UTC] [Database Close] Connection closed.
+[03-May-2025 10:44:38 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:44:38 UTC] [Database Close] Connection closed.
+[03-May-2025 10:44:44 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:44:44 UTC] [PTA] Start approve transaction_id=22
+[03-May-2025 10:44:44 UTC] [PTA] check SQL executed, rowCount=1
+[03-May-2025 10:44:44 UTC] [PTA] fetched registration={"status":"pending","user_id":88,"num_account":3,"start_time":"2025-05-03 17:39:29","end_time":"2026-05-04 17:39:28","location_id":12,"package_id":2}
+[03-May-2025 10:44:44 UTC] [PTA] update registration executed, affectedRows=1
+[03-May-2025 10:44:44 UTC] [PTA] update payment executed, affectedRows=0
+[03-May-2025 10:44:44 UTC] [PTA] activate survey_account executed, affectedRows=0
+[03-May-2025 10:44:44 UTC] Warning: No survey accounts found or enabled for approved registration ID: 22
+[03-May-2025 10:44:44 UTC] [PTA] province_code=CMA, lastUser=CMA036, nextSeq=37, username=CMA037, password=0999999445
+[03-May-2025 10:44:44 UTC] [PTA] cURL timeout set to 5s; calling public front-controller URL=http://localhost:3000/public/actions/account/index.php?action=create_account with payload={"registration_id":22,"username_acc":"CMA037","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 17:44:44","end_time":"2026-05-04 17:44:43","enabled":1,"concurrent_user":1,"account_count":3}
+[03-May-2025 10:44:44 UTC] DEBUG [Account Creation] URL: http://localhost:3000/public/actions/account/index.php?action=create_account
+[03-May-2025 10:44:44 UTC] DEBUG [Account Creation] Payload: {"registration_id":22,"username_acc":"CMA037","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 17:44:44","end_time":"2026-05-04 17:44:43","enabled":1,"concurrent_user":1,"account_count":3}
+[03-May-2025 10:45:14 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 30005 milliseconds with 0 bytes received","totalTime":30.005694}
+[03-May-2025 10:45:14 UTC] [PTA] cURL request timed out for transaction ID 22. Account creation status uncertain. Please verify manually.
+[03-May-2025 10:45:14 UTC] [PTA] TransactionHistoryService updated
+[03-May-2025 10:45:14 UTC] [PTA] Transaction committed successfully
+[03-May-2025 10:45:14 UTC] [Database Close] Connection closed.
+[03-May-2025 10:45:14 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:45:14 UTC] [CA] Start create_account request
+[03-May-2025 10:45:14 UTC] [CA] Raw input: {"registration_id":22,"username_acc":"CMA037","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 17:44:44","end_time":"2026-05-04 17:44:43","enabled":1,"concurrent_user":1,"account_count":3}
+[03-May-2025 10:45:14 UTC] [CA] registration_id=22, username_acc=CMA037, password_len=10
+[03-May-2025 10:45:14 UTC] [CA] location_input=12
+[03-May-2025 10:45:14 UTC] [CA] computed start_time_db=2025-05-03 17:44:44, end_time_db=2026-05-04 17:44:43
+[03-May-2025 10:45:14 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
+[03-May-2025 10:45:14 UTC] [CA] Retrieved userId=88
+[03-May-2025 10:45:14 UTC] [CA] Price=270000.00 => normal flow
+[03-May-2025 10:45:14 UTC] Debug: Non-trial account creation path for registration_id=22
+[03-May-2025 10:45:14 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 10:45:14 UTC] [CA] RTK API payload for CMA037: {"name":"CMA037","userPwd":"0999999445","startTime":1746269084000,"endTime":1777891483000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[03-May-2025 10:45:14 UTC] [CA] RTK API response for CMA037: {"success":true,"data":{"id":2064,"name":"CMA037","userPwd":"0999999445","startTime":1746269084000,"endTime":1777891483000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[03-May-2025 10:45:14 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 10:45:14 UTC] [CA] RTK API payload for CMA038: {"name":"CMA038","userPwd":"0999999445","startTime":1746269084000,"endTime":1777891483000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[03-May-2025 10:45:14 UTC] [CA] RTK API response for CMA038: {"success":true,"data":{"id":2065,"name":"CMA038","userPwd":"0999999445","startTime":1746269084000,"endTime":1777891483000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[03-May-2025 10:45:14 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 10:45:14 UTC] [CA] RTK API payload for CMA039: {"name":"CMA039","userPwd":"0999999445","startTime":1746269084000,"endTime":1777891483000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[03-May-2025 10:45:14 UTC] [CA] RTK API response for CMA039: {"success":true,"data":{"id":2066,"name":"CMA039","userPwd":"0999999445","startTime":1746269084000,"endTime":1777891483000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[03-May-2025 10:45:14 UTC] [Database Close] Connection closed.
+[03-May-2025 10:46:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:46:50 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[03-May-2025 10:46:50 UTC] [DEBUG] Search keyword: 
+[03-May-2025 10:46:50 UTC] [Database Close] Connection closed.
+[03-May-2025 10:46:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:46:50 UTC] [Database Close] Connection closed.
+[03-May-2025 10:46:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:46:51 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[03-May-2025 10:46:51 UTC] [DEBUG] Search keyword: 
+[03-May-2025 10:46:51 UTC] [Database Close] Connection closed.
+[03-May-2025 10:46:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:46:51 UTC] [Database Close] Connection closed.
+[03-May-2025 10:46:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:46:51 UTC] [Database Close] Connection closed.
+[03-May-2025 10:50:39 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:50:39 UTC] [Database Close] Connection closed.
+[03-May-2025 10:50:41 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:50:41 UTC] [Database Close] Connection closed.
+[03-May-2025 10:50:43 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:50:43 UTC] [Revert Transaction 22] Deleting RTK account 2064
+[03-May-2025 10:50:43 UTC] [Revert Transaction 22] RTK delete response for account 2064: {"success":true,"data":true,"error":null}
+[03-May-2025 10:50:43 UTC] [Revert Transaction 22] Deleting RTK account 2065
+[03-May-2025 10:50:43 UTC] [Revert Transaction 22] RTK delete response for account 2065: {"success":true,"data":true,"error":null}
+[03-May-2025 10:50:43 UTC] [Revert Transaction 22] Deleting RTK account 2066
+[03-May-2025 10:50:43 UTC] [Revert Transaction 22] RTK delete response for account 2066: {"success":true,"data":true,"error":null}
+[03-May-2025 10:50:43 UTC] [Database Close] Connection closed.
+[03-May-2025 10:50:45 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:50:45 UTC] [Database Close] Connection closed.
+[03-May-2025 10:50:56 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:50:56 UTC] [Database Close] Connection closed.
+[03-May-2025 10:53:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:53:35 UTC] [Database Close] Connection closed.
+[03-May-2025 10:53:39 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:53:39 UTC] [PTA] Start approve transaction_id=22
+[03-May-2025 10:53:39 UTC] [PTA] check SQL executed, rowCount=1
+[03-May-2025 10:53:39 UTC] [PTA] fetched registration={"status":"pending","user_id":88,"num_account":3,"start_time":"2025-05-03 17:44:44","end_time":"2026-05-04 17:44:43","location_id":12,"package_id":2}
+[03-May-2025 10:53:39 UTC] [PTA] update registration executed, affectedRows=1
+[03-May-2025 10:53:39 UTC] [PTA] update payment executed, affectedRows=0
+[03-May-2025 10:53:39 UTC] [PTA] activate survey_account executed, affectedRows=0
+[03-May-2025 10:53:39 UTC] Warning: No survey accounts found or enabled for approved registration ID: 22
+[03-May-2025 10:53:39 UTC] [PTA] province_code=CMA, lastUser=CMA039, nextSeq=40, username=CMA040, password=0999999445
+[03-May-2025 10:53:39 UTC] [PTA] cURL timeout set to 5s; calling public front-controller URL=http://localhost:3000/public/actions/account/index.php?action=create_account with payload={"registration_id":22,"username_acc":"CMA040","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 17:53:39","end_time":"2026-05-04 17:53:38","enabled":1,"concurrent_user":1,"account_count":3}
+[03-May-2025 10:53:39 UTC] DEBUG [Account Creation] URL: http://localhost:3000/public/actions/account/index.php?action=create_account
+[03-May-2025 10:53:39 UTC] DEBUG [Account Creation] Payload: {"registration_id":22,"username_acc":"CMA040","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 17:53:39","end_time":"2026-05-04 17:53:38","enabled":1,"concurrent_user":1,"account_count":3}
+[03-May-2025 10:54:09 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 30003 milliseconds with 0 bytes received","totalTime":30.003368}
+[03-May-2025 10:54:09 UTC] [PTA] cURL request timed out for transaction ID 22. Account creation status uncertain. Please verify manually.
+[03-May-2025 10:54:09 UTC] [PTA] TransactionHistoryService updated
+[03-May-2025 10:54:09 UTC] [PTA] Transaction committed successfully
+[03-May-2025 10:54:09 UTC] [Database Close] Connection closed.
+[03-May-2025 10:54:09 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:54:09 UTC] [CA] Start create_account request
+[03-May-2025 10:54:09 UTC] [CA] Raw input: {"registration_id":22,"username_acc":"CMA040","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 17:53:39","end_time":"2026-05-04 17:53:38","enabled":1,"concurrent_user":1,"account_count":3}
+[03-May-2025 10:54:09 UTC] [CA] registration_id=22, username_acc=CMA040, password_len=10
+[03-May-2025 10:54:09 UTC] [CA] location_input=12
+[03-May-2025 10:54:09 UTC] [CA] computed start_time_db=2025-05-03 17:53:39, end_time_db=2026-05-04 17:53:38
+[03-May-2025 10:54:09 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
+[03-May-2025 10:54:09 UTC] [CA] Retrieved userId=88
+[03-May-2025 10:54:09 UTC] [CA] Price=270000.00 => normal flow
+[03-May-2025 10:54:09 UTC] Debug: Non-trial account creation path for registration_id=22
+[03-May-2025 10:54:09 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 10:54:09 UTC] [CA] RTK API payload for CMA040: {"name":"CMA040","userPwd":"0999999445","startTime":1746269619000,"endTime":1777892018000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[03-May-2025 10:54:10 UTC] [CA] RTK API response for CMA040: {"success":true,"data":{"id":2067,"name":"CMA040","userPwd":"0999999445","startTime":1746269619000,"endTime":1777892018000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[03-May-2025 10:54:10 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 10:54:10 UTC] [CA] RTK API payload for CMA041: {"name":"CMA041","userPwd":"0999999445","startTime":1746269619000,"endTime":1777892018000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[03-May-2025 10:54:10 UTC] [CA] RTK API response for CMA041: {"success":true,"data":{"id":2068,"name":"CMA041","userPwd":"0999999445","startTime":1746269619000,"endTime":1777892018000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[03-May-2025 10:54:10 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 10:54:10 UTC] [CA] RTK API payload for CMA042: {"name":"CMA042","userPwd":"0999999445","startTime":1746269619000,"endTime":1777892018000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[03-May-2025 10:54:10 UTC] [CA] RTK API response for CMA042: {"success":true,"data":{"id":2069,"name":"CMA042","userPwd":"0999999445","startTime":1746269619000,"endTime":1777892018000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[03-May-2025 10:54:10 UTC] [Database Close] Connection closed.
+[03-May-2025 10:54:13 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:54:13 UTC] [Database Close] Connection closed.
+[03-May-2025 10:54:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:54:18 UTC] [Database Close] Connection closed.
+[03-May-2025 10:54:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:54:24 UTC] [Reject Transaction 22] Deleting RTK account 2067
+[03-May-2025 10:54:24 UTC] [Reject Transaction 22] RTK delete response for account 2067: {"success":true,"data":true,"error":null}
+[03-May-2025 10:54:24 UTC] [Reject Transaction 22] Deleting RTK account 2068
+[03-May-2025 10:54:24 UTC] [Reject Transaction 22] RTK delete response for account 2068: {"success":true,"data":true,"error":null}
+[03-May-2025 10:54:24 UTC] [Reject Transaction 22] Deleting RTK account 2069
+[03-May-2025 10:54:24 UTC] [Reject Transaction 22] RTK delete response for account 2069: {"success":true,"data":true,"error":null}
+[03-May-2025 10:54:24 UTC] [Database Close] Connection closed.
+[03-May-2025 10:54:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:54:28 UTC] [Database Close] Connection closed.
+[03-May-2025 10:55:38 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:55:38 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[03-May-2025 10:55:38 UTC] [DEBUG] Search keyword: 
+[03-May-2025 10:55:38 UTC] [Database Close] Connection closed.
+[03-May-2025 10:55:38 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:55:38 UTC] [Database Close] Connection closed.
+[03-May-2025 10:55:39 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:55:39 UTC] [Database Close] Connection closed.
+[03-May-2025 10:56:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:56:20 UTC] [Database Close] Connection closed.
+[03-May-2025 10:56:21 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:56:21 UTC] [Database Close] Connection closed.
+[03-May-2025 10:56:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:56:26 UTC] [Database Close] Connection closed.
+[03-May-2025 10:56:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:56:28 UTC] [Database Close] Connection closed.
+[03-May-2025 10:56:29 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:56:29 UTC] [Database Close] Connection closed.
+[03-May-2025 10:56:31 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:56:31 UTC] [Database Close] Connection closed.
+[03-May-2025 10:56:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:56:33 UTC] [Database Close] Connection closed.
+[03-May-2025 10:58:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 10:58:02 UTC] [Database Close] Connection closed.

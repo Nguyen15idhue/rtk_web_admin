@@ -81,11 +81,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 editModal.style.display = 'block';
             } else {
-                showToast('error', data.message || 'Không thể tải chi tiết tài khoản.');
+                window.showToast(data.message || 'Không thể tải chi tiết tài khoản.', 'error');
             }
         } catch (error) {
             console.error('Error fetching account details:', error);
-            showToast('error', 'Lỗi khi tải chi tiết tài khoản.');
+            window.showToast('Lỗi khi tải chi tiết tài khoản.', 'error');
         }
     }
 
@@ -186,17 +186,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
 
             if (result.success) {
-                showToast('success', result.message || 'Tạo tài khoản thành công!');
+                window.showToast(result.message || 'Tạo tài khoản thành công!', 'success');
                 closeModal('createAccountModal');
                 window.location.reload(); // Reload to see the new account
             } else {
                 if(createAccountError) createAccountError.textContent = result.message || 'Tạo tài khoản thất bại.';
-                showToast('error', result.message || 'Tạo tài khoản thất bại.');
+                window.showToast(result.message || 'Tạo tài khoản thất bại.', 'error');
             }
         } catch (error) {
             console.error('Error creating account:', error);
             if(createAccountError) createAccountError.textContent = 'Lỗi khi gửi yêu cầu tạo tài khoản.';
-            showToast('error', 'Lỗi khi gửi yêu cầu tạo tài khoản.');
+            window.showToast('Lỗi khi gửi yêu cầu tạo tài khoản.', 'error');
         } finally {
             submitButton.disabled = false;
             submitButton.textContent = 'Tạo tài khoản';
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
 
             if (result.success) {
-                showToast('success', result.message || 'Cập nhật tài khoản thành công!');
+                window.showToast(result.message || 'Cập nhật tài khoản thành công!', 'success');
                 closeModal('editAccountModal');
                 // Update the table row directly instead of full reload for better UX
                 if (result.account) {
@@ -230,12 +230,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } else {
                 if(editAccountError) editAccountError.textContent = result.message || 'Cập nhật tài khoản thất bại.';
-                showToast('error', result.message || 'Cập nhật tài khoản thất bại.');
+                window.showToast(result.message || 'Cập nhật tài khoản thất bại.', 'error');
             }
         } catch (error) {
             console.error('Error updating account:', error);
             if(editAccountError) editAccountError.textContent = 'Lỗi khi gửi yêu cầu cập nhật.';
-            showToast('error', 'Lỗi khi gửi yêu cầu cập nhật.');
+            window.showToast('Lỗi khi gửi yêu cầu cập nhật.', 'error');
         } finally {
             submitButton.disabled = false;
             submitButton.textContent = 'Lưu thay đổi';
@@ -347,7 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
 
             if (result.success) {
-                showToast('success', result.message || 'Xóa tài khoản thành công!');
+                window.showToast(result.message || 'Xóa tài khoản thành công!', 'success');
                 const row = accountsTableBody?.querySelector(`tr[data-account-id="${accountId}"]`);
                 if (row) {
                     row.remove();
@@ -357,11 +357,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             } else {
-                showToast('error', result.message || 'Xóa tài khoản thất bại.');
+                window.showToast(result.message || 'Xóa tài khoản thất bại.', 'error');
             }
         } catch (error) {
             console.error('Error deleting account:', error);
-            showToast('error', 'Lỗi khi gửi yêu cầu xóa.');
+            window.showToast('Lỗi khi gửi yêu cầu xóa.', 'error');
         }
     }
 
@@ -385,7 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
 
             if (result.success) {
-                showToast('success', result.message || 'Cập nhật trạng thái thành công!');
+                window.showToast(result.message || 'Cập nhật trạng thái thành công!', 'success');
                 // Update the table row directly
                 if (result.account) {
                     updateTableRow(accountId, result.account);
@@ -394,39 +394,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.reload();
                 }
             } else {
-                showToast('error', result.message || 'Cập nhật trạng thái thất bại.');
+                window.showToast(result.message || 'Cập nhật trạng thái thất bại.', 'error');
             }
         } catch (error) {
             console.error('Error toggling account status:', error);
-            showToast('error', 'Lỗi khi gửi yêu cầu cập nhật trạng thái.');
+            window.showToast('Lỗi khi gửi yêu cầu cập nhật trạng thái.', 'error');
         }
-    }
-
-    function showToast(type, message) {
-        const toastContainer = document.getElementById('toast-container');
-        if (!toastContainer) return; // Should exist now
-
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.textContent = message;
-
-        toastContainer.appendChild(toast);
-
-        // Trigger reflow to enable transition
-        toast.offsetHeight;
-
-        toast.classList.add('show');
-
-        // Remove toast after 3 seconds
-        setTimeout(() => {
-            toast.classList.remove('show');
-            // Remove the element from DOM after transition ends
-            toast.addEventListener('transitionend', () => {
-                 if (toast.parentNode === toastContainer) {
-                    toastContainer.removeChild(toast);
-                 }
-            }, { once: true });
-        }, 3000);
     }
 
     // --- Event Listeners ---
@@ -552,7 +525,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const editUsernameInput = document.getElementById('edit-username');
     if (editUsernameInput) {
         editUsernameInput.addEventListener('focus', () => {
-            showToast('warning', 'Username TK không thể thay đổi');
+            window.showToast('Username TK không thể thay đổi', 'warning');
         });
     }
 

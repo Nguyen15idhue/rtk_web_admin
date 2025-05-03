@@ -112,18 +112,51 @@
         // transaction actions
         window.approveTransaction = async function(id,btn){
             if(!confirm(`Bạn có chắc muốn duyệt #${id}?`)) return;
-            const row=btn.closest('tr'); disableActionButtons(row);
+            const row = document.querySelector(`tr[data-transaction-id="${id}"]`);
             try {
-                const resp=await fetch(approveUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({transaction_id:id})});
-                const data=await resp.json();
-                if(resp.ok&&data.success){
-                    alert(`Duyệt thành công!\nUsername:${data.account.username}\nPassword:${data.account.password}`);
-                    updateTableRowStatus(id,'active','Đã duyệt','status-approved');
+                const resp = await fetch(approveUrl, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({transaction_id: id})
+                });
+                const data = await resp.json();
+                if (resp.ok && data.success) {
+                    let msg = data.message || `Duyệt #${id} thành công!`;
+                    if (Array.isArray(data.accounts) && data.accounts.length) {
+                        msg += '\n\nThông tin tài khoản đã tạo:';
+                        data.accounts.forEach(acc=>{
+                            msg += `\nUsername: ${acc.username_acc}\nPassword: ${acc.password_acc}`;
+                        });
+                    }
+                    alert(msg);
+                    if (row) {
+                        const badge = row.querySelector('.status .status-badge');
+                        if (badge) {
+                            badge.className = 'status-badge status-approved';
+                            badge.textContent = 'Đã duyệt';
+                        }
+                        const actions = row.querySelector('.action-buttons');
+                        if (actions) {
+                            actions.innerHTML = `
+                                <button class="btn-icon btn-disabled" title="Đã duyệt" disabled>
+                                    <i class="fas fa-check-circle"></i>
+                                </button>
+                                <button class="btn-icon btn-reject" title="Từ chối"
+                                    onclick="openRejectTransactionModal('${id}')" data-permission="transaction_reject">
+                                    <i class="fas fa-times-circle"></i>
+                                </button>
+                                <button class="btn-icon btn-revert" title="Hủy duyệt (Về chờ duyệt)"
+                                    onclick="revertTransaction('${id}', this)" data-permission="transaction_revert">
+                                    <i class="fas fa-undo-alt"></i>
+                                </button>
+                            `;
+                        }
+                    }
                 } else {
                     throw data;
                 }
             } catch(e){
-                alert('Lỗi không gây ảnh hưởng đến kết quả: '+(e.message||e)); enableActionButtons(row,row.dataset.status);
+                errorHandler.showError('Lỗi duyệt giao dịch: '+(e.message||e));
             }
         };
 
@@ -140,7 +173,8 @@
                     alert('Từ chối thành công!'); updateTableRowStatus(id,'rejected','Bị từ chối','status-rejected');
                 } else throw data;
             } catch(e){
-                alert('Lỗi từ chối.'); enableActionButtons(row,row.dataset.status);
+                errorHandler.showError('Lỗi từ chối giao dịch: '+(e.message||e));
+                enableActionButtons(row,row.dataset.status);
             }
         };
 
@@ -154,7 +188,8 @@
                     alert('Hủy duyệt thành công.'); updateTableRowStatus(id,'pending','Chờ duyệt','status-pending');
                 } else throw data;
             } catch(e){
-                alert('Lỗi hủy duyệt.'); enableActionButtons(row,row.dataset.status);
+                errorHandler.showError('Lỗi hoàn tác giao dịch: '+(e.message||e));
+                enableActionButtons(row,row.dataset.status);
             }
         };
 

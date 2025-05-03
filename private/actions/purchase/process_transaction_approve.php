@@ -298,19 +298,13 @@ try {
 
     // --- Prepare final response ---
     $responseMessage = 'Transaction #' . $transaction_id . ' approved.';
-    // Only report account creation success if the request didn't time out and we have accounts
-    if ($accountCreationFailedDueToTimeout) {
-        $responseMessage .= ' However, the account creation request timed out. Please verify account status manually.';
-    } elseif (!empty($createdAccounts)) {
+    if (!empty($createdAccounts)) {
         $count = count($createdAccounts);
         $responseMessage .= " {$count} account(s) created successfully.";
-    } elseif ($httpCode === 200) { // If HTTP was 200 but no accounts returned (and not timeout)
-        $responseMessage .= " Account creation request succeeded but returned no account details.";
     }
-    // Note: If an exception was thrown earlier due to non-timeout cURL/HTTP errors, this part isn't reached.
 
     echo json_encode([
-        'success' => true, // The DB transaction succeeded, even if account creation timed out
+        'success' => true,
         'message' => $responseMessage,
         'accounts' => $createdAccounts ?? [] // Ensure accounts is always an array
     ]);

@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ . '/../config/constants.php';
+require_once ERROR_HANDLER_PATH;
+
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\includes\page_bootstrap.php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -12,7 +15,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // --- Load config, DB and helpers for session validation ---
-require_once __DIR__ . '/../config/constants.php';
 require_once BASE_PATH . '/config/database.php';
 require_once BASE_PATH . '/classes/Database.php';
 require_once BASE_PATH . '/utils/functions.php';

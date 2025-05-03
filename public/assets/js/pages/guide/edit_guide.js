@@ -33,11 +33,14 @@
                 contentType: false,
                 success(res){
                     if (res.success) {
-                        alert('Lưu thành công');
+                        window.showToast('Lưu thành công', 'success');
                         window.location.href = 'guide_management.php';
                     } else {
-                        alert('Có lỗi xảy ra');
+                        window.showToast(res.message || 'Có lỗi xảy ra', 'error');
                     }
+                },
+                error(jq, status, err){
+                    window.showToast('Lỗi lưu hướng dẫn: ' + err, 'error');
                 }
             });
         });

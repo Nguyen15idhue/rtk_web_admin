@@ -1,14 +1,14 @@
 <?php
-// Session is now bootstrapped by constants.php
-require_once __DIR__ . '/../../config/constants.php';
-require_once __DIR__ . '/../../config/database.php'; // Adjust path as needed
-register_shutdown_function(function() use (&$conn) {
-    if (isset($conn) && $conn instanceof mysqli) {
-        $conn->close();
-    }
-});
+// Session is now bootstrapped by page_bootstrap.php
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $base_url  = $bootstrap['base_url'];
+$conn = $bootstrap['db'];
+
+register_shutdown_function(function() use (&$conn) {
+    if (isset($conn) && $conn instanceof PDO) {
+        $conn = null;
+    }
+});
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $admin_username = trim($_POST['admin_username'] ?? '');
@@ -24,40 +24,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // --- If no basic validation errors ---
     if ($login_error === null) {
-        // Prepare statement to get admin info based on username
         $sql = "SELECT id, admin_username, admin_password, role FROM admin WHERE admin_username = ?";
-        $stmt = $conn->prepare($sql);
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$admin_username]);
+            $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($stmt === false) {
-            error_log("Admin login prepare statement failed: " . $conn->error);
-            $login_error = "Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau.";
-        } else {
-            $stmt->bind_param("s", $admin_username);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows === 1) {
-                $admin = $result->fetch_assoc();
-
+            if ($admin) {
                 // Verify password
                 if (password_verify($admin_password, $admin['admin_password'])) {
                     // Login successful
                     session_regenerate_id(true); // Security: regenerate session ID
 
                     // Store necessary admin info in session
-                    $_SESSION['admin_id'] = $admin['id'];
+                    $_SESSION['admin_id']       = $admin['id'];
                     $_SESSION['admin_username'] = $admin['admin_username'];
-                    $_SESSION['admin_role'] = $admin['role']; // Store role if needed for permissions
+                    $_SESSION['admin_role']     = $admin['role']; // Store role if needed for permissions
 
                     // thêm dòng này để lưu phiên mới
                     recordSession($admin['id']);
-
-                    // Optional: Log admin login activity
-                    // log_activity($conn, $admin['id'], 'admin_login', 'admin', $admin['id']);
-
-                    // Close statement and connection
-                    $stmt->close();
-                    $conn->close();
 
                     // Redirect to admin dashboard
                     header("Location: ".$base_url."public/pages/dashboard/dashboard.php");
@@ -70,23 +55,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Admin username not found
                 $login_error = "Tên đăng nhập hoặc mật khẩu không chính xác.";
             }
-            $stmt->close();
+        } catch (PDOException $e) {
+            error_log("Admin login error: " . $e->getMessage());
+            $login_error = "Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau.";
         }
     }
 
     // --- If login failed or validation error occurred ---
     if ($login_error !== null) {
         $_SESSION['admin_login_error'] = $login_error;
-        if ($conn && $conn->ping()) { // Check if connection is still alive before closing
-             $conn->close();
-        }
         header("Location: ".$base_url."public/pages/auth/admin_login.php");
         exit();
     }
-
-     if ($conn && $conn->ping()) {
-        $conn->close();
-     }
 
 } else {
     // If not a POST request, redirect to admin login page

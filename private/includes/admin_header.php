@@ -38,8 +38,11 @@ $public_assets_path = BASE_URL . 'public/assets/';
     <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/pages/dashboard.css"> <!-- Added dashboard.css -->
 
     <script src="<?php echo $public_assets_path; ?>js/components/sidebar.js" defer></script> <!-- Removed inline sidebar script; added external JS -->
+    <script src="<?php echo $public_assets_path; ?>js/components/toasts.js" defer></script> <!-- Added toasts.js -->
+    <script src="<?php echo $public_assets_path; ?>js/utils/errorHandler.js" defer></script> <!-- Added errorHandler.js -->
 </head>
 <body>
+<div id="toast-container"></div> <!-- Container for toast notifications -->
 <div class="dashboard-wrapper">
     <!-- Hamburger & sidebar sẽ được include bên ngoài -->
 </div>

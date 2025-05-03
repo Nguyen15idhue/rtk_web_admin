@@ -12,12 +12,6 @@ register_shutdown_function(function() use (&$db) {
 
 header('Content-Type: application/json');
 
-// Prevent PHP from outputting HTML errors directly
-error_reporting(E_ALL); // Report all errors for logging
-ini_set('display_errors', 0); // Keep off for browser output
-ini_set('log_errors', 1); // Ensure errors are logged
-ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
-
 // Basic security check (adjust as needed)
 if (!isset($_SESSION['admin_id'])) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);

@@ -14,8 +14,11 @@ function rejectInvoice(id) {
             row.querySelector('td:nth-child(8)').textContent = reason;
             row.querySelector('td:nth-child(9)').innerHTML = '<span>Đã từ chối</span>';
         } else {
-            alert('Lỗi: ' + (data.message || ''));
+            errorHandler.showError('Lỗi: ' + (data.message || 'Không thể từ chối.'));
         }
+    })
+    .catch(err => {
+        errorHandler.showError('Lỗi khi gửi yêu cầu từ chối: ' + (err.message||err));
     });
 }
 // expose for inline onclick
