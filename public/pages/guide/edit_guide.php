@@ -1,22 +1,21 @@
 <?php
-session_start();
+$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$base_url = $bootstrap_data['base_url'];
+$private_includes_path = $bootstrap_data['private_includes_path'];
+$user_display_name = $bootstrap_data['user_display_name'];
+
+// Redirect nếu chưa auth
 if (empty($_SESSION['admin_id'])) {
-    header('Location: ../auth/admin_login.php');
+    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
     exit;
 }
-
-$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
-$base_path             = $bootstrap_data['base_path'];
-$private_includes_path = $bootstrap_data['private_includes_path'];
-$user_display_name     = $bootstrap_data['user_display_name'];
-$page_title            = isset($_GET['id']) ? 'Sửa hướng dẫn' : 'Tạo hướng dẫn';
 
 include $private_includes_path . 'admin_header.php';
 include $private_includes_path . 'admin_sidebar.php';
 ?>
 <!-- Thêm Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/forms.css">
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/forms.css">
 
 <main class="content-wrapper">
     <div class="container py-4">
@@ -26,7 +25,7 @@ include $private_includes_path . 'admin_sidebar.php';
             </div>
             <div class="card-body">
                 <form id="frm-guide" class="row g-3" enctype="multipart/form-data"
-                      data-base-path="<?php echo rtrim($base_path, '/'); ?>">
+                      data-base-path="<?php echo rtrim($base_url, '/'); ?>">
                     <input type="hidden" name="id" value="<?php echo intval($_GET['id'] ?? 0); ?>">
                     <input type="hidden" name="existing_thumbnail" value="">
 
@@ -81,5 +80,5 @@ include $private_includes_path . 'admin_sidebar.php';
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- include JS riêng cho edit_guide -->
-<script src="<?php echo $base_path; ?>public/assets/js/pages/guide/edit_guide.js"></script>
+<script src="<?php echo $base_url; ?>public/assets/js/pages/guide/edit_guide.js"></script>
 <?php include $private_includes_path . 'admin_footer.php'; ?>

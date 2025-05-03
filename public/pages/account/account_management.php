@@ -1,8 +1,10 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\account\account_management.php
+$require_constants = __DIR__ . '/../../../private/config/constants.php';
+require_once $require_constants;
 session_start();
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: ../auth/admin_login.php');
+    header('Location: ' . BASE_URL . 'public/pages/auth/admin_login.php');
     exit;
 }
 // --- Bootstrap and Initialization ---

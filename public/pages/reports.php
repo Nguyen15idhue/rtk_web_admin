@@ -2,7 +2,7 @@
 // filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\reports.php
 session_start();
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: auth/admin_login.php');
+    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
     exit;
 }
 $bootstrap_data         = require_once __DIR__ . '/../../private/includes/page_bootstrap.php';

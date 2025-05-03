@@ -13,7 +13,7 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
 
 <?php include $private_includes_path . 'admin_sidebar.php'; include $private_includes_path . 'admin_header.php'; ?>
 <?php foreach ($css as $f): ?>
-    <link rel="stylesheet" href="<?= $base_path ?>public/assets/css/<?= $f ?>">
+    <link rel="stylesheet" href="<?= $base_url ?>public/assets/css/<?= $f ?>">
 <?php endforeach; ?>
 
 <main class="content-wrapper">
@@ -22,7 +22,7 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
         <div class="user-info">
             <span>Chào mừng, <span class="highlight"><?= htmlspecialchars($user_display_name) ?></span>!</span>
             <?php foreach ($nav as $u => $t): ?>
-                <a href="<?= $base_path ?>public/<?= $u ?>"><?= $t ?></a>
+                <a href="<?= $base_url ?>public/<?= $u ?>"><?= $t ?></a>
             <?php endforeach; ?>
         </div>
     </div>
@@ -144,7 +144,7 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
     window.adminsData = <?= json_encode($admins) ?>;
     window.isSuperAdmin = <?= json_encode($is_super_admin) ?>;
 </script>
-<script src="<?= $base_path ?>public/assets/js/pages/auth/permission_management.js"></script>
+<script src="<?= $base_url ?>public/assets/js/pages/auth/permission_management.js"></script>
 
 <!-- Create Admin/Operator Modal -->
 <div id="createRoleModal" class="modal" style="display: none;">

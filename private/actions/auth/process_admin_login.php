@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($conn && $conn->ping()) { // Check if connection is still alive before closing
              $conn->close();
         }
-        header("Location: ".$base_url."pages/auth/admin_login.php");
+        header("Location: ".$base_url."public/pages/auth/admin_login.php");
         exit();
     }
 
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 } else {
     // If not a POST request, redirect to admin login page
-    header("Location: ".$base_url."pages/auth/admin_login.php");
+    header("Location: ".$base_url."public/pages/auth/admin_login.php");
     exit();
 }
 ?>

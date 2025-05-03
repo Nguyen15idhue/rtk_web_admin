@@ -1,16 +1,16 @@
 <?php
-session_start();
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ../auth/admin_login.php');
-    exit;
-}
-
 // Replace manual session and path setup with bootstrap
 $bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
 $db               = $bootstrap_data['db'];
-$base_url        = $bootstrap_data['base_url'];
+$base_url         = $bootstrap_data['base_url'];
 $user_display_name= $bootstrap_data['user_display_name'];
 $private_includes_path = $bootstrap_data['private_includes_path'];
+
+// Redirect nếu chưa auth
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
+    exit;
+}
 
 require_once __DIR__ . '/../../../private/actions/invoice/fetch_transactions.php';
 require_once __DIR__ . '/../../../private/actions/invoice/get_revenue_sums.php';

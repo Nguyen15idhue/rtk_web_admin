@@ -1,15 +1,16 @@
 <?php
-session_start();
+$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$base_url = $bootstrap_data['base_url'];
+$user_display_name = $bootstrap_data['user_display_name'];
+$private_includes_path = $bootstrap_data['private_includes_path'];
+
+// Redirect nếu chưa đăng nhập
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: ../auth/admin_login.php');
+    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
     exit;
 }
 
-$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
-$base_url             = $bootstrap_data['base_url'];
-$private_includes_path = $bootstrap_data['private_includes_path'];
-$user_display_name     = $bootstrap_data['user_display_name'];
-$page_title            = 'Quản lý hướng dẫn';
+$page_title = 'Quản lý hướng dẫn';
 
 include $private_includes_path . 'admin_header.php';
 ?>

@@ -4,16 +4,6 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// --- Session Check ---
-if (!isset($_SESSION['admin_id'])) {
-    // Redirect to login or handle unauthorized access appropriately
-    // For now, just exit or show an error for simplicity in this refactor
-    // header('Location: ' . $base_path . 'public/pages/auth/admin_login.php'); // Adjust path if needed
-    // exit;
-    // echo "Unauthorized access."; // Or redirect
-    // exit;
-}
-
 // --- Include Core Files ---
 // Include constants for base paths
 require_once __DIR__ . '/../config/constants.php';

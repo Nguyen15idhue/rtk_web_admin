@@ -12,7 +12,7 @@ $base_url          = $bootstrap_data['base_url'];
 
 // --- Includes and Setup ---
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: ../auth/admin_login.php');
+    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
     exit;
 }
 
