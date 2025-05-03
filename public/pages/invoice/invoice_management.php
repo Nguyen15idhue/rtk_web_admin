@@ -38,37 +38,7 @@ $total_pages = $transaction_data['total_pages'];
 $current_page = $transaction_data['current_page'];
 
 $pagination_base_url = '?' . http_build_query(array_filter($filters));
-
 ?>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý Giao dịch</title>
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/base.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-badges.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/layouts/header.css">
-    <style>
-        /* Add style for detail labels similar to account management */
-        .detail-label {
-            font-weight: 600; /* semi-bold */
-            min-width: 150px; /* Adjust as needed */
-            display: inline-block;
-        }
-        .detail-row {
-            margin-bottom: 0.5rem; /* Add some spacing between rows */
-        }
-        .status-badge-modal { /* Ensure badge alignment is good */
-             vertical-align: middle;
-        }
-    </style>
-</head>
-<body>
-
 
     <?php include $private_includes_path . 'admin_header.php'; ?>
     <?php include $private_includes_path . 'admin_sidebar.php'; ?>

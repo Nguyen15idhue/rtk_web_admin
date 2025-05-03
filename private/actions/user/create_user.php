@@ -33,10 +33,12 @@ try {
     // error_log("Database connection successful in process_user_create.php");
 } catch (PDOException $e) {
     error_log("FATAL: Database Connection Error in process_user_create.php: " . $e->getMessage());
+    error_log("Stack trace: " . $e->getTraceAsString());
     echo json_encode(['success' => false, 'message' => 'Lỗi kết nối cơ sở dữ liệu. Không thể xử lý yêu cầu.']);
     exit;
 } catch (Exception $e) { // Catch other potential errors during DB class instantiation
     error_log("FATAL: Error initializing Database class in process_user_create.php: " . $e->getMessage());
+    error_log("Stack trace: " . $e->getTraceAsString());
     echo json_encode(['success' => false, 'message' => 'Lỗi khởi tạo hệ thống cơ sở dữ liệu.']);
     exit;
 }
@@ -140,6 +142,7 @@ try {
     }
 } catch (PDOException $e) {
     error_log("Database Error (Insert User) in process_user_create.php: " . $e->getMessage());
+    error_log("Stack trace: " . $e->getTraceAsString());
     echo json_encode(['success' => false, 'message' => 'Đã xảy ra lỗi cơ sở dữ liệu khi thêm người dùng. Vui lòng thử lại.']);
     exit;
 } catch (Exception $e) {

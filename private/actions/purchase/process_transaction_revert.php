@@ -133,7 +133,8 @@ try {
 
 } catch (Exception $e) {
     $db->rollBack();
-    error_log("Error reverting transaction ID $transaction_id: " . $e->getMessage()); // Log detailed error
+    error_log("Error reverting transaction ID $transaction_id: " . $e->getMessage());
+    error_log("Trace: " . $e->getTraceAsString());          // <-- Added detailed stack trace
     http_response_code(500); // Internal Server Error
     echo json_encode(['success' => false, 'message' => 'Failed to revert transaction. Please try again later or contact support.']);
 } finally {

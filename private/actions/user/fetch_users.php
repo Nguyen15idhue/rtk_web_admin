@@ -87,12 +87,14 @@ function fetch_paginated_users(array $filters = [], int $page = 1, int $per_page
 
     } catch (PDOException $e) {
         error_log("Database error in fetch_paginated_users: " . $e->getMessage());
+        error_log("Stack trace: " . $e->getTraceAsString());
         return [
             'users' => [], 'total_count' => 0, 'current_page' => 1,
             'per_page' => $per_page, 'total_pages' => 0
         ];
     } catch (Exception $e) {
         error_log("General error in fetch_paginated_users: " . $e->getMessage());
+        error_log("Stack trace: " . $e->getTraceAsString());
         return [
             'users' => [], 'total_count' => 0, 'current_page' => 1,
             'per_page' => $per_page, 'total_pages' => 0

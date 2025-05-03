@@ -165,15 +165,15 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
         ];
 
     } catch (PDOException $e) {
-        // Log the error including the specific PDO error code if available
         error_log("Database error in fetch_admin_transactions: " . $e->getMessage() . " (Code: " . $e->getCode() . ")");
-        // Return an empty structure or throw exception depending on desired error handling
+        error_log("Trace: " . $e->getTraceAsString());      // <-- Added detailed stack trace
         return [
             'transactions' => [], 'total_count' => 0, 'current_page' => 1,
             'per_page' => $per_page, 'total_pages' => 0
         ];
     } catch (Exception $e) {
         error_log("General error in fetch_admin_transactions: " . $e->getMessage());
+        error_log("Trace: " . $e->getTraceAsString());      // <-- Added detailed stack trace
         return [
             'transactions' => [], 'total_count' => 0, 'current_page' => 1,
             'per_page' => $per_page, 'total_pages' => 0

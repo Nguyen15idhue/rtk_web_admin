@@ -11,7 +11,7 @@ register_shutdown_function(function() use (&$db) {
 
 // Basic security check
 if (!isset($_SESSION['admin_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+    abort('Unauthorized', 401);
     exit;
 }
 
@@ -21,7 +21,7 @@ $input = json_decode($rawInput, true);
 $userId = $input['user_id'] ?? $_SESSION['admin_id'];
 
 if (!$userId) {
-    echo json_encode(['success' => false, 'message' => 'User ID is required.']);
+    abort('User ID is required.', 400);
     exit;
 }
 
@@ -35,5 +35,6 @@ try {
     echo json_encode(['success' => true, 'accounts' => $accounts]);
 } catch (Exception $e) {
     error_log('Error fetching accounts via RtkAccount: ' . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Error fetching accounts.']);
+    abort('Error fetching accounts.', 500);
 }
+?>

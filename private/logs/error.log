@@ -1,85 +1,138 @@
-[03-May-2025 13:33:17 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:33:17 UTC] [Database Close] Connection closed.
-[03-May-2025 13:34:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:34:51 UTC] Using default mount points for location ID: 12 - [42]
-[03-May-2025 13:34:51 UTC] RTK API Payload: {"id":"2070","name":"CMA043","userPwd":"0999999445","startTime":1754377199000,"endTime":1762153199000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[03-May-2025 13:34:51 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[03-May-2025 13:34:51 UTC] [Database Close] Connection closed.
-[03-May-2025 13:34:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:34:51 UTC] [Database Close] Connection closed.
-[03-May-2025 13:38:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:38:54 UTC] Using default mount points for location ID: 12 - [42]
-[03-May-2025 13:38:54 UTC] RTK API Payload: {"id":"2070","name":"CMA043","userPwd":"0999999445","startTime":1754377199000,"endTime":1762153199000,"enabled":1,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[03-May-2025 13:38:54 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[03-May-2025 13:38:54 UTC] [Database Close] Connection closed.
-[03-May-2025 13:38:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:38:54 UTC] [Database Close] Connection closed.
-[03-May-2025 13:38:56 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:38:56 UTC] Using default mount points for location ID: 12 - [42]
-[03-May-2025 13:38:56 UTC] RTK API Payload: {"id":"2070","name":"CMA043","userPwd":"0999999445","startTime":1754377199000,"endTime":1762153199000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[03-May-2025 13:38:56 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[03-May-2025 13:38:56 UTC] [Database Close] Connection closed.
-[03-May-2025 13:38:57 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:38:57 UTC] [Database Close] Connection closed.
-[03-May-2025 13:39:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:39:03 UTC] [Database Close] Connection closed.
-[03-May-2025 13:39:06 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:39:06 UTC] [Database Close] Connection closed.
-[03-May-2025 13:39:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:39:27 UTC] [Database Close] Connection closed.
-[03-May-2025 13:39:29 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:39:29 UTC] [Database Close] Connection closed.
-[03-May-2025 13:39:32 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:39:32 UTC] [Database Close] Connection closed.
-[03-May-2025 13:39:32 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:39:32 UTC] [Database Close] Connection closed.
-[03-May-2025 13:41:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:41:28 UTC] [Database Close] Connection closed.
-[03-May-2025 13:41:28 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:41:28 UTC] [Database Close] Connection closed.
-[03-May-2025 13:42:12 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:42:12 UTC] [Database Close] Connection closed.
-[03-May-2025 13:42:13 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:42:13 UTC] [Database Close] Connection closed.
-[03-May-2025 13:42:14 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:42:14 UTC] [Database Close] Connection closed.
-[03-May-2025 13:42:15 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:42:15 UTC] [Database Close] Connection closed.
-[03-May-2025 13:42:44 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:42:44 UTC] [Database Close] Connection closed.
-[03-May-2025 13:42:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:42:46 UTC] [Database Close] Connection closed.
-[03-May-2025 13:42:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:42:46 UTC] [Database Close] Connection closed.
-[03-May-2025 13:42:56 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:42:56 UTC] [Database Close] Connection closed.
-[03-May-2025 13:42:57 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:42:57 UTC] [Database Close] Connection closed.
-[03-May-2025 13:42:57 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:42:57 UTC] [Database Close] Connection closed.
-[03-May-2025 13:42:59 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:42:59 UTC] [Database Close] Connection closed.
-[03-May-2025 13:43:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:43:01 UTC] [Database Close] Connection closed.
-[03-May-2025 13:43:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:43:02 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 152
-[03-May-2025 13:43:02 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 164
-[03-May-2025 13:43:02 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 165
-[03-May-2025 13:43:02 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 166
-[03-May-2025 13:43:02 UTC] [Database Close] Connection closed.
-[03-May-2025 13:43:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:43:03 UTC] [Database Close] Connection closed.
-[03-May-2025 13:43:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:43:03 UTC] [Database Close] Connection closed.
-[03-May-2025 13:43:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:43:03 UTC] [Database Close] Connection closed.
-[03-May-2025 13:43:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:43:04 UTC] [Database Close] Connection closed.
-[03-May-2025 13:43:06 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:43:06 UTC] [Database Close] Connection closed.
-[03-May-2025 13:43:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:43:17 UTC] [Database Close] Connection closed.
-[03-May-2025 13:44:09 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:44:09 UTC] [Database Close] Connection closed.
-[03-May-2025 13:44:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 13:44:10 UTC] [Database Close] Connection closed.
+[03-May-2025 15:45:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:45:46 UTC] [Database Close] Connection closed.
+[03-May-2025 15:45:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:45:46 UTC] [Database Close] Connection closed.
+[03-May-2025 15:45:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:45:46 UTC] [Database Close] Connection closed.
+[03-May-2025 15:45:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:45:54 UTC] [Database Close] Connection closed.
+[03-May-2025 15:45:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:45:54 UTC] [Database Close] Connection closed.
+[03-May-2025 15:45:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:45:54 UTC] [Database Close] Connection closed.
+[03-May-2025 15:46:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:46:53 UTC] [Database Close] Connection closed.
+[03-May-2025 15:46:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:46:53 UTC] [Database Close] Connection closed.
+[03-May-2025 15:46:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:46:53 UTC] [Database Close] Connection closed.
+[03-May-2025 15:46:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:46:58 UTC] [Database Close] Connection closed.
+[03-May-2025 15:46:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:46:58 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:04 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:04 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:47 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:47 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:47 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:48 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:48 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:48 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:48 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:49 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:49 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:49 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:49 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:49 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:49 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:01 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:01 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:01 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:02 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:02 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:02 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:02 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:03 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:03 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:03 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:03 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:53 UTC] PHP Warning:  Undefined variable $page_title in E:\Application\laragon\www\rtk_web_admin\public\pages\guide\edit_guide.php on line 24
+[03-May-2025 15:48:53 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:53 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:53 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:58 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:58 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:58 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:58 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:58 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:04 UTC] PHP Warning:  Undefined variable $page_title in E:\Application\laragon\www\rtk_web_admin\public\pages\guide\edit_guide.php on line 24
+[03-May-2025 15:49:04 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:04 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:04 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:07 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:07 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:07 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:10 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:13 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:13 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[03-May-2025 15:49:13 UTC] [DEBUG] Search keyword: 
+[03-May-2025 15:49:13 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:13 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:13 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:15 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:15 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:16 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[03-May-2025 15:49:16 UTC] [DEBUG] Search keyword: 
+[03-May-2025 15:49:16 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:16 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:18 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:19 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:19 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[03-May-2025 15:49:19 UTC] [DEBUG] Search keyword: 
+[03-May-2025 15:49:19 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:19 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:19 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:24 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:25 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:25 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[03-May-2025 15:49:25 UTC] [DEBUG] Search keyword: 
+[03-May-2025 15:49:25 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:25 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:25 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:27 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[03-May-2025 15:49:27 UTC] [DEBUG] Search keyword: 
+[03-May-2025 15:49:27 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:27 UTC] [Database Close] Connection closed.

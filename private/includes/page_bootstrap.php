@@ -55,15 +55,11 @@ try {
         $db->query('SELECT 1');
     } catch (\Exception $e) {
         error_log("[Bootstrap] Database ping failed: " . $e->getMessage());
-        http_response_code(500);
-        echo "Hệ thống đang tạm ngưng. Vui lòng thử lại sau.";
-        exit;
+        abort('Hệ thống đang tạm ngưng. Vui lòng thử lại sau.', 500);
     }
 } catch (\Exception $e) {
     error_log("Database Error (Bootstrap): " . $e->getMessage());
-    http_response_code(500);
-    echo "Hệ thống đang bảo trì cơ sở dữ liệu. Vui lòng thử lại sau.";
-    exit;
+    abort('Hệ thống đang bảo trì cơ sở dữ liệu. Vui lòng thử lại sau.', 500);
 }
 
 // --- User Display Name ---

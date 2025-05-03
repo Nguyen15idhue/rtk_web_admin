@@ -72,3 +72,10 @@
 .status-success { color: var(--success-600); }
 .status-error   { color: var(--danger-600); }
 .status-loading { color: var(--info-600); }
+
+#admin-invoice-management .filter-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 10px;
+}

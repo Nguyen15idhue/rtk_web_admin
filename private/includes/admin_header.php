@@ -23,18 +23,16 @@ $public_assets_path = BASE_URL . 'public/assets/';
     <!-- Layout styles -->
     <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/layouts/main_content.css">
     <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/layouts/sidebar.css">
-    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/layouts/header.css"> <!-- Added header.css link -->
+    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/layouts/header.css"> 
 
     <!-- Component styles -->
     <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/components/cards.css">
     <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/components/tables/tables.css">
-    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/components/tables/tables-buttons.css">
     <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/components/buttons.css">
-    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/components/forms.css"> <!-- Added forms.css -->
-    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/components/modals.css"> <!-- Added modals.css -->
-    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/components/badges.css"> <!-- Added badges.css -->
-    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/components/toasts.css"> <!-- Added toasts.css -->
-    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/base.css"> <!-- Removed inline styles; added external CSS -->
+    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/components/forms.css"> 
+    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/components/modals.css"> 
+    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/components/toast.css"> 
+    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/base.css"> 
     <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/pages/dashboard.css"> <!-- Added dashboard.css -->
 
     <script src="<?php echo $public_assets_path; ?>js/components/sidebar.js" defer></script> <!-- Removed inline sidebar script; added external JS -->

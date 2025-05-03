@@ -3,8 +3,7 @@ header('Content-Type: application/json');
 
 // Chỉ SuperAdmin được phép
 if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'admin') {
-    echo json_encode(['success' => false, 'message' => 'Không có quyền thực hiện hành động này.']);
-    exit;
+    abort('Unauthorized', 401);
 }
 
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
@@ -25,8 +24,7 @@ $password = $input['password'] ?? '';
 $role     = $input['role'] ?? '';
 
 if (!$id || !$name || !in_array($role, ['admin','customercare'])) {
-    echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ.']);
-    exit;
+    abort('Invalid data', 400);
 }
 
 // Xây dựng truy vấn
@@ -47,11 +45,11 @@ try {
     }
     $stmt->execute();
     if ($stmt->rowCount() > 0) {
-        echo json_encode(['success' => true, 'message' => 'Cập nhật tài khoản thành công.']);
+        echo json_encode(['success' => true, 'message' => 'Cập nhật thành công.']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Không có thay đổi (ID không tồn tại hoặc dữ liệu giống trước).']);
     }
 } catch (PDOException $e) {
-    http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Lỗi khi cập nhật: ' . $e->getMessage()]);
+    error_log('process_admin_update error: ' . $e->getMessage());
+    abort('Lỗi khi cập nhật', 500);
 }

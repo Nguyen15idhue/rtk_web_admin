@@ -160,9 +160,9 @@ try {
 
 } catch (Exception $e) {
     $db->rollBack();
-    error_log("Error rejecting transaction ID $transaction_id: " . $e->getMessage()); // Log detailed error
-    http_response_code(500); // Internal Server Error
-    // Provide a generic error message to the client
+    error_log("Error rejecting transaction ID $transaction_id: " . $e->getMessage());
+    error_log("Trace: " . $e->getTraceAsString());          // <-- Added detailed stack trace
+    http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Failed to reject transaction. Please try again later or contact support.']);
 } finally {
     $database->close();

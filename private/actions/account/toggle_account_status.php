@@ -13,7 +13,7 @@ register_shutdown_function(function() use (&$db) {
 
 // Check admin login
 if (!isset($_SESSION['admin_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+    abort('Unauthorized', 401);
     exit;
 }
 
@@ -25,7 +25,7 @@ if (!is_array($input)) {
 }
 
 if (!$input || !isset($input['id']) || !isset($input['action'])) {
-    echo json_encode(['success' => false, 'message' => 'Invalid input.']);
+    abort('Invalid input.', 400);
     exit;
 }
 
@@ -34,7 +34,7 @@ $action = filter_var($input['action'], FILTER_SANITIZE_SPECIAL_CHARS);
 
 // Action determines the desired state of 'enabled'
 if (!in_array($action, ['suspend', 'reactivate'])) {
-    echo json_encode(['success' => false, 'message' => 'Invalid action specified.']);
+    abort('Invalid action specified.', 400);
     exit;
 }
 
@@ -127,6 +127,11 @@ try {
     }
 } catch (Exception $e) {
     $db->rollBack();
-    error_log("Error in toggle_status.php: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'An error occurred: ' . $e->getMessage()]);
+    error_log("Error in toggle_status.php: " 
+        . $e->getMessage() 
+        . "\nTrace: " . $e->getTraceAsString()
+        . "\nPayload: " . json_encode($input ?? [])
+    );
+    abort('An error occurred: ' . $e->getMessage(), 500);
 }
+?>
