@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="detail-row"><span class="detail-label">Email User:</span> <span class="detail-value">${account.user_email || '-'}</span></div>
                         <div class="detail-row"><span class="detail-label">Tên User:</span> <span class="detail-value">${account.user_username || '-'}</span></div>
                         <div class="detail-row"><span class="detail-label">SĐT User:</span> <span class="detail-value">${account.user_phone || '-'}</span></div>
-                        <div class="detail-row"><span class="detail-label">Tỉnh/Thành:</span> <span class="detail-value">${account.location_province || '-'}</span></div>
+                        <div class="detail-row"><span class="detail-label">Tỉnh/Thành:</span> <span class="detail-value">${account.location_name || '-'}</span></div>
                         <div class="detail-row"><span class="detail-label">Gói:</span> <span class="detail-value">${account.package_name || '-'}</span></div>
                         <div class="detail-row"><span class="detail-label">Ngày KH:</span> <span class="detail-value">${account.activation_date_formatted || account.activation_date || '-'}</span></div>
                         <div class="detail-row"><span class="detail-label">Ngày HH:</span> <span class="detail-value">${account.expiry_date_formatted || account.expiry_date || '-'}</span></div>

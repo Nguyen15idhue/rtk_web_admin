@@ -1,6 +1,10 @@
 <?php
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db = $bootstrap['db'];
+// Đảm bảo đóng PDO khi script kết thúc
+register_shutdown_function(function() use (&$db) {
+    $db = null;
+});
 header('Content-Type: application/json; charset=UTF-8');
 $q = trim($_GET['email'] ?? '');
 if (!$q) {

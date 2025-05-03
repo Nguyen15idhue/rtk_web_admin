@@ -12,6 +12,7 @@ class AccountModel {
             sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
             r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
             u.id as user_id, u.email AS user_email, u.username AS user_username,
+            u.phone AS user_phone,                                             
             p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
             l.id as location_id, l.province AS location_name
         FROM survey_account sa
@@ -505,5 +506,10 @@ class AccountModel {
             error_log('Error fetching mount points for account ' . $accountId . ': ' . $e->getMessage());
             return [];
         }
+    }
+
+    // Giải phóng kết nối DB khi object bị hủy
+    public function __destruct() {
+        $this->db = null;
     }
 }

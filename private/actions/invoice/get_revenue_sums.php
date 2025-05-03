@@ -11,6 +11,10 @@ if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
+// Đảm bảo đóng PDO khi script kết thúc
+register_shutdown_function(function() use (&$db) {
+    $db = null;
+});
 /**
  * Returns total and successful revenue sums based on filters.
  *

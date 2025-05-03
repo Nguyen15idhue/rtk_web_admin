@@ -97,6 +97,9 @@ function fetch_paginated_users(array $filters = [], int $page = 1, int $per_page
             'users' => [], 'total_count' => 0, 'current_page' => 1,
             'per_page' => $per_page, 'total_pages' => 0
         ];
+    } finally {
+        // free the singleton connection after every call
+        Database::getInstance()->close();
     }
 }
 ?>

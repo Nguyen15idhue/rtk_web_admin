@@ -37,6 +37,9 @@ class Database {
 
         // Establish connection
         $this->connect();
+
+        // ensure the same instance is closed when PHP shuts down
+        register_shutdown_function([$this, 'close']);
     }
 
     // Return or create the single instance
@@ -85,10 +88,22 @@ class Database {
     }
 
     /**
-     * Closes the database connection.
+     * Closes the database connection and resets singleton.
      */
     public function close() {
-        $this->conn = null;
+        if ($this->conn !== null) {
+            $this->conn = null;
+            error_log("[Database Close] Connection closed.");
+        }
+        // Reset the singleton so resources can be freed
+        self::$instance = null;
+    }
+
+    /**
+     * Destructor to ensure the connection is closed when object is destroyed.
+     */
+    public function __destruct() {
+        $this->close();
     }
 
     /**

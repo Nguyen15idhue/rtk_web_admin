@@ -6,6 +6,13 @@ header('Content-Type: application/json');
 require_once __DIR__ . '/../../config/database.php'; // Go up two levels to 'private', then into 'config'
 require_once __DIR__ . '/../../classes/Database.php'; // Go up two levels to 'private', then into 'classes'
 
+// register shutdown to always close DB
+register_shutdown_function(function() {
+    if (class_exists('Database')) {
+        Database::getInstance()->close();
+    }
+});
+
 $response = ['success' => false, 'message' => 'An unexpected error occurred.']; // Default response
 
 try {
@@ -106,6 +113,11 @@ try {
     // Ensure connection is closed
     if (isset($conn)) {
         $conn = null;
+    }
+    // ensure singleton is closed early
+    if (isset($db)) {
+        $db->close();
+        $db = null;
     }
     // Always output the JSON response
     echo json_encode($response);

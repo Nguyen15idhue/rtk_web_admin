@@ -5,6 +5,13 @@ header('Content-Type: application/json');
 require_once __DIR__ . '/../../config/database.php'; // Go up two levels to 'private', then into 'config'
 require_once __DIR__ . '/../../classes/Database.php'; // Go up two levels to 'private', then into 'classes'
 
+// register shutdown to always close DB
+register_shutdown_function(function() {
+    if (class_exists('Database')) {
+        Database::getInstance()->close();
+    }
+});
+
 // Authorization Check (Admin only)
 if (!isset($_SESSION['admin_id']) || !in_array($_SESSION['admin_role'] ?? '', ['admin', 'admin', 'customercare'])) {
     http_response_code(403);
@@ -54,7 +61,14 @@ try {
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Database error occurred.']);
 } finally {
-    $conn = null;
+    // explicitly free resources
+    if (isset($conn)) {
+        $conn = null;
+    }
+    if (isset($db)) {
+        $db->close();
+        $db = null;
+    }
 }
 
 ?>

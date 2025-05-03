@@ -9,6 +9,11 @@ if (!isset($_SESSION['admin_id'])) {
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $conn      = $bootstrap['db'];
 
+// Đảm bảo đóng PDO khi script kết thúc
+register_shutdown_function(function() use (&$conn) {
+    $conn = null;
+});
+
 $role = $_GET['role'] ?? '';
 $validRoles = ['admin','customercare'];
 if (!in_array($role, $validRoles)) {

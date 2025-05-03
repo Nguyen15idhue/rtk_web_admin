@@ -86,4 +86,9 @@ class GuideModel {
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$status, $id]);
     }
+
+    // Giải phóng kết nối DB khi object bị hủy
+    public function __destruct() {
+        Database::getInstance()->close();
+    }
 }

@@ -4,6 +4,12 @@
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
 $base_path = $bootstrap['base_path'];
+
+// Đảm bảo đóng PDO khi script kết thúc
+register_shutdown_function(function() use (&$db) {
+    $db = null;
+});
+
 header('Content-Type: application/json');
 error_reporting(E_ALL); // Report all errors for logging
 ini_set('display_errors', 0); // Keep off for browser output
