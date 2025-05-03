@@ -21,14 +21,24 @@ require_once BASE_PATH . '/classes/GuideModel.php';
 $base_path = BASE_PATH;
 $base_url = BASE_URL;
 
-// --- Database Connection ---
-$database = Database::getInstance();
-$db = $database->getConnection();
-
-if (!$db) {
-    error_log("Failed to connect to database in page_bootstrap.php");
-    // Display a user-friendly error message or redirect
-    die("Database connection failed. Please check logs or contact support.");
+// --- Database Connection (synchronous exception handling) ---
+try {
+    $database = Database::getInstance();
+    $db = $database->getConnection();
+    // <-- Kiểm tra lại kết nối lần cuối trước khi tiếp tục
+    try {
+        $db->query('SELECT 1');
+    } catch (\Exception $e) {
+        error_log("[Bootstrap] Database ping failed: " . $e->getMessage());
+        http_response_code(500);
+        echo "Hệ thống đang tạm ngưng. Vui lòng thử lại sau.";
+        exit;
+    }
+} catch (\Exception $e) {
+    error_log("Database Error (Bootstrap): " . $e->getMessage());
+    http_response_code(500);
+    echo "Hệ thống đang bảo trì cơ sở dữ liệu. Vui lòng thử lại sau.";
+    exit;
 }
 
 // --- User Display Name ---

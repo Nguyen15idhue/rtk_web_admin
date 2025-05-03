@@ -21,13 +21,13 @@ class Database {
                 require_once $configPath;
             } else {
                 // Handle error: Config file not found
-                die("Error: Database configuration file not found or constants not defined.");
+                throw new \RuntimeException("Database configuration file not found or constants not defined.");
             }
         }
 
         // Check again after attempting to include the config file
         if (!defined('DB_SERVER') || !defined('DB_NAME') || !defined('DB_USERNAME') || !defined('DB_PASSWORD')) {
-             die("Error: Database configuration constants (DB_SERVER, DB_NAME, DB_USERNAME, DB_PASSWORD) are not defined even after including the config file.");
+             throw new \RuntimeException("Database configuration constants are not defined even after including config.");
         }
 
         $this->host = DB_SERVER; // Use DB_SERVER
@@ -68,9 +68,13 @@ class Database {
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, // Throw exceptions on error
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,       // Fetch results as associative arrays by default
                 PDO::ATTR_EMULATE_PREPARES   => false,                  // Use native prepared statements
+                PDO::ATTR_PERSISTENT         => true,                   // Enable persistent connection
             ];
 
             $this->conn = new PDO($dsn, $this->username, $this->password, $options);
+
+            // Ping the database immediately after connection
+            $this->conn->query('SELECT 1');
 
             // Log success
             error_log($logPrefix . "Connection to database '" . $this->db_name . "' successful.");
@@ -79,9 +83,7 @@ class Database {
             // Log the error instead of echoing it in production
             // Log failure
             error_log($logPrefix . 'Connection Error: ' . $e->getMessage()); // Use the prefix
-            // Optionally, you could throw the exception again or return null/false
-            // throw $e; // Re-throw if you want calling code to handle it
-            return null; // Indicate connection failure
+            throw new \RuntimeException("Unable to connect to database '{$this->db_name}'", 0, $e);
         }
 
         return $this->conn;
@@ -92,6 +94,9 @@ class Database {
      */
     public function close() {
         if ($this->conn !== null) {
+            if ($this->conn->inTransaction()) {
+                $this->conn->rollBack();        // Ensure no open transaction remains
+            }
             $this->conn = null;
             error_log("[Database Close] Connection closed.");
         }
@@ -113,16 +118,10 @@ class Database {
      */
     public function getConnection() {
         if ($this->conn === null) {
-            // Log attempt to connect if not already connected
-            error_log("[Database GetConnection] No active connection found. Attempting to connect...");
             $this->connect();
-        } else {
-             // Log if connection already exists (optional, can be verbose)
-             // error_log("[Database GetConnection] Returning existing connection.");
-        }
-        // Log if connection failed after attempt
-        if ($this->conn === null) {
-             error_log("[Database GetConnection] Failed to establish connection.");
+            if ($this->conn === null) {
+                throw new \RuntimeException("Failed to establish database connection.");
+            }
         }
 
         if ($this->conn !== null) {
