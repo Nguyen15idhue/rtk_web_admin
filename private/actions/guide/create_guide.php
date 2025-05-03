@@ -1,5 +1,4 @@
 <?php
-session_start();
 $paths = require __DIR__ . '/../../includes/page_bootstrap.php';
 $model = new GuideModel();
 // Require logged‑in admin

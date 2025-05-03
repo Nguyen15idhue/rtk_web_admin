@@ -4,7 +4,6 @@ declare(strict_types=1);
 header('Content-Type: application/json'); // Set response type
 
 // --- Prerequisites ---
-// session_start();
 // if (!isset($_SESSION['admin_id']) || !check_admin_permission('transaction_revert')) { // Add permission check if needed
 //     http_response_code(403);
 //     echo json_encode(['success' => false, 'message' => 'Permission denied.']);

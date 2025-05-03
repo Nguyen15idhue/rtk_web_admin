@@ -1,20 +1,43 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\includes\page_bootstrap.php
-if (session_status() == PHP_SESSION_NONE) {
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
+    // Session fixation protection: regenerate ID on first use or every 5 minutes
+    if (!isset($_SESSION['created'])) {
+        $_SESSION['created'] = time();
+    } elseif (time() - $_SESSION['created'] > 300) {
+        session_regenerate_id(true);
+        $_SESSION['created'] = time();
+    }
 }
 
-// --- Include Core Files ---
-// Include constants for base paths
+// --- Load config, DB and helpers for session validation ---
 require_once __DIR__ . '/../config/constants.php';
-// Replace individual includes to use BASE_PATH
 require_once BASE_PATH . '/config/database.php';
 require_once BASE_PATH . '/classes/Database.php';
 require_once BASE_PATH . '/utils/functions.php';
+
+// --- Enforce multi-device session validity ---
+if (isset($_SESSION['admin_id'])) {
+    validateSession($_SESSION['admin_id'], session_id());
+}
+
+// --- Include Core Files ---
 // Add core classes and API
 require_once BASE_PATH . '/classes/AccountModel.php';
 require_once BASE_PATH . '/api/rtk_system/account_api.php';
 require_once BASE_PATH . '/classes/GuideModel.php';
+
+// Enforce session idle timeout for security
+if (isset($_SESSION['last_activity']) 
+    && (time() - $_SESSION['last_activity']) > SESSION_TIMEOUT) {
+    session_unset();
+    session_destroy();
+    header('Location: ' . BASE_URL . 'public/pages/auth/admin_login.php');
+    exit;
+}
+// Update last activity timestamp
+$_SESSION['last_activity'] = time();
 
 // --- Base Path Calculation ---
 // Replace URL base with filesystem base for includes

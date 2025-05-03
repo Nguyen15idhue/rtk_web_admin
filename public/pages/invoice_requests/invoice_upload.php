@@ -1,14 +1,15 @@
 <?php
-session_start();
+// --- Bootstrap and Initialization ---
+$bootstrap_data        = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$private_includes_path = $bootstrap_data['private_includes_path'];
+$base_url              = $bootstrap_data['base_url'];
+$admin_role            = $bootstrap_data['admin_role'];
+
+// authorization check
 if (!isset($_SESSION['admin_id'])) {
     header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
     exit;
 }
-
-// --- thay bằng page_bootstrap ---
-$bootstrap_data          = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
-$private_includes_path   = $bootstrap_data['private_includes_path'];
-$base_url                = $bootstrap_data['base_url'];
 
 $invoiceId = isset($_GET['invoice_id']) ? (int)$_GET['invoice_id'] : 0;
 if ($invoiceId <= 0) {

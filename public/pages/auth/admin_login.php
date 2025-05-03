@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__DIR__, 3) . '/private/config/constants.php';
-session_start();
 
 // Display error message if set by process_admin_login.php
 $error_message = $_SESSION['admin_login_error'] ?? null;

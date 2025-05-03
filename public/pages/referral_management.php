@@ -1,17 +1,18 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\referral\referral_management.php
-// lấy bootstrap trước để có $base_url
+
+// --- Bootstrap and Initialization ---
 $bootstrap_data         = require_once __DIR__ . '/../../private/includes/page_bootstrap.php';
+$db                      = $bootstrap_data['db'];
 $base_url                = $bootstrap_data['base_url'];
-session_start(); // session cũng đã start trong bootstrap, nhưng giữ để an toàn
+$private_includes_path   = $bootstrap_data['private_includes_path'];
+$user_display_name       = $bootstrap_data['user_display_name'];
+
+// authorization check
 if (!isset($_SESSION['admin_id'])) {
     header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
     exit;
 }
-// --- thay bằng page_bootstrap ---
-$db                      = $bootstrap_data['db'];
-$private_includes_path   = $bootstrap_data['private_includes_path'];
-$user_display_name       = $bootstrap_data['user_display_name'];
 
 ?>
 

@@ -1,15 +1,18 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\reports.php
-session_start();
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
-    exit;
-}
+
+// --- Bootstrap and Initialization ---
 $bootstrap_data         = require_once __DIR__ . '/../../private/includes/page_bootstrap.php';
 $db                      = $bootstrap_data['db'];
 $base_url                = $bootstrap_data['base_url'];
 $private_includes_path   = $bootstrap_data['private_includes_path'];
 $user_display_name       = $bootstrap_data['user_display_name'];
+
+// authorization check
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
+    exit;
+}
 
 $pdo = $db;
 

@@ -1,5 +1,4 @@
 <?php
-session_start();
 header('Content-Type: application/json');
 require_once dirname(__DIR__, 3) . '/private/config/constants.php';
 $action = basename($_GET['action'] ?? '');

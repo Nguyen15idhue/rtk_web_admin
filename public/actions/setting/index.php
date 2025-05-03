@@ -1,5 +1,4 @@
 <?php
-session_start();
 header('Content-Type: application/json');
 
 // Thêm require constants để có PRIVATE_ACTIONS_PATH

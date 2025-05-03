@@ -1,7 +1,6 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+// Session is now bootstrapped by constants.php
+require_once __DIR__ . '/../../config/constants.php';
 require_once __DIR__ . '/../../config/database.php'; // Adjust path as needed
 register_shutdown_function(function() use (&$conn) {
     if (isset($conn) && $conn instanceof mysqli) {
@@ -49,6 +48,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['admin_id'] = $admin['id'];
                     $_SESSION['admin_username'] = $admin['admin_username'];
                     $_SESSION['admin_role'] = $admin['role']; // Store role if needed for permissions
+
+                    // thêm dòng này để lưu phiên mới
+                    recordSession($admin['id']);
 
                     // Optional: Log admin login activity
                     // log_activity($conn, $admin['id'], 'admin_login', 'admin', $admin['id']);

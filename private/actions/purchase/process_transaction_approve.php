@@ -18,14 +18,18 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 //     exit;
 // }
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
-// require_once __DIR__ . '/../../utils/logger.php'; // Example: For logging actions
-// require_once __DIR__ . '/../../utils/permissions.php'; // Example: For permission checks
-// require_once __DIR__ . '/../../services/SurveyAccountService.php'; // Example: Service to activate accounts
-require_once __DIR__ . '/../../services/TransactionHistoryService.php'; // Service to manage transaction history
-require_once __DIR__ . '/../../api/rtk_system/account_api.php';      // thêm
-require_once __DIR__ . '/../../utils/functions.php';                // thêm (generate_unique_id,…)
+// Load our path constants
+require_once __DIR__ . '/../../config/constants.php';
+
+// Replace hard‑coded relative paths with BASE_PATH
+require_once BASE_PATH . '/config/database.php';
+require_once BASE_PATH . '/classes/Database.php';
+// require_once BASE_PATH . '/utils/logger.php'; // Example: For logging actions
+// require_once BASE_PATH . '/utils/permissions.php'; // Example: For permission checks
+// require_once BASE_PATH . '/services/SurveyAccountService.php'; // Example: Service to activate accounts
+require_once BASE_PATH . '/services/TransactionHistoryService.php'; // Service to manage transaction history
+require_once BASE_PATH . '/api/rtk_system/account_api.php';      // thêm
+require_once BASE_PATH . '/utils/functions.php';                // thêm (generate_unique_id,…)
 
 // // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -202,6 +206,8 @@ try {
     error_log("[PTA] cURL timeout set to 5s; calling public front-controller URL={$url} with payload=".json_encode($payload));
 
     // --- Release session lock before internal request ---
+    // Preserve needed session data before closing
+    $adminId = $_SESSION['admin_id'] ?? null;
     session_write_close(); 
     // --- End Release session lock ---
 
@@ -214,7 +220,7 @@ try {
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'Accept: application/json',
         'Content-Type: application/json; charset=utf-8',
-        'User-Agent: PHP-cURL'       // giả lập User‑Agent browser
+        'User-Agent: PHP-cURL'      
     ]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // give more time for connection
@@ -282,7 +288,7 @@ try {
     error_log("[PTA] TransactionHistoryService updated");
 
     // 7. Log Activity
-    // log_admin_activity($_SESSION['admin_id'], 'approve_transaction', 'registration', $transaction_id, ['old_status' => $old_status], ['new_status' => 'active']); // Example
+    // log_admin_activity($adminId, 'approve_transaction', 'registration', $transaction_id, ['old_status' => $old_status], ['new_status' => 'active']); // Example
 
     // 8. TODO: Send Notifications (Email/SMS to user?)
 

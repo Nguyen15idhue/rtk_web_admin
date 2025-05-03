@@ -5,7 +5,6 @@ header('Content-Type: application/json'); // Set response type
 
 // --- Prerequisites ---
 // Ensure session started, user is admin, CSRF protection is in place etc.
-// session_start();
 // if (!isset($_SESSION['admin_id']) || !check_admin_permission('transaction_reject')) {
 //     http_response_code(403);
 //     echo json_encode(['success' => false, 'message' => 'Permission denied.']);
