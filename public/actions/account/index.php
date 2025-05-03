@@ -2,7 +2,7 @@
 // Front-controller for account actions
 session_start();
 header('Content-Type: application/json');
-require_once __DIR__ . '/../../../private/config/constants.php';
+require_once dirname(__DIR__, 3) . '/private/config/constants.php';
 $action = basename($_GET['action'] ?? '');
 $allowed = [
     'create_account', 'delete_account', 'fetch_accounts',

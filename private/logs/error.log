@@ -801,3 +801,660 @@ Stack trace:
 [03-May-2025 02:27:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
 [03-May-2025 02:27:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
 [03-May-2025 02:27:32 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:53:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:53:17 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:53:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:53:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:53:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:53:19 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:53:25 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:53:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:53:32 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:54:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:54:23 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:54:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:54:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:54:29 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:54:29 UTC] [DEBUG] Search keyword: 
+[03-May-2025 02:54:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:54:51 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:54:55 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:54:55 UTC] [Revert Transaction 22] No associated survey accounts found to disable via API.
+[03-May-2025 02:54:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:54:58 UTC] [DEBUG] Search keyword: 
+[03-May-2025 02:54:59 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:54:59 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:54:59 UTC] [DEBUG] Search keyword: 
+[03-May-2025 02:55:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 02:55:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:01:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:01:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:01:26 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:02:12 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:02:13 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:02:17 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:02:17 UTC] [PTA] Start approve transaction_id=22
+[03-May-2025 03:02:17 UTC] [PTA] Transaction begun
+[03-May-2025 03:02:17 UTC] [PTA] check SQL executed, rowCount=1
+[03-May-2025 03:02:17 UTC] [PTA] fetched registration={"status":"pending","user_id":88,"num_account":3,"start_time":"2025-05-03 00:00:00","end_time":"2025-06-04 23:59:59","location_id":12,"package_id":2}
+[03-May-2025 03:02:17 UTC] [PTA] update registration executed, affectedRows=1
+[03-May-2025 03:02:17 UTC] [PTA] update payment executed, affectedRows=0
+[03-May-2025 03:02:17 UTC] [PTA] activate survey_account executed, affectedRows=0
+[03-May-2025 03:02:17 UTC] Warning: No survey accounts found or enabled for approved registration ID: 22
+[03-May-2025 03:02:17 UTC] [PTA] province_code=CMA, lastUser=CMA027, nextSeq=28, username=CMA028, password=0999999445
+[03-May-2025 03:02:17 UTC] [PTA] cURL timeout set to 5s; calling public front-controller URL=http://rtk_web_admin.test/public/actions/account/index.php?action=create_account with payload={"registration_id":22,"username_acc":"CMA028","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 10:02:17","end_time":"2025-06-05 10:02:16","enabled":1,"concurrent_user":1,"account_count":3}
+[03-May-2025 03:02:17 UTC] DEBUG [Account Creation] URL: http://rtk_web_admin.test/public/actions/account/index.php?action=create_account
+[03-May-2025 03:02:17 UTC] DEBUG [Account Creation] Payload: {"registration_id":22,"username_acc":"CMA028","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 10:02:17","end_time":"2025-06-05 10:02:16","enabled":1,"concurrent_user":1,"account_count":3}
+[03-May-2025 03:02:17 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:02:17 UTC] [CA] Start create_account request
+[03-May-2025 03:02:17 UTC] [CA] Raw input: {"registration_id":22,"username_acc":"CMA028","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 10:02:17","end_time":"2025-06-05 10:02:16","enabled":1,"concurrent_user":1,"account_count":3}
+[03-May-2025 03:02:17 UTC] [CA] registration_id=22, username_acc=CMA028, password_len=10
+[03-May-2025 03:02:17 UTC] [CA] location_input=12
+[03-May-2025 03:02:17 UTC] [CA] computed start_time_db=2025-05-03 10:02:17, end_time_db=2025-06-05 10:02:16
+[03-May-2025 03:02:17 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
+[03-May-2025 03:02:17 UTC] [CA] Retrieved userId=88
+[03-May-2025 03:02:17 UTC] [CA] Price=270000.00 => normal flow
+[03-May-2025 03:02:17 UTC] Debug: Non-trial account creation path for registration_id=22
+[03-May-2025 03:02:17 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 03:02:17 UTC] [CA] RTK API payload for CMA028: {"name":"CMA028","userPwd":"0999999445","startTime":1746241337000,"endTime":1749092536000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[03-May-2025 03:02:17 UTC] [CA] RTK API response for CMA028: {"success":true,"data":{"id":2039,"name":"CMA028","userPwd":"0999999445","startTime":1746241337000,"endTime":1749092536000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[03-May-2025 03:02:47 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 30008 milliseconds with 0 bytes received","totalTime":30.00815}
+[03-May-2025 03:02:47 UTC] [PTA] cURL request timed out for transaction ID 22. Account creation status uncertain. Please verify manually.
+[03-May-2025 03:02:47 UTC] [PTA] TransactionHistoryService updated
+[03-May-2025 03:02:47 UTC] [PTA] Transaction committed successfully
+[03-May-2025 03:02:47 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 03:02:47 UTC] [CA] RTK API payload for CMA029: {"name":"CMA029","userPwd":"0999999445","startTime":1746241337000,"endTime":1749092536000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[03-May-2025 03:02:47 UTC] [CA] RTK API response for CMA029: {"success":true,"data":{"id":2040,"name":"CMA029","userPwd":"0999999445","startTime":1746241337000,"endTime":1749092536000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[03-May-2025 03:02:47 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 03:02:47 UTC] [CA] RTK API payload for CMA030: {"name":"CMA030","userPwd":"0999999445","startTime":1746241337000,"endTime":1749092536000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[03-May-2025 03:02:47 UTC] [CA] RTK API response for CMA030: {"success":true,"data":{"id":2041,"name":"CMA030","userPwd":"0999999445","startTime":1746241337000,"endTime":1749092536000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[03-May-2025 03:05:31 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:05:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:05:35 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 03:05:35 UTC] RTK API Payload: {"id":"2040","name":"CMA029","userPwd":"0999999445","startTime":1746266537000,"endTime":1749117736000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[03-May-2025 03:05:36 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[03-May-2025 03:05:36 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:05:52 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:05:52 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 03:05:52 UTC] RTK API Payload: {"id":"2040","name":"CMA029","userPwd":"0999999445","startTime":1746266537000,"endTime":1749117736000,"enabled":1,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[03-May-2025 03:05:52 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[03-May-2025 03:05:52 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:05:57 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:05:57 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:06:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:06:02 UTC] [update_account] raw input: 
+[03-May-2025 03:06:02 UTC] [update_account] decoded input: Array
+(
+    [id] => 2041
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 1
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2025-06-03
+    [status] => active
+)
+
+[03-May-2025 03:06:02 UTC] [update_account] input customer_phone: <none>
+[03-May-2025 03:06:02 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 1
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2025-06-03
+    [status] => active
+)
+
+[03-May-2025 03:06:02 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 03:06:02 UTC] [update_account] final customer_phone: 0999999445
+[03-May-2025 03:06:02 UTC] [update_account] final customer_name: 0999999445
+[03-May-2025 03:06:02 UTC] [update_account] RTK API payload: Array
+(
+    [id] => 2041
+    [name] => CMA030
+    [userPwd] => 0999999445
+    [startTime] => 1746230400000
+    [endTime] => 1748908800000
+    [enabled] => 1
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 88
+    [customerName] => Long2004
+    [customerPhone] => 0999999445
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 42
+        )
+
+)
+
+[03-May-2025 03:06:02 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[03-May-2025 03:06:02 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully.","account":{"id":"2041","username_acc":"CMA030","enabled":1,"created_at":"2025-05-03 10:02:47","password_acc":"0999999445","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"registration_id":22,"activation_date":"2025-05-03 00:00:00","expiry_date":"2025-06-03 23:59:59","registration_status":"active","num_account":3,"user_id":88,"user_email":"tranhailong2408@gmail.com","user_username":"Long2004","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"active"}}
+[03-May-2025 03:06:55 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:07:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:07:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:07:09 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:07:09 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:07:14 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:07:14 UTC] [update_account] raw input: 
+[03-May-2025 03:07:14 UTC] [update_account] decoded input: Array
+(
+    [id] => 2041
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 4
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2026-05-03
+    [status] => active
+)
+
+[03-May-2025 03:07:14 UTC] [update_account] input customer_phone: <none>
+[03-May-2025 03:07:14 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 4
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2026-05-03
+    [status] => active
+)
+
+[03-May-2025 03:07:14 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 03:07:14 UTC] [update_account] final customer_phone: 0999999445
+[03-May-2025 03:07:14 UTC] [update_account] final customer_name: 0999999445
+[03-May-2025 03:07:14 UTC] [update_account] RTK API payload: Array
+(
+    [id] => 2041
+    [name] => CMA030
+    [userPwd] => 0999999445
+    [startTime] => 1746230400000
+    [endTime] => 1777766400000
+    [enabled] => 1
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 88
+    [customerName] => Long2004
+    [customerPhone] => 0999999445
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 42
+        )
+
+)
+
+[03-May-2025 03:07:14 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[03-May-2025 03:07:14 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully.","account":{"id":"2041","username_acc":"CMA030","enabled":1,"created_at":"2025-05-03 10:02:47","password_acc":"0999999445","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"registration_id":22,"activation_date":"2025-05-03 00:00:00","expiry_date":"2026-05-03 23:59:59","registration_status":"active","num_account":3,"user_id":88,"user_email":"tranhailong2408@gmail.com","user_username":"Long2004","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"active"}}
+[03-May-2025 03:08:13 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:09:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:09:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:09:11 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:09:11 UTC] [update_account] raw input: 
+[03-May-2025 03:09:11 UTC] [update_account] decoded input: Array
+(
+    [id] => 2041
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 4
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2026-05-03
+    [status] => active
+)
+
+[03-May-2025 03:09:11 UTC] [update_account] input customer_phone: <none>
+[03-May-2025 03:09:11 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 4
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2026-05-03
+    [status] => active
+)
+
+[03-May-2025 03:09:11 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 03:09:11 UTC] [update_account] final customer_phone: 0999999445
+[03-May-2025 03:09:11 UTC] [update_account] final customer_name: 0999999445
+[03-May-2025 03:09:11 UTC] [update_account] RTK API payload: Array
+(
+    [id] => 2041
+    [name] => CMA030
+    [userPwd] => 0999999445
+    [startTime] => 1746230400000
+    [endTime] => 1777766400000
+    [enabled] => 1
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 88
+    [customerName] => Long2004
+    [customerPhone] => 0999999445
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 42
+        )
+
+)
+
+[03-May-2025 03:09:11 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[03-May-2025 03:09:11 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully.","account":{"id":"2041","username_acc":"CMA030","enabled":1,"created_at":"2025-05-03 10:02:47","password_acc":"0999999445","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"registration_id":22,"activation_date":"2025-05-03 00:00:00","expiry_date":"2026-05-03 23:59:59","registration_status":"active","num_account":3,"user_id":88,"user_email":"tranhailong2408@gmail.com","user_username":"Long2004","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"active"}}
+[03-May-2025 03:09:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:09:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:09:22 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:09:22 UTC] [update_account] raw input: 
+[03-May-2025 03:09:22 UTC] [update_account] decoded input: Array
+(
+    [id] => 2041
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 2
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2026-05-03
+    [status] => pending
+)
+
+[03-May-2025 03:09:22 UTC] [update_account] input customer_phone: <none>
+[03-May-2025 03:09:22 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 2
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2026-05-03
+    [status] => pending
+)
+
+[03-May-2025 03:09:22 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 03:09:22 UTC] [update_account] final customer_phone: 0999999445
+[03-May-2025 03:09:22 UTC] [update_account] final customer_name: 0999999445
+[03-May-2025 03:09:22 UTC] [update_account] RTK API payload: Array
+(
+    [id] => 2041
+    [name] => CMA030
+    [userPwd] => 0999999445
+    [startTime] => 1746230400000
+    [endTime] => 1777766400000
+    [enabled] => 1
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 88
+    [customerName] => Long2004
+    [customerPhone] => 0999999445
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 42
+        )
+
+)
+
+[03-May-2025 03:09:22 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[03-May-2025 03:09:22 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully.","account":{"id":"2041","username_acc":"CMA030","enabled":1,"created_at":"2025-05-03 10:02:47","password_acc":"0999999445","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"registration_id":22,"activation_date":"2025-05-03 00:00:00","expiry_date":"2026-05-03 23:59:59","registration_status":"pending","num_account":3,"user_id":88,"user_email":"tranhailong2408@gmail.com","user_username":"Long2004","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"pending"}}
+[03-May-2025 03:09:32 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:09:32 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:09:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:09:35 UTC] [update_account] raw input: 
+[03-May-2025 03:09:35 UTC] [update_account] decoded input: Array
+(
+    [id] => 2041
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 2
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2026-05-03
+    [status] => suspended
+)
+
+[03-May-2025 03:09:35 UTC] [update_account] input customer_phone: <none>
+[03-May-2025 03:09:35 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 2
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2026-05-03
+    [status] => suspended
+)
+
+[03-May-2025 03:09:35 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 03:09:35 UTC] [update_account] final customer_phone: 0999999445
+[03-May-2025 03:09:35 UTC] [update_account] final customer_name: 0999999445
+[03-May-2025 03:09:35 UTC] [update_account] RTK API payload: Array
+(
+    [id] => 2041
+    [name] => CMA030
+    [userPwd] => 0999999445
+    [startTime] => 1746230400000
+    [endTime] => 1777766400000
+    [enabled] => 0
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 88
+    [customerName] => Long2004
+    [customerPhone] => 0999999445
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 42
+        )
+
+)
+
+[03-May-2025 03:09:35 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[03-May-2025 03:09:35 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully.","account":{"id":"2041","username_acc":"CMA030","enabled":0,"created_at":"2025-05-03 10:02:47","password_acc":"0999999445","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"registration_id":22,"activation_date":"2025-05-03 00:00:00","expiry_date":"2026-05-03 23:59:59","registration_status":"active","num_account":3,"user_id":88,"user_email":"tranhailong2408@gmail.com","user_username":"Long2004","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"suspended"}}
+[03-May-2025 03:10:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:10:00 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 03:10:00 UTC] RTK API Payload: {"id":"2040","name":"CMA029","userPwd":"0999999445","startTime":1746230400000,"endTime":1777852799000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[03-May-2025 03:10:01 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[03-May-2025 03:10:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:10:05 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:10:05 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:10:06 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:10:06 UTC] [update_account] raw input: 
+[03-May-2025 03:10:06 UTC] [update_account] decoded input: Array
+(
+    [id] => 2041
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 2
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2026-05-03
+    [status] => suspended
+)
+
+[03-May-2025 03:10:06 UTC] [update_account] input customer_phone: <none>
+[03-May-2025 03:10:06 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 2
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2026-05-03
+    [status] => suspended
+)
+
+[03-May-2025 03:10:07 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 03:10:07 UTC] [update_account] final customer_phone: 0999999445
+[03-May-2025 03:10:07 UTC] [update_account] final customer_name: 0999999445
+[03-May-2025 03:10:07 UTC] [update_account] RTK API payload: Array
+(
+    [id] => 2041
+    [name] => CMA030
+    [userPwd] => 0999999445
+    [startTime] => 1746230400000
+    [endTime] => 1777766400000
+    [enabled] => 0
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 88
+    [customerName] => Long2004
+    [customerPhone] => 0999999445
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 42
+        )
+
+)
+
+[03-May-2025 03:10:07 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[03-May-2025 03:10:07 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully.","account":{"id":"2041","username_acc":"CMA030","enabled":0,"created_at":"2025-05-03 10:02:47","password_acc":"0999999445","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"registration_id":22,"activation_date":"2025-05-03 00:00:00","expiry_date":"2026-05-03 23:59:59","registration_status":"active","num_account":3,"user_id":88,"user_email":"tranhailong2408@gmail.com","user_username":"Long2004","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"suspended"}}
+[03-May-2025 03:10:32 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:10:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:10:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:10:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:10:35 UTC] [update_account] raw input: 
+[03-May-2025 03:10:35 UTC] [update_account] decoded input: Array
+(
+    [id] => 2041
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 2
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2026-05-03
+    [status] => suspended
+)
+
+[03-May-2025 03:10:35 UTC] [update_account] input customer_phone: <none>
+[03-May-2025 03:10:35 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 2
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2026-05-03
+    [status] => suspended
+)
+
+[03-May-2025 03:10:35 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 03:10:35 UTC] [update_account] final customer_phone: 0999999445
+[03-May-2025 03:10:35 UTC] [update_account] final customer_name: 0999999445
+[03-May-2025 03:10:35 UTC] [update_account] RTK API payload: Array
+(
+    [id] => 2041
+    [name] => CMA030
+    [userPwd] => 0999999445
+    [startTime] => 1746230400000
+    [endTime] => 1777766400000
+    [enabled] => 0
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 88
+    [customerName] => Long2004
+    [customerPhone] => 0999999445
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 42
+        )
+
+)
+
+[03-May-2025 03:10:35 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[03-May-2025 03:10:35 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully.","account":{"id":"2041","username_acc":"CMA030","enabled":0,"created_at":"2025-05-03 10:02:47","password_acc":"0999999445","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"registration_id":22,"activation_date":"2025-05-03 00:00:00","expiry_date":"2026-05-03 23:59:59","registration_status":"active","num_account":3,"user_id":88,"user_email":"tranhailong2408@gmail.com","user_username":"Long2004","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"suspended"}}
+[03-May-2025 03:11:13 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:11:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:11:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:11:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:11:18 UTC] [update_account] raw input: 
+[03-May-2025 03:11:18 UTC] [update_account] decoded input: Array
+(
+    [id] => 2041
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 2
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2026-05-03
+    [status] => suspended
+)
+
+[03-May-2025 03:11:18 UTC] [update_account] input customer_phone: <none>
+[03-May-2025 03:11:18 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => CMA030
+    [password_acc] => 
+    [user_email] => tranhailong2408@gmail.com
+    [location_id] => 12
+    [package_id] => 2
+    [activation_date] => 2025-05-03
+    [expiry_date] => 2026-05-03
+    [status] => suspended
+)
+
+[03-May-2025 03:11:18 UTC] Using default mount points for location ID: 12 - [42]
+[03-May-2025 03:11:18 UTC] [update_account] final customer_phone: 0999999445
+[03-May-2025 03:11:18 UTC] [update_account] final customer_name: 0999999445
+[03-May-2025 03:11:18 UTC] [update_account] RTK API payload: Array
+(
+    [id] => 2041
+    [name] => CMA030
+    [userPwd] => 0999999445
+    [startTime] => 1746230400000
+    [endTime] => 1777766400000
+    [enabled] => 0
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 88
+    [customerName] => Long2004
+    [customerPhone] => 0999999445
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 42
+        )
+
+)
+
+[03-May-2025 03:11:18 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[03-May-2025 03:11:18 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully.","account":{"id":"2041","username_acc":"CMA030","enabled":0,"created_at":"2025-05-03 10:02:47","password_acc":"0999999445","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"registration_id":22,"activation_date":"2025-05-03 00:00:00","expiry_date":"2026-05-03 23:59:59","registration_status":"active","num_account":3,"user_id":88,"user_email":"tranhailong2408@gmail.com","user_username":"Long2004","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"suspended"}}
+[03-May-2025 03:12:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:12:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:12:15 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:12:15 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:14:41 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:14:43 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:14:43 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 03:14:55 UTC] [Database Connect] Connection to database 'surveying_account' successful.

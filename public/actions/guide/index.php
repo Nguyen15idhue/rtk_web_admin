@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 // add constants for PRIVATE_ACTIONS_PATH
-require_once __DIR__ . '/../../../private/config/constants.php';
+require_once dirname(__DIR__, 3) . '/private/config/constants.php';
 $action = $_GET['action'] ?? '';
 switch ($action) {
     case 'fetch':

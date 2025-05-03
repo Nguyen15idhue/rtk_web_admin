@@ -1,7 +1,7 @@
 <?php
 session_start();
 header('Content-Type: application/json');
-require_once __DIR__ . '/../../../private/config/constants.php';
+require_once dirname(__DIR__, 3) . '/private/config/constants.php';
 $action = basename($_GET['action'] ?? '');
 $allowed = [
     'fetch_users',

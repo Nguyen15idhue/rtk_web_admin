@@ -344,7 +344,6 @@ require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php';
                     <label for="edit-status">Trạng thái:</label>
                     <select id="edit-status" name="status" required>
                         <option value="active">Hoạt động</option>
-                        <option value="pending">Chờ KH</option>
                         <option value="suspended">Đình chỉ</option>
                         <option value="rejected">Bị từ chối</option>
                     </select>

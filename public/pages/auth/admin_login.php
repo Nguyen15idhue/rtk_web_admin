@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../../private/config/constants.php';
+require_once dirname(__DIR__, 3) . '/private/config/constants.php';
 session_start();
 
 // Display error message if set by process_admin_login.php
@@ -8,7 +8,8 @@ unset($_SESSION['admin_login_error']); // Clear error after displaying
 
 // If admin is already logged in, redirect to admin dashboard
 if (isset($_SESSION['admin_id'])) {
-    header('Location: ' . BASE_URL . 'public/dashboard.php');
+    // chuyển đến đúng file dashboard trong pages
+    header('Location: ' . BASE_URL . 'public/pages/dashboard/dashboard.php');
     exit();
 }
 ?>
