@@ -89,6 +89,7 @@ try {
 
 } catch (PDOException $e) {
     error_log("Error changing admin password: " . $e->getMessage());
+    error_log("Stack trace: " . $e->getTraceAsString());
     send_json_response(['success' => false, 'message' => 'An error occurred while changing the password.'], 500);
 } finally {
     $db->close();

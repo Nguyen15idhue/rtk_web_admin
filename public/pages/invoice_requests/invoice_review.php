@@ -27,32 +27,10 @@ $current_page = $data['current_page'];
 
 // --- add page bootstrap & title ---
 $page_title = 'Phê duyệt Hóa đơn';
+include $private_includes_path . 'admin_header.php';
+include $private_includes_path . 'admin_sidebar.php';
 ?>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $page_title; ?></title>
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/base.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/layouts/header.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-badges.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/badges.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <style>
-        .status-pending { color: #f59e0b; }
-        .status-approved { color: #10b981; }
-        .status-rejected { color: #ef4444; }
-    </style>
-</head>
-<body>
-<?php 
-    include $private_includes_path . 'admin_header.php';
-    include $private_includes_path . 'admin_sidebar.php';
-?>
+
 <main class="content-wrapper">
     <div class="content-header">
         <h2><?php echo $page_title; ?></h2>
@@ -80,7 +58,15 @@ $page_title = 'Phê duyệt Hóa đơn';
             <table class="transactions-table">
                 <thead>
                     <tr>
-                        <th>ID</th><th>GD#</th><th>Email</th><th>Gói</th><th>Yêu cầu</th><th>Trạng thái</th><th>File</th><th>Lý do</th><th class="actions" style="text-align:center;">Thao tác</th>
+                        <th>ID</th>
+                        <th>GD#</th>
+                        <th>Email</th>
+                        <th>Gói</th>
+                        <th>Yêu cầu</th>
+                        <th class="status">Trạng thái</th>
+                        <th>File</th>
+                        <th>Lý do</th>
+                        <th class="actions" style="text-align:center;">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -91,7 +77,11 @@ $page_title = 'Phê duyệt Hóa đơn';
                         <td><?php echo htmlspecialchars($inv['user_email']); ?></td>
                         <td><?php echo htmlspecialchars($inv['package_name']); ?></td>
                         <td><?php echo $inv['request_date']; ?></td>
-                        <td class="status-<?php echo $inv['status']; ?>"><?php echo ucfirst($inv['status']); ?></td>
+                        <td class="status">
+                            <span class="status-badge status-<?php echo $inv['status']; ?>">
+                                <?php echo ucfirst($inv['status']); ?>
+                            </span>
+                        </td>
                         <td>
                             <?php if ($inv['invoice_file']): ?>
                                 <a href="<?php echo PDF_BASE_URL . $inv['invoice_file']; ?>" target="_blank">Xem PDF</a>

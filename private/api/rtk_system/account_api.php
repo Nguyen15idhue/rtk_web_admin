@@ -118,6 +118,11 @@ function createRtkAccount(array $accountData): array {
         ];
 
     } catch (Exception $e) {
+        error_log(
+            "createRtkAccount Exception: " . $e->getMessage() .
+            "\nPayload: " . json_encode($accountData) .
+            "\nTrace:\n" . $e->getTraceAsString()
+        );
         return [
             'success' => false,
             'data' => null,
@@ -299,6 +304,11 @@ function updateRtkAccount(array $accountData): array {
 
         return ['success' => false, 'data' => $data, 'error' => $data['msg'] ?? "HTTP Error: $httpCode"];
     } catch (Exception $e) {
+        error_log(
+            "updateRtkAccount Exception for ID {$id}: " . $e->getMessage() .
+            "\nPayload: " . json_encode($accountData) .
+            "\nTrace:\n" . $e->getTraceAsString()
+        );
         return ['success' => false, 'data' => null, 'error' => "Exception: " . $e->getMessage()];
     }
 }

@@ -52,19 +52,33 @@ if ($transaction_id === false || $transaction_id <= 0) {
     exit;
 }
 
-// --- Processing ---
+// NEW: Initialize DB connection before history lookup
 $database = Database::getInstance();
 $db       = $database->getConnection();
-
 if (!$db) {
     http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Database connection failed.']);
-    error_log("Error approving transaction: Database connection failed.");
-    $database->close();
+    echo json_encode(['success'=>false,'message'=>'Database connection failed.']);
     exit;
 }
 
-error_log("[PTA] Start approve transaction_id={$transaction_id}");
+// NEW: treat $transaction_id as history ID, fetch the real registration ID and transaction type
+$stmt_hist = $db->prepare("
+    SELECT registration_id, transaction_type 
+    FROM transaction_history 
+    WHERE id = :history_id
+");
+$stmt_hist->bindParam(':history_id', $transaction_id, PDO::PARAM_INT);
+$stmt_hist->execute();
+$hist = $stmt_hist->fetch(PDO::FETCH_ASSOC);
+if (!$hist) {
+    http_response_code(404);
+    echo json_encode(['success' => false, 'message' => 'Transaction history not found.']);
+    exit;
+}
+$registration_id = (int)$hist['registration_id'];
+$tx_type         = $hist['transaction_type']; 
+
+// --- Processing ---
 $db->beginTransaction();
 
 try {
@@ -78,10 +92,10 @@ try {
                location_id,
                package_id           -- added
         FROM registration
-        WHERE id = :id AND deleted_at IS NULL
+        WHERE id = :reg_id AND deleted_at IS NULL
         FOR UPDATE
     ");
-    $stmt_check->bindParam(':id', $transaction_id, PDO::PARAM_INT);
+    $stmt_check->bindParam(':reg_id', $registration_id, PDO::PARAM_INT);
     $stmt_check->execute();
     error_log("[PTA] check SQL executed, rowCount=".$stmt_check->rowCount());
     $registration = $stmt_check->fetch(PDO::FETCH_ASSOC);
@@ -90,9 +104,12 @@ try {
     if (!$registration) {
         throw new Exception("Transaction not found or deleted.");
     }
-    // Allow approving if pending or previously rejected
-    if (!in_array($registration['status'], ['pending', 'rejected'])) {
-        throw new Exception("Transaction cannot be approved (Current Status: " . $registration['status'] . "). Only pending or rejected transactions can be approved.");
+    // Allow approving if pending or previously rejected, except for renewals
+    if ($tx_type !== 'renewal' && !in_array($registration['status'], ['pending', 'rejected'])) {
+        throw new Exception(
+            "Transaction cannot be approved (Current Status: {$registration['status']}). " .
+            "Only pending or rejected transactions can be approved."
+        );
     }
     $old_status = $registration['status']; // Store old status for logging
 
@@ -102,16 +119,16 @@ try {
     $stmt_email->execute();
     $userEmail = $stmt_email->fetchColumn();
 
-    // Calculate original duration in GMT+7
+    // Determine duration based on original start/end timestamps
     $tz = new DateTimeZone('Asia/Bangkok'); // GMT+7
-    $original_start_time = new DateTime($registration['start_time'], $tz);
-    $original_end_time   = new DateTime($registration['end_time'], $tz);
-    $duration_interval   = $original_start_time->diff($original_end_time);
+    $origStartTs = strtotime($registration['start_time']);
+    $origEndTs   = strtotime($registration['end_time']);
+    $durationSec = max(0, $origEndTs - $origStartTs);
 
     // Calculate new start and end times based on approval time
     $new_start_time_dt = new DateTime('now', $tz);
     $new_end_time_dt   = clone $new_start_time_dt;
-    $new_end_time_dt->add($duration_interval);
+    $new_end_time_dt->modify("+{$durationSec} seconds");
 
     $new_start_time_sql = $new_start_time_dt->format('Y-m-d H:i:s');
     $new_end_time_sql   = $new_end_time_dt->format('Y-m-d H:i:s');
@@ -128,7 +145,7 @@ try {
     ");
     $stmt_update_reg->bindParam(':new_start', $new_start_time_sql);
     $stmt_update_reg->bindParam(':new_end',   $new_end_time_sql);
-    $stmt_update_reg->bindParam(':id',        $transaction_id, PDO::PARAM_INT);
+    $stmt_update_reg->bindParam(':id',        $registration_id, PDO::PARAM_INT);
     $updated_reg = $stmt_update_reg->execute();
     error_log("[PTA] update registration executed, affectedRows=".$stmt_update_reg->rowCount());
     if (!$updated_reg) {
@@ -137,23 +154,122 @@ try {
 
     // 3. Update Payment Confirmation (if applicable)
     $stmt_update_pay = $db->prepare("UPDATE payment SET confirmed = 1, confirmed_at = NOW(), updated_at = NOW() WHERE registration_id = :id");
-    $stmt_update_pay->bindParam(':id', $transaction_id, PDO::PARAM_INT);
+    $stmt_update_pay->bindParam(':id', $registration_id, PDO::PARAM_INT);
     $stmt_update_pay->execute();
     error_log("[PTA] update payment executed, affectedRows=".$stmt_update_pay->rowCount());
 
     // 4. Activate Associated Survey Account(s)
     $stmt_activate_acc = $db->prepare("UPDATE survey_account SET enabled = 1, updated_at = NOW() WHERE registration_id = :id AND deleted_at IS NULL");
-    $stmt_activate_acc->bindParam(':id', $transaction_id, PDO::PARAM_INT);
+    $stmt_activate_acc->bindParam(':id', $registration_id, PDO::PARAM_INT);
     $activated_acc = $stmt_activate_acc->execute();
     error_log("[PTA] activate survey_account executed, affectedRows=".$stmt_activate_acc->rowCount());
     $accounts_activated_count = $stmt_activate_acc->rowCount();
 
-    // Check if activation was successful (at least one account should be linked usually)
     if ($accounts_activated_count == 0) {
-        // Decide handling: Rollback? Log warning? Depends on business logic.
-        // For now, log a warning but proceed, assuming registration update is primary.
-        error_log("Warning: No survey accounts found or enabled for approved registration ID: " . $transaction_id);
-        // OR: throw new Exception("Failed to activate associated survey account(s). Rollback required.");
+        error_log("Warning: No survey accounts found or enabled for approved registration ID: " . $registration_id);
+    }
+
+    // --- NEW: if this is a renewal, only update account times ---
+    if ($tx_type === 'renewal') {
+        // --- Lấy duration_text của gói ---
+        $stmt_pkg = $db->prepare("SELECT duration_text FROM package WHERE id = :pid");
+        $stmt_pkg->bindParam(':pid', $registration['package_id'], PDO::PARAM_INT);
+        $stmt_pkg->execute();
+        $durationText = $stmt_pkg->fetchColumn();
+
+        // --- Parse duration_text sang giây ---
+        $durationSecPackage = 0;
+        if (preg_match('/(\d+)\s*ngày/',   $durationText, $m1)) {
+            $durationSecPackage = intval($m1[1]) * 86400;
+        } elseif (preg_match('/(\d+)\s*tháng/',$durationText, $m2)) {
+            $durationSecPackage = intval($m2[1]) * 30 * 86400;
+        } elseif (preg_match('/(\d+)\s*năm/',$durationText, $m3)) {
+            $durationSecPackage = intval($m3[1]) * 365 * 86400;
+        }
+        $durationMs = $durationSecPackage * 1000;
+
+        // Thời điểm hiện tại (ms)
+        $tz    = new DateTimeZone('Asia/Bangkok');
+        $nowMs = (new DateTime('now', $tz))->getTimestamp() * 1000;
+
+        // Tính start/end mới dựa trên now
+        $newStartMs = max($origEndTs * 1000, $nowMs);
+        $newEndMs   = $newStartMs + $durationMs;
+
+        // --- Cập nhật lại start_time và end_time của registration ---
+        $stmt_update_reg = $db->prepare("
+            UPDATE registration
+            SET start_time = FROM_UNIXTIME(:nowMs/1000),
+                end_time   = FROM_UNIXTIME(:endMs/1000),
+                updated_at = NOW()
+            WHERE id = :id
+        ");
+        $stmt_update_reg->bindParam(':startMs', $newStartMs, PDO::PARAM_INT);
+        $stmt_update_reg->bindParam(':endMs',   $newEndMs,   PDO::PARAM_INT);
+        $stmt_update_reg->bindParam(':id',      $registration_id, PDO::PARAM_INT);
+        $stmt_update_reg->execute();
+        error_log("[PTA] registration(id={$registration_id}) times updated for renewal");
+
+        // tính độ dài gốc (ms)
+        $durationMs   = $durationSec * 1000;
+        // end_time gốc từ registration (ms)
+        $origEndMs    = $origEndTs * 1000;
+        // thời điểm hiện tại (ms)
+        $nowMs        = (new DateTime('now', $tz))->getTimestamp() * 1000;
+
+        // NEW: Lấy mountIds cho location
+        $mountIds = getMountPointsByLocationId($registration['location_id']);
+
+        // NEW: Lấy thông tin các survey_account (id, username, password, concurrent_user)
+        $stmt_accs = $db->prepare("
+            SELECT id, username_acc, password_acc, concurrent_user
+            FROM survey_account
+            WHERE registration_id = :id AND deleted_at IS NULL
+        ");
+        $stmt_accs->bindParam(':id', $registration_id, PDO::PARAM_INT);
+        $stmt_accs->execute();
+        $accounts = $stmt_accs->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($accounts as $acc) {
+            // khởi tạo lại thời điểm start/end mỗi account
+            $newStartMs = max($origEndMs, $nowMs);
+            $newEndMs   = $newStartMs + $durationMs;
+
+            // Build payload giống toggle_account_status.php
+            $payload = [
+                'id'              => $acc['id'],
+                'name'            => $acc['username_acc'],
+                'userPwd'         => $acc['password_acc'],
+                'startTime'       => $nowMs,
+                'endTime'         => $newEndMs,
+                'enabled'         => 1,
+                'numOnline'       => (int)$acc['concurrent_user'],
+                'customerBizType' => 1,
+                'mountIds'        => $mountIds
+            ];
+
+            // Gọi API cập nhật
+            updateRtkAccount($payload);
+            error_log("[PTA] renewal update for acc {$acc['id']} with payload: ".json_encode($payload));
+        }
+
+        // NEW: mark this history record as completed
+        $stmt_hist_up = $db->prepare("
+            UPDATE transaction_history 
+            SET status = 'completed', updated_at = NOW() 
+            WHERE id = :id
+        ");
+        $stmt_hist_up->bindParam(':id', $transaction_id, PDO::PARAM_INT);
+        $stmt_hist_up->execute();
+        error_log("[PTA] transaction_history id={$transaction_id} marked completed for renewal");
+
+        // commit và kết thúc sớm
+        $db->commit();
+        echo json_encode([
+            'success' => true,
+            'message' => "Transaction #{$transaction_id} renewed; account times updated."
+        ]);
+        exit;
     }
 
     // 5. Tạo account qua endpoint create_account.php
@@ -189,7 +305,7 @@ try {
     $password = $stmt_user->fetchColumn();
 
     $payload = [
-        'registration_id' => $transaction_id,
+        'registration_id' => $registration_id,
         'username_acc'    => $username,
         'password_acc'    => $password,
         'user_email'      => $userEmail,                
@@ -203,7 +319,7 @@ try {
     ];
 
     error_log("[PTA] province_code={$province_code}, lastUser={$lastUser}, nextSeq={$nextSeq}, username={$username}, password={$password}");
-    error_log("[PTA] cURL timeout set to 5s; calling public front-controller URL={$url} with payload=".json_encode($payload));
+    error_log("[PTA] cURL timeout set to 1s; calling public front-controller URL={$url} with payload=".json_encode($payload));
 
     // --- Release session lock before internal request ---
     // Preserve needed session data before closing
@@ -223,8 +339,8 @@ try {
         'User-Agent: PHP-cURL'      
     ]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // give more time for connection
-    curl_setopt($ch, CURLOPT_TIMEOUT, 30);        // give the script more execution time
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1); // reduced connect timeout to 1s
+    curl_setopt($ch, CURLOPT_TIMEOUT,        1); // reduced execution timeout to 1s
     // disable SSL verification for self-signed certificate
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
@@ -284,7 +400,7 @@ try {
     }
 
     // 6. Update Transaction History
-    TransactionHistoryService::updateStatusByRegistrationId($db, $transaction_id, 'completed');
+    TransactionHistoryService::updateStatusByRegistrationId($db, $registration_id, 'completed');
     error_log("[PTA] TransactionHistoryService updated");
 
     // 7. Log Activity
@@ -298,28 +414,22 @@ try {
 
     // --- Prepare final response ---
     $responseMessage = 'Transaction #' . $transaction_id . ' approved.';
-    // Only report account creation success if the request didn't time out and we have accounts
-    if ($accountCreationFailedDueToTimeout) {
-        $responseMessage .= ' However, the account creation request timed out. Please verify account status manually.';
-    } elseif (!empty($createdAccounts)) {
+    if (!empty($createdAccounts)) {
         $count = count($createdAccounts);
         $responseMessage .= " {$count} account(s) created successfully.";
-    } elseif ($httpCode === 200) { // If HTTP was 200 but no accounts returned (and not timeout)
-        $responseMessage .= " Account creation request succeeded but returned no account details.";
     }
-    // Note: If an exception was thrown earlier due to non-timeout cURL/HTTP errors, this part isn't reached.
 
     echo json_encode([
-        'success' => true, // The DB transaction succeeded, even if account creation timed out
+        'success' => true,
         'message' => $responseMessage,
         'accounts' => $createdAccounts ?? [] // Ensure accounts is always an array
     ]);
 
 } catch (Exception $e) {
     $db->rollBack();
-    error_log("Error approving transaction ID $transaction_id: " . $e->getMessage()); // Log detailed error
-    http_response_code(500); // Internal Server Error
-    // Provide a generic error message to the client
+    error_log("Error approving transaction ID $transaction_id: " . $e->getMessage());
+    error_log("Trace: " . $e->getTraceAsString());          // <-- Added detailed stack trace
+    http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Failed to approve transaction: ' . $e->getMessage()]);
 } finally {
     $database->close();

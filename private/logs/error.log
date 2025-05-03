@@ -1,228 +1,138 @@
-[03-May-2025 05:10:30 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:10:30 UTC] [Database Close] Connection closed.
-[03-May-2025 05:10:31 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:10:31 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 05:10:31 UTC] [DEBUG] Search keyword: 
-[03-May-2025 05:10:31 UTC] [Database Close] Connection closed.
-[03-May-2025 05:10:31 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:10:31 UTC] [Database Close] Connection closed.
-[03-May-2025 05:10:32 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:10:32 UTC] [Database Close] Connection closed.
-[03-May-2025 05:10:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:10:33 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 05:10:33 UTC] [DEBUG] Search keyword: 
-[03-May-2025 05:10:33 UTC] [Database Close] Connection closed.
-[03-May-2025 05:10:33 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:10:33 UTC] [Database Close] Connection closed.
-[03-May-2025 05:10:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:10:34 UTC] [Database Close] Connection closed.
-[03-May-2025 05:12:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:12:58 UTC] [Database Close] Connection closed.
-[03-May-2025 05:13:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:13:00 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 05:13:00 UTC] [DEBUG] Search keyword: 
-[03-May-2025 05:13:00 UTC] [Database Close] Connection closed.
-[03-May-2025 05:13:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:13:00 UTC] [Database Close] Connection closed.
-[03-May-2025 05:13:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:13:00 UTC] [Database Close] Connection closed.
-[03-May-2025 05:13:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:13:10 UTC] [Database Close] Connection closed.
-[03-May-2025 05:13:14 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:13:14 UTC] PHP Fatal error:  Uncaught Error: mysqli object is already closed in E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php:7
-Stack trace:
-#0 E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php(7): mysqli->close()
-#1 [internal function]: {closure}()
-#2 {main}
-  thrown in E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php on line 7
-[03-May-2025 05:13:14 UTC] [Database Close] Connection closed.
-[03-May-2025 05:13:14 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:13:14 UTC] [Database Close] Connection closed.
-[03-May-2025 05:23:48 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 05:23:48 UTC] PHP Fatal error:  Uncaught Error: mysqli object is already closed in E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php:7
-Stack trace:
-#0 E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php(7): mysqli->close()
-#1 [internal function]: {closure}()
-#2 {main}
-  thrown in E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php on line 7
-[03-May-2025 05:23:48 UTC] [Database Close] Connection closed.
-[03-May-2025 05:23:48 UTC] [Database Close] Connection closed.
-[03-May-2025 05:24:01 UTC] [Database Close] Connection closed.
-[03-May-2025 05:24:03 UTC] [Database Close] Connection closed.
-[03-May-2025 05:24:04 UTC] [Database Close] Connection closed.
-[03-May-2025 06:02:39 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:02:39 UTC] PHP Fatal error:  Uncaught Error: mysqli object is already closed in E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php:7
-Stack trace:
-#0 E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php(7): mysqli->close()
-#1 [internal function]: {closure}()
-#2 {main}
-  thrown in E:\Application\laragon\www\rtk_web_admin\private\actions\auth\process_admin_login.php on line 7
-[03-May-2025 06:02:39 UTC] [Database Close] Connection closed.
-[03-May-2025 06:02:39 UTC] [Database Close] Connection closed.
-[03-May-2025 06:03:44 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 06:03:44 UTC] [DEBUG] Search keyword: 
-[03-May-2025 06:03:44 UTC] [Database Close] Connection closed.
-[03-May-2025 06:03:44 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:03:44 UTC] [Database Close] Connection closed.
-[03-May-2025 06:03:50 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 06:03:50 UTC] [DEBUG] Search keyword: 
-[03-May-2025 06:03:50 UTC] [Database Close] Connection closed.
-[03-May-2025 06:03:50 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:03:50 UTC] [Database Close] Connection closed.
-[03-May-2025 06:03:53 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 06:03:53 UTC] [DEBUG] Search keyword: 
-[03-May-2025 06:03:53 UTC] [Database Close] Connection closed.
-[03-May-2025 06:03:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:03:53 UTC] [Database Close] Connection closed.
-[03-May-2025 06:03:59 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:00 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 06:04:00 UTC] [DEBUG] Search keyword: 
-[03-May-2025 06:04:00 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:00 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:02 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:04 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:08 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:10 UTC] Using default mount points for location ID: 12 - [42]
-[03-May-2025 06:04:10 UTC] RTK API Payload: {"id":"2039","name":"CMA028","userPwd":"0999999445","startTime":1746230400000,"endTime":1777852799000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[03-May-2025 06:04:10 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[03-May-2025 06:04:10 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:10 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:21 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:25 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:27 UTC] [Revert Transaction 22] No associated survey accounts found to disable via API.
-[03-May-2025 06:04:28 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:29 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:32 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:33 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 152
-[03-May-2025 06:04:33 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 164
-[03-May-2025 06:04:33 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 165
-[03-May-2025 06:04:33 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 166
-[03-May-2025 06:04:33 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:33 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:34 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:34 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:34 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:35 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:35 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:35 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:35 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:35 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:36 UTC] PHP Warning:  Undefined variable $page_title in E:\Application\laragon\www\rtk_web_admin\public\pages\guide\edit_guide.php on line 24
-[03-May-2025 06:04:36 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:36 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:41 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:41 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:41 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:42 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:42 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:42 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:42 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:43 UTC] PHP Warning:  Undefined variable $page_title in E:\Application\laragon\www\rtk_web_admin\public\pages\guide\edit_guide.php on line 24
-[03-May-2025 06:04:43 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:43 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:45 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:45 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:45 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:04:45 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:46 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:49 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:49 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:49 UTC] [Database Close] Connection closed.
-[03-May-2025 06:04:50 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:15 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:16 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\invoice_requests\invoice_upload.php on line 6
-[03-May-2025 06:05:16 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:21 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:21 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:25 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:25 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:25 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:28 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:30 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:30 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:30 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:31 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:37 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:38 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:38 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:38 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:39 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:40 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:40 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:40 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:40 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:40 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:41 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:42 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:48 UTC] [Database Close] Connection closed.
-[03-May-2025 06:05:59 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:00 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 06:06:00 UTC] [DEBUG] Search keyword: 
-[03-May-2025 06:06:00 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:00 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:06:00 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:02 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:02 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:06 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:06:06 UTC] [PTA] Start approve transaction_id=22
-[03-May-2025 06:06:06 UTC] [PTA] check SQL executed, rowCount=1
-[03-May-2025 06:06:06 UTC] [PTA] fetched registration={"status":"pending","user_id":88,"num_account":3,"start_time":"2025-05-03 00:00:00","end_time":"2026-05-03 23:59:59","location_id":12,"package_id":2}
-[03-May-2025 06:06:06 UTC] [PTA] update registration executed, affectedRows=1
-[03-May-2025 06:06:06 UTC] [PTA] update payment executed, affectedRows=0
-[03-May-2025 06:06:06 UTC] [PTA] activate survey_account executed, affectedRows=0
-[03-May-2025 06:06:06 UTC] Warning: No survey accounts found or enabled for approved registration ID: 22
-[03-May-2025 06:06:06 UTC] [PTA] province_code=CMA, lastUser=CMA030, nextSeq=31, username=CMA031, password=0999999445
-[03-May-2025 06:06:06 UTC] [PTA] cURL timeout set to 5s; calling public front-controller URL=http://rtk_web_admin.test/public/actions/account/index.php?action=create_account with payload={"registration_id":22,"username_acc":"CMA031","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 13:06:06","end_time":"2026-05-04 13:06:05","enabled":1,"concurrent_user":1,"account_count":3}
-[03-May-2025 06:06:06 UTC] DEBUG [Account Creation] URL: http://rtk_web_admin.test/public/actions/account/index.php?action=create_account
-[03-May-2025 06:06:06 UTC] DEBUG [Account Creation] Payload: {"registration_id":22,"username_acc":"CMA031","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 13:06:06","end_time":"2026-05-04 13:06:05","enabled":1,"concurrent_user":1,"account_count":3}
-[03-May-2025 06:06:06 UTC] [CA] Start create_account request
-[03-May-2025 06:06:06 UTC] [CA] Raw input: {"registration_id":22,"username_acc":"CMA031","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-03 13:06:06","end_time":"2026-05-04 13:06:05","enabled":1,"concurrent_user":1,"account_count":3}
-[03-May-2025 06:06:06 UTC] [CA] registration_id=22, username_acc=CMA031, password_len=10
-[03-May-2025 06:06:06 UTC] [CA] location_input=12
-[03-May-2025 06:06:06 UTC] [CA] computed start_time_db=2025-05-03 13:06:06, end_time_db=2026-05-04 13:06:05
-[03-May-2025 06:06:06 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
-[03-May-2025 06:06:06 UTC] [CA] Retrieved userId=88
-[03-May-2025 06:06:06 UTC] [CA] Price=270000.00 => normal flow
-[03-May-2025 06:06:06 UTC] Debug: Non-trial account creation path for registration_id=22
-[03-May-2025 06:06:06 UTC] Using default mount points for location ID: 12 - [42]
-[03-May-2025 06:06:06 UTC] [CA] RTK API payload for CMA031: {"name":"CMA031","userPwd":"0999999445","startTime":1746252366000,"endTime":1777874765000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
-[03-May-2025 06:06:06 UTC] [CA] RTK API response for CMA031: {"success":true,"data":{"id":2043,"name":"CMA031","userPwd":"0999999445","startTime":1746252366000,"endTime":1777874765000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
-[03-May-2025 06:06:36 UTC] [PTA] cURL finished: {"httpCode":0,"errno":28,"error":"Operation timed out after 30007 milliseconds with 0 bytes received","totalTime":30.007443}
-[03-May-2025 06:06:36 UTC] [PTA] cURL request timed out for transaction ID 22. Account creation status uncertain. Please verify manually.
-[03-May-2025 06:06:36 UTC] [PTA] TransactionHistoryService updated
-[03-May-2025 06:06:36 UTC] [PTA] Transaction committed successfully
-[03-May-2025 06:06:36 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:36 UTC] Using default mount points for location ID: 12 - [42]
-[03-May-2025 06:06:36 UTC] [CA] RTK API payload for CMA032: {"name":"CMA032","userPwd":"0999999445","startTime":1746252366000,"endTime":1777874765000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
-[03-May-2025 06:06:36 UTC] [CA] RTK API response for CMA032: {"success":true,"data":{"id":2044,"name":"CMA032","userPwd":"0999999445","startTime":1746252366000,"endTime":1777874765000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
-[03-May-2025 06:06:36 UTC] Using default mount points for location ID: 12 - [42]
-[03-May-2025 06:06:36 UTC] [CA] RTK API payload for CMA033: {"name":"CMA033","userPwd":"0999999445","startTime":1746252366000,"endTime":1777874765000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
-[03-May-2025 06:06:36 UTC] [CA] RTK API response for CMA033: {"success":true,"data":{"id":2045,"name":"CMA033","userPwd":"0999999445","startTime":1746252366000,"endTime":1777874765000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
-[03-May-2025 06:06:36 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:56 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
-[03-May-2025 06:06:56 UTC] [DEBUG] Search keyword: 
-[03-May-2025 06:06:56 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:56 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:06:56 UTC] [Database Close] Connection closed.
-[03-May-2025 06:06:56 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:07:18 UTC] Using default mount points for location ID: 12 - [42]
-[03-May-2025 06:07:18 UTC] RTK API Payload: {"id":"2044","name":"CMA032","userPwd":"0999999445","startTime":1746277566000,"endTime":1777899965000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[03-May-2025 06:07:18 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[03-May-2025 06:07:18 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:18 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:20 UTC] [Database Connect] Connection to database 'surveying_account' successful.
-[03-May-2025 06:07:20 UTC] Using default mount points for location ID: 12 - [42]
-[03-May-2025 06:07:20 UTC] RTK API Payload: {"id":"2045","name":"CMA033","userPwd":"0999999445","startTime":1746277566000,"endTime":1777899965000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[03-May-2025 06:07:20 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[03-May-2025 06:07:20 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:20 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:24 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:32 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:33 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:38 UTC] [Database Close] Connection closed.
-[03-May-2025 06:07:39 UTC] [Database Close] Connection closed.
+[03-May-2025 15:45:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:45:46 UTC] [Database Close] Connection closed.
+[03-May-2025 15:45:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:45:46 UTC] [Database Close] Connection closed.
+[03-May-2025 15:45:46 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:45:46 UTC] [Database Close] Connection closed.
+[03-May-2025 15:45:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:45:54 UTC] [Database Close] Connection closed.
+[03-May-2025 15:45:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:45:54 UTC] [Database Close] Connection closed.
+[03-May-2025 15:45:54 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:45:54 UTC] [Database Close] Connection closed.
+[03-May-2025 15:46:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:46:53 UTC] [Database Close] Connection closed.
+[03-May-2025 15:46:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:46:53 UTC] [Database Close] Connection closed.
+[03-May-2025 15:46:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:46:53 UTC] [Database Close] Connection closed.
+[03-May-2025 15:46:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:46:58 UTC] [Database Close] Connection closed.
+[03-May-2025 15:46:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:46:58 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:04 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:04 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:47 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:47 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:47 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:47 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:48 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:48 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:48 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:48 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:49 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:49 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:49 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:49 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:49 UTC] [Database Close] Connection closed.
+[03-May-2025 15:47:49 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:47:49 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:01 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:01 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:01 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:01 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:02 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:02 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:02 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:02 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:02 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:03 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:03 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:03 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:03 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:03 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:53 UTC] PHP Warning:  Undefined variable $page_title in E:\Application\laragon\www\rtk_web_admin\public\pages\guide\edit_guide.php on line 24
+[03-May-2025 15:48:53 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:53 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:53 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:53 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:58 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:58 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:58 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:58 UTC] [Database Close] Connection closed.
+[03-May-2025 15:48:58 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:48:58 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:04 UTC] PHP Warning:  Undefined variable $page_title in E:\Application\laragon\www\rtk_web_admin\public\pages\guide\edit_guide.php on line 24
+[03-May-2025 15:49:04 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:04 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:04 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:04 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:07 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:07 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:07 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:07 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:10 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:10 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:13 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:13 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[03-May-2025 15:49:13 UTC] [DEBUG] Search keyword: 
+[03-May-2025 15:49:13 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:13 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:13 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:15 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:15 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:16 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[03-May-2025 15:49:16 UTC] [DEBUG] Search keyword: 
+[03-May-2025 15:49:16 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:16 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:16 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:18 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:18 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:19 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:19 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[03-May-2025 15:49:19 UTC] [DEBUG] Search keyword: 
+[03-May-2025 15:49:19 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:19 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:19 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:24 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:24 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:25 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:25 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[03-May-2025 15:49:25 UTC] [DEBUG] Search keyword: 
+[03-May-2025 15:49:25 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:25 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:25 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:27 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[03-May-2025 15:49:27 UTC] [DEBUG] Search keyword: 
+[03-May-2025 15:49:27 UTC] [Database Close] Connection closed.
+[03-May-2025 15:49:27 UTC] [Database Connect] Connection to database 'surveying_account' successful.
+[03-May-2025 15:49:27 UTC] [Database Close] Connection closed.

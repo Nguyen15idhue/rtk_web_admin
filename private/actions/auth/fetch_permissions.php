@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 // Only logged-in admins
 if (!isset($_SESSION['admin_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+    abort('Unauthorized', 401);
     exit;
 }
 
@@ -17,7 +17,7 @@ register_shutdown_function(function() use (&$conn) {
 $role = $_GET['role'] ?? '';
 $validRoles = ['admin','customercare'];
 if (!in_array($role, $validRoles)) {
-    echo json_encode(['success' => false, 'message' => 'Invalid role']);
+    abort('Invalid role', 400);
     exit;
 }
 
@@ -44,5 +44,6 @@ try {
     }
     echo json_encode(['success'=>true, 'data'=>$rows]);
 } catch (Exception $e) {
-    echo json_encode(['success'=>false, 'message'=>'Error fetching permissions']);
+    error_log('fetch_permissions error: ' . $e->getMessage());
+    abort('Error fetching permissions', 500);
 }

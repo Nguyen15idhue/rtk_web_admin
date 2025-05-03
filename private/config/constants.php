@@ -20,3 +20,6 @@ define('PRIVATE_ACTIONS_PATH', BASE_PATH . '/actions/');
 // New: session idle timeout in seconds (e.g. 1800 s = 30 min)
 define('SESSION_TIMEOUT', 1800);
 define('USER_SESSIONS_TABLE', 'user_sessions');
+
+// Add full path to error handler
+define('ERROR_HANDLER_PATH', PRIVATE_INCLUDES_PATH . 'error_handler.php');

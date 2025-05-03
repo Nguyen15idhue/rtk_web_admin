@@ -1,4 +1,8 @@
 /* Common table wrapper styling */
+/* import các rule của button và badges */
+@import url('./tables-buttons.css');
+@import url('./tables-badges.css');
+
 .content-wrapper .transactions-table-wrapper {
     overflow-x: auto;
     background: white;
@@ -31,6 +35,11 @@
     white-space: nowrap;
 }
 
+/* Status header centered */
+.content-wrapper .transactions-table th.status {
+    text-align: center;
+}
+
 .content-wrapper .transactions-table tr:last-child td {
     border-bottom: none;
 }
@@ -50,9 +59,6 @@
     gap: 0.5rem;
     justify-content: center;
 }
-
-/* import mọi quy tắc liên quan đến button */
-@import url('./tables-buttons.css');
 
 /* Status badge */
 .content-wrapper .status-badge {

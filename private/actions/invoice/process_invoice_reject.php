@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 header('Content-Type: application/json');
+require_once __DIR__ . '/../../includes/page_bootstrap.php'; // đã include error_handler
 
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
@@ -15,8 +16,7 @@ $invoiceId = isset($input['invoice_id']) ? (int)$input['invoice_id'] : 0;
 $reason = isset($input['reason']) ? trim($input['reason']) : '';
 
 if ($invoiceId <= 0 || $reason === '') {
-    echo json_encode(['success' => false, 'message' => 'Invalid invoice ID or reason.']);
-    exit;
+    abort('Invalid invoice ID or reason.', 400);
 }
 
 try {
@@ -25,5 +25,6 @@ try {
     echo json_encode(['success' => true]);
 } catch (PDOException $e) {
     error_log('Error in process_invoice_reject: ' . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Database error.']);
+    error_log("Trace: " . $e->getTraceAsString());
+    abort('Database error.', 500);
 }

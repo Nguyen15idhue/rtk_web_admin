@@ -351,11 +351,13 @@ class AccountModel {
 
             return $stmt->execute();
         } catch (PDOException $e) {
-            if ($e->getCode() == 23000) {
-                error_log("Update account ($accountId) failed: Duplicate username. " . $e->getMessage());
-            } else {
-                error_log("Update account ($accountId) failed: PDOException. " . $e->getMessage());
-            }
+            error_log(
+                "UpdateAccount failed in " . __METHOD__ .
+                ": Code {$e->getCode()}, Message: {$e->getMessage()}" .
+                "\nSQL: $sql" .
+                "\nParams: " . json_encode($params) .
+                "\nTrace:\n" . $e->getTraceAsString()
+            );
             return false;
         }
     }

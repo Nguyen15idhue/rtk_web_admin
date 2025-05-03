@@ -63,7 +63,13 @@ class TransactionHistoryService {
             return true;
 
         } catch (PDOException $e) {
-            error_log("Database error in TransactionHistoryService::updateStatusByRegistrationId: " . $e->getMessage());
+            // Bổ sung stack trace và context
+            error_log(
+                "Database error in " . __METHOD__ . 
+                ": " . $e->getMessage() . 
+                "\nRegistration ID: $registration_id, New status: $new_status" .
+                "\nTrace:\n" . $e->getTraceAsString()
+            );
             throw $e; // Re-throw the exception to be caught by the caller for transaction rollback
         }
     }

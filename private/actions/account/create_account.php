@@ -10,16 +10,11 @@ register_shutdown_function(function() use (&$db) {
 });
 
 header('Content-Type: application/json');
-error_reporting(E_ALL); // Report all errors for logging
-ini_set('display_errors', 0); // Keep off for browser output
-ini_set('log_errors', 1); // Ensure errors are logged
-ini_set('error_log', __DIR__ . '/../../logs/error.log');
 // Basic security check
 if (!isset($_SESSION['admin_id'])) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;
 }
-
 
 $response = ['success' => false, 'message' => 'Invalid request'];
 
@@ -366,18 +361,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
 
     } catch (PDOException $e) {
-        error_log("Database error creating account: " . $e->getMessage() . " - SQL State: " . $e->getCode());
+        error_log("Database error creating account: " 
+            . $e->getMessage() 
+            . " (SQLState: " . $e->getCode() . ")" 
+            . "\nTrace: " . $e->getTraceAsString() 
+            . "\nInput: " . json_encode($input)
+        );
         if ($e->getCode() == '23000') {
-             $response['message'] = 'Database error: Could not create account due to a data conflict (e.g., username might already exist).';
+            $response['message'] = 'Database error: Could not create account due to conflict.';
         } elseif ($e->getCode() == '22001') {
-             $response['message'] = 'Database error: Provided data is too long for a field.';
+            $response['message'] = 'Database error: Provided data is too long for a field.';
         } elseif ($e->getCode() == 'HY000' && str_contains($e->getMessage(), 'Incorrect integer value')) {
-             $response['message'] = 'Database error: Invalid data type provided for a numeric field.';
+            $response['message'] = 'Database error: Invalid data type provided for a numeric field.';
         } else {
-             $response['message'] = 'Database error occurred during account creation.';
+            $response['message'] = 'Database error occurred during account creation.';
         }
     } catch (Exception $e) {
-        error_log("Error creating account: " . $e->getMessage());
+        error_log("Error creating account: " 
+            . $e->getMessage() 
+            . "\nTrace: " . $e->getTraceAsString() 
+            . "\nInput: " . json_encode($input)
+        );
         $response['message'] = 'An unexpected error occurred: ' . $e->getMessage();
     }
 } else {

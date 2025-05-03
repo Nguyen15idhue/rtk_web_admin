@@ -13,14 +13,8 @@ if (!isset($_SESSION['admin_id'])) {
 $page_title = 'Quản lý hướng dẫn';
 
 include $private_includes_path . 'admin_header.php';
+include $private_includes_path . 'admin_sidebar.php'; 
 ?>
-<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/layouts/header.css">
-<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables.css">
-<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-buttons.css">
-<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-badges.css">
-<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/buttons.css">
-<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/badges.css">
-<?php include $private_includes_path . 'admin_sidebar.php'; ?>
 
 <main class="content-wrapper">
     <div class="content-header">

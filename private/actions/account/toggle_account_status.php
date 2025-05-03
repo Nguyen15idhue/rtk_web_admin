@@ -1,10 +1,6 @@
 <?php
 // filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\toggle_status.php
 header('Content-Type: application/json');
-error_reporting(E_ALL); // Report all errors for logging
-ini_set('display_errors', 0); // Keep off for browser output
-ini_set('log_errors', 1); // Ensure errors are logged
-ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
 
 // Khởi bootstrap
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
@@ -17,7 +13,7 @@ register_shutdown_function(function() use (&$db) {
 
 // Check admin login
 if (!isset($_SESSION['admin_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+    abort('Unauthorized', 401);
     exit;
 }
 
@@ -29,7 +25,7 @@ if (!is_array($input)) {
 }
 
 if (!$input || !isset($input['id']) || !isset($input['action'])) {
-    echo json_encode(['success' => false, 'message' => 'Invalid input.']);
+    abort('Invalid input.', 400);
     exit;
 }
 
@@ -38,7 +34,7 @@ $action = filter_var($input['action'], FILTER_SANITIZE_SPECIAL_CHARS);
 
 // Action determines the desired state of 'enabled'
 if (!in_array($action, ['suspend', 'reactivate'])) {
-    echo json_encode(['success' => false, 'message' => 'Invalid action specified.']);
+    abort('Invalid action specified.', 400);
     exit;
 }
 
@@ -131,6 +127,11 @@ try {
     }
 } catch (Exception $e) {
     $db->rollBack();
-    error_log("Error in toggle_status.php: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'An error occurred: ' . $e->getMessage()]);
+    error_log("Error in toggle_status.php: " 
+        . $e->getMessage() 
+        . "\nTrace: " . $e->getTraceAsString()
+        . "\nPayload: " . json_encode($input ?? [])
+    );
+    abort('An error occurred: ' . $e->getMessage(), 500);
 }
+?>

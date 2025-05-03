@@ -116,7 +116,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('admin-profile-role').value     = d.role.charAt(0).toUpperCase() + d.role.slice(1);
             }
         })
-        .catch(console.error);
+        .catch(err => {
+            errorHandler.showError('Lỗi tải profile: ' + (err.message||err));
+        });
 
     profileForm.addEventListener('submit', updateAdminProfile);
     passwordForm.addEventListener('submit', changeAdminPassword);

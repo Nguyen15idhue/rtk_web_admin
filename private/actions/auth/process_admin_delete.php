@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 
 // Check SuperAdmin
 if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'admin') {
-    echo json_encode(['success' => false, 'message' => 'Không có quyền.']);
+    abort('Unauthorized', 401);
     exit;
 }
 
@@ -11,7 +11,7 @@ if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'admin') {
 $input = json_decode(file_get_contents('php://input'), true);
 $id = $input['id'] ?? null;
 if (!$id || !is_numeric($id)) {
-    echo json_encode(['success' => false, 'message' => 'ID không hợp lệ.']);
+    abort('Invalid ID', 400);
     exit;
 }
 
@@ -36,6 +36,6 @@ try {
         echo json_encode(['success' => false, 'message' => 'Không tìm thấy tài khoản để xóa.']);
     }
 } catch (PDOException $e) {
-    http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Lỗi khi xóa: ' . $e->getMessage()]);
+    error_log('process_admin_delete error: ' . $e->getMessage());
+    abort('Error deleting admin', 500);
 }

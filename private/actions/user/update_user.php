@@ -1,66 +1,45 @@
 <?php
-// Thay bằng bootstrap chung
 $config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $db     = $config['db'];
 
 header('Content-Type: application/json');
 
-// Wrap main logic in try-catch to ensure JSON output even for early errors
 try {
-    // Authorization Check (Admin only)
     if (!isset($_SESSION['admin_id']) || !in_array($_SESSION['admin_role'] ?? '', ['admin', 'admin'])) {
-        http_response_code(403);
-        echo json_encode(['success' => false, 'message' => 'Unauthorized access.']);
-        exit;
+        error_log("Unauthorized access to update_user");
+        abort('Unauthorized access.', 403);
     }
 
-    // Input Validation
     if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['user_id'])) {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'Invalid request.']);
-        exit;
+        abort('Invalid request.', 400);
     }
 
-    // Use FILTER_SANITIZE_FULL_SPECIAL_CHARS for strings to prevent potential XSS if displayed elsewhere
     $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
     $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS); // Basic sanitization
+    $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $is_company = isset($_POST['is_company']) ? 1 : 0;
     $company_name = $is_company ? filter_input(INPUT_POST, 'company_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : null;
     $tax_code = $is_company ? filter_input(INPUT_POST, 'tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : null;
 
-    // Basic validation checks
     if (!$user_id) {
-        echo json_encode(['success' => false, 'message' => 'ID người dùng không hợp lệ.']);
-        exit;
+        abort('ID người dùng không hợp lệ.', 400);
     }
     if (empty($username)) {
-        echo json_encode(['success' => false, 'message' => 'Tên đăng nhập không được để trống.']);
-        exit;
+        abort('Tên đăng nhập không được để trống.', 400);
     }
     if (!$email) {
-        echo json_encode(['success' => false, 'message' => 'Email không hợp lệ.']);
-        exit;
+        abort('Email không hợp lệ.', 400);
     }
-    // Add more specific validation for phone, company name, tax code if needed
-    // Example: Validate phone format
-    // if (!empty($phone) && !preg_match('/^[0-9\s\-\+\(\)]+$/', $phone)) {
-    //     echo json_encode(['success' => false, 'message' => 'Số điện thoại không hợp lệ.']);
-    //     exit;
-    // }
 
     if (!$db) {
-        http_response_code(500);
-        echo json_encode(['success' => false, 'message' => 'Database dbection failed.']);
-        exit;
+        error_log("DB connection failed in update_user");
+        abort('Database connection failed.', 500);
     }
 
-    // Inner try-catch for transaction handling remains
     try {
         $db->beginTransaction();
 
-        // Check if email or phone already exists for another user (ensure phone is checked only if provided)
         $check_sql = "SELECT id FROM user WHERE id != :id AND (email = :email";
         $params = [':id' => $user_id, ':email' => $email];
         if (!empty($phone)) {
@@ -70,15 +49,13 @@ try {
         $check_sql .= ")";
 
         $stmt_check = $db->prepare($check_sql);
-        $stmt_check->execute($params); // Execute with parameters array
+        $stmt_check->execute($params);
 
         if ($stmt_check->fetch()) {
             $db->rollBack();
-            echo json_encode(['success' => false, 'message' => 'Email hoặc số điện thoại đã tồn tại cho người dùng khác.']);
-            exit;
+            abort('Email hoặc số điện thoại đã tồn tại cho người dùng khác.', 409);
         }
 
-        // Update user data
         $sql = "UPDATE user SET
                     username = :username,
                     email = :email,
@@ -92,11 +69,10 @@ try {
         $stmt_update = $db->prepare($sql);
         $stmt_update->bindParam(':username', $username);
         $stmt_update->bindParam(':email', $email);
-        // Bind phone as null if empty, otherwise bind the value
         if (empty($phone)) {
-             $stmt_update->bindValue(':phone', null, PDO::PARAM_NULL);
+            $stmt_update->bindValue(':phone', null, PDO::PARAM_NULL);
         } else {
-             $stmt_update->bindParam(':phone', $phone);
+            $stmt_update->bindParam(':phone', $phone);
         }
         $stmt_update->bindParam(':is_company', $is_company, PDO::PARAM_INT);
         $stmt_update->bindParam(':company_name', $company_name);
@@ -104,54 +80,33 @@ try {
         $stmt_update->bindParam(':id', $user_id, PDO::PARAM_INT);
 
         if ($stmt_update->execute()) {
-            // TODO: Add activity logging here if needed
-            // log_activity($_SESSION['admin_id'], 'update_user', 'user', $user_id, $old_data, $_POST);
             $db->commit();
             echo json_encode(['success' => true, 'message' => 'Cập nhật thông tin người dùng thành công.']);
             exit;
         } else {
             $db->rollBack();
-            error_log("Failed to update user ID: " . $user_id . " - Error: " . implode(":", $stmt_update->errorInfo()));
-            http_response_code(500);
-            echo json_encode(['success' => false, 'message' => 'Không thể cập nhật thông tin người dùng.']);
-            exit;
+            error_log("Failed to update user ID: $user_id");
+            abort('Không thể cập nhật thông tin người dùng.', 500);
         }
-
     } catch (PDOException $e) {
         if ($db->inTransaction()) {
             $db->rollBack();
         }
-        // Re-throw to be caught by the outer catch block
+        error_log("Transaction PDOException in update_user: " . $e->getMessage());
+        error_log("Stack trace: " . $e->getTraceAsString());
         throw $e;
     }
-    // No need for inner catch (Exception $e) if outer one handles it
-
 } catch (PDOException $e) {
-    // Catch PDO exceptions from dbection or inner try
-    error_log("Database Error in process_user_update.php: " . $e->getMessage());
-    http_response_code(500);
-    // Ensure JSON output even if headers already sent by potential prior errors
-    if (!headers_sent()) {
-         header('Content-Type: application/json');
-    }
-    echo json_encode(['success' => false, 'message' => 'Lỗi cơ sở dữ liệu. Vui lòng thử lại.']);
-    exit;
+    error_log("DB Error in update_user: " . $e->getMessage());
+    error_log("Stack trace: " . $e->getTraceAsString());
+    abort('Lỗi cơ sở dữ liệu. Vui lòng thử lại.', 500);
 } catch (Exception $e) {
-    // Catch any other general exceptions
-    error_log("General Error in process_user_update.php: " . $e->getMessage());
-    http_response_code(500);
-     // Ensure JSON output even if headers already sent by potential prior errors
-    if (!headers_sent()) {
-         header('Content-Type: application/json');
-    }
-    echo json_encode(['success' => false, 'message' => 'Đã xảy ra lỗi không mong muốn: ' . $e->getMessage()]); // Include error message for debugging if needed
-    exit;
+    error_log("General Error in update_user: " . $e->getMessage());
+    error_log("Stack trace: " . $e->getTraceAsString());
+    abort('Đã xảy ra lỗi không mong muốn.', 500);
 } finally {
-    // Close dbection if it was successfully established
     if (isset($db)) {
         $db = null;
     }
 }
-
-// No code should execute after this point due to exit calls
 ?>

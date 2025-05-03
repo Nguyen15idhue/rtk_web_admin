@@ -112,45 +112,32 @@ try {
 
     // 3. If it was previously active, handle deactivation steps (like revert)
     if ($old_status === 'active') {
-        // Deactivate Survey Account(s) in DB
-        $stmt_deactivate_acc = $db->prepare("UPDATE survey_account SET enabled = 0, updated_at = NOW() WHERE registration_id = :id AND deleted_at IS NULL");
-        $stmt_deactivate_acc->bindParam(':id', $transaction_id, PDO::PARAM_INT);
-        $stmt_deactivate_acc->execute(); // Proceed even if no accounts found
+        // Soft delete Survey Account(s) in DB
+        $stmt_delete_acc = $db->prepare("
+            UPDATE survey_account
+            SET deleted_at = NOW(), updated_at = NOW()
+            WHERE registration_id = :id AND deleted_at IS NULL
+        ");
+        $stmt_delete_acc->bindParam(':id', $transaction_id, PDO::PARAM_INT);
+        $stmt_delete_acc->execute();
 
         // Unconfirm Payment (if applicable)
         $stmt_unconfirm_pay = $db->prepare("UPDATE payment SET confirmed = 0, confirmed_at = NULL, updated_at = NOW() WHERE registration_id = :id");
         $stmt_unconfirm_pay->bindParam(':id', $transaction_id, PDO::PARAM_INT);
         $stmt_unconfirm_pay->execute();
 
-        // --- New: Call RTK API to disable accounts ---
+        // --- New: Call RTK API to delete accounts ---
         if (!empty($accounts)) {
-            $locationId = $registration['location_id'];
-            $mountIds = getMountPointsByLocationId($locationId); // Get mount points
-
             foreach ($accounts as $account) {
-                $apiPayload = [
-                    'id'              => $account['id'],
-                    'name'            => $account['username_acc'],
-                    'userPwd'         => $account['password_acc'], // Assuming password doesn't change
-                    'startTime'       => strtotime($registration['start_time']) * 1000, // Use original times
-                    'endTime'         => strtotime($registration['end_time']) * 1000,
-                    'enabled'         => 0, // <<< Set to disabled
-                    'numOnline'       => $account['concurrent_user'] ?? 1,
-                    'customerBizType' => $account['customerBizType'] ?? 1,
-                    'mountIds'        => $mountIds,
-                    // Other fields like userId, customerName etc., might be needed if API requires them
-                ];
-                error_log("[Reject Transaction {$transaction_id}] Calling RTK API for account {$account['id']} with payload: " . json_encode($apiPayload));
-                $apiResult = updateRtkAccount($apiPayload);
-                error_log("[Reject Transaction {$transaction_id}] RTK API response for account {$account['id']}: " . json_encode($apiResult));
-
+                error_log("[Reject Transaction {$transaction_id}] Deleting RTK account {$account['id']}");
+                $apiResult = deleteRtkAccount([$account['id']]);
+                error_log("[Reject Transaction {$transaction_id}] RTK delete response for account {$account['id']}: " . json_encode($apiResult));
                 if (!$apiResult['success']) {
-                    // Throw exception to rollback DB changes if API fails
-                    throw new Exception("Failed to disable account {$account['id']} via RTK API during rejection: " . ($apiResult['error'] ?? 'Unknown API error'));
+                    throw new Exception("Failed to delete account {$account['id']} via RTK API during rejection: " . ($apiResult['error'] ?? 'Unknown API error'));
                 }
             }
         } else {
-             error_log("[Reject Transaction {$transaction_id}] No associated survey accounts found to disable via API (was active).");
+            error_log("[Reject Transaction {$transaction_id}] No associated survey accounts found to delete via API (was active).");
         }
         // --- End RTK API Call ---
     }
@@ -167,15 +154,15 @@ try {
     $db->commit();
     $message = 'Transaction #' . $transaction_id . ' rejected successfully.';
     if ($old_status === 'active') {
-        $message .= ' Associated accounts disabled.';
+        $message .= ' Associated accounts deleted.';
     }
     echo json_encode(['success' => true, 'message' => $message]);
 
 } catch (Exception $e) {
     $db->rollBack();
-    error_log("Error rejecting transaction ID $transaction_id: " . $e->getMessage()); // Log detailed error
-    http_response_code(500); // Internal Server Error
-    // Provide a generic error message to the client
+    error_log("Error rejecting transaction ID $transaction_id: " . $e->getMessage());
+    error_log("Trace: " . $e->getTraceAsString());          // <-- Added detailed stack trace
+    http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Failed to reject transaction. Please try again later or contact support.']);
 } finally {
     $database->close();

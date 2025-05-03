@@ -2,12 +2,7 @@
 header('Content-Type: application/json');
 // Only Super Admin can update permissions
 if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
-    $currentRole = $_SESSION['admin_role'] ?? '(none)';
-    echo json_encode([
-        'success'      => false,
-        'message'      => "Unauthorized"
-    ]);
-    exit;
+    abort('Unauthorized', 401);
 }
 
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
@@ -22,14 +17,12 @@ register_shutdown_function(function() use (&$conn) {
 $raw = file_get_contents('php://input');
 $data = json_decode($raw, true);
 if (!is_array($data) || empty($data['role']) || !is_array($data['permissions'])) {
-    echo json_encode(['success' => false, 'message' => 'Invalid input']);
-    exit;
+    abort('Invalid input', 400);
 }
 $role = $data['role'];
 $validRoles = ['admin','customercare'];
 if (!in_array($role, $validRoles)) {
-    echo json_encode(['success' => false, 'message' => 'Invalid role']);
-    exit;
+    abort('Invalid role', 400);
 }
 $permissions = $data['permissions'];
 try {
@@ -43,6 +36,6 @@ try {
     }
     echo json_encode(['success' => true, 'message' => 'Permissions updated']);
 } catch (Exception $e) {
-    error_log('Error updating permissions: ' . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Error updating permissions']);
+    error_log('process_permissions_update error: ' . $e->getMessage());
+    abort('Error updating permissions', 500);
 }

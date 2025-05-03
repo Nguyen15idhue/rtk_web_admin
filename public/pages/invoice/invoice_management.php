@@ -19,15 +19,16 @@ $provinces = $provinces_stmt->fetchAll(PDO::FETCH_COLUMN);
 // !!! IMPORTANT: Replace this with the actual URL where your images are hosted !!!
 define('IMAGE_HOST_BASE_URL', 'https://taikhoandodac.vn/'); // Example URL
 
-$current_page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$current_page   = isset($_GET['page']) ? max(1,(int)$_GET['page']) : 1;
 $items_per_page = 15;
 $filters = [
-    'search'    => trim($_GET['search']    ?? ''),
-    'status'    => trim($_GET['status']    ?? ''),
-    'date_from' => trim($_GET['date_from'] ?? ''),
-    'date_to'   => trim($_GET['date_to']   ?? ''),
-    'package_id'=> trim($_GET['package_id']?? ''),
-    'province'  => trim($_GET['province']  ?? ''),
+    'search'     => trim($_GET['search']    ?? ''),
+    'status'     => trim($_GET['status']    ?? ''),
+    'date_from'  => trim($_GET['date_from'] ?? ''),
+    'date_to'    => trim($_GET['date_to']   ?? ''),
+    'package_id' => trim($_GET['package_id']?? ''),
+    'province'   => trim($_GET['province']  ?? ''),
+    'type'       => trim($_GET['type']      ?? ''),   // NEW
 ];
 
 $transaction_data = fetch_admin_transactions($filters, $current_page, $items_per_page);
@@ -37,37 +38,7 @@ $total_pages = $transaction_data['total_pages'];
 $current_page = $transaction_data['current_page'];
 
 $pagination_base_url = '?' . http_build_query(array_filter($filters));
-
 ?>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý Giao dịch</title>
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/base.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-badges.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/layouts/header.css">
-    <style>
-        /* Add style for detail labels similar to account management */
-        .detail-label {
-            font-weight: 600; /* semi-bold */
-            min-width: 150px; /* Adjust as needed */
-            display: inline-block;
-        }
-        .detail-row {
-            margin-bottom: 0.5rem; /* Add some spacing between rows */
-        }
-        .status-badge-modal { /* Ensure badge alignment is good */
-             vertical-align: middle;
-        }
-    </style>
-</head>
-<body>
-
 
     <?php include $private_includes_path . 'admin_header.php'; ?>
     <?php include $private_includes_path . 'admin_sidebar.php'; ?>
@@ -115,7 +86,13 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                             </option>
                         <?php endforeach; ?>
                     </select>
-                    <!-- 5. Search input last -->
+                    <!-- 5. Type filter -->
+                    <select id="typeFilter" name="type">
+                        <option value=""    <?= $filters['type']===''       ? 'selected':'' ?>>Tất cả loại</option>
+                        <option value="purchase" <?= $filters['type']==='purchase' ? 'selected':'' ?>>Đăng ký mới</option>
+                        <option value="renewal"  <?= $filters['type']==='renewal'  ? 'selected':'' ?>>Gia hạn</option>
+                    </select>
+                    <!-- 6. Search input last -->
                     <input type="search" placeholder="Tìm Mã GD, Email..." id="searchInput" name="search" value="<?php echo htmlspecialchars($filters['search']); ?>">
                     <!-- buttons -->
                     <button class="btn btn-primary" type="submit"><i class="fas fa-filter"></i> Lọc</button>
@@ -130,6 +107,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                     <thead>
                         <tr>
                             <th>Mã GD</th>
+                            <th>Loại</th>
                             <th>Tỉnh/Thành phố</th>
                             <th>Email</th>
                             <th>Gói</th>
@@ -143,7 +121,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                     <tbody>
                         <?php if (empty($transactions)): ?>
                             <tr id="no-results-row">
-                                <td colspan="9">Không tìm thấy giao dịch phù hợp.</td>
+                                <td colspan="10">Không tìm thấy giao dịch phù hợp.</td>
                             </tr>
                         <?php else: ?>
                             <?php foreach ($transactions as $transaction): ?>
@@ -156,6 +134,8 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                                     $is_pending = $transaction['registration_status'] === 'pending';
                                     $is_approved = $transaction['registration_status'] === 'active';
                                     $is_rejected = $transaction['registration_status'] === 'rejected';
+
+                                    $typeText = $transaction['transaction_type']==='renewal' ? 'Gia hạn' : 'Đăng ký mới';
 
                                     $tx_details_for_modal = [
                                         'id' => $transaction_id,
@@ -170,12 +150,13 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                                     ];
                                     $tx_details_json = htmlspecialchars(json_encode($tx_details_for_modal), ENT_QUOTES, 'UTF-8');
                                 ?>
-                                <tr data-transaction-id="<?php echo $transaction_id; ?>" data-status="<?php echo htmlspecialchars($transaction['registration_status']); ?>">
+                                <tr data-transaction-id="<?php echo $transaction_id; ?>" data-status="<?php echo htmlspecialchars($transaction['registration_status']); ?>" data-type="<?= $transaction['transaction_type'] ?>">
                                     <td>
                                         <a href="#" class="clickable-id" title="Xem chi tiết" onclick='showTransactionDetails(<?php echo $tx_details_json; ?>); return false;'>
                                             <?php echo $transaction_id; ?>
                                         </a>
                                     </td>
+                                    <td><?= $typeText ?></td>
                                     <td><?php echo htmlspecialchars($transaction['province'] ?? ''); ?></td>
                                     <td><?php echo htmlspecialchars($transaction['user_email']?? ''); ?></td>
                                     <td><?php echo htmlspecialchars($transaction['package_name']); ?></td>

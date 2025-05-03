@@ -51,6 +51,7 @@ function get_revenue_sums(array $filters = []): array {
         $success = $executeSum("AND LOWER(r.status) = :status ");
     } catch (Exception $e) {
         error_log("Error in get_revenue_sums: " . $e->getMessage());
+        error_log("Trace: " . $e->getTraceAsString());      // <-- Added detailed stack trace
     }
 
     return [$total, $success];

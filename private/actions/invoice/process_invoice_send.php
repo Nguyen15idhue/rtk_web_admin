@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/../../includes/page_bootstrap.php'; // đã include error_handler
+
 // only POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    die('Method Not Allowed.');
+    abort('Method Not Allowed.', 405);
 }
 
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
@@ -17,15 +18,15 @@ register_shutdown_function(function() use (&$db) {
 
 $invoiceId = isset($_POST['invoice_id']) ? (int)$_POST['invoice_id'] : 0;
 if ($invoiceId <= 0 || empty($_FILES['invoice_file'])) {
-    die('Invalid request.');
+    abort('Invalid request.', 400);
 }
 
 $file = $_FILES['invoice_file'];
 if ($file['error'] !== UPLOAD_ERR_OK) {
-    die('Upload error.');
+    abort('Upload error.', 400);
 }
 if (mime_content_type($file['tmp_name']) !== 'application/pdf') {
-    die('Invalid file type.');
+    abort('Invalid file type.', 400);
 }
 
 $uploadDir = __DIR__ . '/../../../public/uploads/invoice/';
@@ -35,7 +36,7 @@ if (!is_dir($uploadDir)) {
 $fileName = time() . '_' . basename($file['name']);
 $target = $uploadDir . $fileName;
 if (!move_uploaded_file($file['tmp_name'], $target)) {
-    die('Failed to move uploaded file.');
+    abort('Failed to move uploaded file.', 500);
 }
 
 try {
@@ -49,5 +50,6 @@ try {
     exit;
 } catch (PDOException $e) {
     error_log('Error in process_invoice_send: ' . $e->getMessage());
-    die('Database error.');
+    error_log("Trace: " . $e->getTraceAsString());
+    abort('Database error.', 500);
 }

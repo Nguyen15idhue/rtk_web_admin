@@ -80,9 +80,11 @@ class Database {
             error_log($logPrefix . "Connection to database '" . $this->db_name . "' successful.");
 
         } catch(PDOException $e) {
-            // Log the error instead of echoing it in production
-            // Log failure
-            error_log($logPrefix . 'Connection Error: ' . $e->getMessage()); // Use the prefix
+            error_log(
+                "[Database Connect] Connection Error: " . $e->getMessage() .
+                "\nHost: {$this->host}, DB: {$this->db_name}" .
+                "\nTrace:\n" . $e->getTraceAsString()
+            );
             throw new \RuntimeException("Unable to connect to database '{$this->db_name}'", 0, $e);
         }
 
