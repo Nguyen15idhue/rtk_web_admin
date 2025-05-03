@@ -2,6 +2,14 @@
 // Include the bootstrap file
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 
+// Start the session
+session_start();
+
+// Deactivate the session if admin_id is set
+if (isset($_SESSION['admin_id'])) {
+    deactivateSession(session_id());
+}
+
 // Unset all session variables
 $_SESSION = array();
 

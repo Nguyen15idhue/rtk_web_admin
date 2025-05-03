@@ -191,6 +191,51 @@ function send_json_response($data, int $statusCode = 200): void {
     exit; // Terminate script execution after sending the response
 }
 
+/**
+ * Ghi mới phiên vào DB.
+ */
+function recordSession(int $userId): void {
+    $db = Database::getInstance()->getConnection();
+    $stmt = $db->prepare("INSERT INTO ".USER_SESSIONS_TABLE." (user_id, session_id, ip_address, user_agent, created_at, last_activity, is_active)
+                          VALUES (?, ?, ?, ?, NOW(), NOW(), 1)");
+    $stmt->execute([
+        $userId,
+        session_id(),
+        $_SERVER['REMOTE_ADDR'] ?? '',
+        $_SERVER['HTTP_USER_AGENT'] ?? ''
+    ]);
+}
+
+/**
+ * Đánh dấu phiên inactive.
+ */
+function deactivateSession(string $sessionId): void {
+    $db = Database::getInstance()->getConnection();
+    $stmt = $db->prepare("UPDATE ".USER_SESSIONS_TABLE." SET is_active = 0 WHERE session_id = ?");
+    $stmt->execute([$sessionId]);
+}
+
+/**
+ * Kiểm tra phiên có active không, nếu không redirect logout.
+ */
+function validateSession(int $userId, string $sessionId): void {
+    $db = Database::getInstance()->getConnection();
+    $stmt = $db->prepare("SELECT is_active FROM ".USER_SESSIONS_TABLE." WHERE user_id = ? AND session_id = ? LIMIT 1");
+    $stmt->execute([$userId, $sessionId]);
+    $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+    if (!$row || !$row['is_active']) {
+        // tự động logout
+        deactivateSession($sessionId);
+        session_unset();
+        session_destroy();
+        header('Location: ' . BASE_URL . 'public/pages/auth/admin_login.php');
+        exit;
+    }
+    // cập nhật last_activity
+    $upd = $db->prepare("UPDATE ".USER_SESSIONS_TABLE." SET last_activity = NOW() WHERE session_id = ?");
+    $upd->execute([$sessionId]);
+}
+
 // Add more helper functions as needed...
 
 ?>

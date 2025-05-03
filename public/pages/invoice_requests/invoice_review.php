@@ -1,15 +1,17 @@
 <?php
-session_start();
+// --- Bootstrap and Initialization ---
+$bootstrap_data        = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$db                     = $bootstrap_data['db'];
+$base_url               = $bootstrap_data['base_url'];
+$private_includes_path  = $bootstrap_data['private_includes_path'];
+$user_display_name      = $bootstrap_data['user_display_name'];
+
+// authorization check
 if (!isset($_SESSION['admin_id'])) {
     header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
     exit;
 }
 
-// --- thay bằng page_bootstrap & gán lại PDF_BASE_URL ---
-$bootstrap_data        = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
-$db                     = $bootstrap_data['db'];
-$base_url               = $bootstrap_data['base_url'];
-$private_includes_path  = $bootstrap_data['private_includes_path'];
 require_once BASE_PATH . '/actions/invoice/fetch_invoices.php';
 define('PDF_BASE_URL', $base_url . 'public/uploads/invoice/');
 
@@ -25,7 +27,6 @@ $current_page = $data['current_page'];
 
 // --- add page bootstrap & title ---
 $page_title = 'Phê duyệt Hóa đơn';
-$user_display_name = $bootstrap_data['user_display_name'];
 ?>
 <!DOCTYPE html>
 <html lang="vi">

@@ -1,14 +1,14 @@
 <?php
-session_start();
+// Bootstrap and session
+$bootstrap_data = require_once __DIR__ . '/../private/includes/page_bootstrap.php';
+$base_url       = $bootstrap_data['base_url'];
 
 // Check if the admin is logged in
 if (isset($_SESSION['admin_id'])) {
-    // If logged in, redirect to admin dashboard (use absolute path)
-    header("Location: pages/dashboard/dashboard.php"); // Example admin dashboard path
+    header("Location: " . $base_url . "public/pages/dashboard/dashboard.php");
     exit();
 } else {
-    // If not logged in, redirect to admin login page (use relative path)
-    header("Location: pages/auth/admin_login.php"); // Use relative path
+    header("Location: " . $base_url . "public/pages/auth/admin_login.php");
     exit();
 }
 ?>

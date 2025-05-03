@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 // --- Bootstrap and Initialization ---
 $bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
 $db = $bootstrap_data['db'];
@@ -15,7 +13,7 @@ require_once BASE_PATH . '/utils/dashboard_helpers.php';
 // Check if admin is logged in
 if (!isset($_SESSION['admin_id'])) {
     // Use the calculated base_path for redirection
-    header('Location: ' . $base_path . 'public/pages/auth/admin_login.php');
+    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
     exit;
 }
 
