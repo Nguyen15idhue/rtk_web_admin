@@ -9,10 +9,12 @@ class AccountModel {
     private $db;
     private $baseSelectQuery = "
         SELECT
-            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user, sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
-            r.id as registration_id, r.start_time AS activation_date, r.end_time AS expiry_date, r.status AS registration_status, r.num_account,
+            sa.id, sa.username_acc, sa.enabled, sa.created_at, sa.password_acc, sa.concurrent_user,
+            sa.caster, sa.user_type, sa.regionIds, sa.customerBizType, sa.area,
+            sa.start_time AS activation_date, sa.end_time AS expiry_date,
+            r.id as registration_id, r.status AS registration_status, r.num_account,
             u.id as user_id, u.email AS user_email, u.username AS user_username,
-            u.phone AS user_phone,                                             
+            u.phone AS user_phone,
             p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
             l.id as location_id, l.province AS location_name
         FROM survey_account sa
@@ -20,8 +22,8 @@ class AccountModel {
         JOIN user u ON r.user_id = u.id
         LEFT JOIN package p ON r.package_id = p.id
         JOIN location l ON r.location_id = l.id
-        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL 
-    "; // Updated base query to include more fields for editing
+        WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL
+    ";
 
     /**
      * Constructor
@@ -92,10 +94,10 @@ class AccountModel {
                     $sql .= " AND r.status = 'active' AND sa.enabled = 0";
                     break;
                 case 'expired':
-                    $sql .= " AND r.status = 'active' AND r.end_time IS NOT NULL AND r.end_time < NOW()";
+                    $sql .= " AND r.status = 'active' AND sa.end_time IS NOT NULL AND sa.end_time < NOW()";
                     break;
                 case 'active':
-                    $sql .= " AND r.status = 'active' AND sa.enabled = 1 AND (r.end_time IS NULL OR r.end_time >= NOW())";
+                    $sql .= " AND r.status = 'active' AND sa.enabled = 1 AND (sa.end_time IS NULL OR sa.end_time >= NOW())";
                     break;
             }
         }
@@ -222,7 +224,8 @@ class AccountModel {
      *                    'enabled' (bool, optional, default true),
      *                    'caster' (string, optional), 'user_type' (int, optional),
      *                    'regionIds' (int, optional), 'customerBizType' (int, optional, default 1),
-     *                    'area' (string, optional)
+     *                    'area' (string, optional),
+     *                    'start_time' (string, optional), 'end_time' (string, optional)
      * @return bool True on success, false on failure.
      * @throws PDOException If a database error occurs.
      */
@@ -244,10 +247,14 @@ class AccountModel {
 
         $sql = "INSERT INTO survey_account (
                     id, registration_id, username_acc, password_acc, concurrent_user, enabled,
-                    caster, user_type, regionIds, customerBizType, area, created_at
+                    caster, user_type, regionIds, customerBizType, area,
+                    start_time, end_time,
+                    created_at
                 ) VALUES (
                     :id, :registration_id, :username_acc, :password_acc, :concurrent_user, :enabled,
-                    :caster, :user_type, :regionIds, :customerBizType, :area, NOW()
+                    :caster, :user_type, :regionIds, :customerBizType, :area,
+                    :start_time, :end_time,
+                    NOW()
                 )";
 
         try {
@@ -264,6 +271,8 @@ class AccountModel {
                 ':regionIds'        => $data['regionIds'] ?? null,
                 ':customerBizType'  => $data['customerBizType'] ?? 1,
                 ':area'             => $data['area'] ?? null,
+                ':start_time'       => $data['start_time'] ?? null,
+                ':end_time'         => $data['end_time']   ?? null,
             ]);
             return true;
         } catch (PDOException $e) {
@@ -278,7 +287,7 @@ class AccountModel {
      * @param array $data Associative array of data to update. Can include:
      *                    'username_acc', 'password_acc',
      *                    'concurrent_user', 'enabled', 'caster', 'user_type',
-     *                    'regionIds', 'customerBizType', 'area'.
+     *                    'regionIds', 'customerBizType', 'area', 'start_time', 'end_time'.
      *                    Does NOT update 'registration_id'.
      * @return bool True on success, false on failure.
      */
@@ -325,6 +334,14 @@ class AccountModel {
         if (array_key_exists('area', $data)) {
             $setClauses[] = "area = :area";
             $params[':area'] = $data['area'];
+        }
+        if (array_key_exists('start_time', $data)) {
+            $setClauses[] = "start_time = :start_time";
+            $params[':start_time'] = $data['start_time'];
+        }
+        if (array_key_exists('end_time', $data)) {
+            $setClauses[] = "end_time = :end_time";
+            $params[':end_time'] = $data['end_time'];
         }
 
         if (empty($setClauses)) {
@@ -459,15 +476,16 @@ class AccountModel {
      */
     public function getAccountsByUserId(int $userId): array {
         try {
-            $sql = "SELECT sa.*, r.start_time AS start_date, r.end_time AS end_date,"
-                 . " r.status AS reg_status, p.name AS package_name,"
-                 . " DATEDIFF(r.end_time, r.start_time) AS duration_days,"
-                 . " sa.username_acc AS username"
-                 . " FROM survey_account sa"
-                 . " JOIN registration r ON sa.registration_id = r.id"
-                 . " LEFT JOIN package p ON r.package_id = p.id"
-                 . " WHERE r.user_id = :user_id AND sa.deleted_at IS NULL"
-                 . " ORDER BY sa.created_at DESC";
+            $sql = "SELECT sa.*, 
+                           sa.start_time AS start_date, sa.end_time AS end_date,
+                           r.status AS reg_status, p.name AS package_name,
+                           DATEDIFF(sa.end_time, sa.start_time) AS duration_days,
+                           sa.username_acc AS username
+                    FROM survey_account sa
+                    JOIN registration r ON sa.registration_id = r.id
+                    LEFT JOIN package p ON r.package_id = p.id
+                    WHERE r.user_id = :user_id AND sa.deleted_at IS NULL
+                    ORDER BY sa.created_at DESC";
 
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);

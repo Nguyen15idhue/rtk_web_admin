@@ -343,6 +343,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'regionIds'       => $regionIds,
                 'customerBizType' => $customerBizType,
                 'area'            => !empty($input['area']) ? trim($input['area']) : null,
+                'start_time'      => $start_time_db,
+                'end_time'        => $end_time_db,
             ];
             $accountModel->createAccount($accountData);
 

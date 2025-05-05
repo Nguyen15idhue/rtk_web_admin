@@ -153,14 +153,29 @@ try {
     }
 
     // 3. Update Payment Confirmation (if applicable)
-    $stmt_update_pay = $db->prepare("UPDATE payment SET confirmed = 1, confirmed_at = NOW(), updated_at = NOW() WHERE registration_id = :id");
-    $stmt_update_pay->bindParam(':id', $registration_id, PDO::PARAM_INT);
+    $stmt_update_pay = $db->prepare("
+        UPDATE transaction_history 
+        SET payment_confirmed   = 1,
+            payment_confirmed_at = NOW(),
+            updated_at           = NOW() 
+        WHERE id = :history_id
+    ");
+    $stmt_update_pay->bindParam(':history_id', $transaction_id, PDO::PARAM_INT);
     $stmt_update_pay->execute();
-    error_log("[PTA] update payment executed, affectedRows=".$stmt_update_pay->rowCount());
+    error_log("[PTA] update transaction_history payment_confirmed executed, affectedRows=".$stmt_update_pay->rowCount());
 
     // 4. Activate Associated Survey Account(s)
-    $stmt_activate_acc = $db->prepare("UPDATE survey_account SET enabled = 1, updated_at = NOW() WHERE registration_id = :id AND deleted_at IS NULL");
-    $stmt_activate_acc->bindParam(':id', $registration_id, PDO::PARAM_INT);
+    $stmt_activate_acc = $db->prepare("
+        UPDATE survey_account 
+        SET enabled    = 1,
+            start_time = :new_start,
+            end_time   = :new_end,
+            updated_at = NOW() 
+        WHERE registration_id = :id AND deleted_at IS NULL
+    ");
+    $stmt_activate_acc->bindParam(':new_start', $new_start_time_sql);
+    $stmt_activate_acc->bindParam(':new_end',   $new_end_time_sql);
+    $stmt_activate_acc->bindParam(':id',        $registration_id, PDO::PARAM_INT);
     $activated_acc = $stmt_activate_acc->execute();
     error_log("[PTA] activate survey_account executed, affectedRows=".$stmt_activate_acc->rowCount());
     $accounts_activated_count = $stmt_activate_acc->rowCount();
@@ -169,105 +184,131 @@ try {
         error_log("Warning: No survey accounts found or enabled for approved registration ID: " . $registration_id);
     }
 
-    // --- NEW: if this is a renewal, only update account times ---
+    // --- NEW: delegate renewals to update_account endpoint with per-account start/end times ---
     if ($tx_type === 'renewal') {
-        // --- Lấy duration_text của gói ---
-        $stmt_pkg = $db->prepare("SELECT duration_text FROM package WHERE id = :pid");
-        $stmt_pkg->bindParam(':pid', $registration['package_id'], PDO::PARAM_INT);
-        $stmt_pkg->execute();
-        $durationText = $stmt_pkg->fetchColumn();
-
-        // --- Parse duration_text sang giây ---
-        $durationSecPackage = 0;
-        if (preg_match('/(\d+)\s*ngày/',   $durationText, $m1)) {
-            $durationSecPackage = intval($m1[1]) * 86400;
-        } elseif (preg_match('/(\d+)\s*tháng/',$durationText, $m2)) {
-            $durationSecPackage = intval($m2[1]) * 30 * 86400;
-        } elseif (preg_match('/(\d+)\s*năm/',$durationText, $m3)) {
-            $durationSecPackage = intval($m3[1]) * 365 * 86400;
-        }
-        $durationMs = $durationSecPackage * 1000;
-
-        // Thời điểm hiện tại (ms)
-        $tz    = new DateTimeZone('Asia/Bangkok');
-        $nowMs = (new DateTime('now', $tz))->getTimestamp() * 1000;
-
-        // Tính start/end mới dựa trên now
-        $newStartMs = max($origEndTs * 1000, $nowMs);
-        $newEndMs   = $newStartMs + $durationMs;
-
-        // --- Cập nhật lại start_time và end_time của registration ---
-        $stmt_update_reg = $db->prepare("
-            UPDATE registration
-            SET start_time = FROM_UNIXTIME(:nowMs/1000),
-                end_time   = FROM_UNIXTIME(:endMs/1000),
-                updated_at = NOW()
-            WHERE id = :id
+        // fetch all account IDs under this registration
+        $stmt_acc = $db->prepare("
+            SELECT survey_account_id AS id
+            FROM account_groups
+            WHERE registration_id = :id
         ");
-        $stmt_update_reg->bindParam(':startMs', $newStartMs, PDO::PARAM_INT);
-        $stmt_update_reg->bindParam(':endMs',   $newEndMs,   PDO::PARAM_INT);
-        $stmt_update_reg->bindParam(':id',      $registration_id, PDO::PARAM_INT);
-        $stmt_update_reg->execute();
-        error_log("[PTA] registration(id={$registration_id}) times updated for renewal");
+        $stmt_acc->bindParam(':id', $registration_id, PDO::PARAM_INT);
+        $stmt_acc->execute();
+        $accIds = $stmt_acc->fetchAll(PDO::FETCH_COLUMN);
 
-        // tính độ dài gốc (ms)
-        $durationMs   = $durationSec * 1000;
-        // end_time gốc từ registration (ms)
-        $origEndMs    = $origEndTs * 1000;
-        // thời điểm hiện tại (ms)
-        $nowMs        = (new DateTime('now', $tz))->getTimestamp() * 1000;
+        $renewed = [];
+        // compute registration duration once
+        $durationSec = max(0, $origEndTs - $origStartTs);
 
-        // NEW: Lấy mountIds cho location
-        $mountIds = getMountPointsByLocationId($registration['location_id']);
+        // NEW: log which accounts will be renewed
+        error_log("[PTA] Accounts slated for renewal: " . implode(',', $accIds));
 
-        // NEW: Lấy thông tin các survey_account (id, username, password, concurrent_user)
-        $stmt_accs = $db->prepare("
-            SELECT id, username_acc, password_acc, concurrent_user
-            FROM survey_account
-            WHERE registration_id = :id AND deleted_at IS NULL
-        ");
-        $stmt_accs->bindParam(':id', $registration_id, PDO::PARAM_INT);
-        $stmt_accs->execute();
-        $accounts = $stmt_accs->fetchAll(PDO::FETCH_ASSOC);
+        // NEW: preserve session name & ID before releasing lock
+        $sessName = session_name();
+        $sessId   = session_id();
+        session_write_close();
 
-        foreach ($accounts as $acc) {
-            // khởi tạo lại thời điểm start/end mỗi account
-            $newStartMs = max($origEndMs, $nowMs);
-            $newEndMs   = $newStartMs + $durationMs;
+        foreach ($accIds as $aid) {
+            // get old end_time
+            $stmt_old = $db->prepare("SELECT end_time FROM survey_account WHERE id = :aid");
+            $stmt_old->bindParam(':aid', $aid);
+            $stmt_old->execute();
+            $oldEnd = $stmt_old->fetchColumn();
+            $oldEndTs = strtotime($oldEnd);
+            $nowTs    = time();
 
-            // Build payload giống toggle_account_status.php
+            // per-account new start/end
+            $startTs  = max($nowTs, $oldEndTs);
+            $newStart = date('Y-m-d H:i:s', $nowTs);
+            $newEnd   = date('Y-m-d H:i:s', $startTs + $durationSec);
+
+            // NEW: fetch account credentials to include in payload
+            $stmt_acc_info = $db->prepare("
+                SELECT username_acc, password_acc 
+                FROM survey_account 
+                WHERE id = :aid
+            ");
+            $stmt_acc_info->bindParam(':aid', $aid, PDO::PARAM_INT);
+            $stmt_acc_info->execute();
+            $accInfo = $stmt_acc_info->fetch(PDO::FETCH_ASSOC);
+            $usernameAcc = $accInfo['username_acc'];
+            $passwordAcc = $accInfo['password_acc'];
+
+            // build internal URL to our update_account API
+            $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on') ? 'https' : 'http';
+            $host     = $_SERVER['SERVER_NAME'] . (isset($_SERVER['SERVER_PORT']) && !in_array($_SERVER['SERVER_PORT'],['80','443']) ? ':' . $_SERVER['SERVER_PORT'] : '');
+            $basePath = dirname(dirname($_SERVER['SCRIPT_NAME']));
+            $updateUrl = "{$protocol}://{$host}{$basePath}/account/index.php?action=update_account";
+
+            // call update_account with full payload
             $payload = [
-                'id'              => $acc['id'],
-                'name'            => $acc['username_acc'],
-                'userPwd'         => $acc['password_acc'],
-                'startTime'       => $nowMs,
-                'endTime'         => $newEndMs,
-                'enabled'         => 1,
-                'numOnline'       => (int)$acc['concurrent_user'],
-                'customerBizType' => 1,
-                'mountIds'        => $mountIds
+                'id'              => $aid,
+                'username_acc'    => $usernameAcc,
+                'password_acc'    => $passwordAcc,
+                'status'          => 'active',
+                'activation_date' => substr($newStart, 0, 10),
+                'expiry_date'     => substr($newEnd,   0, 10),
             ];
+            $ch = curl_init($updateUrl);
+            curl_setopt($ch, CURLOPT_POST,            true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER,  true);
+            // apply timeout and SSL options
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT,  1); // tăng lên 3s
+            curl_setopt($ch, CURLOPT_TIMEOUT,         1); // tăng lên 3s
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,  false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,  0);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Accept: application/json',
+                'Content-Type: application/json; charset=utf-8',
+                'User-Agent: PHP-cURL'
+            ]);
+            // NEW: debug mỗi lần gọi
+            error_log("[PTA] renewing account {$aid} with cookie {$sessName}={$sessId}");
+            // REPLACE cookie header:
+            curl_setopt($ch, CURLOPT_COOKIE, "{$sessName}={$sessId}");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+            $resp      = curl_exec($ch);
+            $httpCode  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $curlErrno = curl_errno($ch);
+            curl_close($ch);
 
-            // Gọi API cập nhật
-            updateRtkAccount($payload);
-            error_log("[PTA] renewal update for acc {$acc['id']} with payload: ".json_encode($payload));
+            // IMPROVED LOGGING: Log result for each account
+            error_log("[PTA][{$aid}] HTTP={$httpCode} errno={$curlErrno} resp=" . substr((string)$resp,0,200));
+            if ($curlErrno === 0 && $httpCode === 200) {
+                $decodedResp = json_decode($resp, true);
+                if ($decodedResp['success'] ?? false) {
+                    $renewed[] = $aid;
+                    error_log("[PTA] Renewal update SUCCESS for account {$aid}. HTTP {$httpCode}. Response: " . $resp);
+                } else {
+                    error_log("[PTA] Renewal update API returned failure for account {$aid}. HTTP {$httpCode}. Response: " . $resp);
+                }
+            } else {
+                error_log("[PTA] Renewal update cURL FAILED for account {$aid}. HTTP {$httpCode}. cURL Errno: {$curlErrno}. Response: " . $resp);
+            }
         }
 
-        // NEW: mark this history record as completed
-        $stmt_hist_up = $db->prepare("
-            UPDATE transaction_history 
-            SET status = 'completed', updated_at = NOW() 
-            WHERE id = :id
-        ");
-        $stmt_hist_up->bindParam(':id', $transaction_id, PDO::PARAM_INT);
-        $stmt_hist_up->execute();
-        error_log("[PTA] transaction_history id={$transaction_id} marked completed for renewal");
+        // NEW: log summary of renewals
+        error_log("[PTA] Renewal completed for accounts: " . implode(',', $renewed));
+        if (count($renewed) < count($accIds)) {
+            $failed = array_diff($accIds, $renewed);
+            error_log("[PTA] Renewal failed for accounts: " . implode(',', $failed));
+        }
 
-        // commit và kết thúc sớm
+        // mark history completed
+        $stmt_hist = $db->prepare("
+            UPDATE transaction_history
+            SET status = 'completed', updated_at = NOW()
+            WHERE id = :hid
+        ");
+        $stmt_hist->bindParam(':hid', $transaction_id, PDO::PARAM_INT);
+        $stmt_hist->execute();
         $db->commit();
+
         echo json_encode([
-            'success' => true,
-            'message' => "Transaction #{$transaction_id} renewed; account times updated."
+            'success'            => true,
+            'message'            => "Transaction #{$transaction_id} approved.",
+            'scheduled_accounts' => $accIds,
+            'renewed_accounts'   => $renewed
         ]);
         exit;
     }

@@ -57,13 +57,28 @@ if (!$db) {
 try {
     $db->beginTransaction();
 
-    // 1. Verify Transaction Exists and is Active (Approved)
+    // NEW: Map history ID → registration ID & transaction type
+    $stmt_hist = $db->prepare("
+        SELECT registration_id, transaction_type
+        FROM transaction_history
+        WHERE id = :hid FOR UPDATE
+    ");
+    $stmt_hist->bindParam(':hid', $transaction_id, PDO::PARAM_INT);
+    $stmt_hist->execute();
+    $hist = $stmt_hist->fetch(PDO::FETCH_ASSOC);
+    if (!$hist) {
+        throw new Exception("Transaction history not found (ID: {$transaction_id}).");
+    }
+    $reg_id  = (int)$hist['registration_id'];
+    $tx_type = $hist['transaction_type'];
+
+    // 1. Verify Transaction Exists and is Active
     $stmt_check = $db->prepare("
-        SELECT r.status, r.user_id, r.location_id, r.start_time, r.end_time
-        FROM registration r
-        WHERE r.id = :id AND r.deleted_at IS NULL FOR UPDATE
-    "); // Lock row, fetch location_id, start/end times
-    $stmt_check->bindParam(':id', $transaction_id, PDO::PARAM_INT);
+        SELECT status, user_id, location_id, start_time, end_time
+        FROM registration
+        WHERE id = :id AND deleted_at IS NULL FOR UPDATE
+    ");
+    $stmt_check->bindParam(':id', $reg_id, PDO::PARAM_INT);
     $stmt_check->execute();
     $registration = $stmt_check->fetch(PDO::FETCH_ASSOC);
 
@@ -74,29 +89,45 @@ try {
          throw new Exception("Transaction is not approved (Current Status: " . $registration['status'] . "). Only approved transactions can be reverted.");
     }
 
+    // --- NEW: nếu lịch sử là 'renewal' thì trừ lại end_time ---
+    if ($tx_type === 'renewal') {
+        $stmt_adj = $db->prepare("
+            UPDATE registration
+            SET end_time = start_time, updated_at = NOW()
+            WHERE id = :id
+        ");
+        $stmt_adj->bindParam(':id', $reg_id, PDO::PARAM_INT);
+        $stmt_adj->execute();
+    }
+
     // --- Fetch associated survey accounts BEFORE updates ---
     $stmt_accounts = $db->prepare("
         SELECT id, username_acc, password_acc, concurrent_user, customerBizType
         FROM survey_account
-        WHERE registration_id = :reg_id AND deleted_at IS NULL
+        WHERE registration_id = :id AND deleted_at IS NULL
     ");
-    $stmt_accounts->bindParam(':reg_id', $transaction_id, PDO::PARAM_INT);
+    $stmt_accounts->bindParam(':id', $reg_id, PDO::PARAM_INT);
     $stmt_accounts->execute();
     $accounts = $stmt_accounts->fetchAll(PDO::FETCH_ASSOC);
     // --- End Fetch ---
 
     // 2. Update Registration Status back to Pending
-    $stmt_update_reg = $db->prepare("UPDATE registration SET status = 'pending', updated_at = NOW() WHERE id = :id");
-    $stmt_update_reg->bindParam(':id', $transaction_id, PDO::PARAM_INT);
-    $updated_reg = $stmt_update_reg->execute();
-    if (!$updated_reg) {
-        throw new Exception("Failed to update registration status.");
-    }
+    $stmt_update_reg = $db->prepare("
+        UPDATE registration
+        SET status = 'pending', updated_at = NOW()
+        WHERE id = :id
+    ");
+    $stmt_update_reg->bindParam(':id', $reg_id, PDO::PARAM_INT);
+    $stmt_update_reg->execute();
 
     // 3. Update Payment Confirmation back to Unconfirmed
-    $stmt_unconfirm_pay = $db->prepare("UPDATE payment SET confirmed = 0, confirmed_at = NULL, updated_at = NOW() WHERE registration_id = :id");
-    $stmt_unconfirm_pay->bindParam(':id', $transaction_id, PDO::PARAM_INT);
-    $stmt_unconfirm_pay->execute(); // Proceed even if no payment record exists
+    $stmt_unconfirm_pay = $db->prepare("
+        UPDATE transaction_history
+        SET payment_confirmed = 0, payment_confirmed_at = NULL, updated_at = NOW()
+        WHERE id = :hid
+    ");
+    $stmt_unconfirm_pay->bindParam(':hid', $transaction_id, PDO::PARAM_INT);
+    $stmt_unconfirm_pay->execute();
 
     // 4. Delete Associated Survey Account(s) in DB (soft delete)
     $stmt_delete_acc = $db->prepare("
@@ -104,7 +135,7 @@ try {
         SET deleted_at = NOW(), updated_at = NOW() 
         WHERE registration_id = :id AND deleted_at IS NULL
     ");
-    $stmt_delete_acc->bindParam(':id', $transaction_id, PDO::PARAM_INT);
+    $stmt_delete_acc->bindParam(':id', $reg_id, PDO::PARAM_INT);
     $stmt_delete_acc->execute();
 
     // --- New: Call RTK API to delete accounts ---

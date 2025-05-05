@@ -10,13 +10,13 @@ class TransactionHistoryService {
      *
      * @param PDO $db The database connection object.
      * @param int $registration_id The ID of the registration.
-     * @param string $new_status The new status ('pending', 'completed', 'failed', 'refunded').
+     * @param string $new_status The new status ('pending', 'completed', 'failed', 'refunded', 'rejected').
      * @return bool True on success or if no record found, false on failure.
      * @throws PDOException If a database error occurs.
      */
     public static function updateStatusByRegistrationId(PDO $db, int $registration_id, string $new_status): bool {
         // Validate status
-        $valid_statuses = ['pending', 'completed', 'failed', 'refunded'];
+        $valid_statuses = ['pending', 'completed', 'failed', 'refunded', 'rejected'];
         if (!in_array($new_status, $valid_statuses)) {
             error_log("Invalid status provided to TransactionHistoryService: " . $new_status);
             return false; // Or throw an InvalidArgumentException
@@ -37,6 +37,10 @@ class TransactionHistoryService {
                     break;
                 case 'refunded':
                     $target_statuses = ['completed']; // Usually refund only completed transactions
+                    break;
+                case 'rejected':
+                    // Allow transition from any status (optional)
+                    $target_statuses = ['pending', 'completed', 'failed', 'refunded'];
                     break;
             }
 

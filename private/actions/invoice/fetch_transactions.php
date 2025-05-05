@@ -56,7 +56,7 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
                 r.rejection_reason,
                 u.email AS user_email,
                 p.name AS package_name,
-                pay.payment_image,
+                th.payment_image AS payment_image,         /* use transaction_history.payment_image */
                 l.province
         ";
         $base_from  = "
@@ -64,7 +64,6 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
             JOIN registration r    ON th.registration_id = r.id AND r.deleted_at IS NULL
             JOIN user u            ON r.user_id = u.id
             JOIN package p         ON r.package_id = p.id
-            LEFT JOIN payment pay  ON r.id = pay.registration_id
             LEFT JOIN location l   ON l.id = r.location_id
         ";
         $base_where = " WHERE 1=1 "; // always true, filters tiếp theo dùng AND

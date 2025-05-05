@@ -94,42 +94,65 @@ try {
     $success = $accountModel->updateAccount($accountId, $updateData);
 
     if ($success) {
-        // Cập nhật registration.status
+        // before touching registration, ensure we only update this account's registration
+        $stmtRegId = $db->prepare("SELECT registration_id FROM survey_account WHERE id = ?");
+        $stmtRegId->execute([$accountId]);
+        $oldRegId = (int)$stmtRegId->fetchColumn();
+        $stmtCount = $db->prepare("SELECT COUNT(*) FROM survey_account WHERE registration_id = ?");
+        $stmtCount->execute([$oldRegId]);
+        if ((int)$stmtCount->fetchColumn() > 1) {
+            // clone registration row
+            $colsStmt = $db->query("SHOW COLUMNS FROM registration");
+            $cols = [];
+            while ($col = $colsStmt->fetch(PDO::FETCH_ASSOC)) {
+                if ($col['Field'] === 'id') continue;
+                $cols[] = $col['Field'];
+            }
+            $colsList = implode(',', $cols);
+            $phList   = ':' . implode(',:', $cols);
+            $rowStmt  = $db->prepare("SELECT $colsList FROM registration WHERE id = ?");
+            $rowStmt->execute([$oldRegId]);
+            $regData  = $rowStmt->fetch(PDO::FETCH_ASSOC);
+            $insSql   = "INSERT INTO registration ($colsList) VALUES ($phList)";
+            $insStmt  = $db->prepare($insSql);
+            $insStmt->execute($regData);
+            $newRegId = $db->lastInsertId();
+            $updSa    = $db->prepare("UPDATE survey_account SET registration_id = ? WHERE id = ?");
+            $updSa->execute([$newRegId, $accountId]);
+            $regTargetId = $newRegId;
+        } else {
+            $regTargetId = $oldRegId;
+        }
+
+        // update only this registration row's status
         if ($inputStatus !== null) {
             $stmtReg = $db->prepare("
                 UPDATE registration 
                 SET status = ?, updated_at = NOW() 
-                WHERE id = (
-                    SELECT registration_id FROM survey_account WHERE id = ?
-                )
+                WHERE id = ?
             ");
-            $stmtReg->execute([$regStatus, $accountId]);
+            $stmtReg->execute([$regStatus, $regTargetId]);
         }
 
-        $response['success'] = true;
-        $response['message'] = 'Account updated successfully.';
-
-        // --- New: Ghi đè start_time và end_time vào bảng registration ---
+        // update only this registration row's start_time/end_time
         $activation = $input['activation_date'] ?? null;
         $expiry     = $input['expiry_date'] ?? null;
         if ($activation && $expiry) {
-            $stmtReg = $db->prepare("
-                UPDATE registration 
-                SET start_time = ?, end_time = ?
-                WHERE id = (
-                    SELECT registration_id 
-                    FROM survey_account 
-                    WHERE id = ?
-                )
+
+            // NEW: đồng bộ start_time/end_time trong survey_account
+            $stmtAccTime = $db->prepare("
+                UPDATE survey_account 
+                SET start_time = ?, end_time = ?, updated_at = NOW() 
+                WHERE id = ?
             ");
-            $stmtReg->execute([
-                $activation . ' 00:00:00', 
-                $expiry     . ' 23:59:59', 
+            $stmtAccTime->execute([
+                $activation . ' 00:00:00',
+                $expiry     . ' 23:59:59',
                 $accountId
             ]);
         }
 
-        // NEW: capture updated user_id for API
+        // update only this registration row's user_id
         $rtkUserId = null;
         $userEmail = filter_var($input['user_email'] ?? null, FILTER_VALIDATE_EMAIL);
         if ($userEmail) {
@@ -140,11 +163,9 @@ try {
                 $stmtUpdUser = $db->prepare("
                     UPDATE registration
                     SET user_id = ?, updated_at = NOW()
-                    WHERE id = (
-                        SELECT registration_id FROM survey_account WHERE id = ?
-                    )
+                    WHERE id = ?
                 ");
-                $stmtUpdUser->execute([$newUserId, $accountId]);
+                $stmtUpdUser->execute([$newUserId, $regTargetId]);
                 $rtkUserId = $newUserId; // store for payload
             }
         }
@@ -158,7 +179,7 @@ try {
             $currentPwd = $input['password_acc'];
         }
 
-        // --- New: preserve mountIds if location_id unchanged ---
+        // update only this registration row's location_id
         // lấy ID location cũ từ DB
         $stmtOldLoc = $db->prepare("
             SELECT r.location_id 
@@ -177,11 +198,9 @@ try {
             $stmtUpdLoc = $db->prepare("
                 UPDATE registration 
                 SET location_id = ?, updated_at = NOW() 
-                WHERE id = (
-                    SELECT registration_id FROM survey_account WHERE id = ?
-                )
+                WHERE id = ?
             ");
-            $stmtUpdLoc->execute([$newLocationId, $accountId]);
+            $stmtUpdLoc->execute([$newLocationId, $regTargetId]);
             error_log("Location changed for account {$accountId}: old={$oldLocationId}, new={$newLocationId}");
         }
 
@@ -189,8 +208,8 @@ try {
         $mountIds = getMountPointsByLocationId($newLocationId);
 
         // NEW: prepare additional payload fields à la create_account
-        $casterIds       = !empty($input['caster'])             ? [trim($input['caster'])] : [];
-        $regionIdsArr    = isset($updateData['regionIds'])      ? [$updateData['regionIds']] : [];
+        $casterIds       = !empty($input['caster'])        ? [trim($input['caster'])] : [];
+        $regionIdsArr    = isset($updateData['regionIds']) ? [$updateData['regionIds']] : [];
         $customerCompany = $input['customer_company'] ?? '';
         // get customer_phone: prefer input, else load from user table
         $customerPhone = $input['customer_phone'] ?? '';
@@ -199,24 +218,32 @@ try {
             $stmtPhone->execute([$rtkUserId]);
             $customerPhone = $stmtPhone->fetchColumn() ?: '';
         }
-        error_log("[update_account] final customer_phone: " . $customerPhone);
+        // NEW: Sanitize phone number for RTK API requirements
+        $customerPhone = preg_replace('/[^0-9+\-]/', '', $customerPhone); // Keep only digits, +, -
+        $customerPhone = substr($customerPhone, 0, 20); // Limit to 20 chars
+        error_log("[update_account] final sanitized customer_phone: " . $customerPhone);
 
-        // get customer_phone: prefer input, else load from user table
+        // get customer_name: prefer input, else load from user table
         $customerName = $input['customer_name'] ?? '';
         if (empty($customerName) && !empty($rtkUserId)) {
             $stmtName = $db->prepare("SELECT username FROM `user` WHERE id = ?");
             $stmtName->execute([$rtkUserId]);
             $customerName = $stmtName->fetchColumn() ?: '';
         }
-        error_log("[update_account] final customer_name: " . $customerPhone);
+        // FIXED: log customer_name, not phone
+        error_log("[update_account] final customer_name: " . $customerName);
+
+        // NEW: compute start/end in ms directly from submitted dates
+        $startMs = strtotime($activation . ' 00:00:00') * 1000;
+        $endMs   = strtotime($expiry     . ' 23:59:59') * 1000;
 
         // prepare payload for RTK API
         $apiPayload = [
             'id'              => $accountId,
             'name'            => $input['username_acc'],
             'userPwd'         => $currentPwd,
-            'startTime'       => strtotime($input['activation_date']) * 1000,
-            'endTime'         => strtotime($input['expiry_date'])   * 1000,
+            'startTime'       => $startMs,
+            'endTime'         => $endMs,
             'enabled'         => $updateData['enabled']      ?? 1,
             'numOnline'       => $updateData['concurrent_user'] ?? 1,
             'customerBizType' => $updateData['customerBizType'] ?? 1,
@@ -228,27 +255,31 @@ try {
             'regionIds'       => $regionIdsArr,
             'mountIds'        => $mountIds,
         ];
+        // bỏ customerPhone khi rỗng để RTK API không validate
+        if (empty($customerPhone)) {
+            unset($apiPayload['customerPhone']);
+        }
         error_log("[update_account] RTK API payload: " . print_r($apiPayload, true));
 
         // call external RTK update API
         $apiResult = updateRtkAccount($apiPayload);
         error_log("[update_account] RTK API result: " . print_r($apiResult, true));
-        // log internal API message if present
-        if (!empty($apiResult['data']['msg'])) {
-            error_log("[update_account] RTK API message: " . $apiResult['data']['msg']);
-            // append RTK API informational message to response
-            $response['message'] .= ' RTK Info: ' . $apiResult['data']['msg'];
-        }
+
+        // capture the informational message
+        $apiMsg = $apiResult['data']['msg'] ?? '';
 
         if (!$apiResult['success']) {
-            // append lỗi từ API bên ngoài vào message để front‑end show lên
             $response['message'] .= ' External API Error: ' . $apiResult['error'];
-            // nếu muốn coi là không thành công tổng thể
             $response['success'] = false;
         }
 
         // finally, return the refreshed account record
         $response['account'] = $accountModel->getAccountById($accountId);
+
+        // ensure we surface the RTK info in the final message
+        $response['success'] = true;
+        $response['message'] = 'Account updated successfully'
+                            . ($apiMsg ? '. RTK Info: ' . $apiMsg : '');
 
     } else {
         $response['message'] = 'Failed to update account. Check logs for details.';
