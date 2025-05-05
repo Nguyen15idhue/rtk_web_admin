@@ -63,10 +63,9 @@ function fetch_dashboard_data(): array
         $current_month_end = date('Y-m-t 23:59:59');
         $sql = "SELECT SUM(r.total_price) as total
                 FROM registration r
-                LEFT JOIN payment p ON r.id = p.registration_id
                 WHERE r.deleted_at IS NULL
                   AND r.created_at BETWEEN :start_date AND :end_date
-                  AND (r.status = 'active' OR p.confirmed = 1)";
+                  AND r.status = 'active'";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':start_date', $current_month_start);
         $stmt->bindParam(':end_date', $current_month_end);
