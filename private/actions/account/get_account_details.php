@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\get_account_details.php
+// filepath: private\actions\account\get_account_details.php
 
 // Khởi bootstrap
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';

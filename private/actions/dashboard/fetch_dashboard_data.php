@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\dashboard\fetch_dashboard_data.php
+// filepath: private\actions\dashboard\fetch_dashboard_data.php
 
 $config = require __DIR__ . '/../../includes/page_bootstrap.php';
 $pdo = $config['db'];

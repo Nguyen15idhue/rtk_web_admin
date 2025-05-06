@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\public\pages/invoice/invoice_management.php
+// filepath: public/pages/invoice/invoice_management.php
 $bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
 $db                    = $bootstrap_data['db'];
 $base_url             = $bootstrap_data['base_url'];

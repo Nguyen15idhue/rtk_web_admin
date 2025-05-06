@@ -29,7 +29,7 @@ if (mime_content_type($file['tmp_name']) !== 'application/pdf') {
     abort('Invalid file type.', 400);
 }
 
-$uploadDir = __DIR__ . '/../../../public/uploads/invoice/';
+$uploadDir = UPLOADS_PATH . 'invoice/';
 if (!is_dir($uploadDir)) {
     mkdir($uploadDir, 0755, true);
 }

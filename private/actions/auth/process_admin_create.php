@@ -1,22 +1,11 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 0);
-ini_set('log_errors', 1);
-ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
-header('Content-Type: application/json');
 
-function abort($message, $statusCode) {
-    http_response_code($statusCode);
-    echo json_encode(['success' => false, 'message' => $message]);
-    exit;
-}
+$bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 
-// Only Super Admin can create other admins/customercares
 if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
     abort('Unauthorized', 401);
 }
 
-$bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $conn      = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc

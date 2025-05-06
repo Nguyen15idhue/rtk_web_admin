@@ -1,9 +1,6 @@
 <?php
-// Include the bootstrap file
+// Include centralized bootstrap (starts session, validates admin, idle‐timeout, etc.)
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
-
-// Start the session
-session_start();
 
 // Deactivate the session if admin_id is set
 if (isset($_SESSION['admin_id'])) {

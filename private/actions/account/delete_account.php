@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\delete_account.php
+// filepath: private\actions\account\delete_account.php
 
 // Thay include thủ công bằng bootstrap chung
 $config = require_once __DIR__ . '/../../includes/page_bootstrap.php';

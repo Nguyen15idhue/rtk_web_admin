@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\create_account.php
+// filepath: private\actions\account\create_account.php
 $config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $db     = $config['db'];
 $base   = $config['base_path'];

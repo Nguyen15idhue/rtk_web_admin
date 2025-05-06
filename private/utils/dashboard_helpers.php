@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\utils\dashboard_helpers.php
+// filepath: private\utils\dashboard_helpers.php
 
 /**
  * Formats a number into a short representation (K for thousands, M for millions).

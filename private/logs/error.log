@@ -1,0 +1,61 @@
+[06-May-2025 04:12:45 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 04:12:45 UTC] [Database Close] Connection closed.
+[06-May-2025 04:12:46 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 04:12:46 UTC] [Database Close] Connection closed.
+[06-May-2025 04:12:48 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 04:12:48 UTC] [Database Close] Connection closed.
+[06-May-2025 04:12:48 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 04:12:48 UTC] [Database Close] Connection closed.
+[06-May-2025 04:12:50 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 04:12:50 UTC] [Database Close] Connection closed.
+[06-May-2025 04:15:55 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 04:15:55 UTC] [Database Close] Connection closed.
+[06-May-2025 04:15:57 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 04:15:57 UTC] [Database Close] Connection closed.
+[06-May-2025 04:15:57 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 04:15:57 UTC] [Database Close] Connection closed.
+[06-May-2025 04:15:57 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 04:15:57 UTC] [Database Close] Connection closed.
+[06-May-2025 04:15:57 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 04:15:57 UTC] [Database Close] Connection closed.
+[06-May-2025 04:21:07 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 04:21:08 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:06 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:06 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:10 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:11 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:11 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:11 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:15 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:15 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:17 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:17 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:19 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:19 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:20 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:20 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:21 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:21 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[06-May-2025 05:13:21 UTC] [DEBUG] Search keyword: 
+[06-May-2025 05:13:21 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:21 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:21 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:25 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:25 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:26 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:26 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\public\pages\user\user_management.php on line 11
+[06-May-2025 05:13:26 UTC] [DEBUG] Search keyword: 
+[06-May-2025 05:13:26 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:26 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:26 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:27 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:27 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:29 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:29 UTC] Using default mount points for location ID: 12 - [42]
+[06-May-2025 05:13:29 UTC] RTK API Payload: {"id":"2116","name":"CMA007","userPwd":"0999999445","startTime":1746529146000,"endTime":1754564345000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[06-May-2025 05:13:29 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[06-May-2025 05:13:29 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:29 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:29 UTC] [Database Close] Connection closed.
+[06-May-2025 05:13:31 UTC] [Database Connect] Connection to database 'sa' successful.
+[06-May-2025 05:13:31 UTC] [Database Close] Connection closed.

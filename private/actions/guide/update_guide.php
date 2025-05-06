@@ -9,7 +9,7 @@ try {
 
     // file upload?
     if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] === UPLOAD_ERR_OK) {
-        $up = $paths['base_path'] . '/../public/uploads/guide/';
+        $up = UPLOADS_PATH . 'guide/';
         if (!is_dir($up)) mkdir($up, 0755, true);
         $ext = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
         $fname = uniqid('guide-') . '.' . $ext;

@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../config/constants.php';
 require_once ERROR_HANDLER_PATH;
 
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\includes\page_bootstrap.php
+// filepath: private\includes\page_bootstrap.php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
     // Session fixation protection: regenerate ID on first use or every 5 minutes

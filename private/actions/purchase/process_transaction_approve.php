@@ -1,37 +1,29 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php
 declare(strict_types=1);
-header('Content-Type: application/json'); 
-// --- Prerequisites ---
-// Ensure session started, user is admin, CSRF protection is in place etc.
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start(); // Ensure session is started to read the cookie
+header('Content-Type: application/json');
+
+// --- Centralized session start + validation + idle‐timeout + multi‐device ---
+$bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$db        = $bootstrap['db'];
+
+// --- Permission check ---
+if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Permission denied.']);
+    exit;
 }
-// if (!isset($_SESSION['admin_id']) || !check_admin_permission('transaction_approve')) {
-//     http_response_code(403);
-//     echo json_encode(['success' => false, 'message' => 'Permission denied.']);
-//     exit;
-// }
-// if (!verify_csrf_token($_POST['csrf_token'] ?? '')) { // Example CSRF check
+
+// --- CSRF protection ---
+// if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
 //     http_response_code(400);
 //     echo json_encode(['success' => false, 'message' => 'Invalid CSRF token.']);
 //     exit;
 // }
 
-// Load our path constants
-require_once __DIR__ . '/../../config/constants.php';
+// Load any additional services you still need
+require_once BASE_PATH . '/services/TransactionHistoryService.php';
 
-// Replace hard‑coded relative paths with BASE_PATH
-require_once BASE_PATH . '/config/database.php';
-require_once BASE_PATH . '/classes/Database.php';
-// require_once BASE_PATH . '/utils/logger.php'; // Example: For logging actions
-// require_once BASE_PATH . '/utils/permissions.php'; // Example: For permission checks
-// require_once BASE_PATH . '/services/SurveyAccountService.php'; // Example: Service to activate accounts
-require_once BASE_PATH . '/services/TransactionHistoryService.php'; // Service to manage transaction history
-require_once BASE_PATH . '/api/rtk_system/account_api.php';      // thêm
-require_once BASE_PATH . '/utils/functions.php';                // thêm (generate_unique_id,…)
-
-// // --- Input Validation ---
+// --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405); // Method Not Allowed
     echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
@@ -49,15 +41,6 @@ $transaction_id = filter_var($input['transaction_id'] ?? null, FILTER_VALIDATE_I
 if ($transaction_id === false || $transaction_id <= 0) {
     http_response_code(400); // Bad Request
     echo json_encode(['success' => false, 'message' => 'Invalid or missing transaction ID.']);
-    exit;
-}
-
-// NEW: Initialize DB connection before history lookup
-$database = Database::getInstance();
-$db       = $database->getConnection();
-if (!$db) {
-    http_response_code(500);
-    echo json_encode(['success'=>false,'message'=>'Database connection failed.']);
     exit;
 }
 
@@ -473,7 +456,7 @@ try {
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Failed to approve transaction: ' . $e->getMessage()]);
 } finally {
-    $database->close();
+    $db = null; // Close DB connection
 }
 
 exit;

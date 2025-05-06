@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\services\TransactionHistoryService.php
+// filepath: private\services\TransactionHistoryService.php
 declare(strict_types=1);
 
 class TransactionHistoryService {

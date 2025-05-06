@@ -23,3 +23,8 @@ define('USER_SESSIONS_TABLE', 'user_sessions');
 
 // Add full path to error handler
 define('ERROR_HANDLER_PATH', PRIVATE_INCLUDES_PATH . 'error_handler.php');
+// Add a constant for the logs directory
+define('LOGS_PATH', BASE_PATH . '/logs');
+
+// Thư mục chung cho tất cả uploads
+define('UPLOADS_PATH', BASE_PATH . '/public/uploads/');

@@ -159,18 +159,18 @@ function get_account_action_buttons(array $account): string {
     return '<div class="action-buttons">' . $buttons . '</div>';
 }
 
-// Example: Generate a simple CSRF token
-function generate_csrf_token() {
-    if (empty($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    }
-    return $_SESSION['csrf_token'];
-}
+// // Example: Generate a simple CSRF token
+// function generate_csrf_token() {
+//     if (empty($_SESSION['csrf_token'])) {
+//         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+//     }
+//     return $_SESSION['csrf_token'];
+// }
 
-// Example: Verify CSRF token
-function verify_csrf_token($token) {
-    return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
-}
+// // Example: Verify CSRF token
+// function verify_csrf_token($token) {
+//     return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+// }
 
 /**
  * Sends a JSON response with an appropriate HTTP status code.

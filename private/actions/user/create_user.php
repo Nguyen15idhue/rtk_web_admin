@@ -1,10 +1,4 @@
 <?php
-// Prevent PHP from outputting HTML errors directly
-error_reporting(E_ALL); // Report all errors for logging
-ini_set('display_errors', 0); // Keep off for browser output
-ini_set('log_errors', 1); // Ensure errors are logged
-ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
-
 header('Content-Type: application/json');
 
 // Check if admin is logged in (optional but recommended for security)

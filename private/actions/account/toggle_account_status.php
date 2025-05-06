@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\toggle_status.php
+// filepath: private\actions\account\toggle_status.php
 header('Content-Type: application/json');
 
 // Khởi bootstrap

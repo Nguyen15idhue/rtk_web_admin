@@ -15,6 +15,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $admin_password = $_POST['admin_password'] ?? '';
     $login_error = null;
 
+    // --- Brute-force protection ---
+    $maxAttempts  = 5;
+    $lockoutTime  = 900; // 15 phút
+    if (!isset($_SESSION['login_attempts'])) {
+        $_SESSION['login_attempts'] = [];
+    }
+    $data = $_SESSION['login_attempts'][$admin_username] 
+             ?? ['count'=>0, 'first_time'=>time()];
+    if ($data['count'] >= $maxAttempts 
+        && (time() - $data['first_time']) < $lockoutTime) {
+        $remain = ceil(($lockoutTime - (time() - $data['first_time']))/60);
+        $login_error = "Bạn thử quá nhiều lần. Vui lòng chờ {$remain} phút.";
+    } elseif ($data['count'] >= $maxAttempts) {
+        // Hết thời gian khóa, reset
+        unset($_SESSION['login_attempts'][$admin_username]);
+        $data = ['count'=>0, 'first_time'=>time()];
+    }
+
     // --- Basic Validation ---
     if (empty($admin_username)) {
         $login_error = "Tên đăng nhập Admin không được để trống.";
@@ -44,6 +62,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // thêm dòng này để lưu phiên mới
                     recordSession($admin['id']);
 
+                    // Xóa bộ đếm khi login thành công
+                    unset($_SESSION['login_attempts'][$admin_username]);
+
                     // Redirect to admin dashboard
                     header("Location: ".$base_url."public/pages/dashboard/dashboard.php");
                     exit();
@@ -63,6 +84,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // --- If login failed or validation error occurred ---
     if ($login_error !== null) {
+        // Tăng bộ đếm khi thất bại
+        if (!isset($_SESSION['login_attempts'][$admin_username])) {
+            $_SESSION['login_attempts'][$admin_username] = [
+                'count'      => 1,
+                'first_time' => time()
+            ];
+        } else {
+            $_SESSION['login_attempts'][$admin_username]['count']++;
+        }
         $_SESSION['admin_login_error'] = $login_error;
         header("Location: ".$base_url."public/pages/auth/admin_login.php");
         exit();

@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\utils\user_helpers.php
+// filepath: private\utils\user_helpers.php
 declare(strict_types=1);
 
 if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {

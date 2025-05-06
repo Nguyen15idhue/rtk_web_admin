@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_revert.php
+// filepath: private\actions\purchase\process_transaction_revert.php
 declare(strict_types=1);
 header('Content-Type: application/json'); // Set response type
 

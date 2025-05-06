@@ -1,16 +1,11 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\invoice\fetch_transactions.php
+// filepath: private\actions\invoice\fetch_transactions.php
 declare(strict_types=1);
 
 if (basename(__FILE__) == basename($_SERVER["SCRIPT_FILENAME"])) {
      http_response_code(403);
      die("Forbidden: Direct access is not allowed.");
 }
-// Prevent PHP from outputting HTML errors directly
-error_reporting(E_ALL); // Report all errors for logging
-ini_set('display_errors', 0); // Keep off for browser output
-ini_set('log_errors', 1); // Ensure errors are logged
-ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
 
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
