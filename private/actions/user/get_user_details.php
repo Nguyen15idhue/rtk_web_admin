@@ -1,39 +1,15 @@
 <?php
-header('Content-Type: application/json');
-
-// Correct the paths relative to the current file's directory (private/actions/setting)
-require_once __DIR__ . '/../../config/database.php'; // Go up two levels to 'private', then into 'config'
-require_once __DIR__ . '/../../classes/Database.php'; // Go up two levels to 'private', then into 'classes'
-
-// register shutdown to always close DB
-register_shutdown_function(function() {
-    if (class_exists('Database')) {
-        Database::getInstance()->close();
-    }
-});
-
-// Authorization Check (Admin only)
-if (!isset($_SESSION['admin_id']) || !in_array($_SESSION['admin_role'] ?? '', ['admin', 'admin', 'customercare'])) {
-    http_response_code(403);
-    echo json_encode(['success' => false, 'message' => 'Unauthorized access.']);
-    exit;
-}
+$config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$conn     = $config['db'];
 
 if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Invalid or missing user ID.']);
-    exit;
+    abort('Invalid or missing user ID.', 400);
 }
 
 $user_id = (int)$_GET['id'];
 
-$db = Database::getInstance();
-$conn = $db->getConnection();
-
 if (!$conn) {
-    http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Database connection failed.']);
-    exit;
+    abort('Database connection failed.', 500);
 }
 
 try {
@@ -50,17 +26,15 @@ try {
         $user['status_text'] = empty($user['deleted_at']) ? 'Hoạt động' : 'Vô hiệu hóa';
         $user['account_type_text'] = $user['is_company'] ? 'Công ty' : 'Cá nhân';
 
-        echo json_encode(['success' => true, 'data' => $user]);
+        api_success($user);
     } else {
-        http_response_code(404);
-        echo json_encode(['success' => false, 'message' => 'User not found.']);
+        abort('User not found.', 404);
     }
 
 } catch (PDOException $e) {
     error_log("Database Error fetching user details: " . $e->getMessage());
     error_log("Stack trace: " . $e->getTraceAsString());
-    http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Database error occurred.']);
+    abort('Database error occurred.', 500);
 } finally {
     // explicitly free resources
     if (isset($conn)) {

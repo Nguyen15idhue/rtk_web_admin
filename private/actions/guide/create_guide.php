@@ -10,7 +10,7 @@ try {
 
     // handle file upload
     if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] === UPLOAD_ERR_OK) {
-        $up = $paths['base_path'] . '/../public/uploads/guide/';
+        $up = UPLOADS_PATH . 'guide/';
         if (!is_dir($up)) mkdir($up, 0755, true);
         $ext = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
         $fname = uniqid('guide-') . '.' . $ext;
@@ -24,14 +24,17 @@ try {
 
     $model = new GuideModel();
     $ok = $model->create($data);
-    echo json_encode(['success' => (bool)$ok]);
+    if ($ok) {
+        api_success([], 'Guide created successfully');
+    } else {
+        api_error('Error creating guide', 500);
+    }
 } catch (\Throwable $e) {
-    // Bổ sung logging chi tiết
     error_log(sprintf(
         "Critical [create_guide.php:%d]: %s\nStack trace:\n%s",
         $e->getLine(),
         $e->getMessage(),
         $e->getTraceAsString()
     ));
-    abort('Error creating guide: '.$e->getMessage(), 500);
+    api_error('Error creating guide: ' . $e->getMessage(), 500);
 }

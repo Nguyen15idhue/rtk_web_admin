@@ -159,19 +159,6 @@ function get_account_action_buttons(array $account): string {
     return '<div class="action-buttons">' . $buttons . '</div>';
 }
 
-// Example: Generate a simple CSRF token
-function generate_csrf_token() {
-    if (empty($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    }
-    return $_SESSION['csrf_token'];
-}
-
-// Example: Verify CSRF token
-function verify_csrf_token($token) {
-    return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
-}
-
 /**
  * Sends a JSON response with an appropriate HTTP status code.
  *
@@ -189,6 +176,60 @@ function send_json_response($data, int $statusCode = 200): void {
     }
     echo json_encode($data);
     exit; // Terminate script execution after sending the response
+}
+
+/**
+ * Sends a consistent API response.
+ *
+ * @param mixed $data The main payload.
+ * @param string $message The response message.
+ * @param int $statusCode The HTTP status code.
+ * @param array $errors Detailed errors if any.
+ * @param array $meta Additional metadata.
+ */
+function api_response($data = null, string $message = '', int $statusCode = 200, array $errors = [], array $meta = []): void {
+    $envelope = [
+        'success' => $statusCode >= 200 && $statusCode < 300,
+        'message' => $message,
+        'data'    => $data,
+        'errors'  => $errors,
+        'meta'    => (object)$meta,
+    ];
+    send_json_response($envelope, $statusCode);
+}
+
+/**
+ * Sends a successful API response.
+ *
+ * @param mixed $data The main payload.
+ * @param string $message The success message.
+ * @param int $statusCode The HTTP status code.
+ * @param array $meta Additional metadata.
+ */
+function api_success($data = null, string $message = 'OK', int $statusCode = 200, array $meta = []): void {
+    api_response($data, $message, $statusCode, [], $meta);
+}
+
+/**
+ * Sends an error API response.
+ *
+ * @param string $message The error message.
+ * @param int $statusCode The HTTP status code.
+ * @param array $errors Detailed errors if any.
+ * @param array $meta Additional metadata.
+ */
+function api_error(string $message = 'Error', int $statusCode = 400, array $errors = [], array $meta = []): void {
+    api_response(null, $message, $statusCode, $errors, $meta);
+}
+
+/**
+ * Sends a 403 Forbidden API response with standard envelope.
+ *
+ * @param string $message The error message (default: 'Forbidden').
+ * @param array  $errors  Detailed errors if any.
+ */
+function api_forbidden(string $message = 'Forbidden', array $errors = []): void {
+    api_response(null, $message, 403, $errors);
 }
 
 /**

@@ -1,17 +1,17 @@
 <?php
 require_once __DIR__ . '/../../config/constants.php';
 require_once BASE_PATH . '/classes/Database.php';
+require_once BASE_PATH . '/utils/functions.php';    // thêm utils/functions
 require_once __DIR__ . '/../../includes/error_handler.php';
 
 if (!isset($_SESSION['admin_id'])) {
-    abort('Unauthorized', 401);
+    api_error('Unauthorized', 401);
 }
 
 $db   = Database::getInstance();
 $conn = $db->getConnection();
-
 if (!$conn) {
-    abort('DB connection failed', 500);
+    api_error('DB connection failed', 500);
 }
 
 try {
@@ -19,11 +19,10 @@ try {
     $stmt->bindParam(':id', $_SESSION['admin_id'], PDO::PARAM_INT);
     $stmt->execute();
     $profile = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
-    echo json_encode(['success' => true, 'data' => $profile]);
+    api_success($profile, '', 200);
 } catch (PDOException $e) {
     error_log("Error fetching profile: " . $e->getMessage());
-    error_log("Stack trace: " . $e->getTraceAsString());
-    abort('Error fetching profile', 500);
+    api_error('Error fetching profile', 500);
 } finally {
     $db->close();
 }

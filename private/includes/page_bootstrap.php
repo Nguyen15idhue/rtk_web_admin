@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../config/constants.php';
 require_once ERROR_HANDLER_PATH;
 
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\includes\page_bootstrap.php
+// filepath: private\includes\page_bootstrap.php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
     // Session fixation protection: regenerate ID on first use or every 5 minutes
@@ -65,7 +65,7 @@ try {
 // --- User Display Name ---
 // Ensure session variables are checked safely
 $user_display_name = htmlspecialchars($_SESSION['admin_username'] ?? $_SESSION['admin_name'] ?? 'Admin');
-
+$admin_role = $_SESSION['admin_role'];
 // --- Define Private Includes & Actions Path ---
 $private_includes_path = PRIVATE_INCLUDES_PATH;
 $private_actions_path  = PRIVATE_ACTIONS_PATH;
@@ -77,7 +77,8 @@ return [
     'base_url'               => $base_url,
     'user_display_name'      => $user_display_name,
     'private_includes_path'  => $private_includes_path,
-    'private_actions_path'   => $private_actions_path
+    'private_actions_path'   => $private_actions_path,
+    'admin_role' => $admin_role
 ];
 
 ?>

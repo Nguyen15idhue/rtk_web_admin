@@ -3,6 +3,9 @@
 ini_set('log_errors', 1);
 ini_set('error_log', __DIR__ . '/../logs/error.log');
 
+// Thêm dòng này nếu chưa include functions.php để có api_error()
+require_once __DIR__ . '/../utils/functions.php';
+
 // Phát hiện API request (JSON) hay Web
 function isApiRequest(): bool {
     return (
@@ -15,8 +18,8 @@ function isApiRequest(): bool {
 function abort(string $message, int $statusCode = 500): void {
     http_response_code($statusCode);
     if (isApiRequest()) {
-        header('Content-Type: application/json');
-        echo json_encode(['success' => false, 'message' => $message]);
+        // Dùng helper gửi envelope JSON thống nhất
+        api_error($message, $statusCode);
     } else {
         // load layout HTML lỗi chung
         require __DIR__ . '/../views/error.php';

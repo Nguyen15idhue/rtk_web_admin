@@ -12,6 +12,10 @@ if (empty($_SESSION['admin_id'])) {
 
 include $private_includes_path . 'admin_header.php';
 include $private_includes_path . 'admin_sidebar.php';
+$id = intval($_GET['id'] ?? 0);
+$page_title = $id
+    ? 'Chỉnh sửa hướng dẫn'
+    : 'Tạo hướng dẫn mới';
 ?>
 <!-- Thêm Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">

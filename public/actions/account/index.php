@@ -2,6 +2,8 @@
 // Front-controller for account actions
 header('Content-Type: application/json');
 require_once dirname(__DIR__, 3) . '/private/config/constants.php';
+require_once dirname(__DIR__, 3) . '/private/utils/functions.php';
+
 $action = basename($_GET['action'] ?? '');
 $allowed = [
     'create_account', 'delete_account', 'fetch_accounts',
@@ -10,16 +12,12 @@ $allowed = [
     'search_users'
 ];
 if (!in_array($action, $allowed, true)) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Invalid action']);
-    exit;
+    api_error('Invalid action', 400);
 }
 
 $privatePath = PRIVATE_ACTIONS_PATH . '/account/' . $action . '.php';
 if (!file_exists($privatePath)) {
-    http_response_code(404);
-    echo json_encode(['success' => false, 'message' => 'Action not found']);
-    exit;
+    api_error('Action not found', 404);
 }
 
 require_once $privatePath;

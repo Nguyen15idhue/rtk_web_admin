@@ -9,7 +9,7 @@ try {
 
     // file upload?
     if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] === UPLOAD_ERR_OK) {
-        $up = $paths['base_path'] . '/../public/uploads/guide/';
+        $up = UPLOADS_PATH . 'guide/';
         if (!is_dir($up)) mkdir($up, 0755, true);
         $ext = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
         $fname = uniqid('guide-') . '.' . $ext;
@@ -23,7 +23,11 @@ try {
 
     $model = new GuideModel();
     $ok = $model->update($_POST['id'], $_POST);
-    echo json_encode(['success' => (bool)$ok]);
+    if ($ok) {
+        api_success([], 'Guide updated successfully');
+    } else {
+        api_error('Error updating guide', 500);
+    }
 } catch (\Throwable $e) {
     // Bổ sung logging chi tiết
     error_log(sprintf(
@@ -32,5 +36,5 @@ try {
         $e->getMessage(),
         $e->getTraceAsString()
     ));
-    abort('Error updating guide: '.$e->getMessage(), 500);
+    api_error('Error updating guide: ' . $e->getMessage(), 500);
 }

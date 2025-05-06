@@ -1,41 +1,30 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\purchase\process_transaction_approve.php
 declare(strict_types=1);
-header('Content-Type: application/json'); 
-// --- Prerequisites ---
-// Ensure session started, user is admin, CSRF protection is in place etc.
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start(); // Ensure session is started to read the cookie
+header('Content-Type: application/json');
+
+// --- Centralized session start + validation + idle‐timeout + multi‐device ---
+$bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$db        = $bootstrap['db'];
+
+// --- Permission check ---
+if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
+    api_error('Permission denied.', 403);
 }
-// if (!isset($_SESSION['admin_id']) || !check_admin_permission('transaction_approve')) {
-//     http_response_code(403);
-//     echo json_encode(['success' => false, 'message' => 'Permission denied.']);
-//     exit;
-// }
-// if (!verify_csrf_token($_POST['csrf_token'] ?? '')) { // Example CSRF check
+
+// --- CSRF protection ---
+// if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
 //     http_response_code(400);
 //     echo json_encode(['success' => false, 'message' => 'Invalid CSRF token.']);
 //     exit;
 // }
 
-// Load our path constants
-require_once __DIR__ . '/../../config/constants.php';
+// Load any additional services you still need
+require_once BASE_PATH . '/services/TransactionHistoryService.php';
+require_once BASE_PATH . '/utils/functions.php';
 
-// Replace hard‑coded relative paths with BASE_PATH
-require_once BASE_PATH . '/config/database.php';
-require_once BASE_PATH . '/classes/Database.php';
-// require_once BASE_PATH . '/utils/logger.php'; // Example: For logging actions
-// require_once BASE_PATH . '/utils/permissions.php'; // Example: For permission checks
-// require_once BASE_PATH . '/services/SurveyAccountService.php'; // Example: Service to activate accounts
-require_once BASE_PATH . '/services/TransactionHistoryService.php'; // Service to manage transaction history
-require_once BASE_PATH . '/api/rtk_system/account_api.php';      // thêm
-require_once BASE_PATH . '/utils/functions.php';                // thêm (generate_unique_id,…)
-
-// // --- Input Validation ---
+// --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405); // Method Not Allowed
-    echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
-    exit;
+    api_error('Invalid request method.', 405);
 }
 
 // Expecting JSON payload
@@ -47,18 +36,7 @@ if (!is_array($input)) {
 $transaction_id = filter_var($input['transaction_id'] ?? null, FILTER_VALIDATE_INT);
 
 if ($transaction_id === false || $transaction_id <= 0) {
-    http_response_code(400); // Bad Request
-    echo json_encode(['success' => false, 'message' => 'Invalid or missing transaction ID.']);
-    exit;
-}
-
-// NEW: Initialize DB connection before history lookup
-$database = Database::getInstance();
-$db       = $database->getConnection();
-if (!$db) {
-    http_response_code(500);
-    echo json_encode(['success'=>false,'message'=>'Database connection failed.']);
-    exit;
+    api_error('Invalid or missing transaction ID.', 400);
 }
 
 // NEW: treat $transaction_id as history ID, fetch the real registration ID and transaction type
@@ -71,9 +49,7 @@ $stmt_hist->bindParam(':history_id', $transaction_id, PDO::PARAM_INT);
 $stmt_hist->execute();
 $hist = $stmt_hist->fetch(PDO::FETCH_ASSOC);
 if (!$hist) {
-    http_response_code(404);
-    echo json_encode(['success' => false, 'message' => 'Transaction history not found.']);
-    exit;
+    api_error('Transaction history not found.', 404);
 }
 $registration_id = (int)$hist['registration_id'];
 $tx_type         = $hist['transaction_type']; 
@@ -304,12 +280,10 @@ try {
         $stmt_hist->execute();
         $db->commit();
 
-        echo json_encode([
-            'success'            => true,
-            'message'            => "Transaction #{$transaction_id} approved.",
+        api_success([
             'scheduled_accounts' => $accIds,
             'renewed_accounts'   => $renewed
-        ]);
+        ], "Transaction #{$transaction_id} approved.");
         exit;
     }
 
@@ -460,21 +434,15 @@ try {
         $responseMessage .= " {$count} account(s) created successfully.";
     }
 
-    echo json_encode([
-        'success' => true,
-        'message' => $responseMessage,
-        'accounts' => $createdAccounts ?? [] // Ensure accounts is always an array
-    ]);
+    api_success($createdAccounts ?? [], $responseMessage);
 
 } catch (Exception $e) {
     $db->rollBack();
     error_log("Error approving transaction ID $transaction_id: " . $e->getMessage());
-    error_log("Trace: " . $e->getTraceAsString());          // <-- Added detailed stack trace
-    http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Failed to approve transaction: ' . $e->getMessage()]);
+    error_log("Trace: " . $e->getTraceAsString());
+    api_error('Failed to approve transaction: ' . $e->getMessage(), 500);
 } finally {
-    $database->close();
+    $db = null; // Close DB connection
+    // no explicit exit needed
 }
-
-exit;
 ?>

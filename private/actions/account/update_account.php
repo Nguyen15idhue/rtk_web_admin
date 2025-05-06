@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\update_account.php
+// filepath: private\actions\account\update_account.php
 // Khởi bootstrap để có $db, BASE_PATH, BASE_URL
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
@@ -303,5 +303,10 @@ try {
     abort($e->getMessage(), 500);
 }
 
-echo json_encode($response);
+if (!empty($response['success'])) {
+    // wrap updated account under data.account
+    api_success(['account' => $response['account'] ?? null], $response['message']);
+} else {
+    api_error($response['message'], 400);
+}
 ?>

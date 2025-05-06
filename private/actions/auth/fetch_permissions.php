@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 // Only logged-in admins
 if (!isset($_SESSION['admin_id'])) {
-    abort('Unauthorized', 401);
+    api_error('Unauthorized', 401);
     exit;
 }
 
@@ -17,7 +17,7 @@ register_shutdown_function(function() use (&$conn) {
 $role = $_GET['role'] ?? '';
 $validRoles = ['admin','customercare'];
 if (!in_array($role, $validRoles)) {
-    abort('Invalid role', 400);
+    api_error('Invalid role', 400);
     exit;
 }
 
@@ -42,8 +42,8 @@ try {
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    echo json_encode(['success'=>true, 'data'=>$rows]);
+    api_success($rows);
 } catch (Exception $e) {
     error_log('fetch_permissions error: ' . $e->getMessage());
-    abort('Error fetching permissions', 500);
+    api_error('Error fetching permissions', 500);
 }

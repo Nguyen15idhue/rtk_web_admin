@@ -32,7 +32,8 @@ try {
     $rtk = new AccountModel($db);
     $accounts = $rtk->getAccountsByUserId($userId);
 
-    echo json_encode(['success' => true, 'accounts' => $accounts]);
+    // wrap under data.accounts
+    api_success(['accounts' => $accounts], 'Fetched accounts successfully.');
 } catch (Exception $e) {
     error_log('Error fetching accounts via RtkAccount: ' . $e->getMessage());
     abort('Error fetching accounts.', 500);

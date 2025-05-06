@@ -1,6 +1,8 @@
 <?php
 header('Content-Type: application/json');
 require_once dirname(__DIR__, 3) . '/private/config/constants.php';
+require_once dirname(__DIR__, 3) . '/private/utils/functions.php';
+
 $action = basename($_GET['action'] ?? '');
 $allowed = [
     'process_invoice_reject',
@@ -8,16 +10,12 @@ $allowed = [
 ];
 
 if (!in_array($action, $allowed, true)) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Invalid action']);
-    exit;
+    api_error('Invalid action', 400);
 }
 
 $privatePath = PRIVATE_ACTIONS_PATH . '/invoice/' . $action . '.php';
 if (!file_exists($privatePath)) {
-    http_response_code(404);
-    echo json_encode(['success' => false, 'message' => 'Action not found']);
-    exit;
+    api_error('Action not found', 404);
 }
 
 require_once $privatePath;

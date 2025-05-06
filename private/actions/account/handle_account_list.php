@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\actions\account\handle_account_list.php
+// filepath: private\actions\account\handle_account_list.php
 
 // This script assumes $db is available from the including context (e.g., page_bootstrap.php)
 if (!isset($db)) {

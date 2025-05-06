@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../config/constants.php';
 error_reporting(E_ALL); // Report all errors for logging
 ini_set('display_errors', 0); // Keep off for browser output
 ini_set('log_errors', 1); // Ensure errors are logged
-ini_set('error_log', 'E:\Application\laragon\www\rtk_web_admin\private\logs\error.log');
+ini_set('error_log', LOGS_PATH . '/error.log');
 /**
  * Tạo tài khoản RTK mới qua API.
  * 
@@ -474,10 +474,4 @@ if (php_sapi_name() !== 'cli' && isset($_GET['test_update'])) {
     echo json_encode(['success'=>true,'message'=>'Invoked via HTTP test']);
     exit;
 }
-
-// CLI entrypoint: run `php account_api.php update_stations`
-// if (php_sapi_name()==='cli' && ($argv[1]??'')==='update_stations') {
-//     fetchAndUpdateStations();
-//     exit;
-// }
 ?>

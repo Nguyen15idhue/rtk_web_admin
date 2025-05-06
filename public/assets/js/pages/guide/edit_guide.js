@@ -10,13 +10,23 @@
         const id = parseInt(form.find('input[name=id]').val(), 10);
 
         if (id) {
-            $.getJSON(`${apiUrl}?action=get_details`, { id }, d => {
-                Object.keys(d).forEach(k => {
-                    if (k !== 'thumbnail') form.find(`[name=${k}]`).val(d[k]);
+            fetch(`${apiUrl}?action=get_details&id=${id}`)
+                .then(res => res.json())
+                .then(env => {
+                    if (env.success) {
+                        const d = env.data;
+                        Object.keys(d).forEach(k => {
+                            if (k !== 'thumbnail') form.find(`[name=${k}]`).val(d[k]);
+                        });
+                        form.find('[name=existing_thumbnail]').val(d.thumbnail || '');
+                        tinymce.get('guideContent').setContent(d.content || '');
+                    } else {
+                        window.showToast(env.message || 'Lỗi tải chi tiết hướng dẫn','error');
+                    }
+                })
+                .catch(err => {
+                    window.showToast('Lỗi tải chi tiết hướng dẫn: ' + err,'error');
                 });
-                form.find('[name=existing_thumbnail]').val(d.thumbnail || '');
-                tinymce.get('guideContent').setContent(d.content || '');
-            });
         }
 
         form.on('submit', function(e){

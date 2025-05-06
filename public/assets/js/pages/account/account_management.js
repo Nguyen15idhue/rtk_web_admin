@@ -53,39 +53,36 @@ document.addEventListener('DOMContentLoaded', () => {
         const editUserInfo = document.getElementById('edit-user-info');
         if (editUserInfo) editUserInfo.innerHTML = '';
 
-
         try {
-            const response = await fetch(`${apiBasePath}?action=get_account_details&id=${accountId}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            const resp = await fetch(`${apiBasePath}?action=get_account_details&id=${accountId}`);
+            const env  = await resp.json();
+            if (!env.success) {
+                throw new Error(env.message || `HTTP ${resp.status}`);
             }
-            const data = await response.json();
-
-            if (data.success && data.account) {
-                const account = data.account;
-                editAccountForm.querySelector('#edit-account-id').value = account.id;
-                editAccountForm.querySelector('#edit-username').value = account.username_acc || '';
-                editAccountForm.querySelector('#edit-user-email').value = account.user_email || '';
-                editAccountForm.querySelector('#edit-location').value = account.location_id || '';
-                editAccountForm.querySelector('#edit-package').value = account.package_id || '';
-                // Ensure date format is YYYY-MM-DD for input type="date"
-                editAccountForm.querySelector('#edit-activation-date').value = account.activation_date ? account.activation_date.split(' ')[0] : '';
-                editAccountForm.querySelector('#edit-expiry-date').value = account.expiry_date ? account.expiry_date.split(' ')[0] : '';
-                editAccountForm.querySelector('#edit-status').value = account.derived_status || 'unknown'; // Use derived_status
-
-                // Display user info if email exists
-                if (account.user_email) {
-                    fetchAndDisplayUserInfo(account.user_email, 'edit-user-info');
-                }
-
-
-                editModal.style.display = 'block';
-            } else {
-                window.showToast(data.message || 'Không thể tải chi tiết tài khoản.', 'error');
+            // envelope.data is the account object (or fallback to old .account)
+            const account = env.data || env.account;
+            if (!account) {
+                throw new Error('No account payload');
             }
+            editAccountForm.querySelector('#edit-account-id').value = account.id;
+            editAccountForm.querySelector('#edit-username').value = account.username_acc || '';
+            editAccountForm.querySelector('#edit-user-email').value = account.user_email || '';
+            editAccountForm.querySelector('#edit-location').value = account.location_id || '';
+            editAccountForm.querySelector('#edit-package').value = account.package_id || '';
+            // Ensure date format is YYYY-MM-DD for input type="date"
+            editAccountForm.querySelector('#edit-activation-date').value = account.activation_date ? account.activation_date.split(' ')[0] : '';
+            editAccountForm.querySelector('#edit-expiry-date').value = account.expiry_date ? account.expiry_date.split(' ')[0] : '';
+            editAccountForm.querySelector('#edit-status').value = account.derived_status || 'unknown'; // Use derived_status
+
+            // Display user info if email exists
+            if (account.user_email) {
+                fetchAndDisplayUserInfo(account.user_email, 'edit-user-info');
+            }
+
+            editModal.style.display = 'block';
         } catch (error) {
             console.error('Error fetching account details:', error);
-            window.showToast('Lỗi khi tải chi tiết tài khoản.', 'error');
+            window.showToast(error.message || 'Không thể tải chi tiết tài khoản.', 'error');
         }
     }
 
@@ -98,60 +95,37 @@ document.addEventListener('DOMContentLoaded', () => {
         viewDetailsContent.innerHTML = '<p>Đang tải...</p>';
         viewModal.style.display = 'block';
 
-        const url = `${apiBasePath}?action=get_account_details&id=${accountId}`;
-        console.log("Attempting to fetch URL:", url);
-
-        fetch(url)
-            .then(response => {
-                console.log("Received response status:", response.status, "Status text:", response.statusText);
-                const contentType = response.headers.get("content-type");
-                console.log("Received content-type:", contentType);
-
-                if (!response.ok) {
-                    return response.text().then(text => {
-                        console.error("Server response text (if any):", text);
-                        throw new Error(`HTTP error! status: ${response.status}, Status Text: ${response.statusText}. Check Network tab for details. Response snippet: ${text.substring(0, 200)}`);
-                    }).catch(textError => {
-                         console.error("Could not read response text:", textError);
-                         throw new Error(`HTTP error! status: ${response.status}, Status Text: ${response.statusText}. Could not read response body.`);
-                    });
+        fetch(`${apiBasePath}?action=get_account_details&id=${accountId}`)
+            .then(r => r.json())
+            .then(env => {
+                if (!env.success) {
+                    throw new Error(env.message);
                 }
-
-                if (!contentType || !contentType.includes("application/json")) {
-                     return response.text().then(text => {
-                        console.error("Non-JSON response received:", text);
-                        throw new TypeError(`Oops, we haven't got JSON! Content-Type: ${contentType}. Response snippet: ${text.substring(0, 200)}`);
-                    });
+                const account = env.data || env.account;
+                if (!account) {
+                    throw new Error('No account payload');
                 }
-
-                return response.json();
-            })
-            .then(result => {
-                 if (result.success && result.account) {
-                    const account = result.account;
-                    let detailsHtml = `
-                        <div class="detail-row"><span class="detail-label">ID TK:</span> <span class="detail-value">${account.id || 'N/A'}</span></div>
-                        <div class="detail-row"><span class="detail-label">Username TK:</span> <span class="detail-value">${account.username_acc || '-'}</span></div>
-                        <div class="detail-row"><span class="detail-label">Email User:</span> <span class="detail-value">${account.user_email || '-'}</span></div>
-                        <div class="detail-row"><span class="detail-label">Tên User:</span> <span class="detail-value">${account.user_username || '-'}</span></div>
-                        <div class="detail-row"><span class="detail-label">SĐT User:</span> <span class="detail-value">${account.user_phone || '-'}</span></div>
-                        <div class="detail-row"><span class="detail-label">Tỉnh/Thành:</span> <span class="detail-value">${account.location_name || '-'}</span></div>
-                        <div class="detail-row"><span class="detail-label">Gói:</span> <span class="detail-value">${account.package_name || '-'}</span></div>
-                        <div class="detail-row"><span class="detail-label">Ngày KH:</span> <span class="detail-value">${account.activation_date_formatted || account.activation_date || '-'}</span></div>
-                        <div class="detail-row"><span class="detail-label">Ngày HH:</span> <span class="detail-value">${account.expiry_date_formatted || account.expiry_date || '-'}</span></div>
-                        <div class="detail-row"><span class="detail-label">Trạng thái:</span> <span class="detail-value">${get_account_status_badge_js(account.derived_status || account.status)}</span></div>
-                        <div class="detail-row"><span class="detail-label">Ngày tạo:</span> <span class="detail-value">${account.created_at_formatted || account.created_at || '-'}</span></div>
-                        <div class="detail-row"><span class="detail-label">Cập nhật:</span> <span class="detail-value">${account.updated_at_formatted || account.updated_at || '-'}</span></div>
-                        <div class="detail-row"><span class="detail-label">Ghi chú:</span> <span class="detail-value">${account.notes || '-'}</span></div>
-                        `;
-                    viewDetailsContent.innerHTML = detailsHtml;
-                } else {
-                     viewDetailsContent.innerHTML = `<p style="color: red;">Lỗi: ${result.message || 'Không thể tải thông tin tài khoản. Phản hồi không thành công.'}</p>`;
-                }
+                let detailsHtml = `
+                    <div class="detail-row"><span class="detail-label">ID TK:</span> <span class="detail-value">${account.id || 'N/A'}</span></div>
+                    <div class="detail-row"><span class="detail-label">Username TK:</span> <span class="detail-value">${account.username_acc || '-'}</span></div>
+                    <div class="detail-row"><span class="detail-label">Email User:</span> <span class="detail-value">${account.user_email || '-'}</span></div>
+                    <div class="detail-row"><span class="detail-label">Tên User:</span> <span class="detail-value">${account.user_username || '-'}</span></div>
+                    <div class="detail-row"><span class="detail-label">SĐT User:</span> <span class="detail-value">${account.user_phone || '-'}</span></div>
+                    <div class="detail-row"><span class="detail-label">Tỉnh/Thành:</span> <span class="detail-value">${account.location_name || '-'}</span></div>
+                    <div class="detail-row"><span class="detail-label">Gói:</span> <span class="detail-value">${account.package_name || '-'}</span></div>
+                    <div class="detail-row"><span class="detail-label">Ngày KH:</span> <span class="detail-value">${account.activation_date_formatted || account.activation_date || '-'}</span></div>
+                    <div class="detail-row"><span class="detail-label">Ngày HH:</span> <span class="detail-value">${account.expiry_date_formatted || account.expiry_date || '-'}</span></div>
+                    <div class="detail-row"><span class="detail-label">Trạng thái:</span> <span class="detail-value">${get_account_status_badge_js(account.derived_status || account.status)}</span></div>
+                    <div class="detail-row"><span class="detail-label">Ngày tạo:</span> <span class="detail-value">${account.created_at_formatted || account.created_at || '-'}</span></div>
+                    <div class="detail-row"><span class="detail-label">Cập nhật:</span> <span class="detail-value">${account.updated_at_formatted || account.updated_at || '-'}</span></div>
+                    <div class="detail-row"><span class="detail-label">Ghi chú:</span> <span class="detail-value">${account.notes || '-'}</span></div>
+                    `;
+                viewDetailsContent.innerHTML = detailsHtml;
             })
             .catch(error => {
                 console.error('Detailed error fetching account details for view:', error);
-                viewDetailsContent.innerHTML = `<p style="color: red;">Đã xảy ra lỗi khi tải dữ liệu: ${error.message}. Kiểm tra Console (F12) và Network tab để biết thêm chi tiết.</p>`;
+                viewDetailsContent.innerHTML =
+                    `<p style="color: red;">Đã xảy ra lỗi: ${error.message}</p>`;
             });
     }
 

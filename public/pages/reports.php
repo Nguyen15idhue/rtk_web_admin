@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\public\pages\reports.php
+// filepath: public\pages\reports.php
 
 // --- Bootstrap and Initialization ---
 $bootstrap_data         = require_once __DIR__ . '/../../private/includes/page_bootstrap.php';

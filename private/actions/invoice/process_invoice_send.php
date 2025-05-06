@@ -29,12 +29,16 @@ if (mime_content_type($file['tmp_name']) !== 'application/pdf') {
     abort('Invalid file type.', 400);
 }
 
-$uploadDir = __DIR__ . '/../../../public/uploads/invoice/';
+$uploadDir = UPLOADS_PATH . 'invoice/';
 if (!is_dir($uploadDir)) {
     mkdir($uploadDir, 0755, true);
 }
 $fileName = time() . '_' . basename($file['name']);
-$target = $uploadDir . $fileName;
+$target   = $uploadDir . $fileName;
+
+// Log the target path so you can verify exactly where the PDF lands
+error_log("Invoice file will be stored at: " . $target);
+
 if (!move_uploaded_file($file['tmp_name'], $target)) {
     abort('Failed to move uploaded file.', 500);
 }
@@ -46,6 +50,8 @@ try {
        WHERE id = :id"
     );
     $stmt->execute([':file' => $fileName, ':id' => $invoiceId]);
+
+    // redirect back to review page on success
     header('Location: ' . $bootstrap['base_url'] . 'public/pages/invoice_requests/invoice_review.php');
     exit;
 } catch (PDOException $e) {
