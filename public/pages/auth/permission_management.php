@@ -5,7 +5,7 @@ $base_path = $bootstrap['base_path'];
 $base_url = $bootstrap['base_url'];
 $user_display_name = $bootstrap['user_display_name'];
 $private_includes_path = $bootstrap['private_includes_path'];
-$is_super_admin = ($_SESSION['admin_role'] ?? '') === 'admin';
+$is_admin = ($_SESSION['admin_role'] ?? '') === 'admin';
 $admins = $db ? $db->query("SELECT id,name,admin_username,role,created_at FROM admin")->fetchAll(PDO::FETCH_ASSOC) : [];
 $css = ['layouts/header.css', 'components/buttons.css', 'pages/permission_management.css'];
 $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php' => 'Đăng xuất'];
@@ -140,11 +140,11 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
 
 <!-- Export PHP vars and load external JS -->
 <script>
-    window.basePath = '<?= $base_path ?>';
-    window.adminsData = <?= json_encode($admins) ?>;
-    window.isSuperAdmin = <?= json_encode($is_super_admin) ?>;
+    window.basePath        = '<?= $base_path ?>';
+    window.adminsData      = <?= json_encode($admins) ?>;
+    window.isAdmin    = <?= json_encode($is_admin) ?>;
 </script>
-<script src="<?= $base_url ?>public/assets/js/pages/auth/permission_management.js"></script>
+<script defer src="<?= $base_url ?>public/assets/js/pages/auth/permission_management.js"></script>
 
 <!-- Create Admin/Operator Modal -->
 <div id="createRoleModal" class="modal" style="display: none;">

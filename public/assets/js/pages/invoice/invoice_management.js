@@ -114,14 +114,7 @@
             if(!confirm(`Bạn có chắc muốn duyệt #${id}?`)) return;
             const row = document.querySelector(`tr[data-transaction-id="${id}"]`);
             try {
-                const resp = await fetch(approveUrl, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({transaction_id: id})
-                });
-                const data = await resp.json();
-                if (!data.success) throw new Error(data.message || `HTTP ${resp.status}`);
-                // success branch
+                const data = await api.postJson(approveUrl, { transaction_id: id });
                 let msg = data.message || `Duyệt #${id} thành công!`;
                 if (Array.isArray(data.accounts) && data.accounts.length) {
                     msg += '\n\nThông tin tài khoản đã tạo:';
@@ -134,47 +127,35 @@
                     updateTableRowStatus(id,'active','Đã duyệt','status-approved');
                 }
             } catch(e){
-                window.showToast('Lỗi duyệt giao dịch: '+ e.message, 'error');
+                window.showToast('Lỗi duyệt giao dịch: ' + e.message, 'error');
             }
         };
 
         window.openRejectTransactionModal = async function(id){
-            const reason=prompt(`Lý do từ chối #${id}:`);
+            const reason = prompt(`Lý do từ chối #${id}:`);
             if(reason==null) return;
-            const text=reason.trim(); if(!text){ alert('Nhập lý do.'); return; }
-            const row=document.querySelector(`tr[data-transaction-id="${id}"]`);
+            const text = reason.trim(); if(!text){ alert('Nhập lý do.'); return; }
+            const row = document.querySelector(`tr[data-transaction-id="${id}"]`);
             disableActionButtons(row);
             try {
-                const resp = await fetch(rejectUrl,{
-                    method:'POST',
-                    headers:{'Content-Type':'application/json'},
-                    body:JSON.stringify({transaction_id:id,reason:text})
-                });
-                const data = await resp.json();
-                if (!data.success) throw new Error(data.message || `HTTP ${resp.status}`);
+                await api.postJson(rejectUrl, { transaction_id: id, reason: text });
                 window.showToast('Từ chối thành công!', 'success');
                 updateTableRowStatus(id,'rejected','Bị từ chối','status-rejected');
             } catch(e){
-                window.showToast('Lỗi từ chối giao dịch: '+ e.message, 'error');
+                window.showToast('Lỗi từ chối giao dịch: ' + e.message, 'error');
                 enableActionButtons(row,row.dataset.status);
             }
         };
 
         window.revertTransaction = async function(id,btn){
             if(!confirm(`Hủy duyệt #${id}?`)) return;
-            const row=btn.closest('tr'); disableActionButtons(row);
+            const row = btn.closest('tr'); disableActionButtons(row);
             try {
-                const resp = await fetch(revertUrl,{
-                    method:'POST',
-                    headers:{'Content-Type':'application/json'},
-                    body:JSON.stringify({transaction_id:id})
-                });
-                const data = await resp.json();
-                if (!data.success) throw new Error(data.message || `HTTP ${resp.status}`);
+                await api.postJson(revertUrl, { transaction_id: id });
                 window.showToast('Hủy duyệt thành công.', 'success');
                 updateTableRowStatus(id,'pending','Chờ duyệt','status-pending');
             } catch(e){
-                window.showToast('Lỗi hoàn tác giao dịch: '+ e.message, 'error');
+                window.showToast('Lỗi hoàn tác giao dịch: ' + e.message, 'error');
                 enableActionButtons(row,row.dataset.status);
             }
         };

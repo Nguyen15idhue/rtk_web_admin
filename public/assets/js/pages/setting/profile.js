@@ -19,25 +19,15 @@ async function updateAdminProfile(event) {
     event.preventDefault();
     setStatus(profileStatusEl, 'Đang lưu...');
     saveProfileBtn.disabled = true;
-
     const name = document.getElementById('admin-profile-name').value;
-
     try {
-        const response = await fetch(`${basePath}public/actions/setting/index.php?action=process_profile_update`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ name })
-        });
-        const res = await response.json();
-        if (!res.success) {
-            setStatus(profileStatusEl, `Lỗi: ${res.message || 'Không thể cập nhật.'}`, 'error');
-        } else {
-            setStatus(profileStatusEl, 'Cập nhật thành công!', 'success');
-            const headerNameSpan = document.querySelector('.user-info .highlight');
-            if (headerNameSpan) headerNameSpan.textContent = name;
-        }
+        const res = await api.postJson(`${basePath}public/actions/setting/index.php?action=process_profile_update`, { name });
+        if (!res.success) throw new Error(res.message || 'Không thể cập nhật.');
+        setStatus(profileStatusEl, 'Cập nhật thành công!', 'success');
+        const headerNameSpan = document.querySelector('.user-info .highlight');
+        if (headerNameSpan) headerNameSpan.textContent = name;
     } catch (err) {
-        setStatus(profileStatusEl, 'Lỗi kết nối hoặc lỗi server.', 'error');
+        setStatus(profileStatusEl, `Lỗi: ${err.message}`, 'error');
     } finally {
         saveProfileBtn.disabled = false;
         setTimeout(() => clearStatus(profileStatusEl), 5000);
@@ -67,20 +57,16 @@ async function changeAdminPassword(event) {
     }
 
     try {
-        const response = await fetch(`${basePath}public/actions/setting/index.php?action=process_password_change`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ current_password: currentPassword, new_password: newPassword, confirm_password: confirmPassword })
+        const res = await api.postJson(`${basePath}public/actions/setting/index.php?action=process_password_change`, {
+            current_password: currentPassword,
+            new_password: newPassword,
+            confirm_password: confirmPassword
         });
-        const res = await response.json();
-        if (!res.success) {
-            setStatus(passwordStatusEl, `Lỗi: ${res.message || 'Không thể đổi mật khẩu.'}`, 'error');
-        } else {
-            setStatus(passwordStatusEl, 'Đổi mật khẩu thành công!', 'success');
-            passwordForm.reset();
-        }
+        if (!res.success) throw new Error(res.message || 'Không thể đổi mật khẩu.');
+        setStatus(passwordStatusEl, 'Đổi mật khẩu thành công!', 'success');
+        passwordForm.reset();
     } catch (err) {
-        setStatus(passwordStatusEl, 'Lỗi kết nối hoặc lỗi server.', 'error');
+        setStatus(passwordStatusEl, `Lỗi: ${err.message}`, 'error');
     } finally {
         changePasswordBtn.disabled = false;
         setTimeout(() => clearStatus(passwordStatusEl), 5000);
@@ -88,19 +74,21 @@ async function changeAdminPassword(event) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetch(`${basePath}public/actions/setting/index.php?action=process_profile_fetch`)
-        .then(r => r.json())
-        .then(res => {
+    (async () => {
+        try {
+            const res = await api.getJson(`${basePath}public/actions/setting/index.php?action=process_profile_fetch`);
             if (res.success && res.data) {
                 const d = res.data;
-                document.getElementById('admin-profile-name').value     = d.name || '';
-                document.getElementById('admin-profile-email').value    = d.admin_username || '';
-                document.getElementById('admin-profile-role').value     = d.role.charAt(0).toUpperCase() + d.role.slice(1);
+                document.getElementById('admin-profile-name').value = d.name || '';
+                document.getElementById('admin-profile-email').value = d.admin_username || '';
+                document.getElementById('admin-profile-role').value = d.role.charAt(0).toUpperCase() + d.role.slice(1);
+            } else {
+                throw new Error(res.message || 'Không thể tải profile.');
             }
-        })
-        .catch(err => {
-            errorHandler.showError('Lỗi tải profile: ' + (err.message||err));
-        });
+        } catch (err) {
+            window.showToast(`Lỗi tải profile: ${err.message}`, 'error');
+        }
+    })();
 
     profileForm.addEventListener('submit', updateAdminProfile);
     passwordForm.addEventListener('submit', changeAdminPassword);

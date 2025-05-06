@@ -1,12 +1,10 @@
 function rejectInvoice(id) {
     const reason = prompt('Nhập lý do từ chối:');
     if (!reason) return;
-    fetch('../../actions/invoice_requests/index.php?action=process_invoice_reject', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ invoice_id: id, reason: reason.trim() })
+    api.postJson('../../actions/invoice_requests/index.php?action=process_invoice_reject', {
+        invoice_id: id,
+        reason: reason.trim()
     })
-    .then(r => r.json())
     .then(data => {
         if (data.success) {
             const row = document.querySelector('tr[data-id="' + id + '"]');
@@ -18,7 +16,7 @@ function rejectInvoice(id) {
         }
     })
     .catch(err => {
-        errorHandler.showError('Lỗi khi gửi yêu cầu từ chối: ' + (err.message||err));
+        errorHandler.showError('Lỗi khi gửi yêu cầu từ chối: ' + err.message);
     });
 }
 // expose for inline onclick

@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', ()=> {
-    const { basePath } = window.appConfig;
+    const basePath = ('/' + (window.appConfig.basePath || ''))
+                       .replace(/\/+/g,'/')
+                       .replace(/\/?$/,'/') ;
     const viewBody = document.getElementById('viewUserDetailsBody');
 
     // open/close helpers
@@ -7,7 +9,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     const { getJson, postJson, postForm }      = window.api;
 
     // Thay thế base path cho API
-    const apiBasePath = '../../actions/user/index.php';
+    const apiBasePath = `${basePath}public/actions/user/index.php`;
 
     // CREATE USER
     const createForm = document.getElementById('createUserForm');

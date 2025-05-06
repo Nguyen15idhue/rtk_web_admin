@@ -1,6 +1,6 @@
-// Ensure global variables apiBasePath, basePath, and packageDurations are defined before this script runs.
-
 document.addEventListener('DOMContentLoaded', () => {
+    const { getJson, postJson, postForm } = window.api;
+
     const accountsTableBody = document.getElementById('accountsTable')?.querySelector('tbody');
     const noResultsRow = document.getElementById('no-results-row');
 
@@ -54,10 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (editUserInfo) editUserInfo.innerHTML = '';
 
         try {
-            const resp = await fetch(`${apiBasePath}?action=get_account_details&id=${accountId}`);
-            const env  = await resp.json();
+            const env = await getJson(`${apiBasePath}?action=get_account_details&id=${accountId}`);
             if (!env.success) {
-                throw new Error(env.message || `HTTP ${resp.status}`);
+                throw new Error(env.message || `Không thể lấy chi tiết tài khoản.`);
             }
             // envelope.data is the account object (or fallback to old .account)
             const account = env.data || env.account;
@@ -95,11 +94,10 @@ document.addEventListener('DOMContentLoaded', () => {
         viewDetailsContent.innerHTML = '<p>Đang tải...</p>';
         viewModal.style.display = 'block';
 
-        fetch(`${apiBasePath}?action=get_account_details&id=${accountId}`)
-            .then(r => r.json())
+        getJson(`${apiBasePath}?action=get_account_details&id=${accountId}`)
             .then(env => {
                 if (!env.success) {
-                    throw new Error(env.message);
+                    throw new Error(env.message || 'Lỗi server');
                 }
                 const account = env.data || env.account;
                 if (!account) {
@@ -153,11 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (createAccountError) createAccountError.textContent = '';
 
         try {
-            const response = await fetch(`${apiBasePath}?action=create_account`, {
-                method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
+            const result = await postForm(`${apiBasePath}?action=create_account`, formData);
 
             if (result.success) {
                 window.showToast(result.message || 'Tạo tài khoản thành công!', 'success');
@@ -186,11 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
          if (editAccountError) editAccountError.textContent = '';
 
         try {
-            const response = await fetch(`${apiBasePath}?action=update_account`, {
-                method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
+            const result = await postForm(`${apiBasePath}?action=update_account`, formData);
 
             if (result.success) {
                 window.showToast(result.message || 'Cập nhật tài khoản thành công!', 'success');
@@ -310,15 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch(`${apiBasePath}?action=delete_account`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json', // Send as JSON
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ id: accountId }) // Send ID in JSON body
-            });
-            const result = await response.json();
+            const result = await postJson(`${apiBasePath}?action=delete_account`, { id: accountId });
 
             if (result.success) {
                 window.showToast(result.message || 'Xóa tài khoản thành công!', 'success');
@@ -348,15 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch(`${apiBasePath}?action=toggle_account_status`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json', // Send as JSON
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ id: accountId, action: action }) // Send ID and action in JSON body
-            });
-            const result = await response.json();
+            const result = await postJson(`${apiBasePath}?action=toggle_account_status`, { id: accountId, action });
 
             if (result.success) {
                 window.showToast(result.message || 'Cập nhật trạng thái thành công!', 'success');
@@ -510,12 +484,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!infoElement || !email) return;
 
         try {
-            // endpoint URL fixed: use & to add email & exact, not ? inside action
-            const response = await fetch(`${basePath}public/actions/account/index.php?action=search_users&email=${encodeURIComponent(email)}&exact=1`);
-            const result = await response.json();
-            if (result.success && result.users && result.users.length > 0) {
-                const user = result.users[0]; // Assume exact match returns one user
-                 infoElement.innerHTML = `<p style="font-size: var(--font-size-xs); margin-top: 4px; color: var(--gray-600);">Người dùng: <strong>${user.username}</strong> — SĐT: ${user.phone || 'N/A'}</p>`;
+            const result = await getJson(`${basePath}public/actions/account/index.php?action=search_users&email=${encodeURIComponent(email)}&exact=1`);
+            const users = result.data?.users;
+            if (result.success && users && users.length > 0) {
+                const user = users[0]; // exact-match user
+                infoElement.innerHTML = `<p style="font-size: var(--font-size-xs); margin-top: 4px; color: var(--gray-600);">Người dùng: <strong>${user.username}</strong> — SĐT: ${user.phone || 'N/A'}</p>`;
             } else {
                 infoElement.innerHTML = ''; // Clear if no user found
             }
@@ -551,11 +524,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             searchTimer = setTimeout(async () => {
                 try {
-                    // endpoint URL fixed: use & to add email, not ? inside action
-                    const response = await fetch(`${basePath}public/actions/account/index.php?action=search_users&email=${encodeURIComponent(query)}`);
-                    const result = await response.json();
-                    if (result.success && result.users) {
-                        currentUsers = result.users; // Update cache
+                    const result = await getJson(`${basePath}public/actions/account/index.php?action=search_users&email=${encodeURIComponent(query)}`);
+                    const users = result.data?.users;
+                    if (result.success && users) {
+                        currentUsers = users; // Update cache
                         dataListElement.innerHTML = currentUsers.map(user =>
                             `<option value="${user.email}">${user.username} (${user.phone || 'N/A'})</option>`
                         ).join('');

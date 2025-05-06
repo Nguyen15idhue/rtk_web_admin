@@ -1,47 +1,44 @@
 (function(){
-    const basePath     = window.basePath;
     const adminsData   = window.adminsData;
-    const isSuperAdmin = window.isSuperAdmin;
+    const isAdmin = window.isAdmin;
+    console.log('Debug isAdmin value:', window.isAdmin, typeof window.isAdmin, '=>', isAdmin);
 
     // Load current permissions on page load
-    ['Admin','CustomerCare'].forEach(role => {
-        fetch(`${basePath}public/actions/auth/index.php?action=fetch_permissions&role=${role.toLowerCase()}`)
-            .then(res => res.json())
-            .then(result => {
-                if(result.success && Array.isArray(result.data)){
-                    result.data.forEach(item=>{
-                        const sel = `input[type="checkbox"][data-role="${role}"][data-permission="${item.permission}"]`;
-                        const cb = document.querySelector(sel);
-                        if(cb) cb.checked = item.allowed=='1'||item.allowed===1;
-                    });
-                }
-            })
-            .catch(err=>console.error(`Error fetching perms for ${role}:`,err));
+    ['Admin','CustomerCare'].forEach(async role => {
+        try {
+            const result = await api.getJson(`${basePath}public/actions/auth/index.php?action=fetch_permissions&role=${role.toLowerCase()}`);
+            if (!result.success) throw new Error(result.message || 'Không thể tải quyền.');
+            result.data.forEach(item => {
+                const sel = `input[type="checkbox"][data-role="${role}"][data-permission="${item.permission}"]`;
+                const cb = document.querySelector(sel);
+                if (cb) cb.checked = item.allowed=='1'||item.allowed===1;
+            });
+        } catch (err) {
+            console.error(err);
+            window.showToast(`Error fetching perms for ${role}: ${err.message}`, 'error');
+        }
     });
 
-    function savePermissions(role, event){
+    async function savePermissions(role, event){
         event.preventDefault();
-        if(!isSuperAdmin){
-            alert('Bạn không có quyền thực hiện hành động này.');
-            return;
-        }
+        if (!isAdmin) return window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
         const permissions = {};
         document.querySelectorAll(`input[type="checkbox"][data-role="${role}"]`)
-            .forEach(cb=> permissions[cb.dataset.permission]=cb.checked );
-        fetch(`${basePath}public/actions/auth/index.php?action=process_permissions_update`, {
-            method: 'POST',
-            headers:{ 'Content-Type':'application/json' },
-            body: JSON.stringify({ role: role==='Admin'?'admin':'customercare', permissions })
-        })
-        .then(r=>r.json())
-        .then(data=>{
-            alert(data.success ? data.message||'Cập nhật thành công!' : 'Lỗi: '+(data.message||'Không thể cập nhật.'));
-        })
-        .catch(err=>{ console.error(err); alert('Đã xảy ra lỗi.'); });
+                .forEach(cb => permissions[cb.dataset.permission] = cb.checked);
+        try {
+            const data = await api.postJson(`${basePath}public/actions/auth/index.php?action=process_permissions_update`, {
+                role: role==='Admin'?'admin':'customercare',
+                permissions
+            });
+            window.showToast(data.message || 'Cập nhật thành công!', data.success?'success':'error');
+        } catch (err) {
+            console.error(err);
+            window.showToast(`Lỗi cập nhật quyền: ${err.message}`, 'error');
+        }
     }
 
     // Disable perms if not super admin
-    if(!isSuperAdmin){
+    if(!isAdmin){
         document.querySelectorAll('#admin-permission-management input[type="checkbox"]:not([data-fixed-disabled])')
             .forEach(cb=>{
                 cb.disabled = true;
