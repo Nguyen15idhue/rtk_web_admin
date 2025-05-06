@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // --- Brute-force protection ---
     $maxAttempts  = 5;
-    $lockoutTime  = 900; // 15 phút
+    $lockoutTime  = 600; // 10 phút
     if (!isset($_SESSION['login_attempts'])) {
         $_SESSION['login_attempts'] = [];
     }

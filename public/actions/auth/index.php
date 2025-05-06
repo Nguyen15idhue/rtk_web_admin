@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json');
 require_once dirname(__DIR__, 3) . '/private/config/constants.php';
+require_once dirname(__DIR__, 3) . '/private/utils/functions.php';
 $action = basename($_GET['action'] ?? '');
 $allowed = [
     'process_admin_login',
@@ -12,16 +13,12 @@ $allowed = [
     'process_admin_delete'
 ];
 if (!in_array($action, $allowed, true)) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Invalid auth action']);
-    exit;
+    api_error('Invalid auth action', 400);
 }
 
 $privatePath = PRIVATE_ACTIONS_PATH . '/auth/' . $action . '.php';
 if (!file_exists($privatePath)) {
-    http_response_code(404);
-    echo json_encode(['success' => false, 'message' => 'Auth action not found']);
-    exit;
+    api_error('Auth action not found', 404);
 }
 
 switch ($action) {

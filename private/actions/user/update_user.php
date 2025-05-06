@@ -1,6 +1,6 @@
 <?php
 $config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
-$db     = $config['db'];
+$db = $config['db'];
 
 header('Content-Type: application/json');
 
@@ -18,9 +18,14 @@ try {
     $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
     $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $is_company = isset($_POST['is_company']) ? 1 : 0;
-    $company_name = $is_company ? filter_input(INPUT_POST, 'company_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : null;
-    $tax_code = $is_company ? filter_input(INPUT_POST, 'tax_code', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : null;
+    $company_name = filter_input(INPUT_POST, 'company_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $tax_code     = filter_input(INPUT_POST, 'tax_code',     FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    // Nếu cả hai rỗng thì không phải công ty
+    $is_company = (!empty($company_name) || !empty($tax_code)) ? 1 : 0;
+    if (empty($company_name) && empty($tax_code)) {
+        $company_name = null;
+        $tax_code     = null;
+    }
 
     if (!$user_id) {
         abort('ID người dùng không hợp lệ.', 400);
@@ -81,11 +86,9 @@ try {
 
         if ($stmt_update->execute()) {
             $db->commit();
-            echo json_encode(['success' => true, 'message' => 'Cập nhật thông tin người dùng thành công.']);
-            exit;
+            api_success(null, 'Cập nhật thông tin người dùng thành công.');
         } else {
             $db->rollBack();
-            error_log("Failed to update user ID: $user_id");
             abort('Không thể cập nhật thông tin người dùng.', 500);
         }
     } catch (PDOException $e) {

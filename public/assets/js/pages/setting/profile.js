@@ -28,24 +28,15 @@ async function updateAdminProfile(event) {
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify({ name })
         });
-
-        const text = await response.text();
-        let result;
-        try {
-            result = JSON.parse(text);
-        } catch {
-            setStatus(profileStatusEl, `Lỗi server: Phản hồi không hợp lệ.`, 'error');
-            return;
-        }
-
-        if (result.success) {
+        const res = await response.json();
+        if (!res.success) {
+            setStatus(profileStatusEl, `Lỗi: ${res.message || 'Không thể cập nhật.'}`, 'error');
+        } else {
             setStatus(profileStatusEl, 'Cập nhật thành công!', 'success');
             const headerNameSpan = document.querySelector('.user-info .highlight');
             if (headerNameSpan) headerNameSpan.textContent = name;
-        } else {
-            setStatus(profileStatusEl, `Lỗi: ${result.message || 'Không thể cập nhật.'}`, 'error');
         }
-    } catch {
+    } catch (err) {
         setStatus(profileStatusEl, 'Lỗi kết nối hoặc lỗi server.', 'error');
     } finally {
         saveProfileBtn.disabled = false;
@@ -81,23 +72,14 @@ async function changeAdminPassword(event) {
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify({ current_password: currentPassword, new_password: newPassword, confirm_password: confirmPassword })
         });
-
-        const text = await response.text();
-        let result;
-        try {
-            result = JSON.parse(text);
-        } catch {
-            setStatus(passwordStatusEl, `Lỗi server: Phản hồi không hợp lệ.`, 'error');
-            return;
-        }
-
-        if (result.success) {
+        const res = await response.json();
+        if (!res.success) {
+            setStatus(passwordStatusEl, `Lỗi: ${res.message || 'Không thể đổi mật khẩu.'}`, 'error');
+        } else {
             setStatus(passwordStatusEl, 'Đổi mật khẩu thành công!', 'success');
             passwordForm.reset();
-        } else {
-            setStatus(passwordStatusEl, `Lỗi: ${result.message || 'Không thể đổi mật khẩu.'}`, 'error');
         }
-    } catch {
+    } catch (err) {
         setStatus(passwordStatusEl, 'Lỗi kết nối hoặc lỗi server.', 'error');
     } finally {
         changePasswordBtn.disabled = false;

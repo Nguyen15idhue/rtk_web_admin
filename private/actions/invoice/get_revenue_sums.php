@@ -2,10 +2,11 @@
 // filepath: private/actions/invoice/get_revenue_sums.php
 declare(strict_types=1);
 
+require_once __DIR__ . '/../../utils/functions.php';  // add helper
+
 // Prevent direct access
 if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
-    http_response_code(403);
-    exit('Forbidden');
+    api_forbidden('Forbidden');
 }
 
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';

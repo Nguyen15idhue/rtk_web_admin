@@ -49,82 +49,81 @@ try {
     // Update the account's enabled status
     $success = $accountModel->toggleAccountStatus($accountId, $enable);
 
-    if ($success) {
-        // Fetch updated account details to get the new derived status and regenerate buttons/badge
-        // Ensure getAccountById fetches all fields needed by get_account_action_buttons and deriveAccountStatus
-        $updatedAccount = $accountModel->getAccountById($accountId);
-
-        if (!$updatedAccount) {
-             // If the account disappeared after update (unlikely), rollback and error
-             $db->rollBack();
-             throw new Exception("Failed to fetch updated account details after status toggle.");
-        }
-
-        // The derived_status is now calculated correctly within getAccountById using the new logic
-        $newDerivedStatus = $updatedAccount['derived_status'];
-
-        // Regenerate action buttons HTML using the updated function
-        $newButtonsHtml = get_account_action_buttons($updatedAccount);
-        // Regenerate status badge HTML using the updated function
-        $newStatusBadgeHtml = get_account_status_badge($newDerivedStatus);
-
-        // Prepare and call external RTK API to sync status
-        $stmtPwd = $db->prepare("SELECT password_acc FROM survey_account WHERE id = ?");
-        $stmtPwd->execute([$accountId]);
-        $currentPwd = $stmtPwd->fetchColumn();
-
-        // --- Mới: Lấy mountIds để không bị reset sau suspend/reactivate ---
-        $stmtLoc = $db->prepare("
-            SELECT r.location_id 
-            FROM registration r 
-            JOIN survey_account sa ON sa.registration_id = r.id 
-            WHERE sa.id = ?
-        ");
-        $stmtLoc->execute([$accountId]);
-        $locationId = (int)$stmtLoc->fetchColumn();
-        $mountIds = getMountPointsByLocationId($locationId); // Hàm có sẵn trong utils/functions.php
-
-        // Prepare payload for RTK API to sync status, thêm mountIds
-        $apiPayload = [
-            'id'              => $accountId,
-            'name'            => $updatedAccount['username_acc'],
-            'userPwd'         => $currentPwd,
-            'startTime'       => strtotime($updatedAccount['activation_date']) * 1000,
-            'endTime'         => strtotime($updatedAccount['expiry_date'])   * 1000,
-            'enabled'         => $enable ? 1 : 0,
-            'numOnline'       => $updatedAccount['concurrent_user']   ?? 1,
-            'customerBizType' => $updatedAccount['customerBizType']   ?? 1,
-            'mountIds'        => $mountIds
-        ];
-        // Log payload for debugging
-        error_log("RTK API Payload: " . json_encode($apiPayload));
-        $apiResult = updateRtkAccount($apiPayload);
-        // Log response from RTK API
-        error_log("RTK API Response: " . json_encode($apiResult));
-        if (!$apiResult['success']) {
-            // External API failed: commit DB but notify front‑end
-            $db->commit();
-            echo json_encode([
-                'success'            => false,
-                'message'            => 'Account status updated but external API error: ' . $apiResult['error'],
-                'newStatus'          => $newDerivedStatus,
-                'newStatusBadgeHtml' => $newStatusBadgeHtml,
-                'newButtonsHtml'     => $newButtonsHtml
-            ]);
-            exit;
-        }
-        $db->commit();
-        echo json_encode([
-            'success' => true,
-            'message' => 'Account status updated successfully.',
-            'newStatus' => $newDerivedStatus,
-            'newStatusBadgeHtml' => $newStatusBadgeHtml,
-            'newButtonsHtml' => $newButtonsHtml
-        ]);
-    } else {
+    if (!$success) {
         $db->rollBack();
-        echo json_encode(['success' => false, 'message' => 'Failed to update account status in database.']);
+        abort('Failed to update account status in database.', 500);
     }
+
+    // Fetch updated account details to get the new derived status and regenerate buttons/badge
+    $updatedAccount = $accountModel->getAccountById($accountId);
+
+    if (!$updatedAccount) {
+        // If the account disappeared after update (unlikely), rollback and error
+        $db->rollBack();
+        throw new Exception("Failed to fetch updated account details after status toggle.");
+    }
+
+    // The derived_status is now calculated correctly within getAccountById using the new logic
+    $newDerivedStatus = $updatedAccount['derived_status'];
+
+    // Regenerate action buttons HTML using the updated function
+    $newButtonsHtml = get_account_action_buttons($updatedAccount);
+    // Regenerate status badge HTML using the updated function
+    $newStatusBadgeHtml = get_account_status_badge($newDerivedStatus);
+
+    // Prepare and call external RTK API to sync status
+    $stmtPwd = $db->prepare("SELECT password_acc FROM survey_account WHERE id = ?");
+    $stmtPwd->execute([$accountId]);
+    $currentPwd = $stmtPwd->fetchColumn();
+
+    // --- Mới: Lấy mountIds để không bị reset sau suspend/reactivate ---
+    $stmtLoc = $db->prepare("
+        SELECT r.location_id 
+        FROM registration r 
+        JOIN survey_account sa ON sa.registration_id = r.id 
+        WHERE sa.id = ?
+    ");
+    $stmtLoc->execute([$accountId]);
+    $locationId = (int)$stmtLoc->fetchColumn();
+    $mountIds = getMountPointsByLocationId($locationId); // Hàm có sẵn trong utils/functions.php
+
+    // Prepare payload for RTK API to sync status, thêm mountIds
+    $apiPayload = [
+        'id'              => $accountId,
+        'name'            => $updatedAccount['username_acc'],
+        'userPwd'         => $currentPwd,
+        'startTime'       => strtotime($updatedAccount['activation_date']) * 1000,
+        'endTime'         => strtotime($updatedAccount['expiry_date'])   * 1000,
+        'enabled'         => $enable ? 1 : 0,
+        'numOnline'       => $updatedAccount['concurrent_user']   ?? 1,
+        'customerBizType' => $updatedAccount['customerBizType']   ?? 1,
+        'mountIds'        => $mountIds
+    ];
+    // Log payload for debugging
+    error_log("RTK API Payload: " . json_encode($apiPayload));
+    $apiResult = updateRtkAccount($apiPayload);
+    // Log response from RTK API
+    error_log("RTK API Response: " . json_encode($apiResult));
+
+    $payload = [
+        'newStatus'          => $newDerivedStatus,
+        'newStatusBadgeHtml' => $newStatusBadgeHtml,
+        'newButtonsHtml'     => $newButtonsHtml
+    ];
+
+    if (!$apiResult['success']) {
+        // External API failed: commit DB but notify front‑end
+        $db->commit();
+        api_error(
+            'Account status updated but external API error: ' . $apiResult['error'],
+            400,
+            [],
+            [] // errors array; payload remains in data
+        );
+    }
+
+    $db->commit();
+    api_success($payload, 'Account status updated successfully.');
 } catch (Exception $e) {
     $db->rollBack();
     error_log("Error in toggle_status.php: " 

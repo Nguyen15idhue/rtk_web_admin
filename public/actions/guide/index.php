@@ -2,6 +2,7 @@
 header('Content-Type: application/json');
 // add constants for PRIVATE_ACTIONS_PATH
 require_once dirname(__DIR__, 3) . '/private/config/constants.php';
+require_once dirname(__DIR__, 3) . '/private/utils/functions.php';
 $action = $_GET['action'] ?? '';
 switch ($action) {
     case 'fetch':
@@ -20,6 +21,6 @@ switch ($action) {
         require_once PRIVATE_ACTIONS_PATH . '/guide/update_guide.php';
         break;
     default:
-        echo json_encode(['success' => false, 'message' => 'Invalid action']);
+        api_error('Invalid action', 400);
 }
 exit;

@@ -23,7 +23,11 @@ try {
 
     $model = new GuideModel();
     $ok = $model->update($_POST['id'], $_POST);
-    echo json_encode(['success' => (bool)$ok]);
+    if ($ok) {
+        api_success([], 'Guide updated successfully');
+    } else {
+        api_error('Error updating guide', 500);
+    }
 } catch (\Throwable $e) {
     // Bổ sung logging chi tiết
     error_log(sprintf(
@@ -32,5 +36,5 @@ try {
         $e->getMessage(),
         $e->getTraceAsString()
     ));
-    abort('Error updating guide: '.$e->getMessage(), 500);
+    api_error('Error updating guide: ' . $e->getMessage(), 500);
 }

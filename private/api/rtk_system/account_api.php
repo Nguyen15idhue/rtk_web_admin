@@ -474,10 +474,4 @@ if (php_sapi_name() !== 'cli' && isset($_GET['test_update'])) {
     echo json_encode(['success'=>true,'message'=>'Invoked via HTTP test']);
     exit;
 }
-
-// CLI entrypoint: run `php account_api.php update_stations`
-// if (php_sapi_name()==='cli' && ($argv[1]??'')==='update_stations') {
-//     fetchAndUpdateStations();
-//     exit;
-// }
 ?>

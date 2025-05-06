@@ -7,14 +7,12 @@ header('Content-Type: application/json');
 
 // Check if admin is logged in
 if (!isset($_SESSION['admin_id'])) {
-    send_json_response(['success' => false, 'message' => 'Unauthorized access.'], 401);
-    exit;
+    api_error('Unauthorized access.', 401);
 }
 
 // Check if it's a POST request
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    send_json_response(['success' => false, 'message' => 'Invalid request method.'], 405);
-    exit;
+    api_error('Invalid request method.', 405);
 }
 
 // Get input data
@@ -26,27 +24,23 @@ $confirm_password = $input['confirm_password'] ?? null;
 
 // Basic validation
 if (empty($current_password) || empty($new_password) || empty($confirm_password)) {
-    send_json_response(['success' => false, 'message' => 'All password fields are required.'], 400);
-    exit;
+    api_error('All password fields are required.', 400);
 }
 
 if (strlen($new_password) < 6) {
-    send_json_response(['success' => false, 'message' => 'New password must be at least 6 characters long.'], 400);
-    exit;
+    api_error('New password must be at least 6 characters long.', 400);
 }
 
 if ($new_password !== $confirm_password) {
-    send_json_response(['success' => false, 'message' => 'New password and confirmation password do not match.'], 400);
-    exit;
+    api_error('New password and confirmation password do not match.', 400);
 }
 
-$db = Database::getInstance();;
+$db = Database::getInstance();
 $conn = $db->getConnection();
 
 if (!$conn) {
     error_log("Database connection failed in process_password_change.php");
-    send_json_response(['success' => false, 'message' => 'Database connection error.'], 500);
-    exit;
+    api_error('Database connection error.', 500);
 }
 
 try {
@@ -57,22 +51,19 @@ try {
     $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$admin) {
-        send_json_response(['success' => false, 'message' => 'Admin user not found.'], 404);
-        exit;
+        api_error('Admin user not found.', 404);
     }
 
     // 2. Verify current password
     if (!password_verify($current_password, $admin['admin_password'])) {
-        send_json_response(['success' => false, 'message' => 'Incorrect current password.'], 400);
-        exit;
+        api_error('Incorrect current password.', 400);
     }
 
     // 3. Hash the new password
     $new_password_hash = password_hash($new_password, PASSWORD_DEFAULT);
     if ($new_password_hash === false) {
          error_log("Password hashing failed for admin ID: " . $admin_id);
-         send_json_response(['success' => false, 'message' => 'Error processing new password.'], 500);
-         exit;
+         api_error('Error processing new password.', 500);
     }
 
 
@@ -82,15 +73,15 @@ try {
     $updateStmt->bindParam(':id', $admin_id, PDO::PARAM_INT);
 
     if ($updateStmt->execute()) {
-        send_json_response(['success' => true, 'message' => 'Password changed successfully.']);
+        api_success(null, 'Password changed successfully.');
     } else {
-        send_json_response(['success' => false, 'message' => 'Failed to change password.'], 500);
+        api_error('Failed to change password.', 500);
     }
 
 } catch (PDOException $e) {
     error_log("Error changing admin password: " . $e->getMessage());
     error_log("Stack trace: " . $e->getTraceAsString());
-    send_json_response(['success' => false, 'message' => 'An error occurred while changing the password.'], 500);
+    api_error('An error occurred while changing the password.', 500);
 } finally {
     $db->close();
 }

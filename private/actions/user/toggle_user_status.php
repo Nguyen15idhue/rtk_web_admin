@@ -1,5 +1,8 @@
 <?php
-require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$conn     = $config['db'];
+
+header('Content-Type: application/json');
 
 try {
     if (!isset($_SESSION['admin_id'])) {
@@ -9,13 +12,20 @@ try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         abort('Invalid request method.', 405);
     }
-    $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
-    $action  = filter_input(INPUT_POST, 'action');
-    if (!$user_id || !in_array($action, ['enable', 'disable'])) {
-        abort('Invalid or missing parameters (user_id, action).', 400);
+
+    // Get input data
+    $rawInput = file_get_contents('php://input');
+    $input = json_decode($rawInput, true);
+    if (!is_array($input)) {
+        $input = $_POST;
     }
-    $conn = Database::getInstance()->getConnection() 
-        or abort('Database connection failed.', 500);
+
+    $user_id = filter_var($input['user_id'] ?? null, FILTER_VALIDATE_INT);
+    $action  = filter_var($input['action']    ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
+
+    if (!$user_id || !in_array($action, ['enable', 'disable'])) {
+        abort('Invalid or missing parameters.', 400);
+    }
 
     $conn->beginTransaction();
 
@@ -27,19 +37,12 @@ try {
     $stmt->bindParam(':deleted_at', $deleted_at_value, $deleted_at_value === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
     $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
 
-    if ($stmt->execute()) {
-        if ($stmt->rowCount() > 0) {
-            $conn->commit();
-            echo json_encode(['success' => true, 'message' => 'Cập nhật trạng thái người dùng thành công.']);
-            exit;
-        } else {
-            $conn->rollBack();
-            abort('User not found or status already updated.', 404);
-        }
+    if ($stmt->execute() && $stmt->rowCount() > 0) {
+        $conn->commit();
+        api_success(null, 'Cập nhật trạng thái người dùng thành công.');
     } else {
         $conn->rollBack();
-        error_log("Toggle status failed for user $user_id");
-        abort('Failed to update user status.', 500);
+        abort('User not found or status unchanged.', 404);
     }
 } catch (PDOException $e) {
     if (isset($conn) && $conn->inTransaction()) $conn->rollBack();
@@ -47,6 +50,9 @@ try {
     error_log("Stack trace: " . $e->getTraceAsString());
     abort('Database error during status update.', 500);
 } catch (Exception $e) {
+    if ($conn->inTransaction()) {
+        $conn->rollBack();
+    }
     error_log("Exception in toggle_user_status: " . $e->getMessage());
     error_log("Stack trace: " . $e->getTraceAsString());
     abort('An unexpected error occurred.', 500);

@@ -303,5 +303,10 @@ try {
     abort($e->getMessage(), 500);
 }
 
-echo json_encode($response);
+if (!empty($response['success'])) {
+    // wrap updated account under data.account
+    api_success(['account' => $response['account'] ?? null], $response['message']);
+} else {
+    api_error($response['message'], 400);
+}
 ?>

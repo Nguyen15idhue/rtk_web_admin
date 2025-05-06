@@ -24,9 +24,7 @@ require_once BASE_PATH . '/services/TransactionHistoryService.php';
 
 // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405); // Method Not Allowed
-    echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
-    exit;
+    api_error('Invalid request method.', 405);
 }
 
 // Expecting JSON payload
@@ -39,14 +37,10 @@ $transaction_id = filter_var($input['transaction_id'] ?? null, FILTER_VALIDATE_I
 $reason = trim(htmlspecialchars($input['reason'] ?? '')); // Sanitize reason
 
 if ($transaction_id === false || $transaction_id <= 0) {
-     http_response_code(400); // Bad Request
-     echo json_encode(['success' => false, 'message' => 'Invalid or missing transaction ID.']);
-     exit;
+    api_error('Invalid or missing transaction ID.', 400);
 }
 if (empty($reason)) {
-     http_response_code(400); // Bad Request
-     echo json_encode(['success' => false, 'message' => 'Rejection reason cannot be empty.']);
-     exit;
+    api_error('Rejection reason cannot be empty.', 400);
 }
 // Optional: Add length limit for reason
 // if (mb_strlen($reason) > 500) { ... }
@@ -56,8 +50,7 @@ $database = Database::getInstance();
 $db       = $database->getConnection();
 
 if (!$db) {
-    http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Database connection failed.']);
+    api_error('Database connection failed.', 500);
     error_log("Error rejecting transaction: Database connection failed.");
     $database->close();
     exit;
@@ -154,9 +147,15 @@ try {
         $stmt_delete_acc->bindParam(':id', $reg_id, PDO::PARAM_INT);
         $stmt_delete_acc->execute();
 
-        // Unconfirm Payment (if applicable)
-        $stmt_unconfirm_pay = $db->prepare("UPDATE payment SET confirmed = 0, confirmed_at = NULL, updated_at = NOW() WHERE registration_id = :id");
-        $stmt_unconfirm_pay->bindParam(':id', $reg_id, PDO::PARAM_INT);
+        // Replace old payment table update with transaction_history unconfirm
+        $stmt_unconfirm_pay = $db->prepare("
+            UPDATE transaction_history
+            SET payment_confirmed = 0,
+                payment_confirmed_at = NULL,
+                updated_at = NOW()
+            WHERE id = :th_id
+        ");
+        $stmt_unconfirm_pay->bindParam(':th_id', $transaction_id, PDO::PARAM_INT);
         $stmt_unconfirm_pay->execute();
 
         // --- New: Call RTK API to delete accounts ---
@@ -189,17 +188,14 @@ try {
     if ($old_status === 'active') {
         $message .= ' Associated accounts deleted.';
     }
-    echo json_encode(['success' => true, 'message' => $message]);
+    api_success(null, $message);
 
 } catch (Exception $e) {
     $db->rollBack();
     error_log("Error rejecting transaction ID $transaction_id: " . $e->getMessage());
-    error_log("Trace: " . $e->getTraceAsString());          // <-- Added detailed stack trace
-    http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Failed to reject transaction. Please try again later or contact support.']);
+    error_log("Trace: " . $e->getTraceAsString());
+    api_error('Failed to reject transaction. Please try again later or contact support.', 500);
 } finally {
     $database->close();
 }
-
-exit;
 ?>

@@ -120,43 +120,21 @@
                     body: JSON.stringify({transaction_id: id})
                 });
                 const data = await resp.json();
-                if (resp.ok && data.success) {
-                    let msg = data.message || `Duyệt #${id} thành công!`;
-                    if (Array.isArray(data.accounts) && data.accounts.length) {
-                        msg += '\n\nThông tin tài khoản đã tạo:';
-                        data.accounts.forEach(acc=>{
-                            msg += `\nUsername: ${acc.username_acc}\nPassword: ${acc.password_acc}`;
-                        });
-                    }
-                    alert(msg);
-                    if (row) {
-                        const badge = row.querySelector('.status .status-badge');
-                        if (badge) {
-                            badge.className = 'status-badge status-approved';
-                            badge.textContent = 'Đã duyệt';
-                        }
-                        const actions = row.querySelector('.action-buttons');
-                        if (actions) {
-                            actions.innerHTML = `
-                                <button class="btn-icon btn-disabled" title="Đã duyệt" disabled>
-                                    <i class="fas fa-check-circle"></i>
-                                </button>
-                                <button class="btn-icon btn-reject" title="Từ chối"
-                                    onclick="openRejectTransactionModal('${id}')" data-permission="transaction_reject">
-                                    <i class="fas fa-times-circle"></i>
-                                </button>
-                                <button class="btn-icon btn-revert" title="Hủy duyệt (Về chờ duyệt)"
-                                    onclick="revertTransaction('${id}', this)" data-permission="transaction_revert">
-                                    <i class="fas fa-undo-alt"></i>
-                                </button>
-                            `;
-                        }
-                    }
-                } else {
-                    throw data;
+                if (!data.success) throw new Error(data.message || `HTTP ${resp.status}`);
+                // success branch
+                let msg = data.message || `Duyệt #${id} thành công!`;
+                if (Array.isArray(data.accounts) && data.accounts.length) {
+                    msg += '\n\nThông tin tài khoản đã tạo:';
+                    data.accounts.forEach(acc=>{
+                        msg += `\nUsername: ${acc.username_acc}\nPassword: ${acc.password_acc}`;
+                    });
+                }
+                window.showToast(msg, 'success');
+                if (row) {
+                    updateTableRowStatus(id,'active','Đã duyệt','status-approved');
                 }
             } catch(e){
-                errorHandler.showError('Lỗi duyệt giao dịch: '+(e.message||e));
+                window.showToast('Lỗi duyệt giao dịch: '+ e.message, 'error');
             }
         };
 
@@ -167,13 +145,17 @@
             const row=document.querySelector(`tr[data-transaction-id="${id}"]`);
             disableActionButtons(row);
             try {
-                const resp=await fetch(rejectUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({transaction_id:id,reason:text})});
-                const data=await resp.json();
-                if(resp.ok&&data.success){
-                    alert('Từ chối thành công!'); updateTableRowStatus(id,'rejected','Bị từ chối','status-rejected');
-                } else throw data;
+                const resp = await fetch(rejectUrl,{
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({transaction_id:id,reason:text})
+                });
+                const data = await resp.json();
+                if (!data.success) throw new Error(data.message || `HTTP ${resp.status}`);
+                window.showToast('Từ chối thành công!', 'success');
+                updateTableRowStatus(id,'rejected','Bị từ chối','status-rejected');
             } catch(e){
-                errorHandler.showError('Lỗi từ chối giao dịch: '+(e.message||e));
+                window.showToast('Lỗi từ chối giao dịch: '+ e.message, 'error');
                 enableActionButtons(row,row.dataset.status);
             }
         };
@@ -182,13 +164,17 @@
             if(!confirm(`Hủy duyệt #${id}?`)) return;
             const row=btn.closest('tr'); disableActionButtons(row);
             try {
-                const resp=await fetch(revertUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({transaction_id:id})});
-                const data=await resp.json();
-                if(resp.ok&&data.success){
-                    alert('Hủy duyệt thành công.'); updateTableRowStatus(id,'pending','Chờ duyệt','status-pending');
-                } else throw data;
+                const resp = await fetch(revertUrl,{
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({transaction_id:id})
+                });
+                const data = await resp.json();
+                if (!data.success) throw new Error(data.message || `HTTP ${resp.status}`);
+                window.showToast('Hủy duyệt thành công.', 'success');
+                updateTableRowStatus(id,'pending','Chờ duyệt','status-pending');
             } catch(e){
-                errorHandler.showError('Lỗi hoàn tác giao dịch: '+(e.message||e));
+                window.showToast('Lỗi hoàn tác giao dịch: '+ e.message, 'error');
                 enableActionButtons(row,row.dataset.status);
             }
         };

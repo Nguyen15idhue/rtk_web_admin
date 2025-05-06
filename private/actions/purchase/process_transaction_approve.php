@@ -8,9 +8,7 @@ $db        = $bootstrap['db'];
 
 // --- Permission check ---
 if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
-    http_response_code(403);
-    echo json_encode(['success' => false, 'message' => 'Permission denied.']);
-    exit;
+    api_error('Permission denied.', 403);
 }
 
 // --- CSRF protection ---
@@ -22,12 +20,11 @@ if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin'
 
 // Load any additional services you still need
 require_once BASE_PATH . '/services/TransactionHistoryService.php';
+require_once BASE_PATH . '/utils/functions.php';
 
 // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405); // Method Not Allowed
-    echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
-    exit;
+    api_error('Invalid request method.', 405);
 }
 
 // Expecting JSON payload
@@ -39,9 +36,7 @@ if (!is_array($input)) {
 $transaction_id = filter_var($input['transaction_id'] ?? null, FILTER_VALIDATE_INT);
 
 if ($transaction_id === false || $transaction_id <= 0) {
-    http_response_code(400); // Bad Request
-    echo json_encode(['success' => false, 'message' => 'Invalid or missing transaction ID.']);
-    exit;
+    api_error('Invalid or missing transaction ID.', 400);
 }
 
 // NEW: treat $transaction_id as history ID, fetch the real registration ID and transaction type
@@ -54,9 +49,7 @@ $stmt_hist->bindParam(':history_id', $transaction_id, PDO::PARAM_INT);
 $stmt_hist->execute();
 $hist = $stmt_hist->fetch(PDO::FETCH_ASSOC);
 if (!$hist) {
-    http_response_code(404);
-    echo json_encode(['success' => false, 'message' => 'Transaction history not found.']);
-    exit;
+    api_error('Transaction history not found.', 404);
 }
 $registration_id = (int)$hist['registration_id'];
 $tx_type         = $hist['transaction_type']; 
@@ -287,12 +280,10 @@ try {
         $stmt_hist->execute();
         $db->commit();
 
-        echo json_encode([
-            'success'            => true,
-            'message'            => "Transaction #{$transaction_id} approved.",
+        api_success([
             'scheduled_accounts' => $accIds,
             'renewed_accounts'   => $renewed
-        ]);
+        ], "Transaction #{$transaction_id} approved.");
         exit;
     }
 
@@ -443,21 +434,15 @@ try {
         $responseMessage .= " {$count} account(s) created successfully.";
     }
 
-    echo json_encode([
-        'success' => true,
-        'message' => $responseMessage,
-        'accounts' => $createdAccounts ?? [] // Ensure accounts is always an array
-    ]);
+    api_success($createdAccounts ?? [], $responseMessage);
 
 } catch (Exception $e) {
     $db->rollBack();
     error_log("Error approving transaction ID $transaction_id: " . $e->getMessage());
-    error_log("Trace: " . $e->getTraceAsString());          // <-- Added detailed stack trace
-    http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Failed to approve transaction: ' . $e->getMessage()]);
+    error_log("Trace: " . $e->getTraceAsString());
+    api_error('Failed to approve transaction: ' . $e->getMessage(), 500);
 } finally {
     $db = null; // Close DB connection
+    // no explicit exit needed
 }
-
-exit;
 ?>

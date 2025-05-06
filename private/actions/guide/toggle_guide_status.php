@@ -3,12 +3,25 @@ require_once __DIR__ . '/../../includes/page_bootstrap.php';
 header('Content-Type: application/json');
 
 try {
-    if (empty($_POST['id']) || !isset($_POST['status'])) {
-        abort('ID and status are required', 400);
+    // Đọc raw JSON nếu gửi Content-Type: application/json
+    $rawInput = file_get_contents('php://input');
+    $input = json_decode($rawInput, true) ?: $_POST;
+
+    $id     = $input['id']     ?? null;
+    $status = $input['status'] ?? null;
+
+    if (empty($id) || !isset($status)) {
+        api_error('ID and status are required', 400);
     }
+
     $model = new GuideModel();
-    $ok = $model->toggleStatus($_POST['id'], $_POST['status']);
-    echo json_encode(['success' => (bool)$ok]);
+    $ok = $model->toggleStatus($id, $status);
+
+    if ($ok) {
+        api_success([], 'Guide status toggled successfully');
+    } else {
+        api_error('Error toggling guide status', 500);
+    }
 } catch (\Throwable $e) {
     error_log(sprintf(
         "Critical [toggle_guide_status.php:%d]: %s\nStack trace:\n%s",
@@ -16,5 +29,5 @@ try {
         $e->getMessage(),
         $e->getTraceAsString()
     ));
-    abort('Error toggling status: '.$e->getMessage(), 500);
+    api_error('Error toggling status: ' . $e->getMessage(), 500);
 }

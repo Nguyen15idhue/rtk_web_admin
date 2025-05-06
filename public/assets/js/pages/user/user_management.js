@@ -35,10 +35,11 @@ document.addEventListener('DOMContentLoaded', ()=> {
         .then(res => {
             if(res.success){
                 closeModal('createUserModal');
-                alert('Thêm người dùng thành công!');
+                window.showToast(res.message || 'Thêm người dùng thành công!', 'success');
                 location.reload();
             } else {
-                errEl.textContent = 'Lỗi: ' + (res.message || 'Không thể thêm người dùng.');
+                errEl.textContent = res.message;
+                window.showToast(res.message, 'error');
             }
         })
         .catch(err => {
@@ -56,7 +57,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
         getJson(`${apiBasePath}?action=get_user_details&id=${encodeURIComponent(userId)}`)
         .then(res => {
-            if (res.success && res.data) {
+            if (res.success) {
                 const u = res.data;
                 let html = `
                     <div class="detail-row"><span class="detail-label">ID:</span> <span class="detail-value">${u.id}</span></div>
@@ -74,7 +75,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
                 `;
                 viewBody.innerHTML = html;
             } else {
-                viewBody.innerHTML = `<p style="color:red;">Lỗi: ${res.message || 'Không thể tải thông tin người dùng.'}</p>`;
+                viewBody.innerHTML = `<p style="color:red;">${res.message}</p>`;
             }
         })
         .catch(err => {
@@ -90,7 +91,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         document.getElementById('editUserModal').style.display = 'block';
         getJson(`${apiBasePath}?action=get_user_details&id=${encodeURIComponent(userId)}`)
         .then(res => {
-            if(res.success && res.data){
+            if(res.success){
                 const u = res.data;
                 document.getElementById('editUserId').value = u.id;
                 document.getElementById('editUsername').value = u.username||'';
@@ -103,7 +104,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
                     document.getElementById('editTaxCode').value    = u.tax_code||'';
                 }
             } else {
-                document.getElementById('editUserError').textContent = 'Lỗi tải: ' + (res.message||'Không thể lấy dữ liệu');
+                document.getElementById('editUserError').textContent = res.message;
             }
         })
         .catch(err => {
@@ -124,11 +125,12 @@ document.addEventListener('DOMContentLoaded', ()=> {
         postForm(`${apiBasePath}?action=update_user`, fd)
         .then(res => {
             if(res.success){
-                alert(res.message||'Cập nhật thành công!');
+                window.showToast(res.message, 'success');
                 closeModal('editUserModal');
                 location.reload();
             } else {
-                errEl.textContent = 'Lỗi: ' + (res.message||'Không thể cập nhật');
+                errEl.textContent = res.message;
+                window.showToast(res.message, 'error');
             }
         })
         .catch(err => {
@@ -147,14 +149,14 @@ document.addEventListener('DOMContentLoaded', ()=> {
         postForm(`${apiBasePath}?action=toggle_user_status`, body)
         .then(res => {
             if(res.success){
-                alert(res.message||'Thành công!');
+                window.showToast(res.message, 'success');
                 location.reload();
             } else {
-                alert('Lỗi: ' + (res.message||'Không thể thay đổi trạng thái'));
+                window.showToast(res.message, 'error');
             }
         })
         .catch(err => {
-            alert('Lỗi khi thực hiện: ' + err.message);
+            window.showToast(res.message, 'error');
         });
     };
 

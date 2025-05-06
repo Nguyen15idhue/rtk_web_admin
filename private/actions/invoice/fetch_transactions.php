@@ -2,9 +2,10 @@
 // filepath: private\actions\invoice\fetch_transactions.php
 declare(strict_types=1);
 
-if (basename(__FILE__) == basename($_SERVER["SCRIPT_FILENAME"])) {
-     http_response_code(403);
-     die("Forbidden: Direct access is not allowed.");
+require_once __DIR__ . '/../../utils/functions.php';  // add helper
+
+if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
+    api_forbidden('Forbidden: Direct access not allowed');
 }
 
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';

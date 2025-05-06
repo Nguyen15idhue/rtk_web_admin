@@ -1,15 +1,15 @@
 <?php
 header('Content-Type: application/json');
 
-// Chỉ SuperAdmin được phép
+// Only SuperAdmin
 if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'admin') {
-    abort('Unauthorized', 401);
+    api_error('Unauthorized', 401);
 }
 
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
-// Đảm bảo đóng PDO khi script kết thúc
+// Ensure PDO is closed when the script ends
 register_shutdown_function(function() use (&$db) {
     $db = null;
 });
@@ -17,17 +17,17 @@ register_shutdown_function(function() use (&$db) {
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $input = json_decode(file_get_contents('php://input'), true);
 
-// Lấy và kiểm tra dữ liệu đầu vào
+// Get and validate input data
 $id       = isset($input['id']) ? (int)$input['id'] : 0;
 $name     = trim($input['name'] ?? '');
 $password = $input['password'] ?? '';
 $role     = $input['role'] ?? '';
 
 if (!$id || !$name || !in_array($role, ['admin','customercare'])) {
-    abort('Invalid data', 400);
+    api_error('Invalid data', 400);
 }
 
-// Xây dựng truy vấn
+// Build SQL query
 if ($password !== '') {
     $hashed = password_hash($password, PASSWORD_DEFAULT);
     $sql = "UPDATE admin SET name = :name, admin_password = :pwd, role = :role WHERE id = :id";
@@ -45,11 +45,11 @@ try {
     }
     $stmt->execute();
     if ($stmt->rowCount() > 0) {
-        echo json_encode(['success' => true, 'message' => 'Cập nhật thành công.']);
+        api_success([], 'Cập nhật thành công.');
     } else {
-        echo json_encode(['success' => false, 'message' => 'Không có thay đổi (ID không tồn tại hoặc dữ liệu giống trước).']);
+        api_success([], 'Không có thay đổi (ID không tồn tại hoặc dữ liệu giống trước).');
     }
 } catch (PDOException $e) {
     error_log('process_admin_update error: ' . $e->getMessage());
-    abort('Lỗi khi cập nhật', 500);
+    api_error('Lỗi khi cập nhật', 500);
 }

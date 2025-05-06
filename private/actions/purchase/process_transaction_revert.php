@@ -23,9 +23,7 @@ require_once BASE_PATH . '/services/TransactionHistoryService.php';
 
 // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405); // Method Not Allowed
-    echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
-    exit;
+    api_error('Invalid request method.', 405);
 }
 
 // Expecting JSON payload
@@ -37,9 +35,7 @@ $rawInput = file_get_contents('php://input');
 $transaction_id = filter_var($input['transaction_id'] ?? null, FILTER_VALIDATE_INT);
 
 if ($transaction_id === false || $transaction_id <= 0) {
-     http_response_code(400); // Bad Request
-     echo json_encode(['success' => false, 'message' => 'Invalid or missing transaction ID.']);
-     exit;
+    api_error('Invalid or missing transaction ID.', 400);
 }
 
 // --- Processing ---
@@ -47,8 +43,7 @@ $database = Database::getInstance();
 $db       = $database->getConnection();
 
 if (!$db) {
-    http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Database connection failed.']);
+    api_error('Database connection failed.', 500);
     error_log("Error reverting transaction: Database connection failed.");
     $database->close();
     exit;
@@ -160,17 +155,14 @@ try {
 
     // --- Commit Transaction ---
     $db->commit();
-    echo json_encode(['success' => true, 'message' => 'Transaction #' . $transaction_id . ' reverted to pending successfully. Associated accounts deleted.']);
+    api_success(null, 'Transaction #' . $transaction_id . ' reverted to pending successfully. Associated accounts deleted.');
 
 } catch (Exception $e) {
     $db->rollBack();
     error_log("Error reverting transaction ID $transaction_id: " . $e->getMessage());
-    error_log("Trace: " . $e->getTraceAsString());          // <-- Added detailed stack trace
-    http_response_code(500); // Internal Server Error
-    echo json_encode(['success' => false, 'message' => 'Failed to revert transaction. Please try again later or contact support.']);
+    error_log("Trace: " . $e->getTraceAsString());
+    api_error('Failed to revert transaction. Please try again later or contact support.', 500);
 } finally {
     $database->close();
 }
-
-exit;
 ?>
