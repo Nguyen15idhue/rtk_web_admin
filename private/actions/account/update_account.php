@@ -12,8 +12,8 @@ register_shutdown_function(function() use (&$db) {
 
 header('Content-Type: application/json');
 // Basic security check
-if (!isset($_SESSION['admin_id'])) {
-    abort('Unauthorized', 401);
+if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
+    api_forbidden('Permission denied.');
 }
 
 require_once BASE_PATH . '/classes/AccountModel.php';

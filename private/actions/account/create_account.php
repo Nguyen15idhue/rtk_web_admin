@@ -11,8 +11,8 @@ register_shutdown_function(function() use (&$db) {
 
 header('Content-Type: application/json');
 // Basic security check
-if (!isset($_SESSION['admin_id'])) {
-    abort('Unauthorized', 401);
+if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
+    api_error('Permission denied.', 403);
 }
 
 $response = ['success' => false, 'message' => 'Invalid request'];

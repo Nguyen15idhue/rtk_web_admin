@@ -12,9 +12,8 @@ register_shutdown_function(function() use (&$db) {
 });
 
 // Check admin login
-if (!isset($_SESSION['admin_id'])) {
-    abort('Unauthorized', 401);
-    exit;
+if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
+    api_forbidden('Permission denied.');
 }
 
 // Get input data

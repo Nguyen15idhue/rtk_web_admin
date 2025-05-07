@@ -5,14 +5,14 @@ header('Content-Type: application/json');
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 
 if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
-    api_error('Unauthorized', 401);
+    api_forbidden('Permission denied.');
 }
 
-$conn      = $bootstrap['db'];
+$db      = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc
-register_shutdown_function(function() use (&$conn) {
-    $conn = null;
+register_shutdown_function(function() use (&$db) {
+    $db = null;
 });
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -38,7 +38,7 @@ if (!$name || !$username || !$password || !in_array($role, ['admin','customercar
 
 // Check duplicate username
 try {
-    $stmt = $conn->prepare('SELECT id FROM admin WHERE admin_username = :username');
+    $stmt = $db->prepare('SELECT id FROM admin WHERE admin_username = :username');
     $stmt->bindParam(':username', $username);
     $stmt->execute();
     if ($stmt->fetch()) {
@@ -55,7 +55,7 @@ $hashed = password_hash($password, PASSWORD_DEFAULT);
 // Insert new admin
 try {
     $insert = 'INSERT INTO admin (name, admin_username, admin_password, role, created_at) VALUES (:name, :username, :password, :role, NOW())';
-    $stmt = $conn->prepare($insert);
+    $stmt = $db->prepare($insert);
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':username', $username);
     $stmt->bindParam(':password', $hashed);

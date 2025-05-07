@@ -1,9 +1,9 @@
 <?php
 header('Content-Type: application/json');
 
-// Only SuperAdmin
-if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'admin') {
-    api_error('Unauthorized', 401);
+// Only admin
+if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
+    api_forbidden('Permission denied.');
 }
 
 // Parse request

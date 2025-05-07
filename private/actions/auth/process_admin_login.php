@@ -2,11 +2,11 @@
 // Session is now bootstrapped by page_bootstrap.php
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $base_url  = $bootstrap['base_url'];
-$conn = $bootstrap['db'];
+$db = $bootstrap['db'];
 
-register_shutdown_function(function() use (&$conn) {
-    if (isset($conn) && $conn instanceof PDO) {
-        $conn = null;
+register_shutdown_function(function() use (&$db) {
+    if (isset($db) && $db instanceof PDO) {
+        $db = null;
     }
 });
 
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($login_error === null) {
         $sql = "SELECT id, admin_username, admin_password, role FROM admin WHERE admin_username = ?";
         try {
-            $stmt = $conn->prepare($sql);
+            $stmt = $db->prepare($sql);
             $stmt->execute([$admin_username]);
             $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 

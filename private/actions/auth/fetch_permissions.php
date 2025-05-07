@@ -1,17 +1,16 @@
 <?php
 header('Content-Type: application/json');
 // Only logged-in admins
-if (!isset($_SESSION['admin_id'])) {
-    api_error('Unauthorized', 401);
-    exit;
+if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
+    api_forbidden('Permission denied.');
 }
 
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
-$conn      = $bootstrap['db'];
+$db      = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc
-register_shutdown_function(function() use (&$conn) {
-    $conn = null;
+register_shutdown_function(function() use (&$db) {
+    $db = null;
 });
 
 $role = $_GET['role'] ?? '';
@@ -23,7 +22,7 @@ if (!in_array($role, $validRoles)) {
 
 try {
     // Fetch permissions
-    $stmt = $conn->prepare('SELECT permission, allowed FROM role_permissions WHERE role = :role');
+    $stmt = $db->prepare('SELECT permission, allowed FROM role_permissions WHERE role = :role');
     $stmt->bindParam(':role', $role);
     $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -31,7 +30,7 @@ try {
     if (empty($rows)) {
         // Define default permissions
         $default = ['dashboard'=>1, 'user_management'=>0, 'user_create'=>0, 'settings'=>0];
-        $insert = $conn->prepare('INSERT INTO role_permissions (role, permission, allowed) VALUES (:role, :perm, :allowed)');
+        $insert = $db->prepare('INSERT INTO role_permissions (role, permission, allowed) VALUES (:role, :perm, :allowed)');
         foreach ($default as $perm => $allow) {
             $insert->bindParam(':role', $role);
             $insert->bindParam(':perm', $perm);

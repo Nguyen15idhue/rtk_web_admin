@@ -1,6 +1,6 @@
 <?php
 $config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
-$conn     = $config['db'];
+$db     = $config['db'];
 
 header('Content-Type: application/json');
 
@@ -27,31 +27,31 @@ try {
         abort('Invalid or missing parameters.', 400);
     }
 
-    $conn->beginTransaction();
+    $db->beginTransaction();
 
     $deleted_at_value = ($action === 'disable') ? date('Y-m-d H:i:s') : null;
 
     $sql = "UPDATE user SET deleted_at = :deleted_at, updated_at = NOW() WHERE id = :id";
-    $stmt = $conn->prepare($sql);
+    $stmt = $db->prepare($sql);
 
     $stmt->bindParam(':deleted_at', $deleted_at_value, $deleted_at_value === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
     $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
 
     if ($stmt->execute() && $stmt->rowCount() > 0) {
-        $conn->commit();
+        $db->commit();
         api_success(null, 'Cập nhật trạng thái người dùng thành công.');
     } else {
-        $conn->rollBack();
+        $db->rollBack();
         abort('User not found or status unchanged.', 404);
     }
 } catch (PDOException $e) {
-    if (isset($conn) && $conn->inTransaction()) $conn->rollBack();
+    if (isset($db) && $db->inTransaction()) $db->rollBack();
     error_log("PDOException in toggle_user_status: " . $e->getMessage());
     error_log("Stack trace: " . $e->getTraceAsString());
     abort('Database error during status update.', 500);
 } catch (Exception $e) {
-    if ($conn->inTransaction()) {
-        $conn->rollBack();
+    if ($db->inTransaction()) {
+        $db->rollBack();
     }
     error_log("Exception in toggle_user_status: " . $e->getMessage());
     error_log("Stack trace: " . $e->getTraceAsString());

@@ -1,6 +1,6 @@
 <?php
 $config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
-$conn     = $config['db'];
+$db     = $config['db'];
 if (!isset($_SESSION['admin_id'])) {
     error_log("Unauthorized access attempt to process_user_create.php");
     api_error('Unauthorized access.', 403);
@@ -42,7 +42,7 @@ if ($is_company && (empty($company_name) || empty($tax_code))) {
 }
 
 try {
-    $stmt_check = $conn->prepare("SELECT id FROM user WHERE email = :email OR (phone IS NOT NULL AND phone = :phone)");
+    $stmt_check = $db->prepare("SELECT id FROM user WHERE email = :email OR (phone IS NOT NULL AND phone = :phone)");
     $stmt_check->bindParam(':email', $email);
     $stmt_check->bindParam(':phone', $phone);
     $stmt_check->execute();
@@ -59,7 +59,7 @@ $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 try {
     $sql = "INSERT INTO user (username, email, password, phone, is_company, company_name, tax_code, created_at)
             VALUES (:username, :email, :password, :phone, :is_company, :company_name, :tax_code, NOW())";
-    $stmt = $conn->prepare($sql);
+    $stmt = $db->prepare($sql);
 
     $stmt->bindParam(':username', $username);
     $stmt->bindParam(':email', $email);
@@ -70,10 +70,10 @@ try {
     $stmt->bindParam(':tax_code', $tax_code);
 
     if ($stmt->execute()) {
-        $user_id = $conn->lastInsertId();
+        $user_id = $db->lastInsertId();
         try {
             $settings_sql = "INSERT INTO user_settings (user_id, created_at) VALUES (:user_id, NOW())";
-            $settings_stmt = $conn->prepare($settings_sql);
+            $settings_stmt = $db->prepare($settings_sql);
             $settings_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
             $settings_stmt->execute();
         } catch (PDOException $e) {

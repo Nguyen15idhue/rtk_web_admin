@@ -1,6 +1,6 @@
 <?php
 $config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
-$conn     = $config['db'];
+$db     = $config['db'];
 
 if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     abort('Invalid or missing user ID.', 400);
@@ -8,12 +8,12 @@ if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
 
 $user_id = (int)$_GET['id'];
 
-if (!$conn) {
-    abort('Database connection failed.', 500);
+if (!$db) {
+    abort('Database dbection failed.', 500);
 }
 
 try {
-    $stmt = $conn->prepare("SELECT id, username, email, phone, is_company, company_name, tax_code, created_at, updated_at, deleted_at FROM user WHERE id = :id");
+    $stmt = $db->prepare("SELECT id, username, email, phone, is_company, company_name, tax_code, created_at, updated_at, deleted_at FROM user WHERE id = :id");
     $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -37,8 +37,8 @@ try {
     abort('Database error occurred.', 500);
 } finally {
     // explicitly free resources
-    if (isset($conn)) {
-        $conn = null;
+    if (isset($db)) {
+        $db = null;
     }
     if (isset($db)) {
         $db->close();

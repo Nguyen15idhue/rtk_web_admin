@@ -60,7 +60,12 @@
         if(!admin) return;
         ['Id','Name','Username','Password','Role'].forEach(field=>{
             const el = document.getElementById(`editAdmin${field}`);
-            if(el) el.value = field==='Username'? admin.admin_username : field==='Id'? admin.id : field==='Role'? admin.role : '';
+            if(!el) return;
+            if(field==='Id')       el.value = admin.id;
+            else if(field==='Name')     el.value = admin.name;
+            else if(field==='Username') el.value = admin.admin_username;
+            else if(field==='Password') el.value = '';
+            else if(field==='Role')     el.value = admin.role;
         });
         document.getElementById('editAdminModal').style.display='flex';
     }
@@ -109,7 +114,7 @@
                 .then(r=>r.json())
                 .then(res=>{
                     alert(res.success? res.message||'Tạo thành công!': 'Lỗi: '+(res.message||''));
-                    if(res.success){ closeModal('createRoleModal'); location.reload(); }
+                    if(res.success){ helperCloseModal('createRoleModal'); location.reload(); }
                 })
                 .catch(err=>{ console.error(err); alert('Đã xảy ra lỗi.'); })
                 .finally(()=> btn.disabled=false);

@@ -2,8 +2,8 @@
 header('Content-Type: application/json');
 
 // Only SuperAdmin
-if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== 'admin') {
-    api_error('Unauthorized', 401);
+if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
+    api_forbidden('Permission denied.');
 }
 
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
