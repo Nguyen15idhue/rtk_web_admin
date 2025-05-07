@@ -1,28 +1,27 @@
 <?php
 require_once __DIR__ . '/../../config/constants.php';
-require_once BASE_PATH . '/classes/Database.php';
+// require_once BASE_PATH . '/classes/Database.php'; // Removed, handled by AdminModel
 require_once BASE_PATH . '/utils/functions.php';    // thêm utils/functions
 require_once __DIR__ . '/../../includes/error_handler.php';
-
 require_once __DIR__ . '/../../classes/Auth.php';
+require_once BASE_PATH . '/classes/AdminModel.php'; // Add AdminModel
+
 Auth::ensureAuthenticated();
 
-$db   = Database::getInstance();
-$conn = $db->getConnection();
-if (!$conn) {
-    api_error('DB connection failed', 500);
-}
+$adminModel = new AdminModel();
 
 try {
-    $stmt = $conn->prepare("SELECT name, admin_username, role FROM admin WHERE id = :id");
-    $stmt->bindParam(':id', $_SESSION['admin_id'], PDO::PARAM_INT);
-    $stmt->execute();
-    $profile = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
-    api_success($profile, '', 200);
-} catch (PDOException $e) {
+    $profile = $adminModel->getProfileById($_SESSION['admin_id']);
+
+    if ($profile === false) { // Check if model method failed (e.g. DB connection)
+        api_error('Error fetching profile data.', 500);
+    } elseif (empty($profile)) {
+        api_success([], 'Profile not found.', 404); // Or handle as an error
+    } else {
+        api_success($profile, '', 200);
+    }
+} catch (Exception $e) { // Catch generic exceptions as well
     error_log("Error fetching profile: " . $e->getMessage());
-    api_error('Error fetching profile', 500);
-} finally {
-    $db->close();
+    api_error('An unexpected error occurred while fetching the profile.', 500);
 }
 ?>

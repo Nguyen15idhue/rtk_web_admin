@@ -18,7 +18,7 @@ if (isset($_SESSION['admin_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Đăng Nhập</title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/assets/css/pages/auth/login.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/assets/css/pages/login.css">
 </head>
 <body>
     <div class="login-container">

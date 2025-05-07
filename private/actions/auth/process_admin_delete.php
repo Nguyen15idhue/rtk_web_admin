@@ -10,22 +10,13 @@ if (!$id || !is_numeric($id)) {
     api_error('Invalid ID', 400);
 }
 
-// DB connection
-$bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
-$db        = $bootstrap['db'];
-
-// Đảm bảo đóng PDO khi script kết thúc
-register_shutdown_function(function() use (&$db) {
-    $db = null;
-});
-
-$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// Include AdminModel
+require_once __DIR__ . '/../../classes/AdminModel.php';
+$model = new AdminModel();
 
 try {
-    $stmt = $db->prepare("DELETE FROM admin WHERE id = :id");
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    $stmt->execute();
-    if ($stmt->rowCount() > 0) {
+    $ok = $model->delete($id);
+    if ($ok) {
         api_success([], 'Xóa thành công.');
     } else {
         api_error('Không tìm thấy tài khoản để xóa.', 400);

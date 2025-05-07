@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../../includes/page_bootstrap.php'; // đã include error_handler
 require_once __DIR__ . '/../../classes/Auth.php';
+require_once BASE_PATH . '/classes/InvoiceModel.php';    // thêm
 Auth::ensureAuthorized(['admin','customercare']);
 
 // only POST
@@ -46,12 +47,8 @@ if (!move_uploaded_file($file['tmp_name'], $target)) {
 }
 
 try {
-    $stmt = $db->prepare(
-      "UPDATE invoice 
-         SET status = 'approved', invoice_file = :file 
-       WHERE id = :id"
-    );
-    $stmt->execute([':file' => $fileName, ':id' => $invoiceId]);
+    $model = new InvoiceModel();                           // thêm
+    $model->attachFile($invoiceId, $fileName);             // thay cho prepare/execute trực tiếp
 
     // redirect back to review page on success
     header('Location: ' . $bootstrap['base_url'] . 'public/pages/invoice_requests/invoice_review.php');

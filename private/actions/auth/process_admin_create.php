@@ -34,36 +34,22 @@ if (!$name || !$username || !$password || !in_array($role, ['admin','customercar
     api_error('Missing or invalid fields', 400);
 }
 
-// Check duplicate username
-try {
-    $stmt = $db->prepare('SELECT id FROM admin WHERE admin_username = :username');
-    $stmt->bindParam(':username', $username);
-    $stmt->execute();
-    if ($stmt->fetch()) {
-        api_error('Username already exists', 400);
-    }
-} catch (PDOException $e) {
-    error_log('DB Error (check admin_username) in process_admin_create: ' . $e->getMessage());
-    api_error('Error checking username', 500);
+require_once __DIR__ . '/../../classes/AdminModel.php';
+$model = new AdminModel();
+
+// Check duplicate username via model
+if ($model->getByUsername($username)) {
+    api_error('Username already exists', 400);
 }
 
-// Hash password
-$hashed = password_hash($password, PASSWORD_DEFAULT);
-
-// Insert new admin
-try {
-    $insert = 'INSERT INTO admin (name, admin_username, admin_password, role, created_at) VALUES (:name, :username, :password, :role, NOW())';
-    $stmt = $db->prepare($insert);
-    $stmt->bindParam(':name', $name);
-    $stmt->bindParam(':username', $username);
-    $stmt->bindParam(':password', $hashed);
-    $stmt->bindParam(':role', $role);
-    if ($stmt->execute()) {
-        api_success([], 'Admin created successfully.');
-    } else {
-        api_error('Insert failed', 500);
-    }
-} catch (PDOException $e) {
-    error_log('process_admin_create error: ' . $e->getMessage());
-    api_error('Database error during insert', 500);
+// Delegate to model
+if ($model->create([
+    'name'     => $name,
+    'username' => $username,
+    'password' => $password,
+    'role'     => $role
+])) {
+    api_success([], 'Admin created successfully.');
+} else {
+    api_error('Insert failed', 500);
 }

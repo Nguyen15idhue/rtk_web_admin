@@ -24,24 +24,16 @@ if (!$id || !$name || !in_array($role, ['admin','customercare'])) {
     api_error('Invalid data', 400);
 }
 
-// Build SQL query
-if ($password !== '') {
-    $hashed = password_hash($password, PASSWORD_DEFAULT);
-    $sql = "UPDATE admin SET name = :name, admin_password = :pwd, role = :role WHERE id = :id";
-} else {
-    $sql = "UPDATE admin SET name = :name, role = :role WHERE id = :id";
-}
+require_once __DIR__ . '/../../classes/AdminModel.php';
+$model = new AdminModel();
 
 try {
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(':name', $name);
-    $stmt->bindParam(':role', $role);
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    if ($password !== '') {
-        $stmt->bindParam(':pwd', $hashed);
-    }
-    $stmt->execute();
-    if ($stmt->rowCount() > 0) {
+    $changed = $model->update($id, [
+        'name'     => $name,
+        'password' => $password,
+        'role'     => $role
+    ]);
+    if ($changed) {
         api_success([], 'Cập nhật thành công.');
     } else {
         api_success([], 'Không có thay đổi (ID không tồn tại hoặc dữ liệu giống trước).');

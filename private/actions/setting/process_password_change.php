@@ -1,12 +1,12 @@
 <?php
 require_once __DIR__ . '/../../config/constants.php';
-require_once BASE_PATH . '/classes/Database.php';
 require_once BASE_PATH . '/utils/functions.php'; 
+require_once __DIR__ . '/../../classes/Auth.php';
+require_once BASE_PATH . '/classes/AdminModel.php';
 
 header('Content-Type: application/json');
 
 // Check if admin is logged in
-require_once __DIR__ . '/../../classes/Auth.php';
 Auth::ensureAuthenticated();
 
 // Check if it's a POST request
@@ -34,27 +34,21 @@ if ($new_password !== $confirm_password) {
     api_error('New password and confirmation password do not match.', 400);
 }
 
-$db = Database::getInstance();
-$conn = $db->getConnection();
-
-if (!$conn) {
-    error_log("Database connection failed in process_password_change.php");
-    api_error('Database connection error.', 500);
-}
+$adminModel = new AdminModel();
 
 try {
     // 1. Fetch current password hash
-    $stmt = $conn->prepare("SELECT admin_password FROM admin WHERE id = :id");
-    $stmt->bindParam(':id', $admin_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+    $current_password_hash_from_db = $adminModel->getPasswordHashById($admin_id);
 
-    if (!$admin) {
-        api_error('Admin user not found.', 404);
+    if ($current_password_hash_from_db === null) {
+        api_error('Admin user not found or error fetching data.', 404);
+    }
+    if ($current_password_hash_from_db === false) {
+        api_error('Database error retrieving current password.', 500);
     }
 
     // 2. Verify current password
-    if (!password_verify($current_password, $admin['admin_password'])) {
+    if (!password_verify($current_password, $current_password_hash_from_db)) {
         api_error('Incorrect current password.', 400);
     }
 
@@ -65,23 +59,16 @@ try {
          api_error('Error processing new password.', 500);
     }
 
-
     // 4. Update the password in the database
-    $updateStmt = $conn->prepare("UPDATE admin SET admin_password = :new_password, updated_at = NOW() WHERE id = :id");
-    $updateStmt->bindParam(':new_password', $new_password_hash, PDO::PARAM_STR);
-    $updateStmt->bindParam(':id', $admin_id, PDO::PARAM_INT);
-
-    if ($updateStmt->execute()) {
+    if ($adminModel->updatePassword($admin_id, $new_password_hash)) {
         api_success(null, 'Password changed successfully.');
     } else {
         api_error('Failed to change password.', 500);
     }
 
-} catch (PDOException $e) {
+} catch (Exception $e) {
     error_log("Error changing admin password: " . $e->getMessage());
     error_log("Stack trace: " . $e->getTraceAsString());
     api_error('An error occurred while changing the password.', 500);
-} finally {
-    $db->close();
 }
 ?>

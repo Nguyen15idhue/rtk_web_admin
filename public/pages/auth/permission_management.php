@@ -11,9 +11,6 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
 ?>
 
 <?php include $private_includes_path . 'admin_sidebar.php'; include $private_includes_path . 'admin_header.php'; ?>
-<?php foreach ($css as $f): ?>
-    <link rel="stylesheet" href="<?= $base_url ?>public/assets/css/<?= $f ?>">
-<?php endforeach; ?>
 
 <main class="content-wrapper">
     <div class="content-header">
@@ -28,7 +25,7 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
 
     <div id="admin-permission-management" class="content-section">
         <div class="flex flex-row justify-between items-center mb-4 gap-3 md:gap-2">
-            <h2 class="text-lg md:text-xl font-semibold text-gray-900">Quản lý phân quyền</h2>
+            <h3 class="text-lg md:text-xl font-semibold text-gray-900">Quản lý phân quyền</h3>
             <button class="btn btn-primary self-start md:self-auto w-auto" onclick="PermissionPageEvents.openCreateRoleModal()" data-permission="admin_user_create">
                 <i class="fas fa-user-plus mr-1"></i> Thêm QTV/Vận hành
             </button>

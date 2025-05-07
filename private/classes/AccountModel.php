@@ -528,6 +528,65 @@ class AccountModel {
         }
     }
 
+    /**
+     * Build RTK API payload for account update.
+     *
+     * @param string $accountId
+     * @param array $input Raw input data from request.
+     * @return array Payload ready for updateRtkAccount.
+     */
+    public function buildRtkUpdatePayload(string $accountId, array $input): array {
+        // Lấy thông tin hiện tại
+        $account = $this->getAccountById($accountId) ?: [];
+        // Mật khẩu
+        $pwd = !empty($input['password_acc'])
+             ? $input['password_acc']
+             : ($account['password_acc'] ?? '');
+        // Ngày kích hoạt / hết hạn
+        $act = $input['activation_date'] ?? ($account['activation_date'] ?? null);
+        $exp = $input['expiry_date']     ?? ($account['expiry_date']     ?? null);
+        $startMs = $act ? strtotime("$act 00:00:00")*1000 : 0;
+        $endMs   = $exp ? strtotime("$exp 23:59:59")*1000 : 0;
+        // userId trên RTK
+        $rtkUserId = $account['user_id'] ?? null;
+        // Phone
+        $cPhone = $input['customer_phone'] ?? ($account['user_phone'] ?? '');
+        $cPhone = preg_replace('/[^0-9+\-]/','',$cPhone);
+        $cPhone = substr($cPhone,0,20);
+        // Name
+        $cName = $input['customer_name'] ?? ($account['user_username'] ?? '');
+        // Location + mountIds
+        $loc = filter_var($input['location_id'] ?? $account['location_id'], FILTER_VALIDATE_INT) 
+               ?: ($account['location_id'] ?? 0);
+        $mountIds = getMountPointsByLocationId($loc);
+        // Caster/region/company
+        $casterIds    = !empty($input['caster'])        ? [trim($input['caster'])] : [];
+        $regionIdsArr = isset($input['regionIds'])      ? [(int)$input['regionIds']] : [];
+        $custCompany  = $input['customer_company'] ?? '';
+        // Các flag khác
+        $enabled         = isset($input['enabled'])       ? (int)$input['enabled']       : ($account['enabled'] ?? 1);
+        $numOnline       = isset($input['concurrent_user'])? (int)$input['concurrent_user']: ($account['concurrent_user'] ?? 1);
+        $customerBizType = isset($input['customerBizType'])? (int)$input['customerBizType']: ($account['customerBizType']  ?? 1);
+
+        return [
+            'id'              => $accountId,
+            'name'            => $account['username_acc'] ?? '',
+            'userPwd'         => $pwd,
+            'startTime'       => $startMs,
+            'endTime'         => $endMs,
+            'enabled'         => $enabled,
+            'numOnline'       => $numOnline,
+            'customerBizType' => $customerBizType,
+            'userId'          => $rtkUserId,
+            'customerName'    => $cName,
+            'customerPhone'   => $cPhone,
+            'customerCompany' => $custCompany,
+            'casterIds'       => $casterIds,
+            'regionIds'       => $regionIdsArr,
+            'mountIds'        => $mountIds,
+        ];
+    }
+
     // Giải phóng kết nối DB khi object bị hủy
     public function __destruct() {
         $this->db = null;

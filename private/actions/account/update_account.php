@@ -238,31 +238,14 @@ try {
         $startMs = strtotime($activation . ' 00:00:00') * 1000;
         $endMs   = strtotime($expiry     . ' 23:59:59') * 1000;
 
-        // prepare payload for RTK API
-        $apiPayload = [
-            'id'              => $accountId,
-            'name'            => $input['username_acc'],
-            'userPwd'         => $currentPwd,
-            'startTime'       => $startMs,
-            'endTime'         => $endMs,
-            'enabled'         => $updateData['enabled']      ?? 1,
-            'numOnline'       => $updateData['concurrent_user'] ?? 1,
-            'customerBizType' => $updateData['customerBizType'] ?? 1,
-            'userId'          => $rtkUserId,
-            'customerName'    => $customerName,
-            'customerPhone'   => $customerPhone,
-            'customerCompany' => $customerCompany,
-            'casterIds'       => $casterIds,
-            'regionIds'       => $regionIdsArr,
-            'mountIds'        => $mountIds,
-        ];
-        // bỏ customerPhone khi rỗng để RTK API không validate
-        if (empty($customerPhone)) {
-            unset($apiPayload['customerPhone']);
+        // Thay thế toàn bộ logic manual build payload RTK bằng:
+        {
+            // Xây payload qua AccountModel
+            $apiPayload = $accountModel->buildRtkUpdatePayload($accountId, $input);
+            error_log("[update_account] RTK API payload via model: " . print_r($apiPayload, true));
         }
-        error_log("[update_account] RTK API payload: " . print_r($apiPayload, true));
 
-        // call external RTK update API
+        // call external RTK update API (giữ nguyên)
         $apiResult = updateRtkAccount($apiPayload);
         error_log("[update_account] RTK API result: " . print_r($apiResult, true));
 
