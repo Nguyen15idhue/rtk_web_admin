@@ -11,13 +11,6 @@ if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin'
     api_error('Permission denied.', 403);
 }
 
-// --- CSRF protection ---
-// if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
-//     http_response_code(400);
-//     echo json_encode(['success' => false, 'message' => 'Invalid CSRF token.']);
-//     exit;
-// }
-
 // Load any additional services you still need
 require_once BASE_PATH . '/services/TransactionHistoryService.php';
 require_once BASE_PATH . '/utils/functions.php';
@@ -342,90 +335,52 @@ try {
     session_write_close(); 
     // --- End Release session lock ---
 
-    // call internal script
-    $accountCreationFailedDueToTimeout = false; // Flag for timeout
+    // --- Commit DB trước khi gọi external API ---
+    TransactionHistoryService::updateStatusByRegistrationId($db, $registration_id, 'completed');
+    $db->commit();
+
+    // --- NEW: gọi cURL create_account AFTER commit ---
     $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-    curl_setopt($ch, CURLOPT_VERBOSE, true);
+    curl_setopt($ch, CURLOPT_POST,           true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'Accept: application/json',
         'Content-Type: application/json; charset=utf-8',
-        'User-Agent: PHP-cURL'      
+        'User-Agent: PHP-cURL'
     ]);
+    curl_setopt($ch, CURLOPT_POSTFIELDS,     json_encode($payload));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1); // reduced connect timeout to 1s
-    curl_setopt($ch, CURLOPT_TIMEOUT,        1); // reduced execution timeout to 1s
-    // disable SSL verification for self-signed certificate
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);  
+    curl_setopt($ch, CURLOPT_TIMEOUT,        1);  
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
     if (isset($_COOKIE[session_name()])) {
         curl_setopt($ch, CURLOPT_COOKIE, session_name() . '=' . $_COOKIE[session_name()]);
     }
 
-    // DEBUG: log request URL and payload
-    error_log("DEBUG [Account Creation] URL: {$url}");
-    error_log("DEBUG [Account Creation] Payload: " . json_encode($payload));
-
-    $result = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $curlError = curl_error($ch);
-    $curlErrno = curl_errno($ch); // Get the cURL error number
-    $totalTime = curl_getinfo($ch, CURLINFO_TOTAL_TIME); // Get total time taken
+    $result    = curl_exec($ch);
+    $httpCode  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlErrno = curl_errno($ch);
     curl_close($ch);
 
-    $error_log_data = [
-        'httpCode'=>$httpCode,'errno'=>$curlErrno,'error'=>$curlError,'totalTime'=>$totalTime
-    ];
-    error_log("[PTA] cURL finished: ".json_encode($error_log_data));
-
-    // --- Refined cURL error handling ---
+    // xử lý kết quả
     if ($curlErrno === CURLE_OPERATION_TIMEDOUT) {
-        // It's possible the timeout happened but the account was still created.
-        // Log this specific case for manual verification.
-        error_log("[PTA] cURL request timed out for transaction ID {$transaction_id}. Account creation status uncertain. Please verify manually.");
-        $accountCreationFailedDueToTimeout = true; // Keep the flag for the response message
-        // Do NOT throw an exception here if you want the DB transaction to commit.
-        // The registration is approved, only the account creation via API timed out.
-        // Set $createdAccounts to an empty array or null as we don't have confirmation.
+        // timeout → log và coi như đã gửi, không throw
+        error_log("[PTA] create_account timed out (could be pending), transaction {$transaction_id}");
         $createdAccounts = [];
-    } elseif ($curlError) {
-        throw new Exception("Account creation request failed (cURL Error): {$curlError}");
-    } elseif ($httpCode !== 200) {
-        // Log the response body if available for non-200 responses
-        $errorDetails = $result ? " Response: " . substr($result, 0, 500) : ""; // Limit response length in log
-        error_log("[PTA] Account creation failed (HTTP Status {$httpCode}) for transaction ID {$transaction_id}.{$errorDetails}");
-        throw new Exception("Account creation failed (HTTP Status {$httpCode})");
+    } elseif ($curlErrno || $httpCode !== 200) {
+        error_log("[PTA] create_account failed (HTTP {$httpCode}, cURL err {$curlErrno})");
+        $createdAccounts = [];
     } else {
-        // successful → parse & validate JSON
         $resData = json_decode($result, true);
-        if (!is_array($resData) || empty($resData['success'])) {
-            throw new Exception("Account creation failed: ".($resData['message'] ?? 'Invalid response'));
-        }
-        if (!empty($resData['accounts']) && is_array($resData['accounts'])) {
+        if (!empty($resData['accounts'])) {
             $createdAccounts = $resData['accounts'];
         } elseif (!empty($resData['account'])) {
             $createdAccounts = [ $resData['account'] ];
         } else {
-            // If success is true but no account data, maybe it's okay? Log a warning.
-            error_log("[PTA] Warning: Account creation reported success but returned no account data for transaction ID {$transaction_id}. Response: " . $result);
-            $createdAccounts = []; // Assume none created if data is missing
-            // OR: throw new Exception("Account creation response missing account data.");
+            error_log("[PTA] Warning: create_account returned no data. Resp={$result}");
+            $createdAccounts = [];
         }
     }
-
-    // 6. Update Transaction History
-    TransactionHistoryService::updateStatusByRegistrationId($db, $registration_id, 'completed');
-    error_log("[PTA] TransactionHistoryService updated");
-
-    // 7. Log Activity
-    // log_admin_activity($adminId, 'approve_transaction', 'registration', $transaction_id, ['old_status' => $old_status], ['new_status' => 'active']); // Example
-
-    // 8. TODO: Send Notifications (Email/SMS to user?)
-
-    // --- Commit Transaction ---
-    $db->commit();
-    error_log("[PTA] Transaction committed successfully");
 
     // --- Prepare final response ---
     $responseMessage = 'Transaction #' . $transaction_id . ' approved.';

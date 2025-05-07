@@ -3,18 +3,10 @@
 declare(strict_types=1);
 header('Content-Type: application/json'); // Set response type
 
-// --- Prerequisites ---
-// Ensure session started, user is admin, CSRF protection is in place etc.
-// if (!isset($_SESSION['admin_id']) || !check_admin_permission('transaction_reject')) {
-//     http_response_code(403);
-//     echo json_encode(['success' => false, 'message' => 'Permission denied.']);
-//     exit;
-// }
-// if (!verify_csrf_token($_POST['csrf_token'] ?? '')) { // Example CSRF check
-//     http_response_code(400);
-//     echo json_encode(['success' => false, 'message' => 'Invalid CSRF token.']);
-//     exit;
-// }
+// --- Permission check ---
+if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
+    api_error('Permission denied.', 403);
+}
 
 require_once __DIR__ . '/../../config/constants.php';
 require_once BASE_PATH . '/classes/Database.php';
@@ -157,39 +149,36 @@ try {
         ");
         $stmt_unconfirm_pay->bindParam(':th_id', $transaction_id, PDO::PARAM_INT);
         $stmt_unconfirm_pay->execute();
-
-        // --- New: Call RTK API to delete accounts ---
-        if (!empty($accounts)) {
-            foreach ($accounts as $account) {
-                error_log("[Reject Transaction {$transaction_id}] Deleting RTK account {$account['id']}");
-                $apiResult = deleteRtkAccount([$account['id']]);
-                error_log("[Reject Transaction {$transaction_id}] RTK delete response for account {$account['id']}: " . json_encode($apiResult));
-                if (!$apiResult['success']) {
-                    throw new Exception("Failed to delete account {$account['id']} via RTK API during rejection: " . ($apiResult['error'] ?? 'Unknown API error'));
-                }
-            }
-        } else {
-            error_log("[Reject Transaction {$transaction_id}] No associated survey accounts found to delete via API (was active).");
-        }
-        // --- End RTK API Call ---
     }
 
     // 4. Update Transaction History (use 'failed' since 'rejected' isn't in transaction_history enum)
     TransactionHistoryService::updateStatusByRegistrationId($db, $reg_id, 'failed');
 
-    // 5. Log Activity
-    // log_admin_activity($_SESSION['admin_id'], 'reject_transaction', 'registration', $transaction_id, ['old_status' => $old_status], ['new_status' => 'rejected', 'reason' => $reason]); // Example
-
-    // 6. TODO: Send Notifications (Email/SMS to user about rejection?)
-
-    // --- Commit Transaction ---
-    $db->commit();
-    $message = 'Transaction #' . $transaction_id . ' rejected successfully.';
-    if ($old_status === 'active') {
-        $message .= ' Associated accounts deleted.';
+    // --- NEW: track API failures & delay commit until after external calls ---
+    $apiFailures = [];
+    if (!empty($accounts)) {
+        foreach ($accounts as $account) {
+            error_log("[Reject Transaction {$transaction_id}] Deleting RTK account {$account['id']}");
+            $apiResult = deleteRtkAccount([$account['id']]);
+            if (empty($apiResult['success'])) {
+                $apiFailures[] = $account['id'];
+                error_log("[Reject Transaction {$transaction_id}] FAILED to delete RTK account {$account['id']}.");
+            } else {
+                error_log("[Reject Transaction {$transaction_id}] RTK delete success for account {$account['id']}.");
+            }
+        }
+    } else {
+        error_log("[Reject Transaction {$transaction_id}] No associated survey accounts to delete via API.");
     }
-    api_success(null, $message);
 
+    // If any external deletes failed, abort and rollback everything
+    if (!empty($apiFailures)) {
+        throw new Exception('RTK deletion failed for account IDs: ' . implode(',', $apiFailures));
+    }
+
+    // All good – now commit
+    $db->commit();
+    api_success(null, 'Transaction #' . $transaction_id . ' rejected successfully.');
 } catch (Exception $e) {
     $db->rollBack();
     error_log("Error rejecting transaction ID $transaction_id: " . $e->getMessage());

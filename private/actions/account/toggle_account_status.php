@@ -85,7 +85,7 @@ try {
     ");
     $stmtLoc->execute([$accountId]);
     $locationId = (int)$stmtLoc->fetchColumn();
-    $mountIds = getMountPointsByLocationId($locationId); // Hàm có sẵn trong utils/functions.php
+    $mountIds = getMountPointsByLocationId($locationId); 
 
     // Prepare payload for RTK API to sync status, thêm mountIds
     $apiPayload = [
