@@ -89,46 +89,69 @@ include $private_includes_path . 'admin_sidebar.php';
             </div>
         </form>
 
-        <div class="transactions-table-wrapper">
-            <table class="transactions-table" id="accountsTable">
-                <thead>
-                    <tr>
-                        <th>ID TK</th>
-                        <th>Username TK</th>
-                        <th>Email user</th>
-                        <th>Gói</th>
-                        <th>Ngày KH</th>
-                        <th>Ngày HH</th>
-                        <th class="text-center">Trạng thái</th>
-                        <th class="actions text-center">Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($accounts)): ?>
-                        <?php foreach ($accounts as $account): ?>
-                            <tr data-account-id="<?php echo htmlspecialchars($account['id']); ?>" data-status="<?php echo htmlspecialchars($account['derived_status']); ?>">
-                                <td><?php echo htmlspecialchars($account['id']); ?></td>
-                                <td><?php echo htmlspecialchars($account['username_acc'] ?? ''); ?></td>
-                                <td><?php echo htmlspecialchars($account['user_email'] ?? ''); ?></td>
-                                <td><?php echo htmlspecialchars($account['package_name'] ?? ''); ?></td>
-                                <td><?php echo format_date($account['activation_date'] ?? null); ?></td>
-                                <td><?php echo format_date($account['expiry_date'] ?? null); ?></td>
-                                <td class="status"><?php echo get_account_status_badge($account['derived_status'] ?? 'unknown'); ?></td>
-                                <td class="actions">
-                                    <div class="action-buttons">
-                                        <?php echo get_account_action_buttons($account); // Assumes this function is in dashboard_helpers.php and generates buttons with btn-icon class ?>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr id="no-results-row">
-                            <td colspan="8">Không tìm thấy tài khoản phù hợp.</td>
+        <!-- Bulk Actions and Table -->
+        <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>private/actions/export_excel.php">
+            <input type="hidden" name="table_name" value="accounts">
+            <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px;">
+                <button type="submit" name="export_selected" class="btn btn-info">
+                    <i class="fas fa-file-excel"></i> Xuất mục đã chọn
+                </button>
+                <button type="submit" name="export_all" class="btn btn-success">
+                    <i class="fas fa-file-excel"></i> Xuất tất cả
+                </button>
+                <button type="button" id="bulkToggleStatusBtn" onclick="AccountManagementPageEvents.bulkToggleStatus()" class="btn btn-warning">
+                    <i class="fas fa-sync-alt"></i> Đảo trạng thái
+                </button>
+                <button type="button" id="bulkDeleteBtn" onclick="AccountManagementPageEvents.bulkDeleteAccounts()" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Xóa mục đã chọn
+                </button>
+            </div>
+
+            <div class="transactions-table-wrapper">
+                <table class="transactions-table" id="accountsTable">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>ID TK</th>
+                            <th>Username TK</th>
+                            <th>Email user</th>
+                            <th>Gói</th>
+                            <th>Ngày KH</th>
+                            <th>Ngày HH</th>
+                            <th class="text-center">Trạng thái</th>
+                            <th class="actions text-center">Hành động</th>
                         </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($accounts)): ?>
+                            <?php foreach ($accounts as $account): ?>
+                                <tr data-account-id="<?php echo htmlspecialchars($account['id']); ?>" data-status="<?php echo htmlspecialchars($account['derived_status']); ?>">
+                                    <td>
+                                        <input type="checkbox" class="rowCheckbox" name="ids[]" value="<?php echo htmlspecialchars($account['id']); ?>">
+                                    </td>
+                                    <td><?php echo htmlspecialchars($account['id']); ?></td>
+                                    <td><?php echo htmlspecialchars($account['username_acc'] ?? ''); ?></td>
+                                    <td><?php echo htmlspecialchars($account['user_email'] ?? ''); ?></td>
+                                    <td><?php echo htmlspecialchars($account['package_name'] ?? ''); ?></td>
+                                    <td><?php echo format_date($account['activation_date'] ?? null); ?></td>
+                                    <td><?php echo format_date($account['expiry_date'] ?? null); ?></td>
+                                    <td class="status"><?php echo get_account_status_badge($account['derived_status'] ?? 'unknown'); ?></td>
+                                    <td class="actions">
+                                        <div class="action-buttons">
+                                            <?php echo get_account_action_buttons($account); // Assumes this function is in dashboard_helpers.php and generates buttons with btn-icon class ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr id="no-results-row">
+                                <td colspan="9">Không tìm thấy tài khoản phù hợp.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </form>
 
         <!-- Pagination -->
         <div class="pagination-footer">

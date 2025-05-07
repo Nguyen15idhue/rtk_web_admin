@@ -56,6 +56,21 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
         <div id="admin-invoice-management" class="content-section">
             <h3>Quản lý Giao dịch & Duyệt Thanh Toán</h3>
 
+            <!-- bulk actions -->
+            <form id="bulkActionForm" onsubmit="return false;">
+                <div class="bulk-actions-bar" style="margin:10px 0; display:flex; gap:10px;">
+                    <button type="button" class="btn btn-primary" onclick="InvoiceManagementPageEvents.bulkApproveTransactions()" data-permission="transaction_approve">
+                        <i class="fas fa-check-circle"></i> Duyệt đã chọn
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="InvoiceManagementPageEvents.bulkRevertTransactions()" data-permission="transaction_revert">
+                        <i class="fas fa-undo-alt"></i> Hủy duyệt đã chọn
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="InvoiceManagementPageEvents.bulkRejectTransactions()" data-permission="transaction_reject">
+                        <i class="fas fa-times-circle"></i> Từ chối đã chọn
+                    </button>
+                </div>
+            </form>
+
             <form method="GET" action="">
                 <div class="filter-bar">
                     <!-- 1. Date range first -->
@@ -106,6 +121,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                 <table class="transactions-table" id="transactionsTable">
                     <thead>
                         <tr>
+                            <th><input type="checkbox" id="selectAllTx"></th>
                             <th>Mã GD</th>
                             <th>Loại</th>
                             <th>Tỉnh/Thành phố</th>
@@ -121,7 +137,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                     <tbody>
                         <?php if (empty($transactions)): ?>
                             <tr id="no-results-row">
-                                <td colspan="10">Không tìm thấy giao dịch phù hợp.</td>
+                                <td colspan="11">Không tìm thấy giao dịch phù hợp.</td>
                             </tr>
                         <?php else: ?>
                             <?php foreach ($transactions as $transaction): ?>
@@ -151,6 +167,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                                     $tx_details_json = htmlspecialchars(json_encode($tx_details_for_modal), ENT_QUOTES, 'UTF-8');
                                 ?>
                                 <tr data-transaction-id="<?php echo $transaction_id; ?>" data-status="<?php echo htmlspecialchars($transaction['registration_status']); ?>" data-type="<?= $transaction['transaction_type'] ?>">
+                                    <td><input type="checkbox" class="tx-checkbox" value="<?php echo $transaction_id; ?>"></td>
                                     <td>
                                         <a href="#" class="clickable-id" title="Xem chi tiết" onclick='InvoiceManagementPageEvents.showTransactionDetails(<?php echo $tx_details_json; ?>); return false;'>
                                             <?php echo $transaction_id; ?>

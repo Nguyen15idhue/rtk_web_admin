@@ -159,6 +159,71 @@
             }
         };
 
+        // select all checkbox
+        const selAll = document.getElementById('selectAllTx');
+        if(selAll){
+            selAll.addEventListener('change', e=>{
+                document.querySelectorAll('.tx-checkbox').forEach(cb=>cb.checked = e.target.checked);
+            });
+        }
+
+        // helper to get selected IDs
+        function getSelectedTxIds(){
+            return Array.from(document.querySelectorAll('.tx-checkbox:checked'))
+                        .map(cb=>cb.value);
+        }
+
+        // bulk approve
+        async function bulkApproveTransactions(){
+            const ids = getSelectedTxIds();
+            if(!ids.length){ alert('Chọn ít nhất một giao dịch.'); return; }
+            if(!confirm(`Duyệt ${ids.length} giao dịch đã chọn?`)) return;
+            try {
+                for(const id of ids){
+                    await api.postJson(approveUrl, { transaction_id: id });
+                }
+                window.showToast('Đã duyệt tất cả giao dịch được chọn.', 'success');
+                window.location.reload();
+            } catch(e){
+                window.showToast('Lỗi khi duyệt: ' + e.message, 'error');
+            }
+        }
+
+        // bulk revert
+        async function bulkRevertTransactions(){
+            const ids = getSelectedTxIds();
+            if(!ids.length){ alert('Chọn ít nhất một giao dịch.'); return; }
+            if(!confirm(`Hủy duyệt ${ids.length} giao dịch đã chọn?`)) return;
+            try {
+                for(const id of ids){
+                    await api.postJson(revertUrl, { transaction_id: id });
+                }
+                window.showToast('Đã hủy duyệt tất cả giao dịch được chọn.', 'success');
+                window.location.reload();
+            } catch(e){
+                window.showToast('Lỗi khi hủy duyệt: ' + e.message, 'error');
+            }
+        }
+
+        // bulk reject
+        async function bulkRejectTransactions(){
+            const ids = getSelectedTxIds();
+            if(!ids.length){ alert('Chọn ít nhất một giao dịch.'); return; }
+            const reason = prompt(`Lý do từ chối cho ${ids.length} giao dịch:`) || '';
+            const txt = reason.trim();
+            if(!txt){ alert('Lý do không được để trống.'); return; }
+            if(!confirm(`Xác nhận từ chối ${ids.length} giao dịch?`)) return;
+            try {
+                for(const id of ids){
+                    await api.postJson(rejectUrl, { transaction_id: id, reason: txt });
+                }
+                window.showToast('Đã từ chối tất cả giao dịch được chọn.', 'success');
+                window.location.reload();
+            } catch(e){
+                window.showToast('Lỗi khi từ chối: ' + e.message, 'error');
+            }
+        }
+
         // inject link-button style
         const style=document.createElement('style');
         style.innerText=`.btn-link{background:none;border:none;color:var(--primary-600);cursor:pointer;text-decoration:underline}
@@ -173,7 +238,10 @@
             closeDetailsModal,
             approveTransaction,
             openRejectTransactionModal,
-            revertTransaction
+            revertTransaction,
+            bulkApproveTransactions,
+            bulkRevertTransactions,
+            bulkRejectTransactions
         };
     });
 })(window);

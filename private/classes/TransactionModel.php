@@ -81,6 +81,59 @@ class TransactionModel {
         return $stmt->execute([':id' => $hid]);
     }
 
+    /**
+     * Lấy toàn bộ dữ liệu transaction để export Excel
+     */
+    public function getAllDataForExport(): array {
+        $sql = "
+            SELECT
+                r.id AS registration_id,
+                u.email AS user_email,
+                p.name AS package_name,
+                th.amount,
+                th.created_at AS request_date,
+                th.status AS registration_status
+            FROM transaction_history th
+            JOIN registration r ON th.registration_id = r.id
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            ORDER BY th.created_at DESC
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Lấy dữ liệu các transaction có ID nằm trong $ids để export Excel
+     *
+     * @param array $ids danh sách registration_id cần export
+     */
+    public function getDataByIdsForExport(array $ids): array {
+        if (empty($ids)) {
+            return [];
+        }
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $sql = "
+            SELECT
+                r.id AS registration_id,
+                u.email AS user_email,
+                p.name AS package_name,
+                th.amount,
+                th.created_at AS request_date,
+                th.status AS registration_status
+            FROM transaction_history th
+            JOIN registration r ON th.registration_id = r.id
+            JOIN user u ON r.user_id = u.id
+            JOIN package p ON r.package_id = p.id
+            WHERE r.id IN ({$placeholders})
+            ORDER BY th.created_at DESC
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($ids);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function __destruct() {
         Database::getInstance()->close();
     }

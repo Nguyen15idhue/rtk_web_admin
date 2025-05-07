@@ -587,6 +587,65 @@ class AccountModel {
         ];
     }
 
+    /**
+     * Get data by IDs for export.
+     *
+     * @param array $ids Array of account IDs.
+     * @return array List of associative arrays ready for export.
+     */
+    public function getDataByIdsForExport(array $ids): array {
+        if (empty($ids)) {
+            return [];
+        }
+        // build placeholders for IN clause
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $sql = $this->baseSelectQuery . " AND sa.id IN ($placeholders) ORDER BY sa.created_at DESC";
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($ids);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // derive status
+            foreach ($rows as &$row) {
+                $row['derived_status'] = $this->deriveAccountStatus(
+                    $row['registration_status'] ?? 'unknown',
+                    isset($row['enabled']) ? (bool)$row['enabled'] : false,
+                    $row['expiry_date'] ?? null
+                );
+            }
+            unset($row);
+            return $rows;
+        } catch (PDOException $e) {
+            error_log("getDataByIdsForExport failed: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Get all data for export.
+     *
+     * @return array List of all accounts (associative arrays) ready for export.
+     */
+    public function getAllDataForExport(): array {
+        $sql = $this->baseSelectQuery . " ORDER BY sa.created_at DESC";
+        try {
+            $stmt = $this->db->query($sql);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // derive status
+            foreach ($rows as &$row) {
+                $row['derived_status'] = $this->deriveAccountStatus(
+                    $row['registration_status'] ?? 'unknown',
+                    isset($row['enabled']) ? (bool)$row['enabled'] : false,
+                    $row['expiry_date'] ?? null
+                );
+            }
+            unset($row);
+            return $rows;
+        } catch (PDOException $e) {
+            error_log("getAllDataForExport failed: " . $e->getMessage());
+            return [];
+        }
+    }
+
     // Giải phóng kết nối DB khi object bị hủy
     public function __destruct() {
         $this->db = null;

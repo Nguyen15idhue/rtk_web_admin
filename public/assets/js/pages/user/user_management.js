@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     function toggleUserStatus(userId, action) {
         const txt = action==='disable'?'vô hiệu hóa':'kích hoạt';
         if(!confirm(`Bạn có chắc muốn ${txt} người dùng ID ${userId}?`)) return;
-        const body = new URLSearchParams({ user_id: userId, action });
+        const body = new URLSearchParams({ user_id: userId, action }); // action ở đây là 'disable' hoặc 'enable'
         postForm(`${apiBasePath}?action=toggle_user_status`, body)
         .then(res => {
             if(res.success){
@@ -172,6 +172,46 @@ document.addEventListener('DOMContentLoaded', ()=> {
         document.getElementById('createUserModal').style.display = 'block';
     };
 
+    // BULK TOGGLE STATUS
+    function bulkToggleUserStatus() {
+        const selectedCheckboxes = document.querySelectorAll('.rowCheckbox:checked');
+        const userIds = Array.from(selectedCheckboxes).map(cb => cb.value);
+
+        if (userIds.length === 0) {
+            window.showToast('Vui lòng chọn ít nhất một người dùng.', 'warning');
+            return;
+        }
+
+        if (!confirm(`Bạn có chắc muốn đảo ngược trạng thái của ${userIds.length} người dùng đã chọn?`)) {
+            return;
+        }
+
+        // Gửi user_ids và một cờ để backend biết đây là thao tác đảo ngược hàng loạt
+        const data = { 
+            user_ids: userIds,
+            bulk_operation: 'invert_status' // Cờ để backend nhận diện
+        };
+
+        postJson(`${apiBasePath}?action=toggle_user_status`, data) // Gọi action 'toggle_user_status'
+            .then(res => {
+                if (res.success) {
+                    window.showToast(res.message || 'Cập nhật trạng thái hàng loạt thành công!', 'success');
+                    location.reload();
+                } else {
+                    // Xử lý trường hợp có lỗi một phần (nếu backend hỗ trợ)
+                    if (res.data && res.data.errors && res.data.errors.length > 0) {
+                        let errorMessages = res.data.errors.join('\n');
+                        window.showToast(`${res.message}\nChi tiết:\n${errorMessages}`, 'error', 10000); // Hiển thị lâu hơn
+                    } else {
+                        window.showToast(res.message || 'Có lỗi xảy ra khi cập nhật trạng thái.', 'error');
+                    }
+                }
+            })
+            .catch(err => {
+                window.showToast('Lỗi gửi yêu cầu: ' + err.message, 'error');
+            });
+    }
+
     // bind company‑checkbox visibility
     ['edit','create'].forEach(t => {
         document.getElementById(t+'IsCompany')
@@ -183,6 +223,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         viewUserDetails,
         openEditUserModal,
         toggleUserStatus,
-        openCreateUserModal
+        openCreateUserModal,
+        bulkToggleUserStatus // Add the new function here
     };
 });

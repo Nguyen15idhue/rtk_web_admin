@@ -85,54 +85,72 @@ list($total_revenue, $successful_revenue) = get_revenue_sums($filters);
                 </div>
             </div>
 
-            <div class="transactions-table-wrapper">
-                <table class="transactions-table">
-                    <thead>
-                        <tr>
-                            <th>Mã GD</th>
-                            <th>Email</th>
-                            <th>Gói</th>
-                            <th>Số tiền</th>
-                            <th>Ngày YC</th>
-                            <th>Trạng thái</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (empty($transactions)): ?>
-                            <tr><td colspan="6" style="text-align:center;">Không có giao dịch.</td></tr>
-                        <?php else: foreach ($transactions as $tx): ?>
-                            <?php
-                                $status = htmlspecialchars($tx['registration_status']);
-                                // Việt hóa trạng thái
-                                switch ($status) {
-                                    case 'active':
-                                        $text = 'Thành công';
-                                        break;
-                                    case 'pending':
-                                        $text = 'Đang chờ';
-                                        break;
-                                    case 'rejected':
-                                        $text = 'Bị từ chối';
-                                        break;
-                                    default:
-                                        $text = ucfirst($status);
-                                }
-                                $cls = $status === 'active' ? 'status-approved'
-                                      : ($status === 'pending' ? 'status-pending'
-                                      : ($status === 'rejected' ? 'status-rejected' : 'status-unknown'));
-                            ?>
+            <!-- Thêm form xuất Excel -->
+            <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>private/actions/export_excel.php">
+                <input type="hidden" name="table_name" value="transactions">
+                <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px;">
+                    <button type="submit" name="export_selected" class="btn btn-info">
+                        <i class="fas fa-file-excel"></i> Xuất mục đã chọn
+                    </button>
+                    <button type="submit" name="export_all" class="btn btn-success">
+                        <i class="fas fa-file-excel"></i> Xuất tất cả
+                    </button>
+                </div>
+
+                <div class="transactions-table-wrapper">
+                    <table class="transactions-table">
+                        <thead>
                             <tr>
-                                <td><?php echo htmlspecialchars($tx['registration_id']); ?></td>
-                                <td><?php echo htmlspecialchars($tx['user_email'] ?? ''); ?></td>
-                                <td><?php echo htmlspecialchars($tx['package_name']); ?></td>
-                                <td><?php echo number_format($tx['amount'], 0, ',', '.'); ?> đ</td>
-                                <td><?php echo date('d/m/Y H:i', strtotime($tx['request_date'])); ?></td>
-                                <td><span class="status-badge <?php echo $cls; ?>"><?php echo $text; ?></span></td>
+                                <th><input type="checkbox" id="selectAll"></th>
+                                <th>Mã GD</th>
+                                <th>Email</th>
+                                <th>Gói</th>
+                                <th>Số tiền</th>
+                                <th>Ngày YC</th>
+                                <th>Trạng thái</th>
                             </tr>
-                        <?php endforeach; endif; ?>
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($transactions)): ?>
+                                <tr><td colspan="7" style="text-align:center;">Không có giao dịch.</td></tr>
+                            <?php else: foreach ($transactions as $tx): ?>
+                                <?php
+                                    $status = htmlspecialchars($tx['registration_status']);
+                                    // Việt hóa trạng thái
+                                    switch ($status) {
+                                        case 'active':
+                                            $text = 'Thành công';
+                                            break;
+                                        case 'pending':
+                                            $text = 'Đang chờ';
+                                            break;
+                                        case 'rejected':
+                                            $text = 'Bị từ chối';
+                                            break;
+                                        default:
+                                            $text = ucfirst($status);
+                                    }
+                                    $cls = $status === 'active' ? 'status-approved'
+                                          : ($status === 'pending' ? 'status-pending'
+                                          : ($status === 'rejected' ? 'status-rejected' : 'status-unknown'));
+                                ?>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="rowCheckbox" name="ids[]" 
+                                               value="<?php echo htmlspecialchars($tx['registration_id']); ?>">
+                                    </td>
+                                    <td><?php echo htmlspecialchars($tx['registration_id']); ?></td>
+                                    <td><?php echo htmlspecialchars($tx['user_email'] ?? ''); ?></td>
+                                    <td><?php echo htmlspecialchars($tx['package_name']); ?></td>
+                                    <td><?php echo number_format($tx['amount'], 0, ',', '.'); ?> đ</td>
+                                    <td><?php echo date('d/m/Y H:i', strtotime($tx['request_date'])); ?></td>
+                                    <td><span class="status-badge <?php echo $cls; ?>"><?php echo $text; ?></span></td>
+                                </tr>
+                            <?php endforeach; endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </form>  <!-- End bulkActionForm -->
 
             <?php if ($total_pages > 1): ?>
             <div class="pagination-footer">
@@ -151,6 +169,16 @@ list($total_revenue, $successful_revenue) = get_revenue_sums($filters);
 
         </div>
     </main>
+
+    <!-- Đưa baseUrl vào JS và load file js mới -->
+    <script>
+        window.appConfig = {
+            baseUrl: '<?php echo rtrim($base_url, '/'); ?>'
+        };
+    </script>
+    <script src="<?php echo $base_url; ?>public/assets/js/pages/invoice/revenue_management.js"></script>
+
+    <?php include $private_includes_path . 'admin_footer.php'; ?>
 </body>
 </html>
 <?php

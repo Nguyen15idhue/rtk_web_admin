@@ -20,48 +20,56 @@ class UserModel {
 
     // Phân trang & lọc user
     public function fetchPaginated(array $filters = [], int $page = 1, int $perPage = 10): array {
-        // ...build query giống fetch_paginated_users...
+        // build base clauses
         $baseSelect = "SELECT id, username, email, phone, is_company, company_name, tax_code,
                               created_at, updated_at, deleted_at";
         $baseFrom  = " FROM user";
         $baseWhere = " WHERE 1=1";
+
+        // collect params for both count & data
         $params = [];
-        if (!empty($filters['search'])) {
-            $term = '%'.trim($filters['search']).'%';
-            $baseWhere .= " AND (email LIKE :s OR username LIKE :s OR company_name LIKE :s)";
-            $params[':s'] = $term;
+        if (!empty($filters['q'])) {
+            $term = '%'.trim($filters['q']).'%';
+            $baseWhere .= " AND (email LIKE ? OR username LIKE ? OR company_name LIKE ? OR phone LIKE ? OR tax_code LIKE ?)";
+            // same term for each placeholder
+            for ($i = 0; $i < 5; $i++) {
+                $params[] = $term;
+            }
         }
         if (!empty($filters['status'])) {
-            $baseWhere .= $filters['status']==='inactive'
+            $baseWhere .= $filters['status'] === 'inactive'
                         ? " AND deleted_at IS NOT NULL"
                         : " AND deleted_at IS NULL";
         }
-        // đếm tổng
-        $countSql = "SELECT COUNT(*)".$baseFrom.$baseWhere;
+
+        // count total
+        $countSql = "SELECT COUNT(*)" . $baseFrom . $baseWhere;
         $stmt = $this->db->prepare($countSql);
         $stmt->execute($params);
         $total = (int)$stmt->fetchColumn();
 
-        $totalPages = $perPage>0 ? ceil($total/$perPage) : 0;
-        $page = max(1, min($page, $totalPages>0 ? $totalPages : 1));
-        $offset = ($page-1)*$perPage;
+        // calc paging
+        $totalPages = $perPage > 0 ? ceil($total / $perPage) : 0;
+        $page = max(1, min($page, $totalPages > 0 ? $totalPages : 1));
+        $offset = ($page - 1) * $perPage;
 
-        // lấy dữ liệu
-        $dataSql = $baseSelect.$baseFrom.$baseWhere." ORDER BY created_at DESC
-                    LIMIT :limit OFFSET :offset";
-        $params[':limit']  = $perPage;
-        $params[':offset'] = $offset;
+        // fetch data
+        $dataSql = $baseSelect . $baseFrom . $baseWhere
+                 . " ORDER BY created_at DESC LIMIT ? OFFSET ?";
+        $dataParams = $params;
+        $dataParams[] = $perPage;
+        $dataParams[] = $offset;
+
         $stmt = $this->db->prepare($dataSql);
-        foreach ($params as $k=>$v) {
-            $stmt->bindValue($k, $v, is_int($v)?PDO::PARAM_INT:PDO::PARAM_STR);
-        }
-        $stmt->execute();
+        $stmt->execute($dataParams);
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         return [
-            'users'=>$users, 'total_count'=>$total,
-            'current_page'=>$page, 'per_page'=>$perPage,
-            'total_pages'=>$totalPages
+            'users'        => $users,
+            'total_count'  => $total,
+            'current_page' => $page,
+            'per_page'     => $perPage,
+            'total_pages'  => $totalPages
         ];
     }
 
@@ -154,6 +162,48 @@ class UserModel {
         }
         $this->db->commit();
         return true;
+    }
+
+    /**
+     * Retrieves all non-deleted users for Excel export.
+     * Adjust columns as needed for the export.
+     */
+    public function getAllDataForExport(): array {
+        $sql = "SELECT id, username, email, phone, 
+                       CASE WHEN is_company = 1 THEN 'Công ty' ELSE 'Cá nhân' END as account_type, 
+                       company_name, tax_code, created_at 
+                FROM user 
+                WHERE deleted_at IS NULL 
+                ORDER BY created_at DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Retrieves specific non-deleted users by their IDs for Excel export.
+     * Adjust columns as needed for the export.
+     * @param array $ids Array of user IDs.
+     * @return array
+     */
+    public function getDataByIdsForExport(array $ids): array {
+        if (empty($ids)) {
+            return [];
+        }
+        // Ensure IDs are integers
+        $ids = array_map('intval', $ids);
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+
+        $sql = "SELECT id, username, email, phone, 
+                       CASE WHEN is_company = 1 THEN 'Công ty' ELSE 'Cá nhân' END as account_type, 
+                       company_name, tax_code, created_at 
+                FROM user 
+                WHERE id IN ($placeholders) AND deleted_at IS NULL 
+                ORDER BY created_at DESC";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($ids);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function __destruct() {

@@ -484,14 +484,66 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEmailAutocomplete('create-user-email', 'emailSuggestionsCreate', 'create-user-info');
     setupEmailAutocomplete('edit-user-email', 'emailSuggestionsEdit', 'edit-user-info');
 
+    const selectAllCheckbox = document.getElementById('selectAll');
+    selectAllCheckbox?.addEventListener('change', () => {
+        const checked = selectAllCheckbox.checked;
+        document.querySelectorAll('.rowCheckbox').forEach(cb => cb.checked = checked);
+    });
+
+    async function bulkToggleStatus() {
+        const ids = Array.from(document.querySelectorAll('.rowCheckbox:checked')).map(cb => cb.value);
+        if (ids.length === 0) {
+            return alert('Vui lòng chọn ít nhất một tài khoản.');
+        }
+        if (!confirm(`Bạn có chắc muốn đảo trạng thái cho ${ids.length} tài khoản?`)) return;
+        try {
+            await Promise.all(ids.map(id => {
+                const row = document.querySelector(`tr[data-account-id="${id}"]`);
+                const status = row?.dataset.status;
+                const action = (status === 'suspended' || status === 'pending') ? 'reactivate' : 'suspend';
+                return postJson(`${apiBasePath}?action=toggle_account_status`, { id, action });
+            }));
+            window.showToast('Đã đảo trạng thái xong.', 'success');
+            window.location.reload();
+        } catch (e) {
+            console.error(e);
+            window.showToast('Lỗi khi đảo trạng thái.', 'error');
+        }
+    }
+
+    async function bulkDeleteAccounts() {
+        const ids = Array.from(document.querySelectorAll('.rowCheckbox:checked')).map(cb => cb.value);
+        if (ids.length === 0) {
+            return alert('Vui lòng chọn ít nhất một tài khoản.');
+        }
+        if (!confirm(`Bạn có chắc chắn muốn xóa ${ids.length} tài khoản? Hành động này không thể hoàn tác.`)) return;
+        try {
+            await Promise.all(ids.map(id =>
+                postJson(`${apiBasePath}?action=delete_account`, { id })
+            ));
+            window.showToast('Đã xóa các tài khoản được chọn.', 'success');
+            window.location.reload();
+        } catch (e) {
+            console.error(e);
+            window.showToast('Lỗi khi xóa.', 'error');
+        }
+    }
+
     window.AccountManagementPageEvents = {
         closeModal: helperCloseModal,
         openCreateMeasurementAccountModal,
         openEditAccountModal,
         viewAccountDetails,
         deleteAccount,
-        toggleAccountStatus
+        toggleAccountStatus,
+        bulkToggleStatus,
+        bulkDeleteAccounts
     };
     Object.assign(window, window.AccountManagementPageEvents);
+
+    // Ensure table row action buttons (view/edit) are non-submitting buttons
+    document.querySelectorAll('#accountsTable .action-buttons button').forEach(function(btn) {
+        btn.setAttribute('type', 'button');
+    });
 
 }); // End DOMContentLoaded
