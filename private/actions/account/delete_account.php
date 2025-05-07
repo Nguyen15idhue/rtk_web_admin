@@ -6,6 +6,9 @@ $config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $db     = $config['db'];
 $base   = $config['base_path'];
 
+// Include the Auth class
+require_once __DIR__ . '/../../classes/Auth.php';
+
 // Đảm bảo đóng PDO khi script kết thúc
 register_shutdown_function(function() use (&$db) {
     $db = null;
@@ -13,10 +16,8 @@ register_shutdown_function(function() use (&$db) {
 
 header('Content-Type: application/json');
 
-// Check admin login
-if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
-    api_forbidden('Permission denied.');
-}
+// Use Auth class for authentication and authorization
+Auth::ensureAuthorized(['admin']);
 
 // Get input data
 $rawInput = file_get_contents('php://input');

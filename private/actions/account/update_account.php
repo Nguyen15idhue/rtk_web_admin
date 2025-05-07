@@ -5,16 +5,17 @@ $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
 $base_path = $bootstrap['base_path'];
 
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+
 // Đảm bảo đóng PDO khi script kết thúc
 register_shutdown_function(function() use (&$db) {
     $db = null;
 });
 
 header('Content-Type: application/json');
-// Basic security check
-if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
-    api_forbidden('Permission denied.');
-}
+
+// Use Auth class for authentication and authorization
+Auth::ensureAuthorized(['admin']);
 
 require_once BASE_PATH . '/classes/AccountModel.php';
 require_once BASE_PATH . '/api/rtk_system/account_api.php';

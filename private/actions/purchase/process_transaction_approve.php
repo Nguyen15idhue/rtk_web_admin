@@ -7,6 +7,9 @@ $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
 // --- Permission check ---
+require_once __DIR__ . '/../../classes/Auth.php';
+Auth::ensureAuthorized(['admin']); 
+
 if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
     api_error('Permission denied.', 403);
 }

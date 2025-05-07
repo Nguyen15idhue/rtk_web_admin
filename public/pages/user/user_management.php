@@ -64,19 +64,7 @@ if (strpos($pagination_base_url, '?') === false) {
 
 // --- Page Setup for Header/Sidebar ---
 $page_title = 'Quản lý Người dùng';
-
 include $private_includes_path . 'admin_header.php';
-?>
-<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables.css">
-<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-buttons.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/forms.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/modals.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/pages/user-management.css">
-
-<?php
 include $private_includes_path . 'admin_sidebar.php';
 ?>
 
@@ -102,7 +90,7 @@ include $private_includes_path . 'admin_sidebar.php';
                 </button>
             <?php endif; ?>
         </div>
-         <p class="filter-description">Quản lý tài khoản người dùng đăng ký (không phải tài khoản quản trị).</p>
+         <p class="text-xs sm:text-sm text-gray-600 mb-4 description-text">Quản lý tài khoản người dùng đăng ký (không phải tài khoản quản trị).</p>
 
         <form method="GET" action="">
             <div class="filter-bar">
@@ -320,8 +308,6 @@ include $private_includes_path . 'admin_sidebar.php';
 </script>
 
 <!-- load JS utilities and page logic -->
-<script src="<?php echo $base_path; ?>public/assets/js/utils/api.js"></script>
-<script src="<?php echo $base_path; ?>public/assets/js/utils/helpers.js"></script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/user/user_management.js"></script>
 
 <?php

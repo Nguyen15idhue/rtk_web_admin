@@ -1,9 +1,9 @@
 <?php
 header('Content-Type: application/json');
-// Only Super Admin can update permissions
-if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
-    api_forbidden('Permission denied.');
-}
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+
+// Use Auth class for authentication and authorization
+Auth::ensureAuthorized(['admin']);
 
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $db      = $bootstrap['db'];

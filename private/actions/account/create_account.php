@@ -1,6 +1,11 @@
 <?php
 // filepath: private\actions\account\create_account.php
 $config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+
+// Use Auth class for authentication and authorization
+Auth::ensureAuthorized(['admin']);
+
 $db     = $config['db'];
 $base   = $config['base_path'];
 
@@ -10,10 +15,6 @@ register_shutdown_function(function() use (&$db) {
 });
 
 header('Content-Type: application/json');
-// Basic security check
-if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
-    api_error('Permission denied.', 403);
-}
 
 $response = ['success' => false, 'message' => 'Invalid request'];
 

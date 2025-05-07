@@ -3,6 +3,8 @@ declare(strict_types=1);
 header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/../../includes/page_bootstrap.php';
 require_once __DIR__ . '/../../utils/functions.php';
+require_once __DIR__ . '/../../classes/Auth.php';
+Auth::ensureAuthorized(['admin','customercare']);
 
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];

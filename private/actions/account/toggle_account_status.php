@@ -2,6 +2,9 @@
 // filepath: private\actions\account\toggle_status.php
 header('Content-Type: application/json');
 
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+Auth::ensureAuthorized(['admin']); // Only admins can toggle account status
+
 // Khởi bootstrap
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
@@ -10,11 +13,6 @@ $db        = $bootstrap['db'];
 register_shutdown_function(function() use (&$db) {
     $db = null;
 });
-
-// Check admin login
-if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
-    api_forbidden('Permission denied.');
-}
 
 // Get input data
 $rawInput = file_get_contents('php://input');

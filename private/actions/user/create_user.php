@@ -1,10 +1,9 @@
 <?php
+require_once __DIR__ . '/../../classes/Auth.php';
+Auth::ensureAuthorized(['admin', 'customercare']); 
+
 $config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $db     = $config['db'];
-if (!isset($_SESSION['admin_id'])) {
-    error_log("Unauthorized access attempt to process_user_create.php");
-    api_error('Unauthorized access.', 403);
-}
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     api_error('Invalid request method.', 405);

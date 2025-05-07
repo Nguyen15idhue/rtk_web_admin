@@ -1,12 +1,10 @@
 <?php
 
 header('Content-Type: application/json');
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+Auth::ensureAuthorized(['admin']); // Only admins can create other admins
 
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
-
-if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
-    api_forbidden('Permission denied.');
-}
 
 $db      = $bootstrap['db'];
 

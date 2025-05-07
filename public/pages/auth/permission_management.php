@@ -7,7 +7,6 @@ $user_display_name = $bootstrap['user_display_name'];
 $private_includes_path = $bootstrap['private_includes_path'];
 $is_admin = ($_SESSION['admin_role'] ?? '') === 'admin';
 $admins = $db ? $db->query("SELECT id,name,admin_username,role,created_at FROM admin")->fetchAll(PDO::FETCH_ASSOC) : [];
-$css = ['layouts/header.css', 'components/buttons.css', 'pages/permission_management.css'];
 $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php' => 'Đăng xuất'];
 ?>
 
@@ -37,7 +36,7 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
         <p class="text-xs sm:text-sm text-gray-600 mb-6">Quản lý vai trò và quyền hạn truy cập cho tài khoản quản trị hệ thống.</p>
 
         <!-- Permission Cards: Responsive Grid -->
-        <div class="stats-grid">  <!-- Use dashboard.css stat-card grid -->
+        <div class="stats-grid"> 
 
             <!-- Admin stat card -->
             <div class="stat-card">

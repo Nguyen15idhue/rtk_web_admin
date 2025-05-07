@@ -6,9 +6,8 @@ require_once BASE_PATH . '/utils/functions.php';
 header('Content-Type: application/json');
 
 // Check if admin is logged in
-if (!isset($_SESSION['admin_id'])) {
-    api_error('Unauthorized access.', 401);
-}
+require_once __DIR__ . '/../../classes/Auth.php';
+Auth::ensureAuthenticated();
 
 // Check if it's a POST request
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

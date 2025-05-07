@@ -1,5 +1,7 @@
 <?php
 // filepath: private\actions\dashboard\fetch_dashboard_data.php
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+Auth::ensureAuthorized(['admin', 'customercare']); // Allow admin and customercare to view dashboard
 
 $config = require __DIR__ . '/../../includes/page_bootstrap.php';
 $pdo = $config['db'];

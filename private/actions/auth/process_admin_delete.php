@@ -1,10 +1,7 @@
 <?php
 header('Content-Type: application/json');
-
-// Only admin
-if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
-    api_forbidden('Permission denied.');
-}
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+Auth::ensureAuthorized(['admin']); // Only admins can delete other admins
 
 // Parse request
 $input = json_decode(file_get_contents('php://input'), true);

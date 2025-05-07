@@ -1,10 +1,7 @@
 <?php
 header('Content-Type: application/json');
-
-// Only SuperAdmin
-if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
-    api_forbidden('Permission denied.');
-}
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+Auth::ensureAuthorized(['admin']); // Only admins can update other admins
 
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];

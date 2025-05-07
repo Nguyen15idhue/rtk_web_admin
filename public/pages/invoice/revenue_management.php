@@ -42,29 +42,6 @@ list($total_revenue, $successful_revenue) = get_revenue_sums($filters);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Giao dịch - Admin</title>
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/base.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-badges.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/layouts/header.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .stats-container { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; }
-        .stats-box {
-            flex: 1;
-            background: white;
-            border-radius: var(--rounded-lg);
-            padding: 1rem;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            display: flex;
-            align-items: center;
-        }
-        .stats-box .icon { font-size: 1.75rem; color: var(--info-600); margin-right: 0.75rem; }
-        .stats-box .label { display: block; font-size: var(--font-size-sm); color: var(--gray-600); }
-        .stats-box .value { font-size: 1.25rem; font-weight: var(--font-semibold); color: var(--gray-800); }
-    </style>
 </head>
 <body>
     <?php include $private_includes_path . 'admin_header.php'; ?>

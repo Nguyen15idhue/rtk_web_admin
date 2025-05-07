@@ -1,7 +1,9 @@
 <?php
+require_once __DIR__ . '/../../classes/Auth.php';
+Auth::ensureAuthorized(['admin', 'customercare']); 
+
 $config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
 $db     = $config['db'];
-
 header('Content-Type: application/json');
 
 try {

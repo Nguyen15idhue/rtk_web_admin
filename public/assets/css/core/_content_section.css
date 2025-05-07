@@ -1,0 +1,12 @@
+/* Content Section */
+.content-section {
+    background: white; border-radius: var(--rounded-lg);
+    padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color); margin-bottom: 1.5rem;
+}
+.content-section h3 {
+    font-size: var(--font-size-lg); font-weight: var(--font-semibold);
+    color: var(--gray-700); margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.8rem;
+}

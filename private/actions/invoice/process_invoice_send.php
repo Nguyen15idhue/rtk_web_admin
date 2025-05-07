@@ -2,6 +2,8 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../includes/page_bootstrap.php'; // đã include error_handler
+require_once __DIR__ . '/../../classes/Auth.php';
+Auth::ensureAuthorized(['admin','customercare']);
 
 // only POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

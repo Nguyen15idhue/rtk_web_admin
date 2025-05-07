@@ -1,11 +1,6 @@
 <?php
 // filepath: public\pages\account\account_management.php
-$require_constants = __DIR__ . '/../../../private/config/constants.php';
-require_once $require_constants;
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ' . BASE_URL . 'public/pages/auth/admin_login.php');
-    exit;
-}
+
 // --- Bootstrap and Initialization ---
 // Includes session start, auth check, DB connection, base path, etc.
 $bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
@@ -13,6 +8,11 @@ $db = $bootstrap_data['db'];
 $base_url = $bootstrap_data['base_url'];
 $user_display_name = $bootstrap_data['user_display_name'];
 $private_includes_path = $bootstrap_data['private_includes_path'];
+
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
+    exit;
+}
 
 // --- Include Page-Specific Logic ---
 // Handles filtering, pagination, and data fetching for accounts
@@ -61,7 +61,7 @@ include $private_includes_path . 'admin_sidebar.php';
                 <i class="fas fa-plus"></i> Tạo TK thủ công
             </button>
         </div>
-        <p class="text-xs sm:text-sm text-gray-600 mb-4" style="font-size: var(--font-size-sm); color: var(--gray-600); margin-bottom: 1rem;">Quản lý các tài khoản dịch vụ đo đạc RTK của khách hàng.</p>
+        <p class="text-xs sm:text-sm text-gray-600 mb-4 description-text">Quản lý các tài khoản dịch vụ đo đạc RTK của khách hàng.</p>
 
         <!-- Filter Form -->
         <form method="GET" action="">
@@ -99,8 +99,8 @@ include $private_includes_path . 'admin_sidebar.php';
                         <th>Gói</th>
                         <th>Ngày KH</th>
                         <th>Ngày HH</th>
-                        <th style="text-align: center;">Trạng thái</th>
-                        <th class="actions" style="text-align: center;">Hành động</th>
+                        <th class="text-center">Trạng thái</th>
+                        <th class="actions text-center">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>

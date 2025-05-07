@@ -4,9 +4,8 @@ declare(strict_types=1);
 header('Content-Type: application/json'); // Set response type
 
 // --- Permission check ---
-if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
-    api_error('Permission denied.', 403);
-}
+require_once __DIR__ . '/../../classes/Auth.php';
+Auth::ensureAuthorized(['admin']); 
 
 require_once __DIR__ . '/../../config/constants.php';
 require_once BASE_PATH . '/classes/Database.php';

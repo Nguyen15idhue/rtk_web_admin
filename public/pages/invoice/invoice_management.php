@@ -113,9 +113,9 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                             <th>Gói</th>
                             <th>Số tiền</th>
                             <th>Ngày YC</th>
-                            <th style="text-align: center;">Xem MC</th>
-                            <th style="text-align: center;">Trạng thái</th>
-                            <th class="actions" style="text-align: center;">Hành động</th>
+                            <th class="text-center">Xem MC</th>
+                            <th class="text-center">Trạng thái</th>
+                            <th class="actions text-center">Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -162,7 +162,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                                     <td><?php echo htmlspecialchars($transaction['package_name']); ?></td>
                                     <td class="amount"><?php echo format_currency($transaction['amount']); ?></td>
                                     <td><?php echo format_datetime($transaction['request_date']); ?></td>
-                                    <td style="text-align: center;">
+                                    <td class="text-center">
                                         <?php if ($proof_image_url): ?>
                                             <button class="btn-icon btn-view-proof" title="Xem Minh Chứng" onclick="InvoiceManagementPageEvents.viewProofModal('<?php echo $transaction_id; ?>', '<?php echo $proof_image_url; ?>')">
                                                 <i class="fas fa-receipt"></i>
@@ -252,7 +252,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
             <h4 id="proofModalTitle">Minh chứng Giao dịch</h4>
             <button class="modal-close" onclick="InvoiceManagementPageEvents.closeProofModal()">&times;</button>
         </div>
-        <div class="modal-body" style="text-align: center;">
+        <div class="modal-body text-center">
              <img id="proofModalImage" src="" alt="Minh chứng thanh toán">
         </div>
     </div>

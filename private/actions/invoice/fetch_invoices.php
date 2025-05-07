@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/../../utils/functions.php';  // add helper
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+Auth::ensureAuthorized(['admin','customercare']); // Allow admin and customercare to fetch invoices
 
 // Prevent direct access
 if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {

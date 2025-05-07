@@ -4,9 +4,8 @@ require_once BASE_PATH . '/classes/Database.php';
 require_once BASE_PATH . '/utils/functions.php';    // thêm utils/functions
 require_once __DIR__ . '/../../includes/error_handler.php';
 
-if (!isset($_SESSION['admin_id'])) {
-    api_error('Unauthorized', 401);
-}
+require_once __DIR__ . '/../../classes/Auth.php';
+Auth::ensureAuthenticated();
 
 $db   = Database::getInstance();
 $conn = $db->getConnection();
