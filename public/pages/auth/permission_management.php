@@ -30,7 +30,7 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
     <div id="admin-permission-management" class="content-section">
         <div class="flex flex-row justify-between items-center mb-4 gap-3 md:gap-2">
             <h2 class="text-lg md:text-xl font-semibold text-gray-900">Quản lý phân quyền</h2>
-            <button class="btn btn-primary self-start md:self-auto w-auto" onclick="openCreateRoleModal()" data-permission="admin_user_create">
+            <button class="btn btn-primary self-start md:self-auto w-auto" onclick="PermissionPageEvents.openCreateRoleModal()" data-permission="admin_user_create">
                 <i class="fas fa-user-plus mr-1"></i> Thêm QTV/Vận hành
             </button>
         </div>
@@ -99,7 +99,7 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
                                 <input type="checkbox" class="mr-2 h-3 w-3 accent-primary-600" data-role="CustomerCare" data-permission="invoice_management"> QL Giao dịch
                             </label>
                         </div>
-                        <button type="button" class="btn btn-primary mt-2 text-xs" onclick="savePermissions('CustomerCare', event)" data-permission="permission_edit">
+                        <button type="button" class="btn btn-primary mt-2 text-xs" onclick="PermissionPageEvents.savePermissions('CustomerCare', event)" data-permission="permission_edit">
                             Lưu quyền CSKH
                         </button>
                     </form>
@@ -128,8 +128,8 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
                     <td><?= ($a['role'] === 'customercare' ? 'Chăm sóc khách hàng' : 'Quản trị viên') ?></td>
                     <td><?= htmlspecialchars($a['created_at']) ?></td>
                     <td class="actions">
-                        <button class="btn btn-secondary btn-sm" onclick="openEditAdminModal(<?= $a['id'] ?>)">Sửa</button>
-                        <button class="btn btn-danger btn-sm" onclick="openDeleteAdminModal(<?= $a['id'] ?>)">Xóa</button>
+                        <button class="btn btn-secondary btn-sm" onclick="PermissionPageEvents.openEditAdminModal(<?= $a['id'] ?>)">Sửa</button>
+                        <button class="btn btn-danger btn-sm" onclick="PermissionPageEvents.openDeleteAdminModal(<?= $a['id'] ?>)">Xóa</button>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -176,7 +176,7 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('createRoleModal')">Hủy</button>
+                <button type="button" class="btn btn-secondary" onclick="PermissionPageEvents.closeModal('createRoleModal')">Hủy</button>
                 <button type="submit" class="btn btn-primary">Thêm</button>
             </div>
         </form>
@@ -213,7 +213,7 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('editAdminModal')">Hủy</button>
+                <button type="button" class="btn btn-secondary" onclick="PermissionPageEvents.closeModal('editAdminModal')">Hủy</button>
                 <button type="submit" class="btn btn-primary">Lưu</button>
             </div>
         </form>
@@ -230,7 +230,7 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
             <p>Bạn có chắc muốn xóa tài khoản này?</p>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('deleteAdminModal')">Hủy</button>
+            <button class="btn btn-secondary" onclick="PermissionPageEvents.closeModal('deleteAdminModal')">Hủy</button>
             <button id="confirmDeleteAdminBtn" class="btn btn-danger">Xóa</button>
         </div>
     </div>

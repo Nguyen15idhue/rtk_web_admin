@@ -7,19 +7,18 @@
         const proofModalTitle = document.getElementById('proofModalTitle');
         const detailsModal = document.getElementById('transaction-details-modal');
 
-        // VIEW PROOF
-        window.viewProofModal = function(id, url){
+        // Functions to be exposed
+        function viewProofModal(id, url){
             if(!url){ alert("Không có hình ảnh minh chứng."); return; }
             proofModalTitle.textContent = `Minh chứng Giao dịch #${id}`;
             proofModalImage.src = url;
             proofModal.classList.add('active');
         };
-        window.closeProofModal = function(){
+        function closeProofModal(){
             proofModal.classList.remove('active');
         };
 
-        // VIEW DETAILS
-        window.showTransactionDetails = function(data){
+        function showTransactionDetails(data){
             if(!detailsModal||!data) return;
             document.getElementById('modal-title').textContent = `Chi Tiết Giao Dịch #${data.id}`;
             document.getElementById('modal-tx-id').textContent = data.id;
@@ -35,7 +34,7 @@
             const proofLink = document.getElementById('modal-tx-proof-link');
             if(data.proof_image){
                 proofLink.innerHTML = `<a href="${data.proof_image}" target="_blank">Xem hình ảnh&nbsp;</a>
-                    | <button class="btn-link" onclick="viewProofModal('${data.id}','${data.proof_image}'); closeDetailsModal();">Xem trong modal</button>`;
+                    | <button class="btn-link" onclick="InvoiceManagementPageEvents.viewProofModal('${data.id}','${data.proof_image}'); InvoiceManagementPageEvents.closeDetailsModal();">Xem trong modal</button>`;
             } else proofLink.textContent = 'Không có';
 
             // rejection reason
@@ -47,7 +46,7 @@
 
             detailsModal.classList.add('active');
         };
-        window.closeDetailsModal = function(){
+        function closeDetailsModal(){
             detailsModal.classList.remove('active');
         };
 
@@ -94,15 +93,15 @@
             const cell = row.querySelector('.actions .action-buttons');
             let html='';
             if(newStat==='pending'){
-                html=`<button class="btn-icon btn-approve" onclick="approveTransaction('${id}',this)"><i class="fas fa-check-circle"></i></button>
-                      <button class="btn-icon btn-reject" onclick="openRejectTransactionModal('${id}')"><i class="fas fa-times-circle"></i></button>
+                html=`<button class="btn-icon btn-approve" onclick="InvoiceManagementPageEvents.approveTransaction('${id}',this)"><i class="fas fa-check-circle"></i></button>
+                      <button class="btn-icon btn-reject" onclick="InvoiceManagementPageEvents.openRejectTransactionModal('${id}')"><i class="fas fa-times-circle"></i></button>
                       <button class="btn-icon btn-disabled" disabled><i class="fas fa-undo-alt"></i></button>`;
             } else if(newStat==='active'){
                 html=`<button class="btn-icon btn-disabled" disabled><i class="fas fa-check-circle"></i></button>
-                      <button class="btn-icon btn-reject" onclick="openRejectTransactionModal('${id}')"><i class="fas fa-times-circle"></i></button>
-                      <button class="btn-icon btn-revert" onclick="revertTransaction('${id}',this)"><i class="fas fa-undo-alt"></i></button>`;
+                      <button class="btn-icon btn-reject" onclick="InvoiceManagementPageEvents.openRejectTransactionModal('${id}')"><i class="fas fa-times-circle"></i></button>
+                      <button class="btn-icon btn-revert" onclick="InvoiceManagementPageEvents.revertTransaction('${id}',this)"><i class="fas fa-undo-alt"></i></button>`;
             } else if(newStat==='rejected'){
-                html=`<button class="btn-icon btn-approve" onclick="approveTransaction('${id}',this)"><i class="fas fa-check-circle"></i></button>
+                html=`<button class="btn-icon btn-approve" onclick="InvoiceManagementPageEvents.approveTransaction('${id}',this)"><i class="fas fa-check-circle"></i></button>
                       <button class="btn-icon btn-disabled" disabled><i class="fas fa-times-circle"></i></button>
                       <button class="btn-icon btn-disabled" disabled><i class="fas fa-undo-alt"></i></button>`;
             }
@@ -110,7 +109,7 @@
         }
 
         // transaction actions
-        window.approveTransaction = async function(id,btn){
+        async function approveTransaction(id,btn){
             if(!confirm(`Bạn có chắc muốn duyệt #${id}?`)) return;
             const row = document.querySelector(`tr[data-transaction-id="${id}"]`);
             try {
@@ -131,7 +130,7 @@
             }
         };
 
-        window.openRejectTransactionModal = async function(id){
+        async function openRejectTransactionModal(id){
             const reason = prompt(`Lý do từ chối #${id}:`);
             if(reason==null) return;
             const text = reason.trim(); if(!text){ alert('Nhập lý do.'); return; }
@@ -147,7 +146,7 @@
             }
         };
 
-        window.revertTransaction = async function(id,btn){
+        async function revertTransaction(id,btn){
             if(!confirm(`Hủy duyệt #${id}?`)) return;
             const row = btn.closest('tr'); disableActionButtons(row);
             try {
@@ -165,5 +164,16 @@
         style.innerText=`.btn-link{background:none;border:none;color:var(--primary-600);cursor:pointer;text-decoration:underline}
         .btn-link:hover{color:var(--primary-700)}`;
         document.head.appendChild(style);
+
+        // Expose functions to window object under a namespace
+        window.InvoiceManagementPageEvents = {
+            viewProofModal,
+            closeProofModal,
+            showTransactionDetails,
+            closeDetailsModal,
+            approveTransaction,
+            openRejectTransactionModal,
+            revertTransaction
+        };
     });
 })(window);

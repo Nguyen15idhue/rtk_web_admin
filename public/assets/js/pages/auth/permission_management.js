@@ -48,14 +48,11 @@
             });
     }
 
+    const { closeModal: helperCloseModal } = window.helpers;
+
     function openCreateRoleModal(){
         document.getElementById('createRoleForm').reset();
         document.getElementById('createRoleModal').style.display='flex';
-    }
-
-    function closeModal(id){
-        const m = document.getElementById(id);
-        if(m) m.style.display='none';
     }
 
     function openEditAdminModal(id){
@@ -146,10 +143,12 @@
             });
         }
         // expose globals for inline onclick attributes
-        window.openCreateRoleModal  = openCreateRoleModal;
-        window.openEditAdminModal   = openEditAdminModal;
-        window.openDeleteAdminModal = openDeleteAdminModal;
-        window.closeModal           = closeModal;
-        window.savePermissions      = savePermissions;
+        window.PermissionPageEvents = {
+            openCreateRoleModal,
+            openEditAdminModal,
+            openDeleteAdminModal,
+            closeModal: helperCloseModal,  // dùng chung
+            savePermissions
+        };
     });
 })();

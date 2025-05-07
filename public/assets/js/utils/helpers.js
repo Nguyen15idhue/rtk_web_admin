@@ -3,17 +3,12 @@
         const m = document.getElementById(id);
         if (!m) return;
         m.style.display = 'none';
-        // reset forms & errors
-        const form = m.querySelector('form');
-        if(form){ form.reset(); }
-        const err = m.querySelector('.error-message');
-        if(err){ err.textContent = ''; }
-        const cf = m.querySelector('.company-fields');
-        if(cf){ cf.classList.remove('visible'); }
-        ['CompanyName','TaxCode'].forEach(f => {
-            const inp = m.querySelector(`#${id === 'createUserModal' ? 'create' : 'edit'}${f}`);
-            if(inp) inp.required = false;
-        });
+        // reset tất cả các form trong modal
+        m.querySelectorAll('form').forEach(f => f.reset());
+        // xoá mọi lỗi
+        m.querySelectorAll('.error-message').forEach(err => err.textContent = '');
+        // gỡ class visible của company-fields
+        m.querySelectorAll('.company-fields.visible').forEach(cf => cf.classList.remove('visible'));
     }
 
     function toggleCompanyFields(formType){
@@ -42,9 +37,5 @@
 
     // expose to helpers namespace
     window.helpers = { closeModal, toggleCompanyFields };
-
-    // also expose as globals for inline onclick handlers
-    window.closeModal = closeModal;
-    window.toggleCompanyFields = toggleCompanyFields;
 
 })(window);

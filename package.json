@@ -1,0 +1,20 @@
+{
+  "name": "rtk_web_admin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nguyen15idhue/rtk_web_admin.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nguyen15idhue/rtk_web_admin/issues"
+  },
+  "homepage": "https://github.com/Nguyen15idhue/rtk_web_admin#readme",
+  "description": ""
+}

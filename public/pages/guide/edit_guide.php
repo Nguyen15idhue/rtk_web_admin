@@ -76,13 +76,11 @@ $page_title = $id
     </div>
 </main>
 
-<!-- Thêm jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Thêm TinyMCE -->
 <script src="https://cdn.jsdelivr.net/npm/tinymce@5/tinymce.min.js"></script>
 <!-- Thêm Bootstrap JS bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- include JS riêng cho edit_guide -->
-<script src="<?php echo $base_url; ?>public/assets/js/pages/guide/edit_guide.js"></script>
+<script defer src="<?php echo $base_url; ?>public/assets/js/pages/guide/edit_guide.js"></script>
 <?php include $private_includes_path . 'admin_footer.php'; ?>

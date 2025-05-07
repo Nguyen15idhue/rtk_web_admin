@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
     const viewBody = document.getElementById('viewUserDetailsBody');
 
     // open/close helpers
-    const { closeModal, toggleCompanyFields } = window.helpers;
+    const helpers = window.helpers; // Use helpers from window.helpers
+    const { closeModal, toggleCompanyFields } = helpers; // Destructure helpers
     const { getJson, postJson, postForm }      = window.api;
 
     // Thay thế base path cho API
@@ -36,7 +37,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         postJson(`${apiBasePath}?action=create_user`, data)
         .then(res => {
             if(res.success){
-                closeModal('createUserModal');
+                closeModal('createUserModal'); // Rút gọn
                 window.showToast(res.message || 'Thêm người dùng thành công!', 'success');
                 location.reload();
             } else {
@@ -53,7 +54,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     });
 
     // VIEW DETAILS
-    window.viewUserDetails = userId => {
+    function viewUserDetails(userId) {
         viewBody.innerHTML = '<p>Đang tải...</p>';
         document.getElementById('viewUserModal').style.display = 'block';
 
@@ -87,9 +88,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     // EDIT USER
     const editForm = document.getElementById('editUserForm');
-    window.openEditUserModal = userId => {
+    function openEditUserModal(userId) {
         ['Username','Email','Phone'].forEach(f=> document.getElementById('edit'+f).value = '');
-        toggleCompanyFields('edit');
+        toggleCompanyFields('edit'); // Rút gọn
         document.getElementById('editUserModal').style.display = 'block';
         getJson(`${apiBasePath}?action=get_user_details&id=${encodeURIComponent(userId)}`)
         .then(res => {
@@ -100,7 +101,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
                 document.getElementById('editEmail').value    = u.email||'';
                 document.getElementById('editPhone').value    = u.phone||'';
                 document.getElementById('editIsCompany').checked = (u.is_company==1);
-                toggleCompanyFields('edit');
+                toggleCompanyFields('edit'); // Rút gọn
                 if(u.is_company==1){
                     document.getElementById('editCompanyName').value = u.company_name||'';
                     document.getElementById('editTaxCode').value    = u.tax_code||'';
@@ -128,7 +129,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         .then(res => {
             if(res.success){
                 window.showToast(res.message, 'success');
-                closeModal('editUserModal');
+                closeModal('editUserModal'); // Rút gọn
                 location.reload();
             } else {
                 errEl.textContent = res.message;
@@ -144,7 +145,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     });
 
     // TOGGLE STATUS
-    window.toggleUserStatus = (userId, action) => {
+    function toggleUserStatus(userId, action) {
         const txt = action==='disable'?'vô hiệu hóa':'kích hoạt';
         if(!confirm(`Bạn có chắc muốn ${txt} người dùng ID ${userId}?`)) return;
         const body = new URLSearchParams({ user_id: userId, action });
@@ -163,17 +164,25 @@ document.addEventListener('DOMContentLoaded', ()=> {
     };
 
     // OPEN CREATE
-    window.openCreateUserModal = () => {
+    function openCreateUserModal() {
         // reset form state
         createForm.reset();
         document.getElementById('createUserError').textContent = '';
-        toggleCompanyFields('create');
+        toggleCompanyFields('create'); // Rút gọn
         document.getElementById('createUserModal').style.display = 'block';
     };
 
     // bind company‑checkbox visibility
     ['edit','create'].forEach(t => {
         document.getElementById(t+'IsCompany')
-                .addEventListener('change', ()=> toggleCompanyFields(t));
+                .addEventListener('change', ()=> toggleCompanyFields(t)); // Rút gọn
     });
+
+    // Expose functions to window object under a namespace
+    window.UserManagementPageEvents = {
+        viewUserDetails,
+        openEditUserModal,
+        toggleUserStatus,
+        openCreateUserModal
+    };
 });

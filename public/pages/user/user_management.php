@@ -97,7 +97,7 @@ include $private_includes_path . 'admin_sidebar.php';
         <div class="header-actions">
              <h3>Quản lý người dùng (KH)</h3>
             <?php if ($admin_role !== 'customercare'): ?>
-                <button class="btn btn-primary" onclick="openCreateUserModal()" data-permission="user_create">
+                <button class="btn btn-primary" onclick="UserManagementPageEvents.openCreateUserModal()" data-permission="user_create">
                     <i class="fas fa-plus"></i> Thêm người dùng
                 </button>
             <?php endif; ?>
@@ -148,9 +148,9 @@ include $private_includes_path . 'admin_sidebar.php';
                                 <td><?php echo get_user_status_display($user); ?></td>
                                 <td class="actions">
                                     <div class="action-buttons">
-                                        <button class="btn-icon btn-view" title="Xem chi tiết" onclick="viewUserDetails('<?php echo htmlspecialchars($user['id']); ?>')"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon btn-view" title="Xem chi tiết" onclick="UserManagementPageEvents.viewUserDetails('<?php echo htmlspecialchars($user['id']); ?>')"><i class="fas fa-eye"></i></button>
                                         <?php if ($admin_role !== 'customercare'): ?>
-                                            <button class="btn-icon btn-edit" title="Sửa" onclick="openEditUserModal('<?php echo htmlspecialchars($user['id']); ?>')" data-permission="user_edit"><i class="fas fa-pencil-alt"></i></button>
+                                            <button class="btn-icon btn-edit" title="Sửa" onclick="UserManagementPageEvents.openEditUserModal('<?php echo htmlspecialchars($user['id']); ?>')" data-permission="user_edit"><i class="fas fa-pencil-alt"></i></button>
                                             <?php
                                                 $is_inactive = isset($user['deleted_at']) && $user['deleted_at'] !== null && $user['deleted_at'] !== '';
                                                 $action = $is_inactive ? 'enable' : 'disable';
@@ -158,7 +158,7 @@ include $private_includes_path . 'admin_sidebar.php';
                                                 $title = $is_inactive ? 'Kích hoạt' : 'Vô hiệu hóa';
                                                 $btn_class = $is_inactive ? 'btn-success' : 'btn-secondary';
                                             ?>
-                                            <button class="btn-icon <?php echo $btn_class; ?>" onclick="toggleUserStatus('<?php echo htmlspecialchars($user['id']); ?>', '<?php echo $action; ?>')" title="<?php echo $title; ?>">
+                                            <button class="btn-icon <?php echo $btn_class; ?>" onclick="UserManagementPageEvents.toggleUserStatus('<?php echo htmlspecialchars($user['id']); ?>', '<?php echo $action; ?>')" title="<?php echo $title; ?>">
                                                 <i class="fas <?php echo $icon; ?>"></i>
                                             </button>
                                         <?php endif; ?>
@@ -204,13 +204,13 @@ include $private_includes_path . 'admin_sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4>Chi tiết Người dùng</h4>
-                <span class="modal-close" onclick="closeModal('viewUserModal')">&times;</span>
+                <span class="modal-close" onclick="helpers.closeModal('viewUserModal')">&times;</span>
             </div>
             <div class="modal-body" id="viewUserDetailsBody">
                 <p>Đang tải...</p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('viewUserModal')">Đóng</button>
+                <button class="btn btn-secondary" onclick="helpers.closeModal('viewUserModal')">Đóng</button>
             </div>
         </div>
     </div>
@@ -221,7 +221,7 @@ include $private_includes_path . 'admin_sidebar.php';
              <form id="editUserForm">
                 <div class="modal-header">
                     <h4>Chỉnh sửa Người dùng</h4>
-                    <span class="modal-close" onclick="closeModal('editUserModal')">&times;</span>
+                    <span class="modal-close" onclick="helpers.closeModal('editUserModal')">&times;</span>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="editUserId" name="user_id">
@@ -239,7 +239,7 @@ include $private_includes_path . 'admin_sidebar.php';
                     </div>
                     <div class="form-group">
                         <div class="checkbox-group">
-                            <input type="checkbox" id="editIsCompany" name="is_company" onchange="toggleCompanyFields('edit')">
+                            <input type="checkbox" id="editIsCompany" name="is_company" onchange="helpers.toggleCompanyFields('edit')">
                             <label for="editIsCompany">Là tài khoản công ty?</label>
                         </div>
                     </div>
@@ -256,7 +256,7 @@ include $private_includes_path . 'admin_sidebar.php';
                      <div id="editUserError" class="error-message"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('editUserModal')">Hủy</button>
+                    <button type="button" class="btn btn-secondary" onclick="helpers.closeModal('editUserModal')">Hủy</button>
                     <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                 </div>
             </form>
@@ -266,7 +266,7 @@ include $private_includes_path . 'admin_sidebar.php';
     <!-- Add User Modal -->
     <div id="createUserModal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('createUserModal')">&times;</span>
+            <span class="close-btn" onclick="helpers.closeModal('createUserModal')">&times;</span>
             <h2>Thêm người dùng mới</h2>
             <form id="createUserForm">
                  <div class="modal-body"> <!-- Wrap form fields in modal-body -->
@@ -287,7 +287,7 @@ include $private_includes_path . 'admin_sidebar.php';
                         <input type="tel" id="createPhone" name="phone">
                     </div>
                      <div class="form-group form-check">
-                        <input type="checkbox" id="createIsCompany" name="is_company" onchange="toggleCompanyFields('create')">
+                        <input type="checkbox" id="createIsCompany" name="is_company" onchange="helpers.toggleCompanyFields('create')">
                         <label for="createIsCompany">Là công ty?</label>
                     </div>
                     <div id="createCompanyFields" class="company-fields">
@@ -303,7 +303,7 @@ include $private_includes_path . 'admin_sidebar.php';
                      <p id="createUserError" class="error-message"></p>
                  </div> <!-- End modal-body -->
                 <div class="form-actions modal-footer"> <!-- Use modal-footer for consistency -->
-                     <button type="button" class="btn btn-secondary" onclick="closeModal('createUserModal')">Hủy</button>
+                     <button type="button" class="btn btn-secondary" onclick="helpers.closeModal('createUserModal')">Hủy</button>
                      <button type="submit" class="btn btn-primary">Thêm người dùng</button>
                 </div>
             </form>
