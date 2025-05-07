@@ -152,7 +152,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                                 ?>
                                 <tr data-transaction-id="<?php echo $transaction_id; ?>" data-status="<?php echo htmlspecialchars($transaction['registration_status']); ?>" data-type="<?= $transaction['transaction_type'] ?>">
                                     <td>
-                                        <a href="#" class="clickable-id" title="Xem chi tiết" onclick='showTransactionDetails(<?php echo $tx_details_json; ?>); return false;'>
+                                        <a href="#" class="clickable-id" title="Xem chi tiết" onclick='InvoiceManagementPageEvents.showTransactionDetails(<?php echo $tx_details_json; ?>); return false;'>
                                             <?php echo $transaction_id; ?>
                                         </a>
                                     </td>
@@ -164,7 +164,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                                     <td><?php echo format_datetime($transaction['request_date']); ?></td>
                                     <td style="text-align: center;">
                                         <?php if ($proof_image_url): ?>
-                                            <button class="btn-icon btn-view-proof" title="Xem Minh Chứng" onclick="viewProofModal('<?php echo $transaction_id; ?>', '<?php echo $proof_image_url; ?>')">
+                                            <button class="btn-icon btn-view-proof" title="Xem Minh Chứng" onclick="InvoiceManagementPageEvents.viewProofModal('<?php echo $transaction_id; ?>', '<?php echo $proof_image_url; ?>')">
                                                 <i class="fas fa-receipt"></i>
                                             </button>
                                         <?php else: ?>
@@ -175,15 +175,15 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                                     <td class="actions">
                                         <div class="action-buttons">
                                             <?php if ($is_pending): ?>
-                                                <button class="btn-icon btn-approve" title="Duyệt" onclick="approveTransaction('<?php echo $transaction_id; ?>', this)" data-permission="transaction_approve"><i class="fas fa-check-circle"></i></button>
-                                                <button class="btn-icon btn-reject" title="Từ chối" onclick="openRejectTransactionModal('<?php echo $transaction_id; ?>')" data-permission="transaction_reject"><i class="fas fa-times-circle"></i></button>
+                                                <button class="btn-icon btn-approve" title="Duyệt" onclick="InvoiceManagementPageEvents.approveTransaction('<?php echo $transaction_id; ?>', this)" data-permission="transaction_approve"><i class="fas fa-check-circle"></i></button>
+                                                <button class="btn-icon btn-reject" title="Từ chối" onclick="InvoiceManagementPageEvents.openRejectTransactionModal('<?php echo $transaction_id; ?>')" data-permission="transaction_reject"><i class="fas fa-times-circle"></i></button>
                                                 <button class="btn-icon btn-disabled" title="Chờ duyệt" disabled><i class="fas fa-undo-alt"></i></button>
                                             <?php elseif ($is_approved): ?>
                                                 <button class="btn-icon btn-disabled" title="Đã duyệt" disabled><i class="fas fa-check-circle"></i></button>
-                                                <button class="btn-icon btn-reject" title="Từ chối" onclick="openRejectTransactionModal('<?php echo $transaction_id; ?>')" data-permission="transaction_reject"><i class="fas fa-times-circle"></i></button>
-                                                <button class="btn-icon btn-revert" title="Hủy duyệt (Về chờ duyệt)" onclick="revertTransaction('<?php echo $transaction_id; ?>', this)" data-permission="transaction_revert"><i class="fas fa-undo-alt"></i></button>
+                                                <button class="btn-icon btn-reject" title="Từ chối" onclick="InvoiceManagementPageEvents.openRejectTransactionModal('<?php echo $transaction_id; ?>')" data-permission="transaction_reject"><i class="fas fa-times-circle"></i></button>
+                                                <button class="btn-icon btn-revert" title="Hủy duyệt (Về chờ duyệt)" onclick="InvoiceManagementPageEvents.revertTransaction('<?php echo $transaction_id; ?>', this)" data-permission="transaction_revert"><i class="fas fa-undo-alt"></i></button>
                                             <?php elseif ($is_rejected): ?>
-                                                <button class="btn-icon btn-approve" title="Duyệt lại" onclick="approveTransaction('<?php echo $transaction_id; ?>', this)" data-permission="transaction_approve"><i class="fas fa-check-circle"></i></button>
+                                                <button class="btn-icon btn-approve" title="Duyệt lại" onclick="InvoiceManagementPageEvents.approveTransaction('<?php echo $transaction_id; ?>', this)" data-permission="transaction_approve"><i class="fas fa-check-circle"></i></button>
                                                 <button class="btn-icon btn-disabled" title="Đã từ chối" disabled><i class="fas fa-times-circle"></i></button>
                                                 <button class="btn-icon btn-disabled" title="Đã từ chối" disabled><i class="fas fa-undo-alt"></i></button>
                                             <?php else: ?>
@@ -250,7 +250,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
     <div class="modal-content">
         <div class="modal-header">
             <h4 id="proofModalTitle">Minh chứng Giao dịch</h4>
-            <button class="modal-close" onclick="closeProofModal()">&times;</button>
+            <button class="modal-close" onclick="InvoiceManagementPageEvents.closeProofModal()">&times;</button>
         </div>
         <div class="modal-body" style="text-align: center;">
              <img id="proofModalImage" src="" alt="Minh chứng thanh toán">
@@ -262,7 +262,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
     <div class="modal-content">
         <div class="modal-header">
             <h4 id="modal-title">Chi Tiết Giao Dịch</h4>
-            <button class="modal-close" onclick="closeDetailsModal()">&times;</button>
+            <button class="modal-close" onclick="InvoiceManagementPageEvents.closeDetailsModal()">&times;</button>
         </div>
         <div class="modal-body">
             <!-- NOTE: Ensure your showTransactionDetails JS function populates these new spans -->
@@ -304,7 +304,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
             </div>
         </div>
         <div class="modal-footer">
-             <button class="btn btn-secondary" onclick="closeDetailsModal()">Đóng</button>
+             <button class="btn btn-secondary" onclick="InvoiceManagementPageEvents.closeDetailsModal()">Đóng</button>
         </div>
     </div>
 </div>
@@ -316,6 +316,4 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
 <script src="<?php echo $base_url; ?>public/assets/js/pages/invoice/invoice_management.js"></script>
 </body>
 </html>
-<?php
-include $private_includes_path . 'admin_footer.php';
-?>
+<?php include $private_includes_path . 'admin_footer.php'; ?>

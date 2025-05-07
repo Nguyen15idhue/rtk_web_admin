@@ -90,10 +90,18 @@
 </script>
 <!-- Add other global scripts here if needed -->
 <?php
-// ...existing code for toasts & scripts...
 // Close DB connection explicitly (singleton)
 Database::getInstance()->close();
 ?>
+    <!-- Central vendor scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Chart.js cần giữ biến global Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Tiếp các script nội bộ -->
+    <!-- <script src="<?php echo $public_assets_path; ?>js/vendor.bundle.js"></script> -->
+    <!-- <script src="<?php echo $public_assets_path; ?>js/app.bundle.js"></script> -->
 </div>  <!-- End .dashboard-wrapper -->
 </body>
 </html>

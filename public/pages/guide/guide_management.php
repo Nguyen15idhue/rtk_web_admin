@@ -56,8 +56,6 @@ include $private_includes_path . 'admin_sidebar.php';
 <script>
     window.basePath = '<?php echo rtrim($base_url,'/'); ?>';
 </script>
-<!-- Load jQuery first -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="<?php echo $base_url; ?>public/assets/js/pages/guide/guide_management.js"></script>
+<script defer src="<?php echo $base_url; ?>public/assets/js/pages/guide/guide_management.js"></script>
 
 <?php include $private_includes_path . 'admin_footer.php'; ?>

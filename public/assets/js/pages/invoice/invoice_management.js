@@ -7,19 +7,18 @@
         const proofModalTitle = document.getElementById('proofModalTitle');
         const detailsModal = document.getElementById('transaction-details-modal');
 
-        // VIEW PROOF
-        window.viewProofModal = function(id, url){
+        // Functions to be exposed
+        function viewProofModal(id, url){
             if(!url){ alert("Không có hình ảnh minh chứng."); return; }
             proofModalTitle.textContent = `Minh chứng Giao dịch #${id}`;
             proofModalImage.src = url;
             proofModal.classList.add('active');
         };
-        window.closeProofModal = function(){
+        function closeProofModal(){
             proofModal.classList.remove('active');
         };
 
-        // VIEW DETAILS
-        window.showTransactionDetails = function(data){
+        function showTransactionDetails(data){
             if(!detailsModal||!data) return;
             document.getElementById('modal-title').textContent = `Chi Tiết Giao Dịch #${data.id}`;
             document.getElementById('modal-tx-id').textContent = data.id;
@@ -35,7 +34,7 @@
             const proofLink = document.getElementById('modal-tx-proof-link');
             if(data.proof_image){
                 proofLink.innerHTML = `<a href="${data.proof_image}" target="_blank">Xem hình ảnh&nbsp;</a>
-                    | <button class="btn-link" onclick="viewProofModal('${data.id}','${data.proof_image}'); closeDetailsModal();">Xem trong modal</button>`;
+                    | <button class="btn-link" onclick="InvoiceManagementPageEvents.viewProofModal('${data.id}','${data.proof_image}'); InvoiceManagementPageEvents.closeDetailsModal();">Xem trong modal</button>`;
             } else proofLink.textContent = 'Không có';
 
             // rejection reason
@@ -47,7 +46,7 @@
 
             detailsModal.classList.add('active');
         };
-        window.closeDetailsModal = function(){
+        function closeDetailsModal(){
             detailsModal.classList.remove('active');
         };
 
@@ -94,15 +93,15 @@
             const cell = row.querySelector('.actions .action-buttons');
             let html='';
             if(newStat==='pending'){
-                html=`<button class="btn-icon btn-approve" onclick="approveTransaction('${id}',this)"><i class="fas fa-check-circle"></i></button>
-                      <button class="btn-icon btn-reject" onclick="openRejectTransactionModal('${id}')"><i class="fas fa-times-circle"></i></button>
+                html=`<button class="btn-icon btn-approve" onclick="InvoiceManagementPageEvents.approveTransaction('${id}',this)"><i class="fas fa-check-circle"></i></button>
+                      <button class="btn-icon btn-reject" onclick="InvoiceManagementPageEvents.openRejectTransactionModal('${id}')"><i class="fas fa-times-circle"></i></button>
                       <button class="btn-icon btn-disabled" disabled><i class="fas fa-undo-alt"></i></button>`;
             } else if(newStat==='active'){
                 html=`<button class="btn-icon btn-disabled" disabled><i class="fas fa-check-circle"></i></button>
-                      <button class="btn-icon btn-reject" onclick="openRejectTransactionModal('${id}')"><i class="fas fa-times-circle"></i></button>
-                      <button class="btn-icon btn-revert" onclick="revertTransaction('${id}',this)"><i class="fas fa-undo-alt"></i></button>`;
+                      <button class="btn-icon btn-reject" onclick="InvoiceManagementPageEvents.openRejectTransactionModal('${id}')"><i class="fas fa-times-circle"></i></button>
+                      <button class="btn-icon btn-revert" onclick="InvoiceManagementPageEvents.revertTransaction('${id}',this)"><i class="fas fa-undo-alt"></i></button>`;
             } else if(newStat==='rejected'){
-                html=`<button class="btn-icon btn-approve" onclick="approveTransaction('${id}',this)"><i class="fas fa-check-circle"></i></button>
+                html=`<button class="btn-icon btn-approve" onclick="InvoiceManagementPageEvents.approveTransaction('${id}',this)"><i class="fas fa-check-circle"></i></button>
                       <button class="btn-icon btn-disabled" disabled><i class="fas fa-times-circle"></i></button>
                       <button class="btn-icon btn-disabled" disabled><i class="fas fa-undo-alt"></i></button>`;
             }
@@ -110,18 +109,11 @@
         }
 
         // transaction actions
-        window.approveTransaction = async function(id,btn){
+        async function approveTransaction(id,btn){
             if(!confirm(`Bạn có chắc muốn duyệt #${id}?`)) return;
             const row = document.querySelector(`tr[data-transaction-id="${id}"]`);
             try {
-                const resp = await fetch(approveUrl, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({transaction_id: id})
-                });
-                const data = await resp.json();
-                if (!data.success) throw new Error(data.message || `HTTP ${resp.status}`);
-                // success branch
+                const data = await api.postJson(approveUrl, { transaction_id: id });
                 let msg = data.message || `Duyệt #${id} thành công!`;
                 if (Array.isArray(data.accounts) && data.accounts.length) {
                     msg += '\n\nThông tin tài khoản đã tạo:';
@@ -134,47 +126,35 @@
                     updateTableRowStatus(id,'active','Đã duyệt','status-approved');
                 }
             } catch(e){
-                window.showToast('Lỗi duyệt giao dịch: '+ e.message, 'error');
+                window.showToast('Lỗi duyệt giao dịch: ' + e.message, 'error');
             }
         };
 
-        window.openRejectTransactionModal = async function(id){
-            const reason=prompt(`Lý do từ chối #${id}:`);
+        async function openRejectTransactionModal(id){
+            const reason = prompt(`Lý do từ chối #${id}:`);
             if(reason==null) return;
-            const text=reason.trim(); if(!text){ alert('Nhập lý do.'); return; }
-            const row=document.querySelector(`tr[data-transaction-id="${id}"]`);
+            const text = reason.trim(); if(!text){ alert('Nhập lý do.'); return; }
+            const row = document.querySelector(`tr[data-transaction-id="${id}"]`);
             disableActionButtons(row);
             try {
-                const resp = await fetch(rejectUrl,{
-                    method:'POST',
-                    headers:{'Content-Type':'application/json'},
-                    body:JSON.stringify({transaction_id:id,reason:text})
-                });
-                const data = await resp.json();
-                if (!data.success) throw new Error(data.message || `HTTP ${resp.status}`);
+                await api.postJson(rejectUrl, { transaction_id: id, reason: text });
                 window.showToast('Từ chối thành công!', 'success');
                 updateTableRowStatus(id,'rejected','Bị từ chối','status-rejected');
             } catch(e){
-                window.showToast('Lỗi từ chối giao dịch: '+ e.message, 'error');
+                window.showToast('Lỗi từ chối giao dịch: ' + e.message, 'error');
                 enableActionButtons(row,row.dataset.status);
             }
         };
 
-        window.revertTransaction = async function(id,btn){
+        async function revertTransaction(id,btn){
             if(!confirm(`Hủy duyệt #${id}?`)) return;
-            const row=btn.closest('tr'); disableActionButtons(row);
+            const row = btn.closest('tr'); disableActionButtons(row);
             try {
-                const resp = await fetch(revertUrl,{
-                    method:'POST',
-                    headers:{'Content-Type':'application/json'},
-                    body:JSON.stringify({transaction_id:id})
-                });
-                const data = await resp.json();
-                if (!data.success) throw new Error(data.message || `HTTP ${resp.status}`);
+                await api.postJson(revertUrl, { transaction_id: id });
                 window.showToast('Hủy duyệt thành công.', 'success');
                 updateTableRowStatus(id,'pending','Chờ duyệt','status-pending');
             } catch(e){
-                window.showToast('Lỗi hoàn tác giao dịch: '+ e.message, 'error');
+                window.showToast('Lỗi hoàn tác giao dịch: ' + e.message, 'error');
                 enableActionButtons(row,row.dataset.status);
             }
         };
@@ -184,5 +164,16 @@
         style.innerText=`.btn-link{background:none;border:none;color:var(--primary-600);cursor:pointer;text-decoration:underline}
         .btn-link:hover{color:var(--primary-700)}`;
         document.head.appendChild(style);
+
+        // Expose functions to window object under a namespace
+        window.InvoiceManagementPageEvents = {
+            viewProofModal,
+            closeProofModal,
+            showTransactionDetails,
+            closeDetailsModal,
+            approveTransaction,
+            openRejectTransactionModal,
+            revertTransaction
+        };
     });
 })(window);

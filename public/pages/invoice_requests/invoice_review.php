@@ -96,7 +96,7 @@ include $private_includes_path . 'admin_sidebar.php';
                                         <i class="fas fa-upload"></i>
                                     </button>
                                 </a>
-                                <button class="btn-icon btn-reject" onclick="rejectInvoice(<?php echo $inv['invoice_id']; ?>)" title="Từ chối">
+                                <button class="btn-icon btn-reject" onclick="InvoiceReviewPageEvents.rejectInvoice(<?php echo $inv['invoice_id']; ?>)" title="Từ chối">
                                     <i class="fas fa-times"></i>
                                 </button>
                             <?php elseif ($inv['status'] === 'approved'): ?>
@@ -112,7 +112,6 @@ include $private_includes_path . 'admin_sidebar.php';
         </div>
     </div>
 </main>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     window.basePath = '<?php echo rtrim($base_url,'/'); ?>';
 </script>

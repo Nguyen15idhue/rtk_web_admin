@@ -145,7 +145,6 @@ include $private_includes_path . 'admin_sidebar.php';
     </section>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   window.dashboardData = {
     newRegistrations: <?php echo json_encode($new_registrations_chart_data); ?>,

@@ -3,17 +3,10 @@
 declare(strict_types=1);
 header('Content-Type: application/json'); // Set response type
 
-// --- Prerequisites ---
-// if (!isset($_SESSION['admin_id']) || !check_admin_permission('transaction_revert')) { // Add permission check if needed
-//     http_response_code(403);
-//     echo json_encode(['success' => false, 'message' => 'Permission denied.']);
-//     exit;
-// }
-// if (!verify_csrf_token($_POST['csrf_token'] ?? '')) { // Example CSRF check
-//     http_response_code(400);
-//     echo json_encode(['success' => false, 'message' => 'Invalid CSRF token.']);
-//     exit;
-// }
+// --- Permission check ---
+if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
+    api_error('Permission denied.', 403);
+}
 
 require_once __DIR__ . '/../../config/constants.php';
 require_once BASE_PATH . '/classes/Database.php';
@@ -133,29 +126,34 @@ try {
     $stmt_delete_acc->bindParam(':id', $reg_id, PDO::PARAM_INT);
     $stmt_delete_acc->execute();
 
-    // --- New: Call RTK API to delete accounts ---
+    // 5. Update Transaction History back to Pending
+    TransactionHistoryService::updateStatusByRegistrationId($db, $transaction_id, 'pending');
+
+    // --- NEW: track API failures & delay commit until after external calls ---
+    $apiFailures = [];
     if (!empty($accounts)) {
         foreach ($accounts as $account) {
             error_log("[Revert Transaction {$transaction_id}] Deleting RTK account {$account['id']}");
             $apiResult = deleteRtkAccount([$account['id']]);
-            error_log("[Revert Transaction {$transaction_id}] RTK delete response for account {$account['id']}: " . json_encode($apiResult));
-            if (!$apiResult['success']) {
-                throw new Exception("Failed to delete account {$account['id']} via RTK API: " . ($apiResult['error'] ?? 'Unknown API error'));
+            if (empty($apiResult['success'])) {
+                $apiFailures[] = $account['id'];
+                error_log("[Revert Transaction {$transaction_id}] FAILED to delete RTK account {$account['id']}.");
+            } else {
+                error_log("[Revert Transaction {$transaction_id}] RTK delete success for account {$account['id']}.");
             }
         }
     } else {
-        error_log("[Revert Transaction {$transaction_id}] No associated survey accounts found to delete via API.");
+        error_log("[Revert Transaction {$transaction_id}] No associated survey accounts to delete via API.");
     }
 
-    // 5. Update Transaction History back to Pending
-    TransactionHistoryService::updateStatusByRegistrationId($db, $transaction_id, 'pending');
+    // If any external deletes failed, abort and rollback everything
+    if (!empty($apiFailures)) {
+        throw new Exception('RTK deletion failed for account IDs: ' . implode(',', $apiFailures));
+    }
 
-    // 6. Log Activity
-    // log_admin_activity($_SESSION['admin_id'], 'revert_transaction', 'registration', $transaction_id, ['old_status' => 'active'], ['new_status' => 'pending']); // Example
-
-    // --- Commit Transaction ---
+    // All good – now commit
     $db->commit();
-    api_success(null, 'Transaction #' . $transaction_id . ' reverted to pending successfully. Associated accounts deleted.');
+    api_success(null, 'Transaction #' . $transaction_id . ' reverted successfully. Accounts handled.');
 
 } catch (Exception $e) {
     $db->rollBack();
