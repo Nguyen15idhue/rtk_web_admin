@@ -11,7 +11,7 @@
 }
 
 /* Desktop Styles */
-@media (min-width: 1025px) {
+@media (min-width: calc(var(--bp-tablet) + 1px)) {
     .content-wrapper {
         /* Push content to the right based on default sidebar width */
         margin-left: var(--sidebar-width, 260px);
@@ -23,7 +23,7 @@
 }
 
 /* Mobile/Tablet Styles */
-@media (max-width: 1024px) {
+@media (max-width: var(--bp-tablet)) {
     .content-wrapper {
         margin-left: 0 !important; /* No margin push needed when sidebar is overlay */
         padding-top: 5rem; /* Add padding to prevent overlap with fixed hamburger */

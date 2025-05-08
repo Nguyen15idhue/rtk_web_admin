@@ -51,7 +51,7 @@ try {
     $model->attachFile($invoiceId, $fileName);             // thay cho prepare/execute trực tiếp
 
     // redirect back to review page on success
-    header('Location: ' . $bootstrap['base_url'] . 'public/pages/invoice_requests/invoice_review.php');
+    header('Location: ' . $bootstrap['base_url'] . 'public/pages/invoice/invoice_review.php');
     exit;
 } catch (PDOException $e) {
     error_log('Error in process_invoice_send: ' . $e->getMessage());

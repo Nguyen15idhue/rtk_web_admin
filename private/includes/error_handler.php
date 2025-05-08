@@ -22,7 +22,7 @@ function abort(string $message, int $statusCode = 500): void {
         api_error($message, $statusCode);
     } else {
         // load layout HTML lỗi chung
-        require __DIR__ . '/../views/error.php';
+        require __DIR__ . '/../../public/pages/error.php';
     }
     exit;
 }

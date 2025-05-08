@@ -4,7 +4,6 @@
 <!-- Toast Container -->
 <div id="toast-container"></div>
 
-<!-- Add other global scripts here if needed -->
 <?php
 // Close DB connection explicitly (singleton)
 Database::getInstance()->close();
@@ -18,6 +17,6 @@ Database::getInstance()->close();
     <!-- Tiếp các script nội bộ -->
     <!-- <script src="<?php echo $public_assets_path; ?>js/vendor.bundle.js"></script> -->
     <!-- <script src="<?php echo $public_assets_path; ?>js/app.bundle.js"></script> -->
-</div>  <!-- End .dashboard-wrapper -->
+</div> 
 </body>
 </html>

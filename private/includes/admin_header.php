@@ -23,8 +23,8 @@ $public_assets_path = BASE_URL . 'public/assets/';
 </head>
 <body>
 <div id="toast-container"></div> <!-- Container for toast notifications -->
-<div class="dashboard-wrapper">
-    <!-- Hamburger & sidebar sẽ được include bên ngoài -->
+<div class="content-wrapper"> <!-- Renamed from dashboard-wrapper -->
+    <!-- Hamburger & sidebar sẽ được include bên ngoài. Page content goes here. -->
 </div>
 </body>
 </html>

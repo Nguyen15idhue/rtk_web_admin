@@ -1,5 +1,10 @@
 /* Responsive */
-@media (max-width: 768px) {
+:root {
+    --bp-mobile: 768px;
+    --bp-tablet: 1024px;
+}
+
+@media (max-width: var(--bp-mobile)) {
     .content-header {
         flex-direction: column; align-items: flex-start;
         gap: 0.5rem; padding: 0.8rem 1rem;
