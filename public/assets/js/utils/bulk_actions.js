@@ -44,19 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!oneChecked) {
                 event.preventDefault(); // Stop form submission
                 alert('Vui lòng chọn ít nhất một mục để xuất.');
-            } else {
-                // Ensure the form action is set for exporting selected
-                // This is mostly handled by the button's name or can be explicitly set if needed
-                // bulkActionForm.action = 'private/actions/export_excel.php';
-                // Add a hidden input to specify the action if your backend needs it
-                // let actionInput = bulkActionForm.querySelector('input[name="action_type"]');
-                // if (!actionInput) {
-                //    actionInput = document.createElement('input');
-                //    actionInput.type = 'hidden';
-                //    actionInput.name = 'action_type';
-                //    bulkActionForm.appendChild(actionInput);
-                // }
-                // actionInput.value = 'export_selected';
             }
         });
     }

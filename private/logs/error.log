@@ -1,346 +1,143 @@
-[07-May-2025 14:53:39 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 14:53:39 UTC] [Database Close] Connection closed.
-[07-May-2025 14:58:55 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 14:58:55 UTC] [Database Close] Connection closed.
-[07-May-2025 14:58:55 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 14:58:55 UTC] [Database Close] Connection closed.
-[07-May-2025 14:58:57 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 14:58:58 UTC] [Database Close] Connection closed.
-[07-May-2025 14:58:58 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 14:58:58 UTC] [Database Close] Connection closed.
-[07-May-2025 14:59:09 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 14:59:09 UTC] [Database Close] Connection closed.
-[07-May-2025 14:59:09 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 14:59:09 UTC] [Database Close] Connection closed.
-[07-May-2025 14:59:53 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 14:59:53 UTC] [Database Close] Connection closed.
-[07-May-2025 14:59:53 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 14:59:53 UTC] [Database Close] Connection closed.
-[07-May-2025 15:00:04 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:00:04 UTC] [Database Close] Connection closed.
-[07-May-2025 15:00:04 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:00:04 UTC] [Database Close] Connection closed.
-[07-May-2025 15:01:55 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:01:55 UTC] [Database Close] Connection closed.
-[07-May-2025 15:01:55 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:01:55 UTC] [Database Close] Connection closed.
-[07-May-2025 15:01:55 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:01:55 UTC] [Database Close] Connection closed.
-[07-May-2025 15:01:57 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:01:57 UTC] [Database Close] Connection closed.
-[07-May-2025 15:01:57 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:01:57 UTC] PHP Warning:  Undefined array key "registration_id" in E:\Application\laragon\www\rtk_web_admin\public\pages\invoice_requests\invoice_review.php on line 76
-[07-May-2025 15:01:57 UTC] [Database Close] Connection closed.
-[07-May-2025 15:01:57 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:01:57 UTC] [Database Close] Connection closed.
-[07-May-2025 15:01:58 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:01:58 UTC] [Database Close] Connection closed.
-[07-May-2025 15:01:58 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:01:58 UTC] [Database Close] Connection closed.
-[07-May-2025 15:01:58 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:01:58 UTC] [Database Close] Connection closed.
-[07-May-2025 15:01:58 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:01:58 UTC] PHP Warning:  Undefined array key "registration_id" in E:\Application\laragon\www\rtk_web_admin\public\pages\invoice_requests\invoice_review.php on line 76
-[07-May-2025 15:01:58 UTC] [Database Close] Connection closed.
-[07-May-2025 15:01:59 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:01:59 UTC] [Database Close] Connection closed.
-[07-May-2025 15:01:59 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:01:59 UTC] [Database Close] Connection closed.
-[07-May-2025 15:01:59 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:01:59 UTC] [Database Close] Connection closed.
-[07-May-2025 15:02:01 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:02:01 UTC] [Database Close] Connection closed.
-[07-May-2025 15:02:01 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:02:01 UTC] PHP Warning:  Undefined array key "registration_id" in E:\Application\laragon\www\rtk_web_admin\public\pages\invoice_requests\invoice_review.php on line 76
-[07-May-2025 15:02:01 UTC] [Database Close] Connection closed.
-[07-May-2025 15:02:22 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:02:22 UTC] [Database Close] Connection closed.
-[07-May-2025 15:02:22 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:02:22 UTC] PHP Warning:  Undefined array key "registration_id" in E:\Application\laragon\www\rtk_web_admin\public\pages\invoice_requests\invoice_review.php on line 76
-[07-May-2025 15:02:22 UTC] [Database Close] Connection closed.
-[07-May-2025 15:02:29 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:02:29 UTC] [Database Close] Connection closed.
-[07-May-2025 15:02:30 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:02:30 UTC] [Database Close] Connection closed.
-[07-May-2025 15:02:30 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:02:30 UTC] [Database Close] Connection closed.
-[07-May-2025 15:02:33 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:02:33 UTC] [Database Close] Connection closed.
-[07-May-2025 15:02:33 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:02:33 UTC] [Database Close] Connection closed.
-[07-May-2025 15:03:23 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:03:23 UTC] [Database Close] Connection closed.
-[07-May-2025 15:03:23 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:03:23 UTC] [Database Close] Connection closed.
-[07-May-2025 15:03:24 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:03:24 UTC] Export Excel: Error fetching data from model TransactionModel: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'th.request_date' in 'field list'
-[07-May-2025 15:03:24 UTC] [Database Close] Connection closed.
-[07-May-2025 15:03:24 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:03:24 UTC] [Database Close] Connection closed.
-[07-May-2025 15:04:07 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:04:07 UTC] Export Excel: Error fetching data from model TransactionModel: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'th.request_date' in 'order clause'
-[07-May-2025 15:04:07 UTC] [Database Close] Connection closed.
-[07-May-2025 15:04:07 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:04:07 UTC] [Database Close] Connection closed.
-[07-May-2025 15:04:35 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:04:35 UTC] [Database Close] Connection closed.
-[07-May-2025 15:04:35 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:04:35 UTC] [Database Close] Connection closed.
-[07-May-2025 15:04:36 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:04:36 UTC] [Database Close] Connection closed.
-[07-May-2025 15:04:36 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:04:36 UTC] [Database Close] Connection closed.
-[07-May-2025 15:04:37 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:04:37 UTC] [Database Close] Connection closed.
-[07-May-2025 15:04:37 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:04:37 UTC] [Database Close] Connection closed.
-[07-May-2025 15:04:38 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:04:38 UTC] Export Excel: Error fetching data from model TransactionModel: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'th.request_date' in 'order clause'
-[07-May-2025 15:04:38 UTC] [Database Close] Connection closed.
-[07-May-2025 15:04:38 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:04:38 UTC] [Database Close] Connection closed.
-[07-May-2025 15:05:10 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:05:10 UTC] [Database Close] Connection closed.
-[07-May-2025 15:05:10 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:05:10 UTC] [Database Close] Connection closed.
-[07-May-2025 15:05:11 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:05:11 UTC] [Database Close] Connection closed.
-[07-May-2025 15:05:11 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:05:11 UTC] [Database Close] Connection closed.
-[07-May-2025 15:06:15 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:06:16 UTC] [Database Close] Connection closed.
-[07-May-2025 15:06:23 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:06:23 UTC] [DEBUG] Search keyword: 
-[07-May-2025 15:06:23 UTC] [Database Close] Connection closed.
-[07-May-2025 15:06:23 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:06:23 UTC] [Database Close] Connection closed.
-[07-May-2025 15:06:24 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:06:24 UTC] [Database Close] Connection closed.
-[07-May-2025 15:06:26 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:06:26 UTC] [Database Close] Connection closed.
-[07-May-2025 15:06:30 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:06:30 UTC] [DEBUG] Search keyword: 
-[07-May-2025 15:06:30 UTC] [Database Close] Connection closed.
-[07-May-2025 15:06:30 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:06:30 UTC] [Database Close] Connection closed.
-[07-May-2025 15:06:32 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:06:32 UTC] [Database Close] Connection closed.
-[07-May-2025 15:06:32 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:06:32 UTC] [Database Close] Connection closed.
-[07-May-2025 15:06:33 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:06:33 UTC] [Database Close] Connection closed.
-[07-May-2025 15:06:35 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:06:35 UTC] [Database Close] Connection closed.
-[07-May-2025 15:06:35 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:06:35 UTC] [Database Close] Connection closed.
-[07-May-2025 15:06:40 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:06:40 UTC] [Database Close] Connection closed.
-[07-May-2025 15:17:33 UTC] PHP Warning:  require_once(E:\Application\laragon\www\rtk_web_admin\private/vendor/autoload.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\private\includes\page_bootstrap.php on line 4
-[07-May-2025 15:17:33 UTC] Uncaught exception: Failed opening required 'E:\Application\laragon\www\rtk_web_admin\private/vendor/autoload.php' (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\private\includes\page_bootstrap.php on line 4
-[07-May-2025 15:17:38 UTC] PHP Warning:  require_once(E:\Application\laragon\www\rtk_web_admin\private/vendor/autoload.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\private\includes\page_bootstrap.php on line 4
-[07-May-2025 15:17:38 UTC] Uncaught exception: Failed opening required 'E:\Application\laragon\www\rtk_web_admin\private/vendor/autoload.php' (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\private\includes\page_bootstrap.php on line 4
-[07-May-2025 15:17:48 UTC] PHP Warning:  require_once(E:\Application\laragon\www\rtk_web_admin\private/vendor/autoload.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\private\includes\page_bootstrap.php on line 4
-[07-May-2025 15:17:48 UTC] Uncaught exception: Failed opening required 'E:\Application\laragon\www\rtk_web_admin\private/vendor/autoload.php' (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\private\includes\page_bootstrap.php on line 4
-[07-May-2025 15:18:02 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:18:02 UTC] [Database Close] Connection closed.
-[07-May-2025 15:18:02 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:18:02 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:04 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:04 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:04 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:04 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:06 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:06 UTC] [DEBUG] Search keyword: 
-[07-May-2025 15:19:06 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:06 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:06 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:16 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:16 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:18 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:18 UTC] [DEBUG] Search keyword: 
-[07-May-2025 15:19:18 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:18 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:18 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:22 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:22 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:22 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:22 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:22 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:22 UTC] [DEBUG] Search keyword: 
-[07-May-2025 15:19:22 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:23 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:23 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:32 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:32 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:32 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:32 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:39 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:39 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:44 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:44 UTC] [Database Close] Connection closed.
-[07-May-2025 15:19:50 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:19:50 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:04 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:04 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:12 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:12 UTC] [PTA] activate survey_account executed, affectedRows=0
-[07-May-2025 15:20:12 UTC] Warning: No survey accounts found or enabled for approved registration ID: 23
-[07-May-2025 15:20:12 UTC] [PTA] province_code=CMA, lastUser=CMA031, nextSeq=32, username=CMA032, password=0999999445
-[07-May-2025 15:20:12 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/actions/account/index.php?action=create_account with payload={"registration_id":23,"username_acc":"CMA032","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":1,"start_time":"2025-05-07 22:20:12","end_time":"2025-08-08 22:20:11","enabled":1,"concurrent_user":1,"account_count":2}
-[07-May-2025 15:20:13 UTC] [PTA] create_account timed out (could be pending), transaction 24
-[07-May-2025 15:20:13 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:13 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:13 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:13 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:13 UTC] [CA] Start create_account request
-[07-May-2025 15:20:13 UTC] [CA] Raw input: {"registration_id":23,"username_acc":"CMA032","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":1,"start_time":"2025-05-07 22:20:12","end_time":"2025-08-08 22:20:11","enabled":1,"concurrent_user":1,"account_count":2}
-[07-May-2025 15:20:13 UTC] [CA] registration_id=23, username_acc=CMA032, password_len=10
-[07-May-2025 15:20:13 UTC] [CA] location_input=12
-[07-May-2025 15:20:13 UTC] [CA] computed start_time_db=2025-05-07 22:20:12, end_time_db=2025-08-08 22:20:11
-[07-May-2025 15:20:13 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
-[07-May-2025 15:20:13 UTC] [CA] Retrieved userId=88
-[07-May-2025 15:20:13 UTC] [CA] Price=100000.00 => normal flow
-[07-May-2025 15:20:13 UTC] Debug: Non-trial account creation path for registration_id=23
-[07-May-2025 15:20:13 UTC] Using default mount points for location ID: 12 - [42]
-[07-May-2025 15:20:13 UTC] [CA] RTK API payload for CMA032: {"name":"CMA032","userPwd":"0999999445","startTime":1746631212000,"endTime":1754666411000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
-[07-May-2025 15:20:13 UTC] [CA] RTK API response for CMA032: {"success":true,"data":{"id":2147,"name":"CMA032","userPwd":"0999999445","startTime":1746631212000,"endTime":1754666411000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
-[07-May-2025 15:20:13 UTC] Using default mount points for location ID: 12 - [42]
-[07-May-2025 15:20:13 UTC] [CA] RTK API payload for CMA033: {"name":"CMA033","userPwd":"0999999445","startTime":1746631212000,"endTime":1754666411000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
-[07-May-2025 15:20:13 UTC] [CA] RTK API response for CMA033: {"success":true,"data":{"id":2148,"name":"CMA033","userPwd":"0999999445","startTime":1746631212000,"endTime":1754666411000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
-[07-May-2025 15:20:13 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:13 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:13 UTC] [PTA] activate survey_account executed, affectedRows=0
-[07-May-2025 15:20:13 UTC] Warning: No survey accounts found or enabled for approved registration ID: 21
-[07-May-2025 15:20:13 UTC] [PTA] province_code=CMA, lastUser=CMA033, nextSeq=34, username=CMA034, password=0999999445
-[07-May-2025 15:20:13 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/actions/account/index.php?action=create_account with payload={"registration_id":21,"username_acc":"CMA034","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":1,"start_time":"2025-05-07 22:20:13","end_time":"2025-08-08 22:20:12","enabled":1,"concurrent_user":1,"account_count":1}
-[07-May-2025 15:20:14 UTC] [PTA] create_account timed out (could be pending), transaction 21
-[07-May-2025 15:20:14 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:14 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:14 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:14 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:14 UTC] [CA] Start create_account request
-[07-May-2025 15:20:14 UTC] [CA] Raw input: {"registration_id":21,"username_acc":"CMA034","password_acc":"0999999445","user_email":"tranhailong2408@gmail.com","location_id":12,"package_id":1,"start_time":"2025-05-07 22:20:13","end_time":"2025-08-08 22:20:12","enabled":1,"concurrent_user":1,"account_count":1}
-[07-May-2025 15:20:14 UTC] [CA] registration_id=21, username_acc=CMA034, password_len=10
-[07-May-2025 15:20:14 UTC] [CA] location_input=12
-[07-May-2025 15:20:14 UTC] [CA] computed start_time_db=2025-05-07 22:20:13, end_time_db=2025-08-08 22:20:12
-[07-May-2025 15:20:14 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
-[07-May-2025 15:20:14 UTC] [CA] Retrieved userId=88
-[07-May-2025 15:20:14 UTC] [CA] Price=100000.00 => normal flow
-[07-May-2025 15:20:14 UTC] Debug: Non-trial account creation path for registration_id=21
-[07-May-2025 15:20:14 UTC] Using default mount points for location ID: 12 - [42]
-[07-May-2025 15:20:14 UTC] [CA] RTK API payload for CMA034: {"name":"CMA034","userPwd":"0999999445","startTime":1746631213000,"endTime":1754666412000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
-[07-May-2025 15:20:14 UTC] [CA] RTK API response for CMA034: {"success":true,"data":{"id":2149,"name":"CMA034","userPwd":"0999999445","startTime":1746631213000,"endTime":1754666412000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
-[07-May-2025 15:20:14 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:14 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:14 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:17 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:17 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:20 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:20 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:24 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:24 UTC] [Revert Transaction 24] Deleting RTK account 2094
-[07-May-2025 15:20:24 UTC] [Revert Transaction 24] RTK delete success for account 2094.
-[07-May-2025 15:20:24 UTC] [Revert Transaction 24] Deleting RTK account 2141
-[07-May-2025 15:20:24 UTC] [Revert Transaction 24] RTK delete success for account 2141.
-[07-May-2025 15:20:24 UTC] [Revert Transaction 24] Deleting RTK account 2142
-[07-May-2025 15:20:24 UTC] [Revert Transaction 24] RTK delete success for account 2142.
-[07-May-2025 15:20:24 UTC] [Revert Transaction 24] Deleting RTK account 2144
-[07-May-2025 15:20:24 UTC] [Revert Transaction 24] RTK delete success for account 2144.
-[07-May-2025 15:20:24 UTC] [Revert Transaction 24] Deleting RTK account 2145
-[07-May-2025 15:20:24 UTC] [Revert Transaction 24] RTK delete success for account 2145.
-[07-May-2025 15:20:24 UTC] [Revert Transaction 24] Deleting RTK account 2147
-[07-May-2025 15:20:24 UTC] [Revert Transaction 24] RTK delete success for account 2147.
-[07-May-2025 15:20:24 UTC] [Revert Transaction 24] Deleting RTK account 2148
-[07-May-2025 15:20:25 UTC] [Revert Transaction 24] RTK delete success for account 2148.
-[07-May-2025 15:20:25 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:25 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:25 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:25 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2090
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2090.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2091
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2091.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2096
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2096.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2104
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2104.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2115
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2115.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2116
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2116.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2121
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2121.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2123
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2123.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2124
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2124.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2125
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2125.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2129
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2129.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2130
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2130.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2131
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2131.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2132
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2132.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2133
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2133.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2134
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2134.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2135
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2135.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2137
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2137.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2138
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2138.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2140
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2140.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2143
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2143.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2146
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2146.
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] Deleting RTK account 2149
-[07-May-2025 15:20:25 UTC] [Revert Transaction 21] RTK delete success for account 2149.
-[07-May-2025 15:20:25 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:25 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:25 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:25 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:25 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:27 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:27 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:29 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:29 UTC] [Database Close] Connection closed.
-[07-May-2025 15:20:37 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:20:37 UTC] [Database Close] Connection closed.
-[07-May-2025 15:21:15 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:21:16 UTC] [DEBUG] Search keyword: 
-[07-May-2025 15:21:16 UTC] [Database Close] Connection closed.
-[07-May-2025 15:21:16 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:21:16 UTC] [Database Close] Connection closed.
-[07-May-2025 15:21:16 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:21:16 UTC] [Database Close] Connection closed.
-[07-May-2025 15:21:18 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:21:19 UTC] [Database Close] Connection closed.
-[07-May-2025 15:21:21 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:21:21 UTC] [Database Close] Connection closed.
-[07-May-2025 15:21:26 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:21:26 UTC] [Database Close] Connection closed.
-[07-May-2025 15:21:27 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:21:27 UTC] [DEBUG] Search keyword: 
-[07-May-2025 15:21:27 UTC] [Database Close] Connection closed.
-[07-May-2025 15:21:27 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:21:27 UTC] [Database Close] Connection closed.
-[07-May-2025 15:21:31 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:21:31 UTC] [Database Close] Connection closed.
-[07-May-2025 15:21:32 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:21:32 UTC] [Database Close] Connection closed.
-[07-May-2025 15:21:38 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:21:38 UTC] [Database Close] Connection closed.
-[07-May-2025 15:21:39 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:21:39 UTC] [DEBUG] Search keyword: 
-[07-May-2025 15:21:39 UTC] [Database Close] Connection closed.
-[07-May-2025 15:21:39 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:21:39 UTC] [Database Close] Connection closed.
-[07-May-2025 15:21:41 UTC] [Database Connect] Connection to database 'sa' successful.
-[07-May-2025 15:21:41 UTC] [Database Close] Connection closed.
+[08-May-2025 00:43:24 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 00:43:24 UTC] [Database Close] Connection closed.
+[08-May-2025 00:43:28 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 00:43:28 UTC] [Database Close] Connection closed.
+[08-May-2025 00:51:29 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 00:51:29 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:12 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:12 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:13 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:13 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:14 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:14 UTC] [DEBUG] Search keyword: 
+[08-May-2025 01:03:14 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:14 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:14 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:14 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:14 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:15 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:15 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:16 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:16 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:16 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:16 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:17 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:17 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:17 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:17 UTC] [DEBUG] Search keyword: 
+[08-May-2025 01:03:17 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:17 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:17 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:18 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:18 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:18 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:18 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:18 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:18 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:19 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:19 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:19 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:19 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:19 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:19 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:20 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:20 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:20 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:20 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:20 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:20 UTC] [DEBUG] Search keyword: 
+[08-May-2025 01:03:20 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:20 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:20 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:21 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:21 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:21 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:21 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:22 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:22 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:22 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:22 UTC] [DEBUG] Search keyword: 
+[08-May-2025 01:03:22 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:22 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:22 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:24 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:24 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:24 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:24 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:26 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:26 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:26 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:26 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:27 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:27 UTC] [DEBUG] Search keyword: 
+[08-May-2025 01:03:27 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:27 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:27 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:28 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:28 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:29 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:29 UTC] [Database Close] Connection closed.
+[08-May-2025 01:03:29 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:03:29 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:02 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:02 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:04 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:04 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:06 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:06 UTC] [DEBUG] Search keyword: 
+[08-May-2025 01:04:06 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:06 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:06 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:08 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:08 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:08 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:08 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:10 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:10 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:12 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:12 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:19 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:19 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:19 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:19 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:19 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:19 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:21 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:21 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:21 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:21 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:23 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:23 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:23 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:23 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:23 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:23 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:33 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:33 UTC] [Database Close] Connection closed.
+[08-May-2025 01:04:33 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:04:33 UTC] [Database Close] Connection closed.
+[08-May-2025 01:07:51 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:07:51 UTC] [Database Close] Connection closed.
+[08-May-2025 01:07:51 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:07:51 UTC] [Database Close] Connection closed.
+[08-May-2025 01:07:52 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:07:52 UTC] [DEBUG] Search keyword: 
+[08-May-2025 01:07:52 UTC] [Database Close] Connection closed.
+[08-May-2025 01:07:52 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:07:52 UTC] [Database Close] Connection closed.
+[08-May-2025 01:07:52 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:07:52 UTC] [Database Close] Connection closed.
+[08-May-2025 01:07:53 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:07:53 UTC] [Database Close] Connection closed.
+[08-May-2025 01:07:54 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:07:54 UTC] [Database Close] Connection closed.
+[08-May-2025 01:07:54 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:07:54 UTC] [Database Close] Connection closed.
+[08-May-2025 01:07:55 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:07:55 UTC] [Database Close] Connection closed.
+[08-May-2025 01:07:55 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:07:55 UTC] [Database Close] Connection closed.
+[08-May-2025 01:07:55 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:07:55 UTC] [Database Close] Connection closed.
+[08-May-2025 01:07:57 UTC] [Database Connect] Connection to database 'sa2' successful.
+[08-May-2025 01:07:57 UTC] [Database Close] Connection closed.

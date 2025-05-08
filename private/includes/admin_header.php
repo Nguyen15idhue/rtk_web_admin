@@ -19,12 +19,7 @@ $public_assets_path = BASE_URL . 'public/assets/';
 
     <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/base.css"> 
 
-    <script src="<?php echo $public_assets_path; ?>js/components/sidebar.js" defer></script> <!-- Removed inline sidebar script; added external JS -->
-    <script src="<?php echo $public_assets_path; ?>js/components/toasts.js" defer></script> <!-- Added toasts.js -->
-    <script src="<?php echo $public_assets_path; ?>js/utils/errorHandler.js" defer></script> <!-- Added errorHandler.js -->
-    <script src="<?php echo $public_assets_path; ?>js/utils/api.js" defer></script> <!-- Added api.js -->
-    <script src="<?php echo $public_assets_path; ?>js/utils/helpers.js" defer></script> <!-- Add helpers.js so window.helpers is defined -->
-    <script src="<?php echo $public_assets_path; ?>js/utils/bulk_actions.js" defer></script> <!-- Add helpers.js so window.helpers is defined -->
+    <script type="module" src="<?php echo $public_assets_path; ?>js/app.js" defer></script>
 </head>
 <body>
 <div id="toast-container"></div> <!-- Container for toast notifications -->

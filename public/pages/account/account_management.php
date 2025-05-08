@@ -8,6 +8,7 @@ $db = $bootstrap_data['db'];
 $base_url = $bootstrap_data['base_url'];
 $user_display_name = $bootstrap_data['user_display_name'];
 $private_includes_path = $bootstrap_data['private_includes_path'];
+$private_actions_path = $bootstrap_data['private_actions_path'];
 
 if (!isset($_SESSION['admin_id'])) {
     header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
@@ -16,7 +17,7 @@ if (!isset($_SESSION['admin_id'])) {
 
 // --- Include Page-Specific Logic ---
 // Handles filtering, pagination, and data fetching for accounts
-$account_list_data = require __DIR__ . '/../../../private/actions/account/handle_account_list.php';
+$account_list_data = require $private_actions_path . 'account/handle_account_list.php';
 $filters = $account_list_data['filters'];
 $accounts = $account_list_data['accounts'];
 $total_items = $account_list_data['total_items'];
@@ -34,7 +35,7 @@ $packagesStmt = $db->query("SELECT id, name FROM package WHERE is_active = 1 ORD
 $packages = $packagesStmt->fetchAll(PDO::FETCH_ASSOC);
 
 // --- Include Helpers needed for the View ---
-require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php';
+require_once BASE_PATH . '/utils/dashboard_helpers.php';
 
 // Thiết lập tiêu đề trang để admin_header.php dùng
 $page_title = 'Quản lý TK Đo đạc - Admin';
@@ -90,7 +91,7 @@ include $private_includes_path . 'admin_sidebar.php';
         </form>
 
         <!-- Bulk Actions and Table -->
-        <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>private/actions/export_excel.php">
+        <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/actions/excel_index.php">
             <input type="hidden" name="table_name" value="accounts">
             <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px;">
                 <button type="submit" name="export_selected" class="btn btn-info">

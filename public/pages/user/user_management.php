@@ -106,7 +106,7 @@ include $private_includes_path . 'admin_sidebar.php';
         </form>
 
         <!-- Bulk Actions Form -->
-        <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>private/actions/export_excel.php">
+        <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/actions/excel_index.php">
             <input type="hidden" name="table_name" value="users">
             <div class="bulk-actions-bar" style="margin-bottom: 15px; display: flex; gap: 10px;">
                 <button type="submit" name="export_selected" class="btn btn-info"><i class="fas fa-file-excel"></i> Xuất mục đã chọn</button>

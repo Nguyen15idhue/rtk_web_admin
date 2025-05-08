@@ -5,6 +5,7 @@ $db               = $bootstrap_data['db'];
 $base_url         = $bootstrap_data['base_url'];
 $user_display_name= $bootstrap_data['user_display_name'];
 $private_includes_path = $bootstrap_data['private_includes_path'];
+$private_actions_path = $bootstrap_data['private_actions_path'];
 
 // Redirect nếu chưa auth
 if (!isset($_SESSION['admin_id'])) {
@@ -12,8 +13,8 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-require_once __DIR__ . '/../../../private/actions/invoice/fetch_transactions.php';
-require_once __DIR__ . '/../../../private/actions/invoice/get_revenue_sums.php';
+require_once $private_actions_path . 'invoice/fetch_transactions.php';
+require_once $private_actions_path . 'invoice/get_revenue_sums.php';
 
 // Lấy params phân trang & filter
 $current_page  = max(1, (int)($_GET['page'] ?? 1));
@@ -86,7 +87,7 @@ list($total_revenue, $successful_revenue) = get_revenue_sums($filters);
             </div>
 
             <!-- Thêm form xuất Excel -->
-            <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>private/actions/export_excel.php">
+            <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/actions/excel_index.php">
                 <input type="hidden" name="table_name" value="transactions">
                 <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px;">
                     <button type="submit" name="export_selected" class="btn btn-info">
