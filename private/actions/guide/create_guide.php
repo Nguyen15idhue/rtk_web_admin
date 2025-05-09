@@ -7,21 +7,6 @@ header('Content-Type: application/json');
 // Use Auth class for authentication
 Auth::ensureAuthenticated();
 
-// add slugify helper
-function slugify($text) {
-    // transliterate to ASCII
-    $text = iconv('UTF-8', 'ASCII//TRANSLIT', $text);
-    // replace non letters/digits with hyphens
-    $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-    // remove unwanted chars
-    $text = preg_replace('~[^-\w]+~', '', $text);
-    // trim hyphens, lowercase, collapse duplicates
-    $text = trim($text, '-');
-    $text = preg_replace('~-+~', '-', $text);
-    $text = strtolower($text);
-    return $text ?: 'n-a';
-}
-
 try {
     // handle file upload
     if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] === UPLOAD_ERR_OK) {
@@ -31,11 +16,6 @@ try {
         $fname = uniqid('guide-') . '.' . $ext;
         move_uploaded_file($_FILES['thumbnail']['tmp_name'], $up . $fname);
         $_POST['thumbnail'] = $fname;
-    }
-
-    // sanitize slug
-    if (isset($_POST['slug'])) {
-        $_POST['slug'] = slugify($_POST['slug']);
     }
 
     // prepare data

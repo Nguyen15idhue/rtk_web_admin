@@ -5,17 +5,6 @@ Auth::ensureAuthorized(['admin']); // Only admins can update guides
 
 header('Content-Type: application/json');
 
-// add slugify helper
-function slugify($text) {
-    $text = iconv('UTF-8', 'ASCII//TRANSLIT', $text);
-    $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-    $text = preg_replace('~[^-\w]+~', '', $text);
-    $text = trim($text, '-');
-    $text = preg_replace('~-+~', '-', $text);
-    $text = strtolower($text);
-    return $text ?: 'n-a';
-}
-
 try {
     if (empty($_POST['id'])) {
         abort('Guide ID is required', 400);
@@ -33,11 +22,6 @@ try {
         // giữ ảnh cũ
         $_POST['thumbnail'] = $_POST['existing_thumbnail'] ?? '';
         unset($_POST['existing_thumbnail']);
-    }
-
-    // sanitize slug
-    if (isset($_POST['slug'])) {
-        $_POST['slug'] = slugify($_POST['slug']);
     }
 
     $model = new GuideModel();
