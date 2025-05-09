@@ -13,6 +13,8 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
+$page_title = 'Quản lý Doanh thu'; // Define page title
+
 require_once $private_actions_path . 'invoice/fetch_transactions.php';
 require_once $private_actions_path . 'invoice/get_revenue_sums.php';
 
@@ -36,18 +38,11 @@ $pagination_base = '?' . http_build_query(array_filter($filters));
 
 // Get total and successful revenue using private action
 list($total_revenue, $successful_revenue) = get_revenue_sums($filters);
-?>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý Giao dịch - Admin</title>
-</head>
-<body>
-    <?php include $private_layouts_path . 'admin_header.php'; ?>
-    <?php include $private_layouts_path . 'admin_sidebar.php'; ?>
 
+// admin_header.php is assumed to open <html>, <head>, and <body>
+include $private_layouts_path . 'admin_header.php'; 
+include $private_layouts_path . 'admin_sidebar.php'; 
+?>
     <main class="content-wrapper">
         <div class="content-header">
             <h2>Quản lý Doanh thu</h2>
@@ -179,9 +174,7 @@ list($total_revenue, $successful_revenue) = get_revenue_sums($filters);
     </script>
     <script src="<?php echo $base_url; ?>public/assets/js/pages/purchase/revenue_management.js"></script>
 
-    <?php include $private_layouts_path . 'admin_footer.php'; ?>
-</body>
-</html>
-<?php
-include $private_layouts_path . 'admin_footer.php';
+<?php 
+// admin_footer.php is assumed to close </body> and </html>
+include $private_layouts_path . 'admin_footer.php'; 
 ?>

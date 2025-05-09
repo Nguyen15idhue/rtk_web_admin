@@ -15,6 +15,7 @@
 @import url("core/_content_header.css");
 @import url("core/_content_section.css");
 @import url("core/_filter_bar.css");
+@import url("core/_bulk_actions_bar.css");
 @import url("core/_header_actions.css");
 @import url("core/_pagination.css");
 @import url("core/_tables.css");

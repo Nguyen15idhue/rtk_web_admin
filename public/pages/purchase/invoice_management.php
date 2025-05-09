@@ -311,7 +311,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                     </span>
                 </span>
             </div>
-            <div class="detail-row" id="modal-tx-rejection-reason-container" style="display: none;">
+            <div class="detail-row" id="modal-tx-rejection-reason-container">
                 <span class="detail-label">Lý do từ chối:</span>
                 <span class="detail-value" id="modal-tx-rejection-reason" style="color: var(--danger-600);"></span>
             </div>

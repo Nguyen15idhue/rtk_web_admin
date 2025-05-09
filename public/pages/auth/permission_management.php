@@ -109,28 +109,30 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
     <!-- Admin Accounts List -->
     <div class="content-section">
         <h3>Danh sách tài khoản quản trị</h3>
-        <table class="transactions-table" id="adminAccountsTable">
-            <thead>
-                <tr>
-                    <th>ID</th><th>Tên</th><th>Username</th><th>Vai trò</th><th>Ngày tạo</th><th class="actions" style="text-align:center">Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($admins as $a): ?>
-                <tr>
-                    <td><?= htmlspecialchars($a['id']) ?></td>
-                    <td><?= htmlspecialchars($a['name']) ?></td>
-                    <td><?= htmlspecialchars($a['admin_username']) ?></td>
-                    <td><?= ($a['role'] === 'customercare' ? 'Chăm sóc khách hàng' : 'Quản trị viên') ?></td>
-                    <td><?= htmlspecialchars($a['created_at']) ?></td>
-                    <td class="actions">
-                        <button class="btn btn-secondary btn-sm" onclick="PermissionPageEvents.openEditAdminModal(<?= $a['id'] ?>)">Sửa</button>
-                        <button class="btn btn-danger btn-sm" onclick="PermissionPageEvents.openDeleteAdminModal(<?= $a['id'] ?>)">Xóa</button>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <div class="transactions-table-wrapper">
+            <table class="transactions-table" id="adminAccountsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th><th>Tên</th><th>Username</th><th>Vai trò</th><th>Ngày tạo</th><th class="actions" style="text-align:center">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($admins as $a): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($a['id']) ?></td>
+                        <td><?= htmlspecialchars($a['name']) ?></td>
+                        <td><?= htmlspecialchars($a['admin_username']) ?></td>
+                        <td><?= ($a['role'] === 'customercare' ? 'Chăm sóc khách hàng' : 'Quản trị viên') ?></td>
+                        <td><?= htmlspecialchars($a['created_at']) ?></td>
+                        <td class="actions">
+                            <button class="btn btn-secondary btn-sm" onclick="PermissionPageEvents.openEditAdminModal(<?= $a['id'] ?>)">Sửa</button>
+                            <button class="btn btn-danger btn-sm" onclick="PermissionPageEvents.openDeleteAdminModal(<?= $a['id'] ?>)">Xóa</button>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </main>
 
@@ -143,7 +145,7 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
 <script defer src="<?= $base_url ?>public/assets/js/pages/auth/permission_management.js"></script>
 
 <!-- Create Admin/Operator Modal -->
-<div id="createRoleModal" class="modal" style="display: none;">
+<div id="createRoleModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
             <h4>Thêm QTV/Vận hành</h4>

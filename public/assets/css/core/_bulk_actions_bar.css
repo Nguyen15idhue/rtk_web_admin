@@ -1,0 +1,27 @@
+/* Bulk Actions Bar */
+.bulk-actions-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap; /* This allows items to wrap to the next line on smaller screens */
+    align-items: center;
+}
+
+.bulk-actions-bar select,
+.bulk-actions-bar button {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--rounded-md);
+    font-size: var(--font-size-sm);
+}
+
+.bulk-actions-bar button {
+    padding: 0.6rem 1rem; /* Match filter-bar button padding */
+}
+
+.bulk-actions-bar select:focus,
+.bulk-actions-bar button:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}

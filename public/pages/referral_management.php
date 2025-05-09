@@ -98,7 +98,7 @@ if (!isset($_SESSION['admin_id'])) {
             </div>
         </div>
 
-        <div id="referrals" class="referral-content" style="display: none;">
+        <div id="referrals" class="referral-content">
             <h3 class="text-base md:text-lg font-medium text-gray-800 mb-3">Danh sách lượt giới thiệu</h3>
             <div class="mb-4 flex flex-wrap gap-2 items-center bg-white p-3 rounded-lg shadow-sm border border-gray-200">
                 <input type="search" placeholder="Tìm Email, Mã GT..." class="flex-grow min-w-[160px] text-sm">
@@ -172,7 +172,7 @@ if (!isset($_SESSION['admin_id'])) {
             </div>
         </div>
 
-        <div id="referral-settings" class="referral-content bg-white p-4 sm:p-6 rounded-lg shadow border border-gray-200" style="display: none;" data-permission="referral_settings_view">
+        <div id="referral-settings" class="referral-content bg-white p-4 sm:p-6 rounded-lg shadow border border-gray-200" data-permission="referral_settings_view">
             <h3 class="text-base md:text-lg font-medium text-gray-800 mb-4">Cấu hình Chương trình giới thiệu</h3>
             <form onsubmit="saveReferralSettings(event)">
                 <div class="space-y-4 max-w-xl">
