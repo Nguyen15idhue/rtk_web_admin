@@ -5,14 +5,14 @@
 
         const form = $('#frm-guide');
         const basePath = window.appConfig?.basePath || '';
-        const apiUrl = basePath + '/public/actions/guide/index.php';
+        const apiUrl = basePath + '/public/handlers/guide/index.php';
 
         const id = parseInt(form.find('input[name=id]').val(), 10);
 
         if (id) {
             (async () => {
                 try {
-                    const env = await api.getJson(`${apiUrl}?action=get_details&id=${id}`);
+                    const env = await api.getJson(`${apiUrl}?action=get_guide_details&id=${id}`);
                     if (!env.success) throw new Error(env.message || 'Lỗi tải chi tiết hướng dẫn');
                     const d = env.data;
                     Object.keys(d).forEach(k => {
@@ -28,7 +28,7 @@
 
         form.on('submit', function(e){
             e.preventDefault();
-            const action = id ? 'update' : 'create';
+            const action = id ? 'update_guide' : 'create_guide';
             const formData = new FormData(this);
             (async () => {
                 try {

@@ -95,35 +95,10 @@ try {
     $success = $accountModel->updateAccount($accountId, $updateData);
 
     if ($success) {
-        // before touching registration, ensure we only update this account's registration
+        // ---- Thay đổi ở đây: luôn dùng chung registration_id ----
         $stmtRegId = $db->prepare("SELECT registration_id FROM survey_account WHERE id = ?");
         $stmtRegId->execute([$accountId]);
-        $oldRegId = (int)$stmtRegId->fetchColumn();
-        $stmtCount = $db->prepare("SELECT COUNT(*) FROM survey_account WHERE registration_id = ?");
-        $stmtCount->execute([$oldRegId]);
-        if ((int)$stmtCount->fetchColumn() > 1) {
-            // clone registration row
-            $colsStmt = $db->query("SHOW COLUMNS FROM registration");
-            $cols = [];
-            while ($col = $colsStmt->fetch(PDO::FETCH_ASSOC)) {
-                if ($col['Field'] === 'id') continue;
-                $cols[] = $col['Field'];
-            }
-            $colsList = implode(',', $cols);
-            $phList   = ':' . implode(',:', $cols);
-            $rowStmt  = $db->prepare("SELECT $colsList FROM registration WHERE id = ?");
-            $rowStmt->execute([$oldRegId]);
-            $regData  = $rowStmt->fetch(PDO::FETCH_ASSOC);
-            $insSql   = "INSERT INTO registration ($colsList) VALUES ($phList)";
-            $insStmt  = $db->prepare($insSql);
-            $insStmt->execute($regData);
-            $newRegId = $db->lastInsertId();
-            $updSa    = $db->prepare("UPDATE survey_account SET registration_id = ? WHERE id = ?");
-            $updSa->execute([$newRegId, $accountId]);
-            $regTargetId = $newRegId;
-        } else {
-            $regTargetId = $oldRegId;
-        }
+        $regTargetId = (int)$stmtRegId->fetchColumn();
 
         // update only this registration row's status
         if ($inputStatus !== null) {

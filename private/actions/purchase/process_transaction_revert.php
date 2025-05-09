@@ -13,6 +13,7 @@ require_once BASE_PATH . '/api/rtk_system/account_api.php';
 require_once BASE_PATH . '/utils/functions.php';
 require_once BASE_PATH . '/services/TransactionHistoryService.php'; 
 require_once BASE_PATH . '/classes/TransactionModel.php';
+require_once BASE_PATH . '/classes/AccountModel.php';  // <-- add this
 
 // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -58,21 +59,41 @@ try {
 
     // nếu renewal
     if ($tx_type === 'renewal') {
-        $tm->resetEndTime($reg_id);
+        // chỉ trừ lại thời gian đã cộng trên survey_account
+        $tm->adjustAccountTimesForRevert($reg_id, $transaction_id);
+
+        // cập nhật ngày start/end đã điều chỉnh lên RTK
+        $accountModel = new AccountModel($db);
+        $accounts     = $tm->getAllSurveyAccountsForRegistration($reg_id);
+        $apiFailures  = [];
+        foreach ($accounts as $account) {
+            $payload   = $accountModel->buildRtkUpdatePayload($account['id'], []);
+            error_log("[Revert Transaction {$transaction_id}] Updating RTK account dates for account {$account['id']}: " . print_r($payload, true));
+            $apiResult = updateRtkAccount($payload);
+            if (empty($apiResult['success'])) {
+                $apiFailures[] = $account['id'];
+                error_log("[Revert Transaction {$transaction_id}] FAILED to update RTK account {$account['id']}: " . $apiResult['error']);
+            } else {
+                error_log("[Revert Transaction {$transaction_id}] RTK update success for account {$account['id']}");
+            }
+        }
+        if (!empty($apiFailures)) {
+            throw new Exception('RTK update failed for accounts: ' . implode(',', $apiFailures));
+        }
     }
 
-    // Fetch all accounts associated with the registration, even if soft-deleted locally,
-    // to ensure their RTK counterparts are handled.
-    $accounts = $tm->getAllSurveyAccountsForRegistration($reg_id);
-
+    // chung: chuyển registration về pending và bỏ xác nhận thanh toán
     $tm->updateRegistrationStatus($reg_id, 'pending');
     $tm->unconfirmPayment($transaction_id);
-    $tm->softDeleteAccounts($reg_id);
-    $tm->updateHistoryStatus($transaction_id, 'pending');
 
-    // --- NEW: track API failures & delay commit until after external calls ---
-    $apiFailures = [];
-    if (!empty($accounts)) {
+    // chỉ xóa mềm và gọi API external khi không phải renewal
+    if ($tx_type !== 'renewal') {
+        $accounts = $tm->getAllSurveyAccountsForRegistration($reg_id);
+        $tm->softDeleteAccounts($reg_id);
+        $tm->updateHistoryStatus($transaction_id, 'pending');
+
+        // track API failures & delay commit until after external calls
+        $apiFailures = [];
         foreach ($accounts as $account) {
             error_log("[Revert Transaction {$transaction_id}] Deleting RTK account {$account['id']}");
             $apiResult = deleteRtkAccount([$account['id']]);
@@ -83,15 +104,14 @@ try {
                 error_log("[Revert Transaction {$transaction_id}] RTK delete success for account {$account['id']}.");
             }
         }
+        if (!empty($apiFailures)) {
+            throw new Exception('RTK deletion failed for account IDs: ' . implode(',', $apiFailures));
+        }
     } else {
-        error_log("[Revert Transaction {$transaction_id}] No associated survey accounts to delete via API.");
+        // với renewal chỉ update history status
+        $tm->updateHistoryStatus($transaction_id, 'pending');
     }
-
-    // If any external deletes failed, abort and rollback everything
-    if (!empty($apiFailures)) {
-        throw new Exception('RTK deletion failed for account IDs: ' . implode(',', $apiFailures));
-    }
-
+    
     // All good – now commit
     $db->commit();
     api_success(null, 'Transaction #' . $transaction_id . ' reverted successfully. Accounts handled.');

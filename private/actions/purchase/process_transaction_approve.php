@@ -105,6 +105,19 @@ if ($tx_type === 'renewal') {
     $stmt_acc->execute();
     $accIds = $stmt_acc->fetchAll(PDO::FETCH_COLUMN);
 
+    $stmtUpdReg = $db->prepare("
+        UPDATE survey_account
+        SET registration_id = :newRegId, updated_at = NOW()
+        WHERE id = :aid
+    ");
+    foreach ($accIds as $aid) {
+        $stmtUpdReg->execute([
+            ':newRegId' => $registration_id,
+            ':aid'      => $aid
+        ]);
+    }
+    error_log("[PTA] Updated registration_id to {$registration_id} for accounts: " . implode(',', $accIds));
+
     $renewed = [];
     // compute registration duration once
     $durationSec = max(0, $origEndTs - $origStartTs);

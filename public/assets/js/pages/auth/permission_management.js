@@ -6,7 +6,7 @@
     // Load current permissions on page load
     ['Admin','CustomerCare'].forEach(async role => {
         try {
-            const result = await api.getJson(`${basePath}public/actions/auth/index.php?action=fetch_permissions&role=${role.toLowerCase()}`);
+            const result = await api.getJson(`${basePath}public/handlers/auth/index.php?action=fetch_permissions&role=${role.toLowerCase()}`);
             if (!result.success) throw new Error(result.message || 'Không thể tải quyền.');
             result.data.forEach(item => {
                 const sel = `input[type="checkbox"][data-role="${role}"][data-permission="${item.permission}"]`;
@@ -26,7 +26,7 @@
         document.querySelectorAll(`input[type="checkbox"][data-role="${role}"]`)
                 .forEach(cb => permissions[cb.dataset.permission] = cb.checked);
         try {
-            const data = await api.postJson(`${basePath}public/actions/auth/index.php?action=process_permissions_update`, {
+            const data = await api.postJson(`${basePath}public/handlers/auth/index.php?action=process_permissions_update`, {
                 role: role==='Admin'?'admin':'customercare',
                 permissions
             });
@@ -77,7 +77,7 @@
 
     async function handleDeleteAdmin(id){
         try{
-            const res = await fetch(`${basePath}public/actions/auth/index.php?action=process_admin_delete`, {
+            const res = await fetch(`${basePath}public/handlers/auth/index.php?action=process_admin_delete`, {
                 method:'POST',
                 headers:{'Content-Type':'application/json'},
                 body: JSON.stringify({id})
@@ -106,7 +106,7 @@
                     password: createForm.password.value,
                     role: createForm.role.value
                 };
-                fetch(`${basePath}public/actions/auth/index.php?action=process_admin_create`,{
+                fetch(`${basePath}public/handlers/auth/index.php?action=process_admin_create`,{
                     method:'POST',
                     headers:{'Content-Type':'application/json'},
                     body: JSON.stringify(data)
@@ -132,7 +132,7 @@
                     role:     document.getElementById('editAdminRole').value
                 };
                 try{
-                    const res = await fetch(`${basePath}public/actions/auth/index.php?action=process_admin_update`,{
+                    const res = await fetch(`${basePath}public/handlers/auth/index.php?action=process_admin_update`,{
                         method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)
                     });
                     const txt = await res.text();

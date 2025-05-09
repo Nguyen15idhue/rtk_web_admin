@@ -57,7 +57,8 @@ try {
 
     // nếu là renewal
     if ($th['transaction_type'] === 'renewal') {
-        $tm->resetEndTime($reg_id);
+        // chỉ trừ lại thời gian đã cộng trên survey_account
+        $tm->adjustAccountTimesForRevert($reg_id, $transaction_id);
     }
 
     $reg = $tm->getRegistrationById($reg_id);

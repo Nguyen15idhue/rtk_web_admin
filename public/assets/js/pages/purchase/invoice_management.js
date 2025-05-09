@@ -63,7 +63,7 @@
         });
 
         // API URLs
-        const apiBasePath = `${appBase}public/actions/purchase/index.php`;
+        const apiBasePath = `${appBase}public/handlers/purchase/index.php`;
         const approveUrl = `${apiBasePath}?action=process_transaction_approve`;
         const rejectUrl  = `${apiBasePath}?action=process_transaction_reject`;
         const revertUrl  = `${apiBasePath}?action=process_transaction_revert`;

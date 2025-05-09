@@ -82,6 +82,36 @@ class TransactionModel {
     }
 
     /**
+     * Hoàn tác gia hạn: trừ lại thời gian đã cộng cho survey_account
+     */
+    public function adjustAccountTimesForRevert(int $rid, int $hid): bool {
+        // Tính số ngày đã được cộng thêm từ registration
+        $sqlDays  = "SELECT DATEDIFF(end_time, start_time) AS days 
+                     FROM registration 
+                     WHERE id = :rid";
+        $stmtDays = $this->db->prepare($sqlDays);
+        $stmtDays->execute([':rid' => $rid]);
+        $days = (int)$stmtDays->fetchColumn();
+
+        if ($days <= 0) {
+            return false;
+        }
+
+        // Điều chỉnh lại start_time và end_time trên survey_account
+        $sql = "
+          UPDATE survey_account
+          SET
+            end_time   = DATE_SUB(end_time, INTERVAL :days DAY),
+            start_time = LEAST(NOW(), DATE_SUB(end_time, INTERVAL 1 DAY)),
+            updated_at = NOW()
+          WHERE registration_id = :rid
+            AND deleted_at IS NULL
+        ";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([':days' => $days, ':rid' => $rid]);
+    }
+
+    /**
      * Lấy toàn bộ dữ liệu transaction để export Excel
      */
     public function getAllDataForExport(): array {

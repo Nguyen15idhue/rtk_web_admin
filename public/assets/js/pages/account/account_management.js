@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!infoElement || !email) return;
 
         try {
-            const result = await getJson(`${basePath}public/actions/account/index.php?action=search_users&email=${encodeURIComponent(email)}&exact=1`);
+            const result = await getJson(`${basePath}public/handlers/account/index.php?action=search_users&email=${encodeURIComponent(email)}&exact=1`);
             const users = result.data?.users;
             if (result.success && users && users.length > 0) {
                 const user = users[0];
@@ -445,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             searchTimer = setTimeout(async () => {
                 try {
-                    const result = await getJson(`${basePath}public/actions/account/index.php?action=search_users&email=${encodeURIComponent(query)}`);
+                    const result = await getJson(`${basePath}public/handlers/account/index.php?action=search_users&email=${encodeURIComponent(query)}`);
                     const users = result.data?.users;
                     if (result.success && users) {
                         currentUsers = users;

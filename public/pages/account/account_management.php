@@ -91,7 +91,7 @@ include $private_includes_path . 'admin_sidebar.php';
         </form>
 
         <!-- Bulk Actions and Table -->
-        <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/actions/excel_index.php">
+        <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
             <input type="hidden" name="table_name" value="accounts">
             <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px;">
                 <button type="submit" name="export_selected" class="btn btn-info">
@@ -363,7 +363,7 @@ include $private_includes_path . 'admin_sidebar.php';
 <div id="toast-container"></div> <!-- Toast container -->
 
 <script>
-    const apiBasePath = '<?php echo $base_url; ?>public/actions/account/index.php';
+    const apiBasePath = '<?php echo $base_url; ?>public/handlers/account/index.php';
     const basePath = '<?php echo $base_url; ?>';
     const packageDurations = <?php echo json_encode([
         '1' => ['months' => 1],

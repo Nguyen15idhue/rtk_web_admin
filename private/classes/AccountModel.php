@@ -543,10 +543,21 @@ class AccountModel {
              ? $input['password_acc']
              : ($account['password_acc'] ?? '');
         // Ngày kích hoạt / hết hạn
-        $act = $input['activation_date'] ?? ($account['activation_date'] ?? null);
-        $exp = $input['expiry_date']     ?? ($account['expiry_date']     ?? null);
-        $startMs = $act ? strtotime("$act 00:00:00")*1000 : 0;
-        $endMs   = $exp ? strtotime("$exp 23:59:59")*1000 : 0;
+        $actDate = $input['activation_date'] ?? ($account['activation_date'] ?? null);
+        $expDate = $input['expiry_date']     ?? ($account['expiry_date']     ?? null);
+        if ($actDate) {
+            // if full datetime provided, use it; otherwise append start-of-day
+            $ts = strlen($actDate) > 10 ? strtotime($actDate) : strtotime("$actDate 00:00:00");
+            $startMs = $ts * 1000;
+        } else {
+            $startMs = 0;
+        }
+        if ($expDate) {
+            $ts = strlen($expDate) > 10 ? strtotime($expDate) : strtotime("$expDate 23:59:59");
+            $endMs = $ts * 1000;
+        } else {
+            $endMs = 0;
+        }
         // userId trên RTK
         $rtkUserId = $account['user_id'] ?? null;
         // Phone
