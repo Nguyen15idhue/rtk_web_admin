@@ -4,29 +4,75 @@
     align-items: center; margin-top: 1.5rem;
     padding-top: 1rem; border-top: 1px solid var(--border-color);
     font-size: var(--font-size-sm); color: var(--gray-600);
+    overflow-x: auto;           /* allow scrolling if still too wide */
+    width: 100%;                /* ensure full container width */
 }
 .pagination-controls {
     display: flex; gap: 0.3rem;
+    flex-wrap: wrap;            /* wrap items instead of overflowing */
+    justify-content: center;    /* center wrapped items */
+    max-width: 100%;            /* prevent exceeding parent width */
+    margin: 0 auto;             /* center within footer */
 }
 .pagination-controls button, .pagination-controls span {
     padding: 0.4rem 0.8rem; border: 1px solid var(--gray-300);
     background-color: #fff; border-radius: var(--rounded-md);
     font-size: var(--font-size-sm);
     display: inline-flex; align-items: center;
-    justify-content: center; min-width: 32px;
+    justify-content: center; min-width: 32px; /* Ensure consistent button size */
 }
-.pagination-controls button { cursor: pointer; }
+.pagination-controls button {
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+.pagination-controls button:hover:not(:disabled) {
+    background-color: var(--gray-100);
+    border-color: var(--gray-400);
+}
 .pagination-controls button:disabled {
     background-color: var(--gray-100);
     color: var(--gray-400);
     cursor: not-allowed;
+    border-color: var(--gray-300); /* Ensure border color is consistent for disabled */
 }
 .pagination-controls button.active {
     background-color: var(--primary-500);
     color: #fff; border-color: var(--primary-500);
     font-weight: bold;
 }
-.pagination-controls span {
-    background-color: transparent; border: none;
+.pagination-controls button.active:hover {
+    background-color: var(--primary-600); /* Darken active button on hover */
+    border-color: var(--primary-600);
+}
+.pagination-controls span { /* For ellipsis or non-interactive elements */
+    background-color: transparent; border: none; /* Or 1px solid transparent to maintain alignment */
     color: var(--gray-500);
+}
+
+/* Responsive Pagination Styles */
+@media (max-width: var(--bp-mobile)) {
+    .pagination-footer {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: center;
+    }
+    .pagination-footer .pagination-controls {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem; /* Increased gap for wrapped items */
+        justify-content: center;
+    }
+    .pagination-controls button, .pagination-controls span {
+        padding: 0.5rem 0.6rem; /* Adjust padding for smaller screens if needed */
+        min-width: 30px; /* Adjust min-width */
+    }
+}
+
+@media (min-width: var(--bp-mobile)) and (max-width: var(--bp-tablet)) {
+    .pagination-footer .pagination-controls {
+        flex-wrap: wrap; /* Allow controls to wrap on tablets */
+        gap: 0.5rem; /* Consistent gap for wrapped items */
+        justify-content: flex-start; /* Align to start on tablets if space allows */
+    }
 }

@@ -73,9 +73,6 @@ $admin_user_role = isset($role_vietnamese[$role]) ? $role_vietnamese[$role] : uc
             <i class="logo-icon fas fa-user-shield"></i>
             <span class="logo-text">Trang Quản Trị</span>
         </a>
-        <button class="close-button" onclick="toggleSidebar()">
-            <i class="fas fa-times"></i>
-        </button>
     </div>
 
      <!-- Admin User Info -->
@@ -144,5 +141,5 @@ $admin_user_role = isset($role_vietnamese[$role]) ? $role_vietnamese[$role] : uc
 </aside>
 
 <!-- Overlay for mobile -->
-<div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
 <!-- =================== HẾT SIDEBAR (ADMIN) =================== -->

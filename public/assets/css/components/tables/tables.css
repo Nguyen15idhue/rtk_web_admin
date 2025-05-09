@@ -75,31 +75,6 @@
 .content-wrapper .status-active { color: var(--success-600); font-weight: bold; }
 .content-wrapper .status-inactive { color: var(--danger-600); font-weight: bold; }
 
-/* Pagination styling */
-.content-wrapper .pagination-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
-    font-size: var(--font-size-sm);
-    color: var(--gray-600);
-}
-
-.content-wrapper .pagination-controls { display: flex; gap: 0.3rem; }
-.content-wrapper .pagination-controls button {
-    padding: 0.4rem 0.8rem;
-    border: 1px solid var(--gray-300);
-    background-color: #fff;
-    cursor: pointer;
-    border-radius: var(--rounded-md);
-    font-size: var(--font-size-sm);
-}
-
-.content-wrapper .pagination-controls button:disabled { background-color: var(--gray-100); color: var(--gray-400); cursor: not-allowed; }
-.content-wrapper .pagination-controls button.active { background-color: var(--primary-500); color: #fff; border-color: var(--primary-500); font-weight: bold; }
-
 /* No results row */
 .content-wrapper #no-results-row td { text-align: center; padding: 3rem; color: var(--gray-500); font-size: var(--font-size-base); }
 

@@ -35,4 +35,7 @@
         }
     });
 
+    // Expose for inline handlers
+    window.toggleSidebar = toggleSidebar;
+
 })(window, document);

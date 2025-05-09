@@ -150,4 +150,48 @@ $range = 2; // Number of links to show around the current page
     background-color: #fff;
     border-color: #dee2e6;
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .pagination {
+        flex-wrap: wrap; /* Allow items to wrap if they don't fit */
+        /* justify-content: center; is already in the base styles */
+    }
+    .page-item {
+        /* Adjust margin slightly if items are too close when wrapped */
+        margin: 2px; /* Original was 0 2px, this adds a bit of vertical spacing for wrapped items */
+    }
+}
+
+@media (max-width: 576px) {
+    .page-link {
+        padding: .3rem .5rem; /* Smaller padding for very small screens */
+        font-size: 0.85rem;    /* Smaller font size for very small screens */
+    }
+
+    /* Hide all page items initially on very small screens */
+    .pagination .page-item {
+        display: none;
+    }
+
+    /* Then, show only the 'Previous', 'Next', and 'Active' page items */
+    .pagination .page-item:first-child, /* Previous button */
+    .pagination .page-item:last-child,  /* Next button */
+    .pagination .page-item.active {     /* Active page number */
+        display: block; /* As flex items, 'block' or 'flex' or even default can work. 'block' is simple. */
+    }
+
+    /* This rule specifically ensures that disabled items (like "...") 
+       that are NOT the first (prev) or last (next) control are hidden.
+       This is important if the prev/next buttons themselves can be disabled. */
+    .pagination .page-item.disabled:not(:first-child):not(:last-child) {
+        display: none;
+    }
+    /* Re-show disabled first/last child if they were hidden by the rule above, 
+       as they are the prev/next controls */
+    .pagination .page-item.disabled:first-child,
+    .pagination .page-item.disabled:last-child {
+        display: block; /* Or match the display of other visible items */
+    }
+}
 </style>
