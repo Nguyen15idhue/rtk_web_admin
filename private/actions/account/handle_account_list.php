@@ -6,6 +6,8 @@ if (!isset($db)) {
     die("Database connection not available in handle_account_list.php");
 }
 require_once __DIR__ . '/../../includes/error_handler.php';
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+Auth::ensureAuthorized(['admin']); // Assuming only admins can list all accounts
 
 // Đảm bảo đóng PDO khi script kết thúc
 register_shutdown_function(function() use (&$db) {

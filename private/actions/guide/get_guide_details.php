@@ -1,5 +1,8 @@
 <?php
 require_once __DIR__ . '/../../includes/page_bootstrap.php';
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+Auth::ensureAuthenticated(); // Allow any authenticated user to get guide details
+
 header('Content-Type: application/json');
 
 if (!isset($_GET['id'])) {

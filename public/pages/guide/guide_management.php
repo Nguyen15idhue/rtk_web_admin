@@ -42,7 +42,7 @@ include $private_includes_path . 'admin_sidebar.php';
             <table class="transactions-table" id="tbl-guides">
                 <thead>
                     <tr>
-                        <th>ID</th><th>Tiêu đề</th><th>Tác giả</th><th class="status" style="text-align:center">Trạng thái</th><th class="actions" style="text-align:center">Hành động</th>
+                        <th>ID</th><th>Tiêu đề</th><th>Tác giả</th><th class="status text-center">Trạng thái</th><th class="actions text-center">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>

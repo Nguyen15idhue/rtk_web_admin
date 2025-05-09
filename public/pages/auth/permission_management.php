@@ -7,14 +7,10 @@ $user_display_name = $bootstrap['user_display_name'];
 $private_includes_path = $bootstrap['private_includes_path'];
 $is_admin = ($_SESSION['admin_role'] ?? '') === 'admin';
 $admins = $db ? $db->query("SELECT id,name,admin_username,role,created_at FROM admin")->fetchAll(PDO::FETCH_ASSOC) : [];
-$css = ['layouts/header.css', 'components/buttons.css', 'pages/permission_management.css'];
 $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php' => 'Đăng xuất'];
 ?>
 
 <?php include $private_includes_path . 'admin_sidebar.php'; include $private_includes_path . 'admin_header.php'; ?>
-<?php foreach ($css as $f): ?>
-    <link rel="stylesheet" href="<?= $base_url ?>public/assets/css/<?= $f ?>">
-<?php endforeach; ?>
 
 <main class="content-wrapper">
     <div class="content-header">
@@ -29,7 +25,7 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
 
     <div id="admin-permission-management" class="content-section">
         <div class="flex flex-row justify-between items-center mb-4 gap-3 md:gap-2">
-            <h2 class="text-lg md:text-xl font-semibold text-gray-900">Quản lý phân quyền</h2>
+            <h3 class="text-lg md:text-xl font-semibold text-gray-900">Quản lý phân quyền</h3>
             <button class="btn btn-primary self-start md:self-auto w-auto" onclick="PermissionPageEvents.openCreateRoleModal()" data-permission="admin_user_create">
                 <i class="fas fa-user-plus mr-1"></i> Thêm QTV/Vận hành
             </button>
@@ -37,7 +33,7 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
         <p class="text-xs sm:text-sm text-gray-600 mb-6">Quản lý vai trò và quyền hạn truy cập cho tài khoản quản trị hệ thống.</p>
 
         <!-- Permission Cards: Responsive Grid -->
-        <div class="stats-grid">  <!-- Use dashboard.css stat-card grid -->
+        <div class="stats-grid"> 
 
             <!-- Admin stat card -->
             <div class="stat-card">

@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../../config/constants.php';
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+
 // Prevent PHP from outputting HTML errors directly
 error_reporting(E_ALL); // Report all errors for logging
 ini_set('display_errors', 0); // Keep off for browser output
@@ -469,6 +471,9 @@ function fetchAndUpdateStations(): void {
 
 // HTTP test endpoint: run ?test_update=1
 if (php_sapi_name() !== 'cli' && isset($_GET['test_update'])) {
+    // Add authentication and authorization for the test endpoint
+    Auth::ensureAuthorized(['admin']); // Or a more specific role if needed
+
     fetchAndUpdateStations();
     header('Content-Type: application/json');
     echo json_encode(['success'=>true,'message'=>'Invoked via HTTP test']);

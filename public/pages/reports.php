@@ -171,8 +171,6 @@ $commission_pending = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 
     </main>
 </div>
 
-<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/buttons.css">
-
 <script>
     document.getElementById('report-filter-form').addEventListener('submit', function(event) {
         event.preventDefault();

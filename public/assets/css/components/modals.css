@@ -11,14 +11,18 @@
 }
 .modal-content {
     background-color: #fefefe;
-    margin: 5% auto;
     padding: 25px;
     border: 1px solid #888;
     width: 80%;
     max-width: 600px;
     border-radius: var(--rounded-lg);
-    position: relative;
+    position: absolute;   /* For centering */
+    left: 50%;            /* For centering */
+    top: 50%;             /* For centering */
+    transform: translate(-50%, -50%); /* For centering */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    max-height: 90vh;     /* Prevent modal from being taller than viewport, ensures some margin */
+    overflow-y: auto;     /* Allow content within modal to scroll if it's too tall */
 }
 .modal-header {
     padding-bottom: 15px;
@@ -79,7 +83,7 @@
 
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
 .modal-overlay.active { opacity: 1; visibility: visible; }
-.modal-overlay.active .modal-content { transform: scale(1); }
+.modal-overlay.active .modal-content { transform: translate(-50%, -50%) scale(1); }
 
 #createUserForm .form-actions {
     display: flex;

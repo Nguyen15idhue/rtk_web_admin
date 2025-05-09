@@ -1,13 +1,13 @@
 <?php
 require_once __DIR__ . '/../../includes/page_bootstrap.php';
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
 
 header('Content-Type: application/json');
 
-try {
-    if (empty($_SESSION['admin_id'])) {
-        abort('Unauthorized', 401);
-    }
+// Use Auth class for authentication
+Auth::ensureAuthenticated();
 
+try {
     // handle file upload
     if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] === UPLOAD_ERR_OK) {
         $up = UPLOADS_PATH . 'guide/';

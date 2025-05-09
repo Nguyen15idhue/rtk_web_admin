@@ -528,6 +528,135 @@ class AccountModel {
         }
     }
 
+    /**
+     * Build RTK API payload for account update.
+     *
+     * @param string $accountId
+     * @param array $input Raw input data from request.
+     * @return array Payload ready for updateRtkAccount.
+     */
+    public function buildRtkUpdatePayload(string $accountId, array $input): array {
+        // Lấy thông tin hiện tại
+        $account = $this->getAccountById($accountId) ?: [];
+        // Mật khẩu
+        $pwd = !empty($input['password_acc'])
+             ? $input['password_acc']
+             : ($account['password_acc'] ?? '');
+        // Ngày kích hoạt / hết hạn
+        $actDate = $input['activation_date'] ?? ($account['activation_date'] ?? null);
+        $expDate = $input['expiry_date']     ?? ($account['expiry_date']     ?? null);
+        if ($actDate) {
+            // if full datetime provided, use it; otherwise append start-of-day
+            $ts = strlen($actDate) > 10 ? strtotime($actDate) : strtotime("$actDate 00:00:00");
+            $startMs = $ts * 1000;
+        } else {
+            $startMs = 0;
+        }
+        if ($expDate) {
+            $ts = strlen($expDate) > 10 ? strtotime($expDate) : strtotime("$expDate 23:59:59");
+            $endMs = $ts * 1000;
+        } else {
+            $endMs = 0;
+        }
+        // userId trên RTK
+        $rtkUserId = $account['user_id'] ?? null;
+        // Phone
+        $cPhone = $input['customer_phone'] ?? ($account['user_phone'] ?? '');
+        $cPhone = preg_replace('/[^0-9+\-]/','',$cPhone);
+        $cPhone = substr($cPhone,0,20);
+        // Name
+        $cName = $input['customer_name'] ?? ($account['user_username'] ?? '');
+        // Location + mountIds
+        $loc = filter_var($input['location_id'] ?? $account['location_id'], FILTER_VALIDATE_INT) 
+               ?: ($account['location_id'] ?? 0);
+        $mountIds = getMountPointsByLocationId($loc);
+        // Caster/region/company
+        $casterIds    = !empty($input['caster'])        ? [trim($input['caster'])] : [];
+        $regionIdsArr = isset($input['regionIds'])      ? [(int)$input['regionIds']] : [];
+        $custCompany  = $input['customer_company'] ?? '';
+        // Các flag khác
+        $enabled         = isset($input['enabled'])       ? (int)$input['enabled']       : ($account['enabled'] ?? 1);
+        $numOnline       = isset($input['concurrent_user'])? (int)$input['concurrent_user']: ($account['concurrent_user'] ?? 1);
+        $customerBizType = isset($input['customerBizType'])? (int)$input['customerBizType']: ($account['customerBizType']  ?? 1);
+
+        return [
+            'id'              => $accountId,
+            'name'            => $account['username_acc'] ?? '',
+            'userPwd'         => $pwd,
+            'startTime'       => $startMs,
+            'endTime'         => $endMs,
+            'enabled'         => $enabled,
+            'numOnline'       => $numOnline,
+            'customerBizType' => $customerBizType,
+            'userId'          => $rtkUserId,
+            'customerName'    => $cName,
+            'customerPhone'   => $cPhone,
+            'customerCompany' => $custCompany,
+            'casterIds'       => $casterIds,
+            'regionIds'       => $regionIdsArr,
+            'mountIds'        => $mountIds,
+        ];
+    }
+
+    /**
+     * Get data by IDs for export.
+     *
+     * @param array $ids Array of account IDs.
+     * @return array List of associative arrays ready for export.
+     */
+    public function getDataByIdsForExport(array $ids): array {
+        if (empty($ids)) {
+            return [];
+        }
+        // build placeholders for IN clause
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $sql = $this->baseSelectQuery . " AND sa.id IN ($placeholders) ORDER BY sa.created_at DESC";
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($ids);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // derive status
+            foreach ($rows as &$row) {
+                $row['derived_status'] = $this->deriveAccountStatus(
+                    $row['registration_status'] ?? 'unknown',
+                    isset($row['enabled']) ? (bool)$row['enabled'] : false,
+                    $row['expiry_date'] ?? null
+                );
+            }
+            unset($row);
+            return $rows;
+        } catch (PDOException $e) {
+            error_log("getDataByIdsForExport failed: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Get all data for export.
+     *
+     * @return array List of all accounts (associative arrays) ready for export.
+     */
+    public function getAllDataForExport(): array {
+        $sql = $this->baseSelectQuery . " ORDER BY sa.created_at DESC";
+        try {
+            $stmt = $this->db->query($sql);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // derive status
+            foreach ($rows as &$row) {
+                $row['derived_status'] = $this->deriveAccountStatus(
+                    $row['registration_status'] ?? 'unknown',
+                    isset($row['enabled']) ? (bool)$row['enabled'] : false,
+                    $row['expiry_date'] ?? null
+                );
+            }
+            unset($row);
+            return $rows;
+        } catch (PDOException $e) {
+            error_log("getAllDataForExport failed: " . $e->getMessage());
+            return [];
+        }
+    }
+
     // Giải phóng kết nối DB khi object bị hủy
     public function __destruct() {
         $this->db = null;

@@ -1,6 +1,9 @@
 <?php
 header('Content-Type: application/json');
 
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+Auth::ensureAuthenticated(); // All logged-in users can fetch their own accounts by default
+
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
@@ -8,12 +11,6 @@ $db        = $bootstrap['db'];
 register_shutdown_function(function() use (&$db) {
     $db = null;
 });
-
-// Basic security check
-if (!isset($_SESSION['admin_id'])) {
-    abort('Unauthorized', 401);
-    exit;
-}
 
 // Determine user ID: input or current admin
 $rawInput = file_get_contents('php://input');

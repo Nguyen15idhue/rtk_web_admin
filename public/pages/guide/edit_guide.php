@@ -19,7 +19,6 @@ $page_title = $id
 ?>
 <!-- Thêm Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/forms.css">
 
 <main class="content-wrapper">
     <div class="container py-4">
@@ -56,10 +55,6 @@ $page_title = $id
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Ảnh đại diện</label>
                         <input type="file" name="thumbnail" class="form-control">
-                    </div>
-                    <div class="col-12 mb-3">
-                        <label class="form-label">Đường dẫn ảnh</label>
-                        <input type="text" name="image" class="form-control">
                     </div>
                     <div class="col-12 mb-3">
                         <label class="form-label">Nội dung</label>

@@ -3,6 +3,9 @@ declare(strict_types=1);
 header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/../../includes/page_bootstrap.php';
 require_once __DIR__ . '/../../utils/functions.php';
+require_once __DIR__ . '/../../classes/Auth.php';
+require_once BASE_PATH . '/classes/InvoiceModel.php';
+Auth::ensureAuthorized(['admin','customercare']);
 
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
@@ -21,12 +24,12 @@ if ($invoiceId <= 0 || $reason === '') {
 }
 
 try {
-    $stmt = $db->prepare(
-        "UPDATE invoice 
-            SET status = 'rejected', rejected_reason = :reason 
-          WHERE id = :id"
-    );
-    $stmt->execute([':reason' => $reason, ':id' => $invoiceId]);
+    $model = new InvoiceModel();
+    $model->update($invoiceId, [
+        'status' => 'rejected',
+        'rejected_reason' => $reason
+    ]);
+
     api_success(null, 'Invoice rejected thành công.');
 } catch (PDOException $e) {
     error_log('Error in process_invoice_reject: ' . $e->getMessage());

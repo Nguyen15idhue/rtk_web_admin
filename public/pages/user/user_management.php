@@ -23,13 +23,13 @@ require_once BASE_PATH . '/actions/user/fetch_users.php'; // User fetching logic
 
 // --- Get Filters ---
 $filters = [
-    'search' => filter_input(INPUT_GET, 'search', FILTER_SANITIZE_SPECIAL_CHARS) ?: '',
+    'q' => isset($_GET['q']) ? (string)$_GET['q'] : '', // Use raw input, UserModel will trim
     'status' => filter_input(INPUT_GET, 'status', FILTER_SANITIZE_SPECIAL_CHARS) ?: '',
 ];
 // Debug PHP error log
-error_log('[DEBUG] Search keyword: ' . $filters['search']);
+error_log('[DEBUG] Search keyword: ' . $filters['q']);
 // Debug JavaScript console
-echo '<script>console.log("DEBUG Search keyword:", ' . json_encode($filters['search'], JSON_UNESCAPED_UNICODE) . ');</script>';
+echo '<script>console.log("DEBUG Search keyword:", ' . json_encode($filters['q'], JSON_UNESCAPED_UNICODE) . ');</script>';
 
 // --- Pagination Setup ---
 $items_per_page = 10;
@@ -64,19 +64,7 @@ if (strpos($pagination_base_url, '?') === false) {
 
 // --- Page Setup for Header/Sidebar ---
 $page_title = 'Quản lý Người dùng';
-
 include $private_includes_path . 'admin_header.php';
-?>
-<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables.css">
-<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/tables/tables-buttons.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/tables/tables-badges.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/buttons.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/forms.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/layouts/header.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/components/modals.css">
-<link rel="stylesheet" href="<?php echo $base_path; ?>public/assets/css/pages/user-management.css">
-
-<?php
 include $private_includes_path . 'admin_sidebar.php';
 ?>
 
@@ -102,11 +90,11 @@ include $private_includes_path . 'admin_sidebar.php';
                 </button>
             <?php endif; ?>
         </div>
-         <p class="filter-description">Quản lý tài khoản người dùng đăng ký (không phải tài khoản quản trị).</p>
+         <p class="text-xs sm:text-sm text-gray-600 mb-4 description-text">Quản lý tài khoản người dùng đăng ký (không phải tài khoản quản trị).</p>
 
         <form method="GET" action="">
             <div class="filter-bar">
-                <input type="search" placeholder="Tìm Email, Tên..." name="search" value="<?php echo htmlspecialchars($filters['search']); ?>">
+                <input type="search" placeholder="Tìm Email, Tên, Số ĐT, Mã số thuế..." name="q" value="<?php echo htmlspecialchars($filters['q'] ?? ''); ?>">
                 <select name="status">
                     <option value="">Tất cả trạng thái</option>
                     <option value="active" <?php echo ($filters['status'] == 'active') ? 'selected' : ''; ?>>Hoạt động</option>
@@ -117,63 +105,74 @@ include $private_includes_path . 'admin_sidebar.php';
             </div>
         </form>
 
-        <div class="transactions-table-wrapper">
-            <table class="transactions-table" id="usersTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tên đăng nhập</th>
-                        <th>Email</th>
-                        <th>Số điện thoại</th>
-                        <th>Loại TK</th>
-                        <th>Tên công ty</th>
-                        <th>Mã số thuế</th>
-                        <th>Ngày tạo</th>
-                        <th class="text-center">Trạng thái</th>
-                        <th class="actions text-center">Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($users)): ?>
-                        <?php foreach ($users as $user): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($user['id']); ?></td>
-                                <td><?php echo htmlspecialchars($user['username'] ?? '-'); ?></td>
-                                <td><?php echo htmlspecialchars($user['email'] ?? '-'); ?></td>
-                                <td><?php echo htmlspecialchars($user['phone'] ?? '-'); ?></td>
-                                <td><?php echo $user['is_company'] ? 'Công ty' : 'Cá nhân'; ?></td>
-                                <td><?php echo $user['is_company'] ? htmlspecialchars($user['company_name'] ?? '-') : '-'; ?></td>
-                                <td><?php echo $user['is_company'] ? htmlspecialchars($user['tax_code'] ?? '-') : '-'; ?></td>
-                                <td><?php echo format_date($user['created_at']); ?></td>
-                                <td><?php echo get_user_status_display($user); ?></td>
-                                <td class="actions">
-                                    <div class="action-buttons">
-                                        <button class="btn-icon btn-view" title="Xem chi tiết" onclick="UserManagementPageEvents.viewUserDetails('<?php echo htmlspecialchars($user['id']); ?>')"><i class="fas fa-eye"></i></button>
-                                        <?php if ($admin_role !== 'customercare'): ?>
-                                            <button class="btn-icon btn-edit" title="Sửa" onclick="UserManagementPageEvents.openEditUserModal('<?php echo htmlspecialchars($user['id']); ?>')" data-permission="user_edit"><i class="fas fa-pencil-alt"></i></button>
-                                            <?php
-                                                $is_inactive = isset($user['deleted_at']) && $user['deleted_at'] !== null && $user['deleted_at'] !== '';
-                                                $action = $is_inactive ? 'enable' : 'disable';
-                                                $icon = $is_inactive ? 'fa-toggle-on' : 'fa-toggle-off';
-                                                $title = $is_inactive ? 'Kích hoạt' : 'Vô hiệu hóa';
-                                                $btn_class = $is_inactive ? 'btn-success' : 'btn-secondary';
-                                            ?>
-                                            <button class="btn-icon <?php echo $btn_class; ?>" onclick="UserManagementPageEvents.toggleUserStatus('<?php echo htmlspecialchars($user['id']); ?>', '<?php echo $action; ?>')" title="<?php echo $title; ?>">
-                                                <i class="fas <?php echo $icon; ?>"></i>
-                                            </button>
-                                        <?php endif; ?>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr id="no-results-row">
-                            <td colspan="10">Không tìm thấy người dùng phù hợp.</td>
+        <!-- Bulk Actions Form -->
+        <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
+            <input type="hidden" name="table_name" value="users">
+            <div class="bulk-actions-bar" style="margin-bottom: 15px; display: flex; gap: 10px;">
+                <button type="submit" name="export_selected" class="btn btn-info"><i class="fas fa-file-excel"></i> Xuất mục đã chọn</button>
+                <button type="submit" name="export_all" class="btn btn-success"><i class="fas fa-file-excel"></i> Xuất tất cả</button>
+                <button type="button" id="bulkToggleStatusBtn" onclick="UserManagementPageEvents.bulkToggleUserStatus()" class="btn btn-warning"><i class="fas fa-sync-alt"></i> Đảo trạng thái</button>
+            </div>
+
+            <div class="transactions-table-wrapper">
+                <table class="transactions-table" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>ID</th>
+                            <th>Tên đăng nhập</th>
+                            <th>Email</th>
+                            <th>Số điện thoại</th>
+                            <th>Loại TK</th>
+                            <th>Tên công ty</th>
+                            <th>Mã số thuế</th>
+                            <th>Ngày tạo</th>
+                            <th class="text-center">Trạng thái</th>
                         </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($users)): ?>
+                            <?php foreach ($users as $user): ?>
+                                <tr>
+                                    <td><input type="checkbox" class="rowCheckbox" name="ids[]" value="<?php echo htmlspecialchars($user['id']); ?>"></td>
+                                    <td><?php echo htmlspecialchars($user['id']); ?></td>
+                                    <td><?php echo htmlspecialchars($user['username'] ?? '-'); ?></td>
+                                    <td><?php echo htmlspecialchars($user['email'] ?? '-'); ?></td>
+                                    <td><?php echo htmlspecialchars($user['phone'] ?? '-'); ?></td>
+                                    <td><?php echo $user['is_company'] ? 'Công ty' : 'Cá nhân'; ?></td>
+                                    <td><?php echo $user['is_company'] ? htmlspecialchars($user['company_name'] ?? '-') : '-'; ?></td>
+                                    <td><?php echo format_date($user['created_at']); ?></td>
+                                    <td><?php echo get_user_status_display($user); ?></td>
+                                    <td class="actions">
+                                        <div class="action-buttons">
+                                            <button type="button" class="btn-icon btn-view" title="Xem chi tiết" onclick="UserManagementPageEvents.viewUserDetails('<?php echo htmlspecialchars($user['id']); ?>')"><i class="fas fa-eye"></i></button>
+                                            <?php if ($admin_role !== 'customercare'): ?>
+                                                <button type="button" class="btn-icon btn-edit" title="Sửa" onclick="UserManagementPageEvents.openEditUserModal('<?php echo htmlspecialchars($user['id']); ?>')" data-permission="user_edit"><i class="fas fa-pencil-alt"></i></button>
+                                                <?php
+                                                    $is_inactive = isset($user['deleted_at']) && $user['deleted_at'] !== null && $user['deleted_at'] !== '';
+                                                    $action = $is_inactive ? 'enable' : 'disable';
+                                                    $icon = $is_inactive ? 'fa-toggle-on' : 'fa-toggle-off';
+                                                    $title = $is_inactive ? 'Kích hoạt' : 'Vô hiệu hóa';
+                                                    $btn_class = $is_inactive ? 'btn-success' : 'btn-secondary';
+                                                ?>
+                                                <button class="btn-icon <?php echo $btn_class; ?>" onclick="UserManagementPageEvents.toggleUserStatus('<?php echo htmlspecialchars($user['id']); ?>', '<?php echo $action; ?>')" title="<?php echo $title; ?>">
+                                                    <i class="fas <?php echo $icon; ?>"></i>
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr id="no-results-row">
+                                <td colspan="10">Không tìm thấy người dùng phù hợp.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </form> <!-- End Bulk Actions Form -->
 
         <div class="pagination-footer">
              <div class="pagination-info">
@@ -320,8 +319,6 @@ include $private_includes_path . 'admin_sidebar.php';
 </script>
 
 <!-- load JS utilities and page logic -->
-<script src="<?php echo $base_path; ?>public/assets/js/utils/api.js"></script>
-<script src="<?php echo $base_path; ?>public/assets/js/utils/helpers.js"></script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/user/user_management.js"></script>
 
 <?php

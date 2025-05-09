@@ -1,0 +1,25 @@
+/* Content Header */
+.content-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.5rem; padding: 1rem 1.5rem;
+    background: white; border-radius: var(--rounded-lg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color);
+}
+.content-header h2 {
+    font-size: 1.5rem; font-weight: var(--font-semibold);
+    color: var(--gray-800);
+}
+.user-info {
+    display: flex; align-items: center; gap: 1rem;
+    font-size: var(--font-size-sm);
+}
+.user-info span .highlight {
+    color: var(--primary-600); font-weight: var(--font-semibold);
+}
+.user-info a {
+    color: var(--primary-600); text-decoration: none;
+}
+.user-info a:hover {
+    text-decoration: underline;
+}

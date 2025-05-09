@@ -5,6 +5,8 @@
 $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+
 // Đảm bảo đóng PDO khi script kết thúc
 register_shutdown_function(function() use (&$db) {
     $db = null;
@@ -12,10 +14,8 @@ register_shutdown_function(function() use (&$db) {
 
 header('Content-Type: application/json');
 
-// Basic security check (adjust as needed)
-if (!isset($_SESSION['admin_id'])) {
-    abort('Unauthorized', 401);
-}
+// Use Auth class for authentication
+Auth::ensureAuthenticated(); // Allow any authenticated user to get details, or restrict further if needed.
 
 if (!isset($_GET['id'])) {
     abort('Account ID not provided.', 400);

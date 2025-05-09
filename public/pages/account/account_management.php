@@ -1,11 +1,6 @@
 <?php
 // filepath: public\pages\account\account_management.php
-$require_constants = __DIR__ . '/../../../private/config/constants.php';
-require_once $require_constants;
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ' . BASE_URL . 'public/pages/auth/admin_login.php');
-    exit;
-}
+
 // --- Bootstrap and Initialization ---
 // Includes session start, auth check, DB connection, base path, etc.
 $bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
@@ -13,10 +8,16 @@ $db = $bootstrap_data['db'];
 $base_url = $bootstrap_data['base_url'];
 $user_display_name = $bootstrap_data['user_display_name'];
 $private_includes_path = $bootstrap_data['private_includes_path'];
+$private_actions_path = $bootstrap_data['private_actions_path'];
+
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
+    exit;
+}
 
 // --- Include Page-Specific Logic ---
 // Handles filtering, pagination, and data fetching for accounts
-$account_list_data = require __DIR__ . '/../../../private/actions/account/handle_account_list.php';
+$account_list_data = require $private_actions_path . 'account/handle_account_list.php';
 $filters = $account_list_data['filters'];
 $accounts = $account_list_data['accounts'];
 $total_items = $account_list_data['total_items'];
@@ -34,7 +35,7 @@ $packagesStmt = $db->query("SELECT id, name FROM package WHERE is_active = 1 ORD
 $packages = $packagesStmt->fetchAll(PDO::FETCH_ASSOC);
 
 // --- Include Helpers needed for the View ---
-require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php';
+require_once BASE_PATH . '/utils/dashboard_helpers.php';
 
 // Thiết lập tiêu đề trang để admin_header.php dùng
 $page_title = 'Quản lý TK Đo đạc - Admin';
@@ -61,7 +62,7 @@ include $private_includes_path . 'admin_sidebar.php';
                 <i class="fas fa-plus"></i> Tạo TK thủ công
             </button>
         </div>
-        <p class="text-xs sm:text-sm text-gray-600 mb-4" style="font-size: var(--font-size-sm); color: var(--gray-600); margin-bottom: 1rem;">Quản lý các tài khoản dịch vụ đo đạc RTK của khách hàng.</p>
+        <p class="text-xs sm:text-sm text-gray-600 mb-4 description-text">Quản lý các tài khoản dịch vụ đo đạc RTK của khách hàng.</p>
 
         <!-- Filter Form -->
         <form method="GET" action="">
@@ -89,46 +90,83 @@ include $private_includes_path . 'admin_sidebar.php';
             </div>
         </form>
 
-        <div class="transactions-table-wrapper">
-            <table class="transactions-table" id="accountsTable">
-                <thead>
-                    <tr>
-                        <th>ID TK</th>
-                        <th>Username TK</th>
-                        <th>Email user</th>
-                        <th>Gói</th>
-                        <th>Ngày KH</th>
-                        <th>Ngày HH</th>
-                        <th style="text-align: center;">Trạng thái</th>
-                        <th class="actions" style="text-align: center;">Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($accounts)): ?>
-                        <?php foreach ($accounts as $account): ?>
-                            <tr data-account-id="<?php echo htmlspecialchars($account['id']); ?>" data-status="<?php echo htmlspecialchars($account['derived_status']); ?>">
-                                <td><?php echo htmlspecialchars($account['id']); ?></td>
-                                <td><?php echo htmlspecialchars($account['username_acc'] ?? ''); ?></td>
-                                <td><?php echo htmlspecialchars($account['user_email'] ?? ''); ?></td>
-                                <td><?php echo htmlspecialchars($account['package_name'] ?? ''); ?></td>
-                                <td><?php echo format_date($account['activation_date'] ?? null); ?></td>
-                                <td><?php echo format_date($account['expiry_date'] ?? null); ?></td>
-                                <td class="status"><?php echo get_account_status_badge($account['derived_status'] ?? 'unknown'); ?></td>
-                                <td class="actions">
-                                    <div class="action-buttons">
-                                        <?php echo get_account_action_buttons($account); // Assumes this function is in dashboard_helpers.php and generates buttons with btn-icon class ?>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr id="no-results-row">
-                            <td colspan="8">Không tìm thấy tài khoản phù hợp.</td>
+        <!-- Bulk Actions and Table -->
+        <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
+            <input type="hidden" name="table_name" value="accounts">
+            <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px;">
+                <button type="submit" name="export_selected" class="btn btn-info">
+                    <i class="fas fa-file-excel"></i> Xuất mục đã chọn
+                </button>
+                <button type="submit" name="export_all" class="btn btn-success">
+                    <i class="fas fa-file-excel"></i> Xuất tất cả
+                </button>
+                <button type="button" id="bulkToggleStatusBtn" onclick="AccountManagementPageEvents.bulkToggleStatus()" class="btn btn-warning">
+                    <i class="fas fa-sync-alt"></i> Đảo trạng thái
+                </button>
+                <button type="button" id="bulkDeleteBtn" onclick="AccountManagementPageEvents.bulkDeleteAccounts()" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Xóa mục đã chọn
+                </button>
+                <!-- Add bulk renew button -->
+                <button type="button" id="bulkRenewBtn" onclick="AccountManagementPageEvents.bulkRenewAccounts()" class="btn btn-info">
+                    <i class="fas fa-history"></i> Gia hạn mục đã chọn
+                </button>
+            </div>
+
+            <div class="transactions-table-wrapper">
+                <table class="transactions-table" id="accountsTable">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>ID TK</th>
+                            <th>Username TK</th>
+                            <th>Email user</th>
+                            <th>Gói</th>
+                            <th>Ngày KH</th>
+                            <th>Ngày HH</th>
+                            <th class="text-center">Trạng thái</th>
+                            <th class="actions text-center">Hành động</th>
                         </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($accounts)): ?>
+                            <?php foreach ($accounts as $account): ?>
+                                <tr data-account-id="<?php echo htmlspecialchars($account['id']); ?>" data-status="<?php echo htmlspecialchars($account['derived_status']); ?>">
+                                    <td>
+                                        <input type="checkbox" class="rowCheckbox" name="ids[]" value="<?php echo htmlspecialchars($account['id']); ?>">
+                                    </td>
+                                    <td><?php echo htmlspecialchars($account['id']); ?></td>
+                                    <td><?php echo htmlspecialchars($account['username_acc'] ?? ''); ?></td>
+                                    <td><?php echo htmlspecialchars($account['user_email'] ?? ''); ?></td>
+                                    <td><?php echo htmlspecialchars($account['package_name'] ?? ''); ?></td>
+                                    <td><?php echo format_date($account['activation_date'] ?? null); ?></td>
+                                    <td><?php echo format_date($account['expiry_date'] ?? null); ?></td>
+                                    <td class="status"><?php echo get_account_status_badge($account['derived_status'] ?? 'unknown'); ?></td>
+                                    <td class="actions">
+                                        <div class="action-buttons">
+                                            <?php 
+                                            // Original buttons from helper
+                                            echo get_account_action_buttons($account); 
+                                            // Add Renew button manually here or modify get_account_action_buttons helper
+                                            $canRenew = !in_array($account['derived_status'], ['pending', 'rejected']); // Example condition
+                                            if ($canRenew):
+                                            ?>
+                                            <button type="button" title="Gia hạn TK" class="btn-icon btn-renew" onclick="AccountManagementPageEvents.openRenewAccountModal('<?php echo htmlspecialchars($account['id']); ?>')">
+                                                <i class="fas fa-history"></i>
+                                            </button>
+                                            <?php endif; ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr id="no-results-row">
+                                <td colspan="9">Không tìm thấy tài khoản phù hợp.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </form>
 
         <!-- Pagination -->
         <div class="pagination-footer">
@@ -336,10 +374,91 @@ include $private_includes_path . 'admin_sidebar.php';
     </div>
 </div>
 
+<div id="renewAccountModal" class="modal">
+    <div class="modal-content">
+        <form id="renewAccountForm">
+            <div class="modal-header">
+                <h4>Gia hạn tài khoản</h4>
+                <span class="modal-close" onclick="closeModal('renewAccountModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="renew-account-id" name="id">
+                <div class="form-group">
+                    <label>Username TK:</label>
+                    <p id="renew-username-display" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label>Gói hiện tại:</label>
+                    <p id="renew-current-package-display" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label>Ngày hết hạn hiện tại:</label>
+                    <p id="renew-current-expiry-display" class="form-control-static"></p>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label for="renew-package">Gói mới (nếu thay đổi):</label>
+                    <select id="renew-package" name="package_id">
+                        <option value="">Giữ gói hiện tại / Chọn gói mới</option>
+                        <?php foreach ($packages as $pkg): ?>
+                            <option value="<?php echo htmlspecialchars($pkg['id']); ?>">
+                                <?php echo htmlspecialchars($pkg['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="renew-activation-date">Ngày kích hoạt mới (nếu gia hạn khi đã hết hạn):</label>
+                    <input type="date" id="renew-activation-date" name="activation_date" required>
+                </div>
+                <div class="form-group">
+                    <label for="renew-expiry-date">Ngày hết hạn mới:</label>
+                    <input type="date" id="renew-expiry-date" name="expiry_date" required>
+                </div>
+                <div class="form-group error-message" id="renewAccountError"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('renewAccountModal')">Hủy</button>
+                <button type="submit" class="btn btn-primary">Xác nhận Gia hạn</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Bulk Renew Modal -->
+<div id="bulkRenewModal" class="modal">
+    <div class="modal-content">
+        <form id="bulkRenewForm">
+            <div class="modal-header">
+                <h4>Gia hạn hàng loạt</h4>
+                <span class="modal-close" onclick="closeModal('bulkRenewModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="bulk-renew-package">Chọn gói gia hạn:</label>
+                    <select id="bulk-renew-package" name="package_id" required>
+                        <option value="">-- Chọn gói --</option>
+                        <?php foreach ($packages as $pkg): ?>
+                            <option value="<?php echo htmlspecialchars($pkg['id']); ?>">
+                                <?php echo htmlspecialchars($pkg['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group error-message" id="bulkRenewError"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('bulkRenewModal')">Hủy</button>
+                <button type="submit" class="btn btn-primary">Xác nhận Gia hạn</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div id="toast-container"></div> <!-- Toast container -->
 
 <script>
-    const apiBasePath = '<?php echo $base_url; ?>public/actions/account/index.php';
+    const apiBasePath = '<?php echo $base_url; ?>public/handlers/account/index.php';
     const basePath = '<?php echo $base_url; ?>';
     const packageDurations = <?php echo json_encode([
         '1' => ['months' => 1],
@@ -349,6 +468,8 @@ include $private_includes_path . 'admin_sidebar.php';
         '5' => ['years' => 100],
         '7' => ['days' => 7]
     ]); ?>;
+    // expose package list for bulk renew UI
+    const packagesList = <?php echo json_encode($packages); ?>;
 </script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/account/account_management.js"></script>
 

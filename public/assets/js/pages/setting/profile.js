@@ -21,7 +21,7 @@ async function updateAdminProfile(event) {
     saveProfileBtn.disabled = true;
     const name = document.getElementById('admin-profile-name').value;
     try {
-        const res = await api.postJson(`${basePath}public/actions/setting/index.php?action=process_profile_update`, { name });
+        const res = await api.postJson(`${basePath}public/handlers/setting/index.php?action=process_profile_update`, { name });
         if (!res.success) throw new Error(res.message || 'Không thể cập nhật.');
         setStatus(profileStatusEl, 'Cập nhật thành công!', 'success');
         const headerNameSpan = document.querySelector('.user-info .highlight');
@@ -57,7 +57,7 @@ async function changeAdminPassword(event) {
     }
 
     try {
-        const res = await api.postJson(`${basePath}public/actions/setting/index.php?action=process_password_change`, {
+        const res = await api.postJson(`${basePath}public/handlers/setting/index.php?action=process_password_change`, {
             current_password: currentPassword,
             new_password: newPassword,
             confirm_password: confirmPassword
@@ -76,7 +76,7 @@ async function changeAdminPassword(event) {
 document.addEventListener('DOMContentLoaded', () => {
     (async () => {
         try {
-            const res = await api.getJson(`${basePath}public/actions/setting/index.php?action=process_profile_fetch`);
+            const res = await api.getJson(`${basePath}public/handlers/setting/index.php?action=process_profile_fetch`);
             if (res.success && res.data) {
                 const d = res.data;
                 document.getElementById('admin-profile-name').value = d.name || '';

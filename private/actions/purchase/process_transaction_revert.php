@@ -4,16 +4,16 @@ declare(strict_types=1);
 header('Content-Type: application/json'); // Set response type
 
 // --- Permission check ---
-if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
-    api_error('Permission denied.', 403);
-}
+require_once __DIR__ . '/../../classes/Auth.php';
+Auth::ensureAuthorized(['admin']); 
 
 require_once __DIR__ . '/../../config/constants.php';
 require_once BASE_PATH . '/classes/Database.php';
 require_once BASE_PATH . '/api/rtk_system/account_api.php';
 require_once BASE_PATH . '/utils/functions.php';
 require_once BASE_PATH . '/services/TransactionHistoryService.php'; 
-
+require_once BASE_PATH . '/classes/TransactionModel.php';
+require_once BASE_PATH . '/classes/AccountModel.php'; 
 // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     api_error('Invalid request method.', 405);
@@ -21,10 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // Expecting JSON payload
 $rawInput = file_get_contents('php://input');
-    $input = json_decode($rawInput, true);
-    if (!is_array($input)) {
-        $input = $_POST;
-    }
+$input = json_decode($rawInput, true);
+if (!is_array($input)) {
+    $input = $_POST;
+}
 $transaction_id = filter_var($input['transaction_id'] ?? null, FILTER_VALIDATE_INT);
 
 if ($transaction_id === false || $transaction_id <= 0) {
@@ -44,94 +44,55 @@ if (!$db) {
 
 try {
     $db->beginTransaction();
+    $tm = new TransactionModel();
 
-    // NEW: Map history ID → registration ID & transaction type
-    $stmt_hist = $db->prepare("
-        SELECT registration_id, transaction_type
-        FROM transaction_history
-        WHERE id = :hid FOR UPDATE
-    ");
-    $stmt_hist->bindParam(':hid', $transaction_id, PDO::PARAM_INT);
-    $stmt_hist->execute();
-    $hist = $stmt_hist->fetch(PDO::FETCH_ASSOC);
-    if (!$hist) {
-        throw new Exception("Transaction history not found (ID: {$transaction_id}).");
-    }
-    $reg_id  = (int)$hist['registration_id'];
-    $tx_type = $hist['transaction_type'];
+    $th = $tm->getHistoryById($transaction_id);
+    if (!$th) throw new Exception("History not found");
+    $reg_id = (int)$th['registration_id'];
+    $tx_type = $th['transaction_type'];
 
-    // 1. Verify Transaction Exists and is Active
-    $stmt_check = $db->prepare("
-        SELECT status, user_id, location_id, start_time, end_time
-        FROM registration
-        WHERE id = :id AND deleted_at IS NULL FOR UPDATE
-    ");
-    $stmt_check->bindParam(':id', $reg_id, PDO::PARAM_INT);
-    $stmt_check->execute();
-    $registration = $stmt_check->fetch(PDO::FETCH_ASSOC);
-
-    if (!$registration) {
-        throw new Exception("Transaction not found or deleted.");
-    }
-    if ($registration['status'] !== 'active') {
-         throw new Exception("Transaction is not approved (Current Status: " . $registration['status'] . "). Only approved transactions can be reverted.");
+    $reg = $tm->getRegistrationById($reg_id);
+    if (!$reg || $reg['status'] !== 'active') {
+        throw new Exception("Cannot revert: Registration not found or not active.");
     }
 
-    // --- NEW: nếu lịch sử là 'renewal' thì trừ lại end_time ---
+    // nếu renewal
     if ($tx_type === 'renewal') {
-        $stmt_adj = $db->prepare("
-            UPDATE registration
-            SET end_time = start_time, updated_at = NOW()
-            WHERE id = :id
-        ");
-        $stmt_adj->bindParam(':id', $reg_id, PDO::PARAM_INT);
-        $stmt_adj->execute();
+        // chỉ trừ lại thời gian đã cộng trên survey_account
+        $tm->adjustAccountTimesForRevert($reg_id, $transaction_id);
+
+        // cập nhật ngày start/end đã điều chỉnh lên RTK
+        $accountModel = new AccountModel($db);
+        $accounts     = $tm->getAllSurveyAccountsForRegistration($reg_id);
+        $apiFailures  = [];
+        foreach ($accounts as $account) {
+            $payload   = $accountModel->buildRtkUpdatePayload($account['id'], []);
+            error_log("[Revert Transaction {$transaction_id}] Updating RTK account dates for account {$account['id']}: " . print_r($payload, true));
+            $apiResult = updateRtkAccount($payload);
+            if (empty($apiResult['success'])) {
+                $apiFailures[] = $account['id'];
+                error_log("[Revert Transaction {$transaction_id}] FAILED to update RTK account {$account['id']}: " . $apiResult['error']);
+            } else {
+                error_log("[Revert Transaction {$transaction_id}] RTK update success for account {$account['id']}");
+            }
+        }
+        if (!empty($apiFailures)) {
+            throw new Exception('RTK update failed for accounts: ' . implode(',', $apiFailures));
+        }
     }
 
-    // --- Fetch associated survey accounts BEFORE updates ---
-    $stmt_accounts = $db->prepare("
-        SELECT id, username_acc, password_acc, concurrent_user, customerBizType
-        FROM survey_account
-        WHERE registration_id = :id AND deleted_at IS NULL
-    ");
-    $stmt_accounts->bindParam(':id', $reg_id, PDO::PARAM_INT);
-    $stmt_accounts->execute();
-    $accounts = $stmt_accounts->fetchAll(PDO::FETCH_ASSOC);
-    // --- End Fetch ---
+    // chung: chuyển registration về pending và bỏ xác nhận thanh toán
+    $tm->updateRegistrationStatus($reg_id, 'pending');
+    $tm->unconfirmPayment($transaction_id);
 
-    // 2. Update Registration Status back to Pending
-    $stmt_update_reg = $db->prepare("
-        UPDATE registration
-        SET status = 'pending', updated_at = NOW()
-        WHERE id = :id
-    ");
-    $stmt_update_reg->bindParam(':id', $reg_id, PDO::PARAM_INT);
-    $stmt_update_reg->execute();
+    // chỉ xóa mềm và gọi API external khi không phải renewal
+    if ($tx_type !== 'renewal') {
+        $accounts = $tm->getAllSurveyAccountsForRegistration($reg_id);
+        $tm->softDeleteAccounts($reg_id);
+        $tm->updateHistoryStatus($transaction_id, 'pending');
 
-    // 3. Update Payment Confirmation back to Unconfirmed
-    $stmt_unconfirm_pay = $db->prepare("
-        UPDATE transaction_history
-        SET payment_confirmed = 0, payment_confirmed_at = NULL, updated_at = NOW()
-        WHERE id = :hid
-    ");
-    $stmt_unconfirm_pay->bindParam(':hid', $transaction_id, PDO::PARAM_INT);
-    $stmt_unconfirm_pay->execute();
-
-    // 4. Delete Associated Survey Account(s) in DB (soft delete)
-    $stmt_delete_acc = $db->prepare("
-        UPDATE survey_account 
-        SET deleted_at = NOW(), updated_at = NOW() 
-        WHERE registration_id = :id AND deleted_at IS NULL
-    ");
-    $stmt_delete_acc->bindParam(':id', $reg_id, PDO::PARAM_INT);
-    $stmt_delete_acc->execute();
-
-    // 5. Update Transaction History back to Pending
-    TransactionHistoryService::updateStatusByRegistrationId($db, $transaction_id, 'pending');
-
-    // --- NEW: track API failures & delay commit until after external calls ---
-    $apiFailures = [];
-    if (!empty($accounts)) {
+        // track API failures & delay commit until after external calls
+        $apiFailures = [];
         foreach ($accounts as $account) {
             error_log("[Revert Transaction {$transaction_id}] Deleting RTK account {$account['id']}");
             $apiResult = deleteRtkAccount([$account['id']]);
@@ -142,15 +103,14 @@ try {
                 error_log("[Revert Transaction {$transaction_id}] RTK delete success for account {$account['id']}.");
             }
         }
+        if (!empty($apiFailures)) {
+            throw new Exception('RTK deletion failed for account IDs: ' . implode(',', $apiFailures));
+        }
     } else {
-        error_log("[Revert Transaction {$transaction_id}] No associated survey accounts to delete via API.");
+        // với renewal chỉ update history status
+        $tm->updateHistoryStatus($transaction_id, 'pending');
     }
-
-    // If any external deletes failed, abort and rollback everything
-    if (!empty($apiFailures)) {
-        throw new Exception('RTK deletion failed for account IDs: ' . implode(',', $apiFailures));
-    }
-
+    
     // All good – now commit
     $db->commit();
     api_success(null, 'Transaction #' . $transaction_id . ' reverted successfully. Accounts handled.');

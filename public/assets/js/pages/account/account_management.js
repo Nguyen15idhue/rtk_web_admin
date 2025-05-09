@@ -10,10 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewDetailsContent = document.getElementById('viewAccountDetailsContent');
     const createModal = document.getElementById('createAccountModal');
     const editModal = document.getElementById('editAccountModal');
+    const renewModal = document.getElementById('renewAccountModal'); // New modal
     const createAccountForm = document.getElementById('createAccountForm');
     const editAccountForm = document.getElementById('editAccountForm');
+    const renewAccountForm = document.getElementById('renewAccountForm'); // New form
     const createAccountError = document.getElementById('createAccountError');
     const editAccountError = document.getElementById('editAccountError');
+    const renewAccountError = document.getElementById('renewAccountError'); // New error display
 
     function openCreateMeasurementAccountModal() {
         if (createAccountForm) createAccountForm.reset();
@@ -60,6 +63,73 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function openRenewAccountModal(accountId) {
+        if (!renewModal || !renewAccountForm) return;
+
+        renewAccountForm.reset();
+        if (renewAccountError) renewAccountError.textContent = '';
+
+        try {
+            const env = await getJson(`${apiBasePath}?action=get_account_details&id=${accountId}`);
+            if (!env.success) {
+                throw new Error(env.message || `Không thể lấy chi tiết tài khoản.`);
+            }
+            const account = env.data || env.account;
+            if (!account) {
+                throw new Error('No account payload');
+            }
+
+            renewAccountForm.querySelector('#renew-account-id').value = account.id;
+            renewAccountForm.querySelector('#renew-username-display').textContent = account.username_acc || 'N/A';
+            renewAccountForm.querySelector('#renew-current-package-display').textContent = account.package_name || 'N/A';
+            renewAccountForm.querySelector('#renew-current-expiry-display').textContent = account.expiry_date ? account.expiry_date.split(' ')[0] : 'N/A';
+            
+            renewAccountForm.querySelector('#renew-package').value = account.package_id || '';
+
+            // 1. Set "New Activation Date" for the form to today's date.
+            const todayDateObj = new Date();
+            todayDateObj.setHours(0, 0, 0, 0); // Normalize to start of day
+
+            const todayYear = todayDateObj.getFullYear();
+            const todayMonth = String(todayDateObj.getMonth() + 1).padStart(2, '0');
+            const todayDay = String(todayDateObj.getDate()).padStart(2, '0');
+            const todayDateString = `${todayYear}-${todayMonth}-${todayDay}`;
+
+            renewAccountForm.querySelector('#renew-activation-date').value = todayDateString;
+            
+            // 2. Determine the base date for calculating the new expiry date.
+            // This base date is MAX(old_expiry_date, today).
+            let baseDateForExpiryCalculationObj = todayDateObj; // Default to today
+
+            if (account.expiry_date) {
+                const oldExpiryDateStr = account.expiry_date.split(' ')[0]; // "YYYY-MM-DD"
+                const parts = oldExpiryDateStr.split('-');
+                if (parts.length === 3) {
+                    const oldExpiryDateCandidateObj = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                    oldExpiryDateCandidateObj.setHours(0,0,0,0); 
+
+                    if (!isNaN(oldExpiryDateCandidateObj.getTime()) && oldExpiryDateCandidateObj > todayDateObj) {
+                        baseDateForExpiryCalculationObj = oldExpiryDateCandidateObj;
+                    }
+                }
+            }
+            
+            const baseYear = baseDateForExpiryCalculationObj.getFullYear();
+            const baseMonth = String(baseDateForExpiryCalculationObj.getMonth() + 1).padStart(2, '0');
+            const baseDay = String(baseDateForExpiryCalculationObj.getDate()).padStart(2, '0');
+            const baseDateForExpiryCalculationString = `${baseYear}-${baseMonth}-${baseDay}`;
+
+            // 3. Calculate and set the "New Expiry Date" based on this baseDateForExpiryCalculationString and selected package.
+            const newSuggestedExpiry = calculateExpiryDate(baseDateForExpiryCalculationString, account.package_id || '');
+            renewAccountForm.querySelector('#renew-expiry-date').value = newSuggestedExpiry;
+
+            renewModal.style.display = 'block';
+        } catch (error) {
+            console.error('Error fetching account details for renewal:', error);
+            window.showToast(error.message || 'Không thể tải chi tiết tài khoản cho gia hạn.', 'error');
+        }
+    }
+
     function viewAccountDetails(accountId) {
         if (!viewModal || !viewDetailsContent) {
             console.error('View modal elements not found');
@@ -100,21 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 viewDetailsContent.innerHTML =
                     `<p style="color: red;">Đã xảy ra lỗi: ${error.message}</p>`;
             });
-    }
-
-    function get_account_status_badge_js(status) {
-        status = status ? status.toLowerCase() : 'unknown';
-        let badgeClass = 'badge-gray';
-        let statusText = 'Không xác định';
-
-        switch (status) {
-            case 'active': badgeClass = 'badge-green'; statusText = 'Hoạt động'; break;
-            case 'pending': badgeClass = 'badge-yellow'; statusText = 'Chờ KH'; break;
-            case 'expired': badgeClass = 'badge-red'; statusText = 'Hết hạn'; break;
-            case 'suspended': badgeClass = 'badge-gray'; statusText = 'Đình chỉ'; break;
-            case 'rejected': badgeClass = 'badge-red'; statusText = 'Bị từ chối'; break;
-        }
-        return `<span class="status-badge ${badgeClass}">${statusText}</span>`;
     }
 
     async function handleCreateAccountSubmit(form) {
@@ -175,6 +230,39 @@ document.addEventListener('DOMContentLoaded', () => {
         } finally {
             submitButton.disabled = false;
             submitButton.textContent = 'Lưu thay đổi';
+        }
+    }
+
+    async function handleRenewAccountSubmit(form) {
+        const formData = new FormData(form);
+        const accountId = formData.get('id');
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Đang gia hạn...';
+        if (renewAccountError) renewAccountError.textContent = '';
+
+        try {
+            const result = await postForm(`${apiBasePath}?action=manual_renew_account`, formData);
+
+            if (result.success) {
+                window.showToast(result.message || 'Gia hạn tài khoản thành công!', 'success');
+                helperCloseModal('renewAccountModal');
+                if (result.account) {
+                    updateTableRow(accountId, result.account);
+                } else {
+                    window.location.reload();
+                }
+            } else {
+                if (renewAccountError) renewAccountError.textContent = result.message || 'Gia hạn tài khoản thất bại.';
+                window.showToast(result.message || 'Gia hạn tài khoản thất bại.', 'error');
+            }
+        } catch (error) {
+            console.error('Error renewing account:', error);
+            if (renewAccountError) renewAccountError.textContent = 'Lỗi khi gửi yêu cầu gia hạn.';
+            window.showToast('Lỗi khi gửi yêu cầu gia hạn.', 'error');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Xác nhận Gia hạn';
         }
     }
 
@@ -312,6 +400,15 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error("Element with ID 'editAccountForm' not found.");
     }
 
+    if (renewAccountForm) {
+        renewAccountForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            handleRenewAccountSubmit(this);
+        });
+    } else {
+        console.error("Element with ID 'renewAccountForm' not found.");
+    }
+
     window.addEventListener('click', function(event) {
         document.querySelectorAll('.modal').forEach(modal => {
             if (event.target === modal) {
@@ -394,6 +491,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const renewPkg = document.getElementById('renew-package');
+    const renewAct = document.getElementById('renew-activation-date');
+    const renewExp = document.getElementById('renew-expiry-date');
+    if (renewPkg && renewAct && renewExp) {
+        function updateRenewExpiry() {
+            const pid = renewPkg.value;
+            const actDate = renewAct.value;
+            if (packageDurations && packageDurations[pid] && actDate) {
+                renewExp.value = calculateExpiryDate(actDate, pid);
+            }
+        }
+        renewPkg.addEventListener('change', updateRenewExpiry);
+        renewAct.addEventListener('change', updateRenewExpiry);
+        renewExp.addEventListener('input', () => {
+            const pid = renewPkg.value;
+            const actDate = renewAct.value;
+            if (renewExp.value && packageDurations && packageDurations[pid] && actDate &&
+                calculateExpiryDate(actDate, pid) !== renewExp.value) {
+                // renewPkg.value = ''; // Or just allow manual override
+            }
+        });
+    }
+
     const editUsernameInput = document.getElementById('edit-username');
     if (editUsernameInput) {
         editUsernameInput.addEventListener('focus', () => {
@@ -406,7 +526,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!infoElement || !email) return;
 
         try {
-            const result = await getJson(`${basePath}public/actions/account/index.php?action=search_users&email=${encodeURIComponent(email)}&exact=1`);
+            const result = await getJson(`${basePath}public/handlers/account/index.php?action=search_users&email=${encodeURIComponent(email)}&exact=1`);
             const users = result.data?.users;
             if (result.success && users && users.length > 0) {
                 const user = users[0];
@@ -445,7 +565,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             searchTimer = setTimeout(async () => {
                 try {
-                    const result = await getJson(`${basePath}public/actions/account/index.php?action=search_users&email=${encodeURIComponent(query)}`);
+                    const result = await getJson(`${basePath}public/handlers/account/index.php?action=search_users&email=${encodeURIComponent(query)}`);
                     const users = result.data?.users;
                     if (result.success && users) {
                         currentUsers = users;
@@ -484,14 +604,147 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEmailAutocomplete('create-user-email', 'emailSuggestionsCreate', 'create-user-info');
     setupEmailAutocomplete('edit-user-email', 'emailSuggestionsEdit', 'edit-user-info');
 
+    const selectAllCheckbox = document.getElementById('selectAll');
+    selectAllCheckbox?.addEventListener('change', () => {
+        const checked = selectAllCheckbox.checked;
+        document.querySelectorAll('.rowCheckbox').forEach(cb => cb.checked = checked);
+    });
+
+    async function bulkToggleStatus() {
+        const ids = Array.from(document.querySelectorAll('.rowCheckbox:checked')).map(cb => cb.value);
+        if (ids.length === 0) {
+            return alert('Vui lòng chọn ít nhất một tài khoản.');
+        }
+        if (!confirm(`Bạn có chắc muốn đảo trạng thái cho ${ids.length} tài khoản?`)) return;
+        try {
+            await Promise.all(ids.map(id => {
+                const row = document.querySelector(`tr[data-account-id="${id}"]`);
+                const status = row?.dataset.status;
+                const action = (status === 'suspended' || status === 'pending') ? 'reactivate' : 'suspend';
+                return postJson(`${apiBasePath}?action=toggle_account_status`, { id, action });
+            }));
+            window.showToast('Đã đảo trạng thái xong.', 'success');
+            window.location.reload();
+        } catch (e) {
+            console.error(e);
+            window.showToast('Lỗi khi đảo trạng thái.', 'error');
+        }
+    }
+
+    async function bulkDeleteAccounts() {
+        const ids = Array.from(document.querySelectorAll('.rowCheckbox:checked')).map(cb => cb.value);
+        if (ids.length === 0) {
+            return alert('Vui lòng chọn ít nhất một tài khoản.');
+        }
+        if (!confirm(`Bạn có chắc chắn muốn xóa ${ids.length} tài khoản? Hành động này không thể hoàn tác.`)) return;
+        try {
+            await Promise.all(ids.map(id =>
+                postJson(`${apiBasePath}?action=delete_account`, { id })
+            ));
+            window.showToast('Đã xóa các tài khoản được chọn.', 'success');
+            window.location.reload();
+        } catch (e) {
+            console.error(e);
+            window.showToast('Lỗi khi xóa.', 'error');
+        }
+    }
+
+    // open the modal to choose package for bulk renew
+    function openBulkRenewModal() {
+        const form = document.getElementById('bulkRenewForm');
+        if (form) {
+            form.reset();
+            document.getElementById('bulkRenewError').textContent = '';
+            document.getElementById('bulkRenewModal').style.display = 'block';
+        }
+    }
+
+    // handle form submit for bulk renew
+    async function handleBulkRenewSubmit(form) {
+        form.querySelector('button[type="submit"]').disabled = true;
+        const pkg = form.querySelector('#bulk-renew-package').value;
+        if (!pkg) {
+            document.getElementById('bulkRenewError').textContent = 'Vui lòng chọn gói.';
+            form.querySelector('button[type="submit"]').disabled = false;
+            return;
+        }
+        // gather selected account IDs
+        const ids = Array.from(document.querySelectorAll('.rowCheckbox:checked')).map(cb => cb.value);
+        if (ids.length === 0) {
+            alert('Vui lòng chọn ít nhất một tài khoản để gia hạn.');
+            form.querySelector('button[type="submit"]').disabled = false;
+            return;
+        }
+        if (!confirm(`Bạn có chắc chắn muốn gia hạn ${ids.length} tài khoản sang gói "${packagesList.find(p=>p.id==pkg).name}"?`)) {
+            form.querySelector('button[type="submit"]').disabled = false;
+            return;
+        }
+        // compute today string
+        const today = new Date(); today.setHours(0,0,0,0);
+        const y = today.getFullYear(), m = String(today.getMonth()+1).padStart(2,'0'), d = String(today.getDate()).padStart(2,'0');
+        const todayStr = `${y}-${m}-${d}`;
+
+        try {
+            await Promise.all(ids.map(async id => {
+                // fetch old expiry
+                const env = await getJson(`${apiBasePath}?action=get_account_details&id=${id}`);
+                const acc = env.data || env.account;
+                // determine base date = max(old expiry, today)
+                const oldExp = acc.expiry_date?.split(' ')[0] || '';
+                let base = today;
+                if (oldExp) {
+                    const [yy,mm,dd] = oldExp.split('-');
+                    const od = new Date(+yy, +mm-1, +dd);
+                    if (!isNaN(od.getTime()) && od > today) base = od;
+                }
+                const by = base.getFullYear(), bm = String(base.getMonth()+1).padStart(2,'0'), bd = String(base.getDate()).padStart(2,'0');
+                const baseStr = `${by}-${bm}-${bd}`;
+                const newExp = calculateExpiryDate(baseStr, pkg);
+                const fd = new FormData();
+                fd.append('id', id);
+                fd.append('package_id', pkg);
+                fd.append('activation_date', todayStr);      // always start today
+                fd.append('expiry_date', newExp);
+                return postForm(`${apiBasePath}?action=manual_renew_account`, fd);
+            }));
+            window.showToast(`Đã gia hạn xong ${ids.length} tài khoản.`, 'success');
+            closeModal('bulkRenewModal');
+            window.location.reload();
+        } catch (e) {
+            console.error('Bulk renew error:', e);
+            window.showToast('Lỗi khi gia hạn hàng loạt.', 'error');
+        } finally {
+            form.querySelector('button[type="submit"]').disabled = false;
+        }
+    }
+
+    // hook the bulk renew button and form
+    document.getElementById('bulkRenewBtn').addEventListener('click', openBulkRenewModal);
+    const bulkRenewForm = document.getElementById('bulkRenewForm');
+    if (bulkRenewForm) {
+        bulkRenewForm.addEventListener('submit', e => {
+            e.preventDefault();
+            handleBulkRenewSubmit(bulkRenewForm);
+        });
+    }
+
     window.AccountManagementPageEvents = {
         closeModal: helperCloseModal,
         openCreateMeasurementAccountModal,
         openEditAccountModal,
         viewAccountDetails,
         deleteAccount,
-        toggleAccountStatus
+        toggleAccountStatus,
+        bulkToggleStatus,
+        bulkDeleteAccounts,
+        openRenewAccountModal,
+        bulkRenewAccounts: openBulkRenewModal // legacy mapping to open new modal
     };
     Object.assign(window, window.AccountManagementPageEvents);
+
+    // Ensure table row action buttons (view/edit) are non-submitting buttons
+    document.querySelectorAll('#accountsTable .action-buttons button').forEach(function(btn) {
+        btn.setAttribute('type', 'button');
+    });
 
 }); // End DOMContentLoaded

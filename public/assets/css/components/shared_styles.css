@@ -1,0 +1,5 @@
+.description-text {
+  font-size: var(--font-size-sm);
+  color: var(--gray-600);
+  margin-bottom: 1rem;
+}

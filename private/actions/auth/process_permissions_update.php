@@ -1,16 +1,16 @@
 <?php
 header('Content-Type: application/json');
-// Only Super Admin can update permissions
-if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
-    api_error('Unauthorized', 401);
-}
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+
+// Use Auth class for authentication and authorization
+Auth::ensureAuthorized(['admin']);
 
 $bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
-$conn      = $bootstrap['db'];
+$db      = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc
-register_shutdown_function(function() use (&$conn) {
-    $conn = null;
+register_shutdown_function(function() use (&$db) {
+    $db = null;
 });
 
 // Read JSON input
@@ -26,7 +26,7 @@ if (!in_array($role, $validRoles)) {
 }
 $permissions = $data['permissions'];
 try {
-    $stmt = $conn->prepare('UPDATE role_permissions SET allowed = :allowed WHERE role = :role AND permission = :perm');
+    $stmt = $db->prepare('UPDATE role_permissions SET allowed = :allowed WHERE role = :role AND permission = :perm');
     foreach ($permissions as $perm => $allow) {
         $allowed = $allow ? 1 : 0;
         $stmt->bindParam(':allowed', $allowed, PDO::PARAM_INT);

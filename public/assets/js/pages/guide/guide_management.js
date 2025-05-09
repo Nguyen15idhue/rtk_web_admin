@@ -1,8 +1,8 @@
 (function($){
-    const apiUrl = basePath + '/public/actions/guide/index.php';
+    const apiUrl = basePath + '/public/handlers/guide/index.php';
 
     function loadData(q='') {
-        api.getJson(`${apiUrl}?action=fetch&search=${encodeURIComponent(q)}`)
+        api.getJson(`${apiUrl}?action=fetch_guides&search=${encodeURIComponent(q)}`)
             .then(env => {
                 if (!env.success) throw new Error(env.message || 'Lỗi tải danh sách hướng dẫn');
                 const list = env.data;
@@ -45,7 +45,7 @@
 
         $(document).on('click', '.btn-toggle', function(){
             const id = $(this).data('id'), st = $(this).data('status');
-            api.postJson(`${apiUrl}?action=toggle`, { id, status: st })
+            api.postJson(`${apiUrl}?action=toggle_guide_status`, { id, status: st })
                 .then(env => {
                     if (!env.success) throw new Error(env.message || 'Toggle thất bại');
                     loadData($search.val());

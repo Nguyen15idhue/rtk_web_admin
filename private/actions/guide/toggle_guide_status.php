@@ -1,5 +1,8 @@
 <?php
 require_once __DIR__ . '/../../includes/page_bootstrap.php';
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+Auth::ensureAuthorized(['admin']); // Only admins can toggle guide status
+
 header('Content-Type: application/json');
 
 try {

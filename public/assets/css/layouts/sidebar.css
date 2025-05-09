@@ -180,6 +180,31 @@
 
 
 /* ============================================= */
+/* == Main Content Wrapper Adjustments        == */
+/* ============================================= */
+.content-wrapper {
+    transition: margin-left var(--sidebar-transition-speed) ease-in-out;
+    /* Add padding-top if you have a fixed header above the content area */
+    /* padding-top: var(--header-height, 60px); */
+}
+
+/* Desktop: Adjust margin for sidebar */
+@media (min-width: 1025px) {
+    .content-wrapper {
+        margin-left: var(--sidebar-width);
+    }
+    /* body.sidebar-is-collapsed .content-wrapper is already defined above */
+}
+
+/* Mobile: No margin adjustment needed as sidebar overlays or is hidden */
+@media (max-width: 1024px) {
+    .content-wrapper {
+        margin-left: 0;
+    }
+}
+
+
+/* ============================================= */
 /* == Sidebar Header (Logo & Close Button)    == */
 /* ============================================= */
 .sidebar-header {

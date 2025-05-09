@@ -2,17 +2,17 @@
 // filepath: private\actions\user\fetch_users.php
 declare(strict_types=1);
 require_once __DIR__ . '/../../utils/functions.php';  // add helper
-
+require_once __DIR__ . '/../../classes/Auth.php';
+Auth::ensureAuthorized(['admin', 'customercare']); 
 if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
     api_forbidden('Forbidden: Direct access not allowed');
 }
 // --- END Role check ---
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../classes/Database.php';
+require_once __DIR__ . '/../../classes/UserModel.php'; // Include UserModel
 
 /**
- * Fetches users with pagination and optional filtering.
+ * Fetches users with pagination and optional filtering using UserModel.
  *
  * @param array $filters Associative array of filters (e.g., ['search' => 'term', 'status' => 'active']).
  * @param int $page Current page number (1-based).
@@ -21,83 +21,24 @@ require_once __DIR__ . '/../../classes/Database.php';
  */
 function fetch_paginated_users(array $filters = [], int $page = 1, int $per_page = 10): array {
     try {
-        $db = Database::getInstance()->getConnection();
-        if (!$db) {
-            throw new Exception("Failed to connect to the database.");
-        }
-
-        $base_select = "SELECT id, username, email, phone, is_company, company_name, tax_code, created_at, updated_at, deleted_at";
-        $base_from = " FROM user";
-        $base_where = " WHERE 1=1 "; // Start with a true condition
-        $params = [];
-
-        // --- Apply Filters --- 
-        if (!empty($filters['search'])) {
-            $search_term = '%' . trim($filters['search']) . '%';
-            $base_where .= " AND (email LIKE :search_email OR username LIKE :search_username OR company_name LIKE :search_company)";
-            $params[':search_email']    = $search_term;
-            $params[':search_username'] = $search_term;
-            $params[':search_company']  = $search_term;
-        }
-        if (!empty($filters['status'])) {
-            if ($filters['status'] === 'active') {
-                $base_where .= " AND deleted_at IS NULL";
-            } elseif ($filters['status'] === 'inactive') {
-                $base_where .= " AND deleted_at IS NOT NULL";
-            }
-        }
-        // Add more filters here if needed
-
-        // --- Count Total Items --- 
-        $count_query = "SELECT COUNT(*) " . $base_from . $base_where;
-        $stmt_count = $db->prepare($count_query);
-        $stmt_count->execute($params);
-        $total_count = (int) $stmt_count->fetchColumn();
-
-        // --- Calculate Pagination --- 
-        $total_pages = ($per_page > 0) ? ceil($total_count / $per_page) : 0;
-        $page = max(1, min($page, $total_pages > 0 ? $total_pages : 1));
-        $offset = ($page - 1) * $per_page;
-
-        // --- Fetch Data for Current Page --- 
-        $data_query = $base_select . $base_from . $base_where;
-        $data_query .= " ORDER BY created_at DESC";
-        $data_query .= " LIMIT :limit OFFSET :offset";
-
-        $allParams = $params;
-        $allParams[':limit']  = $per_page;
-        $allParams[':offset'] = $offset;
-
-        $stmt_data = $db->prepare($data_query);
-        $stmt_data->execute($allParams);
-
-        $users = $stmt_data->fetchAll(PDO::FETCH_ASSOC);
-
-        return [
-            'users' => $users,
-            'total_count' => $total_count,
-            'current_page' => $page,
-            'per_page' => $per_page,
-            'total_pages' => $total_pages,
-        ];
+        $userModel = new UserModel();
+        return $userModel->fetchPaginated($filters, $page, $per_page);
 
     } catch (PDOException $e) {
-        error_log("Database error in fetch_paginated_users: " . $e->getMessage());
+        error_log("Database error in fetch_paginated_users (via UserModel): " . $e->getMessage());
         error_log("Stack trace: " . $e->getTraceAsString());
         return [
             'users' => [], 'total_count' => 0, 'current_page' => 1,
             'per_page' => $per_page, 'total_pages' => 0
         ];
     } catch (Exception $e) {
-        error_log("General error in fetch_paginated_users: " . $e->getMessage());
+        error_log("General error in fetch_paginated_users (via UserModel): " . $e->getMessage());
         error_log("Stack trace: " . $e->getTraceAsString());
         return [
             'users' => [], 'total_count' => 0, 'current_page' => 1,
             'per_page' => $per_page, 'total_pages' => 0
         ];
-    } finally {
-        // free the singleton connection after every call
-        Database::getInstance()->close();
     }
+    // The finally block for closing DB connection is removed as UserModel's destructor handles it.
 }
 ?>

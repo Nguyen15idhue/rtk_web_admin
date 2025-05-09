@@ -31,11 +31,6 @@ $profile_role = '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hồ sơ Quản trị - Admin</title>
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/layouts/header.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/base.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/buttons.css">
-    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/components/forms.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .grid { display: grid; }
         .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }

@@ -1,0 +1,5 @@
+/* No Results Row */
+#no-results-row td {
+    text-align: center; padding: 3rem;
+    color: var(--gray-500); font-size: var(--font-size-base);
+}

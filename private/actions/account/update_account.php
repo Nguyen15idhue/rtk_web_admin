@@ -5,16 +5,17 @@ $bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
 $db        = $bootstrap['db'];
 $base_path = $bootstrap['base_path'];
 
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+
 // Đảm bảo đóng PDO khi script kết thúc
 register_shutdown_function(function() use (&$db) {
     $db = null;
 });
 
 header('Content-Type: application/json');
-// Basic security check
-if (!isset($_SESSION['admin_id'])) {
-    abort('Unauthorized', 401);
-}
+
+// Use Auth class for authentication and authorization
+Auth::ensureAuthorized(['admin']);
 
 require_once BASE_PATH . '/classes/AccountModel.php';
 require_once BASE_PATH . '/api/rtk_system/account_api.php';
@@ -94,35 +95,10 @@ try {
     $success = $accountModel->updateAccount($accountId, $updateData);
 
     if ($success) {
-        // before touching registration, ensure we only update this account's registration
+        // ---- Thay đổi ở đây: luôn dùng chung registration_id ----
         $stmtRegId = $db->prepare("SELECT registration_id FROM survey_account WHERE id = ?");
         $stmtRegId->execute([$accountId]);
-        $oldRegId = (int)$stmtRegId->fetchColumn();
-        $stmtCount = $db->prepare("SELECT COUNT(*) FROM survey_account WHERE registration_id = ?");
-        $stmtCount->execute([$oldRegId]);
-        if ((int)$stmtCount->fetchColumn() > 1) {
-            // clone registration row
-            $colsStmt = $db->query("SHOW COLUMNS FROM registration");
-            $cols = [];
-            while ($col = $colsStmt->fetch(PDO::FETCH_ASSOC)) {
-                if ($col['Field'] === 'id') continue;
-                $cols[] = $col['Field'];
-            }
-            $colsList = implode(',', $cols);
-            $phList   = ':' . implode(',:', $cols);
-            $rowStmt  = $db->prepare("SELECT $colsList FROM registration WHERE id = ?");
-            $rowStmt->execute([$oldRegId]);
-            $regData  = $rowStmt->fetch(PDO::FETCH_ASSOC);
-            $insSql   = "INSERT INTO registration ($colsList) VALUES ($phList)";
-            $insStmt  = $db->prepare($insSql);
-            $insStmt->execute($regData);
-            $newRegId = $db->lastInsertId();
-            $updSa    = $db->prepare("UPDATE survey_account SET registration_id = ? WHERE id = ?");
-            $updSa->execute([$newRegId, $accountId]);
-            $regTargetId = $newRegId;
-        } else {
-            $regTargetId = $oldRegId;
-        }
+        $regTargetId = (int)$stmtRegId->fetchColumn();
 
         // update only this registration row's status
         if ($inputStatus !== null) {
@@ -150,6 +126,24 @@ try {
                 $expiry     . ' 23:59:59',
                 $accountId
             ]);
+        }
+
+        // NEW: Update registration.package_id if provided in input
+        if (isset($input['package_id']) && !empty($input['package_id'])) {
+            // Fetch current package_id from registration to avoid unnecessary updates
+            $stmtCurrentPkg = $db->prepare("SELECT package_id FROM registration WHERE id = ?");
+            $stmtCurrentPkg->execute([$regTargetId]);
+            $currentRegPackageId = (int)$stmtCurrentPkg->fetchColumn();
+
+            if ((int)$input['package_id'] !== $currentRegPackageId) {
+                $stmtPkg = $db->prepare("
+                    UPDATE registration
+                    SET package_id = ?, updated_at = NOW()
+                    WHERE id = ?
+                ");
+                $stmtPkg->execute([(int)$input['package_id'], $regTargetId]);
+                error_log("[update_account] Updated registration.package_id to {$input['package_id']} for registration {$regTargetId}");
+            }
         }
 
         // update only this registration row's user_id
@@ -237,31 +231,14 @@ try {
         $startMs = strtotime($activation . ' 00:00:00') * 1000;
         $endMs   = strtotime($expiry     . ' 23:59:59') * 1000;
 
-        // prepare payload for RTK API
-        $apiPayload = [
-            'id'              => $accountId,
-            'name'            => $input['username_acc'],
-            'userPwd'         => $currentPwd,
-            'startTime'       => $startMs,
-            'endTime'         => $endMs,
-            'enabled'         => $updateData['enabled']      ?? 1,
-            'numOnline'       => $updateData['concurrent_user'] ?? 1,
-            'customerBizType' => $updateData['customerBizType'] ?? 1,
-            'userId'          => $rtkUserId,
-            'customerName'    => $customerName,
-            'customerPhone'   => $customerPhone,
-            'customerCompany' => $customerCompany,
-            'casterIds'       => $casterIds,
-            'regionIds'       => $regionIdsArr,
-            'mountIds'        => $mountIds,
-        ];
-        // bỏ customerPhone khi rỗng để RTK API không validate
-        if (empty($customerPhone)) {
-            unset($apiPayload['customerPhone']);
+        // Thay thế toàn bộ logic manual build payload RTK bằng:
+        {
+            // Xây payload qua AccountModel
+            $apiPayload = $accountModel->buildRtkUpdatePayload($accountId, $input);
+            error_log("[update_account] RTK API payload via model: " . print_r($apiPayload, true));
         }
-        error_log("[update_account] RTK API payload: " . print_r($apiPayload, true));
 
-        // call external RTK update API
+        // call external RTK update API (giữ nguyên)
         $apiResult = updateRtkAccount($apiPayload);
         error_log("[update_account] RTK API result: " . print_r($apiResult, true));
 
