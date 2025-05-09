@@ -57,10 +57,6 @@ $page_title = $id
                         <input type="file" name="thumbnail" class="form-control">
                     </div>
                     <div class="col-12 mb-3">
-                        <label class="form-label">Đường dẫn ảnh</label>
-                        <input type="text" name="image" class="form-control">
-                    </div>
-                    <div class="col-12 mb-3">
                         <label class="form-label">Nội dung</label>
                         <textarea id="guideContent" name="content" class="form-control" rows="8"></textarea>
                     </div>
