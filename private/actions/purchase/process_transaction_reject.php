@@ -12,7 +12,7 @@ require_once BASE_PATH . '/api/rtk_system/account_api.php';
 require_once BASE_PATH . '/utils/functions.php';
 require_once BASE_PATH . '/services/TransactionHistoryService.php'; 
 require_once BASE_PATH . '/classes/TransactionModel.php';
-require_once BASE_PATH . '/classes/AccountModel.php'; // <-- add this
+require_once BASE_PATH . '/classes/AccountModel.php'; 
 
 // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

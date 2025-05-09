@@ -10,10 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewDetailsContent = document.getElementById('viewAccountDetailsContent');
     const createModal = document.getElementById('createAccountModal');
     const editModal = document.getElementById('editAccountModal');
+    const renewModal = document.getElementById('renewAccountModal'); // New modal
     const createAccountForm = document.getElementById('createAccountForm');
     const editAccountForm = document.getElementById('editAccountForm');
+    const renewAccountForm = document.getElementById('renewAccountForm'); // New form
     const createAccountError = document.getElementById('createAccountError');
     const editAccountError = document.getElementById('editAccountError');
+    const renewAccountError = document.getElementById('renewAccountError'); // New error display
 
     function openCreateMeasurementAccountModal() {
         if (createAccountForm) createAccountForm.reset();
@@ -60,6 +63,73 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function openRenewAccountModal(accountId) {
+        if (!renewModal || !renewAccountForm) return;
+
+        renewAccountForm.reset();
+        if (renewAccountError) renewAccountError.textContent = '';
+
+        try {
+            const env = await getJson(`${apiBasePath}?action=get_account_details&id=${accountId}`);
+            if (!env.success) {
+                throw new Error(env.message || `Không thể lấy chi tiết tài khoản.`);
+            }
+            const account = env.data || env.account;
+            if (!account) {
+                throw new Error('No account payload');
+            }
+
+            renewAccountForm.querySelector('#renew-account-id').value = account.id;
+            renewAccountForm.querySelector('#renew-username-display').textContent = account.username_acc || 'N/A';
+            renewAccountForm.querySelector('#renew-current-package-display').textContent = account.package_name || 'N/A';
+            renewAccountForm.querySelector('#renew-current-expiry-display').textContent = account.expiry_date ? account.expiry_date.split(' ')[0] : 'N/A';
+            
+            renewAccountForm.querySelector('#renew-package').value = account.package_id || '';
+
+            // 1. Set "New Activation Date" for the form to today's date.
+            const todayDateObj = new Date();
+            todayDateObj.setHours(0, 0, 0, 0); // Normalize to start of day
+
+            const todayYear = todayDateObj.getFullYear();
+            const todayMonth = String(todayDateObj.getMonth() + 1).padStart(2, '0');
+            const todayDay = String(todayDateObj.getDate()).padStart(2, '0');
+            const todayDateString = `${todayYear}-${todayMonth}-${todayDay}`;
+
+            renewAccountForm.querySelector('#renew-activation-date').value = todayDateString;
+            
+            // 2. Determine the base date for calculating the new expiry date.
+            // This base date is MAX(old_expiry_date, today).
+            let baseDateForExpiryCalculationObj = todayDateObj; // Default to today
+
+            if (account.expiry_date) {
+                const oldExpiryDateStr = account.expiry_date.split(' ')[0]; // "YYYY-MM-DD"
+                const parts = oldExpiryDateStr.split('-');
+                if (parts.length === 3) {
+                    const oldExpiryDateCandidateObj = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                    oldExpiryDateCandidateObj.setHours(0,0,0,0); 
+
+                    if (!isNaN(oldExpiryDateCandidateObj.getTime()) && oldExpiryDateCandidateObj > todayDateObj) {
+                        baseDateForExpiryCalculationObj = oldExpiryDateCandidateObj;
+                    }
+                }
+            }
+            
+            const baseYear = baseDateForExpiryCalculationObj.getFullYear();
+            const baseMonth = String(baseDateForExpiryCalculationObj.getMonth() + 1).padStart(2, '0');
+            const baseDay = String(baseDateForExpiryCalculationObj.getDate()).padStart(2, '0');
+            const baseDateForExpiryCalculationString = `${baseYear}-${baseMonth}-${baseDay}`;
+
+            // 3. Calculate and set the "New Expiry Date" based on this baseDateForExpiryCalculationString and selected package.
+            const newSuggestedExpiry = calculateExpiryDate(baseDateForExpiryCalculationString, account.package_id || '');
+            renewAccountForm.querySelector('#renew-expiry-date').value = newSuggestedExpiry;
+
+            renewModal.style.display = 'block';
+        } catch (error) {
+            console.error('Error fetching account details for renewal:', error);
+            window.showToast(error.message || 'Không thể tải chi tiết tài khoản cho gia hạn.', 'error');
+        }
+    }
+
     function viewAccountDetails(accountId) {
         if (!viewModal || !viewDetailsContent) {
             console.error('View modal elements not found');
@@ -100,21 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 viewDetailsContent.innerHTML =
                     `<p style="color: red;">Đã xảy ra lỗi: ${error.message}</p>`;
             });
-    }
-
-    function get_account_status_badge_js(status) {
-        status = status ? status.toLowerCase() : 'unknown';
-        let badgeClass = 'badge-gray';
-        let statusText = 'Không xác định';
-
-        switch (status) {
-            case 'active': badgeClass = 'badge-green'; statusText = 'Hoạt động'; break;
-            case 'pending': badgeClass = 'badge-yellow'; statusText = 'Chờ KH'; break;
-            case 'expired': badgeClass = 'badge-red'; statusText = 'Hết hạn'; break;
-            case 'suspended': badgeClass = 'badge-gray'; statusText = 'Đình chỉ'; break;
-            case 'rejected': badgeClass = 'badge-red'; statusText = 'Bị từ chối'; break;
-        }
-        return `<span class="status-badge ${badgeClass}">${statusText}</span>`;
     }
 
     async function handleCreateAccountSubmit(form) {
@@ -175,6 +230,39 @@ document.addEventListener('DOMContentLoaded', () => {
         } finally {
             submitButton.disabled = false;
             submitButton.textContent = 'Lưu thay đổi';
+        }
+    }
+
+    async function handleRenewAccountSubmit(form) {
+        const formData = new FormData(form);
+        const accountId = formData.get('id');
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Đang gia hạn...';
+        if (renewAccountError) renewAccountError.textContent = '';
+
+        try {
+            const result = await postForm(`${apiBasePath}?action=manual_renew_account`, formData);
+
+            if (result.success) {
+                window.showToast(result.message || 'Gia hạn tài khoản thành công!', 'success');
+                helperCloseModal('renewAccountModal');
+                if (result.account) {
+                    updateTableRow(accountId, result.account);
+                } else {
+                    window.location.reload();
+                }
+            } else {
+                if (renewAccountError) renewAccountError.textContent = result.message || 'Gia hạn tài khoản thất bại.';
+                window.showToast(result.message || 'Gia hạn tài khoản thất bại.', 'error');
+            }
+        } catch (error) {
+            console.error('Error renewing account:', error);
+            if (renewAccountError) renewAccountError.textContent = 'Lỗi khi gửi yêu cầu gia hạn.';
+            window.showToast('Lỗi khi gửi yêu cầu gia hạn.', 'error');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Xác nhận Gia hạn';
         }
     }
 
@@ -312,6 +400,15 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error("Element with ID 'editAccountForm' not found.");
     }
 
+    if (renewAccountForm) {
+        renewAccountForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            handleRenewAccountSubmit(this);
+        });
+    } else {
+        console.error("Element with ID 'renewAccountForm' not found.");
+    }
+
     window.addEventListener('click', function(event) {
         document.querySelectorAll('.modal').forEach(modal => {
             if (event.target === modal) {
@@ -390,6 +487,29 @@ document.addEventListener('DOMContentLoaded', () => {
             if (editExp.value && packageDurations && packageDurations[pid] && actDate
                 && calculateExpiryDate(actDate, pid) !== editExp.value) {
                 editPkg.value = '';
+            }
+        });
+    }
+
+    const renewPkg = document.getElementById('renew-package');
+    const renewAct = document.getElementById('renew-activation-date');
+    const renewExp = document.getElementById('renew-expiry-date');
+    if (renewPkg && renewAct && renewExp) {
+        function updateRenewExpiry() {
+            const pid = renewPkg.value;
+            const actDate = renewAct.value;
+            if (packageDurations && packageDurations[pid] && actDate) {
+                renewExp.value = calculateExpiryDate(actDate, pid);
+            }
+        }
+        renewPkg.addEventListener('change', updateRenewExpiry);
+        renewAct.addEventListener('change', updateRenewExpiry);
+        renewExp.addEventListener('input', () => {
+            const pid = renewPkg.value;
+            const actDate = renewAct.value;
+            if (renewExp.value && packageDurations && packageDurations[pid] && actDate &&
+                calculateExpiryDate(actDate, pid) !== renewExp.value) {
+                // renewPkg.value = ''; // Or just allow manual override
             }
         });
     }
@@ -537,7 +657,8 @@ document.addEventListener('DOMContentLoaded', () => {
         deleteAccount,
         toggleAccountStatus,
         bulkToggleStatus,
-        bulkDeleteAccounts
+        bulkDeleteAccounts,
+        openRenewAccountModal // Add new function here
     };
     Object.assign(window, window.AccountManagementPageEvents);
 

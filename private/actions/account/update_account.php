@@ -128,6 +128,24 @@ try {
             ]);
         }
 
+        // NEW: Update registration.package_id if provided in input
+        if (isset($input['package_id']) && !empty($input['package_id'])) {
+            // Fetch current package_id from registration to avoid unnecessary updates
+            $stmtCurrentPkg = $db->prepare("SELECT package_id FROM registration WHERE id = ?");
+            $stmtCurrentPkg->execute([$regTargetId]);
+            $currentRegPackageId = (int)$stmtCurrentPkg->fetchColumn();
+
+            if ((int)$input['package_id'] !== $currentRegPackageId) {
+                $stmtPkg = $db->prepare("
+                    UPDATE registration
+                    SET package_id = ?, updated_at = NOW()
+                    WHERE id = ?
+                ");
+                $stmtPkg->execute([(int)$input['package_id'], $regTargetId]);
+                error_log("[update_account] Updated registration.package_id to {$input['package_id']} for registration {$regTargetId}");
+            }
+        }
+
         // update only this registration row's user_id
         $rtkUserId = null;
         $userEmail = filter_var($input['user_email'] ?? null, FILTER_VALIDATE_EMAIL);

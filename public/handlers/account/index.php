@@ -9,7 +9,7 @@ $allowed = [
     'create_account', 'delete_account', 'fetch_accounts',
     'get_account_details', 'handle_account_list',
     'toggle_account_status', 'update_account',
-    'search_users'
+    'search_users', 'manual_renew_account' // Add new action
 ];
 if (!in_array($action, $allowed, true)) {
     api_error('Invalid action', 400);

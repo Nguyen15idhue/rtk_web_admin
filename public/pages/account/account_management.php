@@ -139,7 +139,17 @@ include $private_includes_path . 'admin_sidebar.php';
                                     <td class="status"><?php echo get_account_status_badge($account['derived_status'] ?? 'unknown'); ?></td>
                                     <td class="actions">
                                         <div class="action-buttons">
-                                            <?php echo get_account_action_buttons($account); // Assumes this function is in dashboard_helpers.php and generates buttons with btn-icon class ?>
+                                            <?php 
+                                            // Original buttons from helper
+                                            echo get_account_action_buttons($account); 
+                                            // Add Renew button manually here or modify get_account_action_buttons helper
+                                            $canRenew = !in_array($account['derived_status'], ['pending', 'rejected']); // Example condition
+                                            if ($canRenew):
+                                            ?>
+                                            <button type="button" title="Gia hạn TK" class="btn-icon btn-renew" onclick="AccountManagementPageEvents.openRenewAccountModal('<?php echo htmlspecialchars($account['id']); ?>')">
+                                                <i class="fas fa-history"></i>
+                                            </button>
+                                            <?php endif; ?>
                                         </div>
                                     </td>
                                 </tr>
@@ -355,6 +365,57 @@ include $private_includes_path . 'admin_sidebar.php';
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="closeModal('editAccountModal')">Hủy</button>
                 <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="renewAccountModal" class="modal">
+    <div class="modal-content">
+        <form id="renewAccountForm">
+            <div class="modal-header">
+                <h4>Gia hạn tài khoản</h4>
+                <span class="modal-close" onclick="closeModal('renewAccountModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="renew-account-id" name="id">
+                <div class="form-group">
+                    <label>Username TK:</label>
+                    <p id="renew-username-display" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label>Gói hiện tại:</label>
+                    <p id="renew-current-package-display" class="form-control-static"></p>
+                </div>
+                <div class="form-group">
+                    <label>Ngày hết hạn hiện tại:</label>
+                    <p id="renew-current-expiry-display" class="form-control-static"></p>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label for="renew-package">Gói mới (nếu thay đổi):</label>
+                    <select id="renew-package" name="package_id">
+                        <option value="">Giữ gói hiện tại / Chọn gói mới</option>
+                        <?php foreach ($packages as $pkg): ?>
+                            <option value="<?php echo htmlspecialchars($pkg['id']); ?>">
+                                <?php echo htmlspecialchars($pkg['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="renew-activation-date">Ngày kích hoạt mới (nếu gia hạn khi đã hết hạn):</label>
+                    <input type="date" id="renew-activation-date" name="activation_date" required>
+                </div>
+                <div class="form-group">
+                    <label for="renew-expiry-date">Ngày hết hạn mới:</label>
+                    <input type="date" id="renew-expiry-date" name="expiry_date" required>
+                </div>
+                <div class="form-group error-message" id="renewAccountError"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('renewAccountModal')">Hủy</button>
+                <button type="submit" class="btn btn-primary">Xác nhận Gia hạn</button>
             </div>
         </form>
     </div>
