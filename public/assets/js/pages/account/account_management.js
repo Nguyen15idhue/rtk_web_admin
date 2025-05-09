@@ -649,6 +649,85 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // open the modal to choose package for bulk renew
+    function openBulkRenewModal() {
+        const form = document.getElementById('bulkRenewForm');
+        if (form) {
+            form.reset();
+            document.getElementById('bulkRenewError').textContent = '';
+            document.getElementById('bulkRenewModal').style.display = 'block';
+        }
+    }
+
+    // handle form submit for bulk renew
+    async function handleBulkRenewSubmit(form) {
+        form.querySelector('button[type="submit"]').disabled = true;
+        const pkg = form.querySelector('#bulk-renew-package').value;
+        if (!pkg) {
+            document.getElementById('bulkRenewError').textContent = 'Vui lòng chọn gói.';
+            form.querySelector('button[type="submit"]').disabled = false;
+            return;
+        }
+        // gather selected account IDs
+        const ids = Array.from(document.querySelectorAll('.rowCheckbox:checked')).map(cb => cb.value);
+        if (ids.length === 0) {
+            alert('Vui lòng chọn ít nhất một tài khoản để gia hạn.');
+            form.querySelector('button[type="submit"]').disabled = false;
+            return;
+        }
+        if (!confirm(`Bạn có chắc chắn muốn gia hạn ${ids.length} tài khoản sang gói "${packagesList.find(p=>p.id==pkg).name}"?`)) {
+            form.querySelector('button[type="submit"]').disabled = false;
+            return;
+        }
+        // compute today string
+        const today = new Date(); today.setHours(0,0,0,0);
+        const y = today.getFullYear(), m = String(today.getMonth()+1).padStart(2,'0'), d = String(today.getDate()).padStart(2,'0');
+        const todayStr = `${y}-${m}-${d}`;
+
+        try {
+            await Promise.all(ids.map(async id => {
+                // fetch old expiry
+                const env = await getJson(`${apiBasePath}?action=get_account_details&id=${id}`);
+                const acc = env.data || env.account;
+                // determine base date = max(old expiry, today)
+                const oldExp = acc.expiry_date?.split(' ')[0] || '';
+                let base = today;
+                if (oldExp) {
+                    const [yy,mm,dd] = oldExp.split('-');
+                    const od = new Date(+yy, +mm-1, +dd);
+                    if (!isNaN(od.getTime()) && od > today) base = od;
+                }
+                const by = base.getFullYear(), bm = String(base.getMonth()+1).padStart(2,'0'), bd = String(base.getDate()).padStart(2,'0');
+                const baseStr = `${by}-${bm}-${bd}`;
+                const newExp = calculateExpiryDate(baseStr, pkg);
+                const fd = new FormData();
+                fd.append('id', id);
+                fd.append('package_id', pkg);
+                fd.append('activation_date', todayStr);      // always start today
+                fd.append('expiry_date', newExp);
+                return postForm(`${apiBasePath}?action=manual_renew_account`, fd);
+            }));
+            window.showToast(`Đã gia hạn xong ${ids.length} tài khoản.`, 'success');
+            closeModal('bulkRenewModal');
+            window.location.reload();
+        } catch (e) {
+            console.error('Bulk renew error:', e);
+            window.showToast('Lỗi khi gia hạn hàng loạt.', 'error');
+        } finally {
+            form.querySelector('button[type="submit"]').disabled = false;
+        }
+    }
+
+    // hook the bulk renew button and form
+    document.getElementById('bulkRenewBtn').addEventListener('click', openBulkRenewModal);
+    const bulkRenewForm = document.getElementById('bulkRenewForm');
+    if (bulkRenewForm) {
+        bulkRenewForm.addEventListener('submit', e => {
+            e.preventDefault();
+            handleBulkRenewSubmit(bulkRenewForm);
+        });
+    }
+
     window.AccountManagementPageEvents = {
         closeModal: helperCloseModal,
         openCreateMeasurementAccountModal,
@@ -658,7 +737,8 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleAccountStatus,
         bulkToggleStatus,
         bulkDeleteAccounts,
-        openRenewAccountModal // Add new function here
+        openRenewAccountModal,
+        bulkRenewAccounts: openBulkRenewModal // legacy mapping to open new modal
     };
     Object.assign(window, window.AccountManagementPageEvents);
 

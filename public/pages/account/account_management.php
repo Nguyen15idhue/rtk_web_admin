@@ -106,6 +106,10 @@ include $private_includes_path . 'admin_sidebar.php';
                 <button type="button" id="bulkDeleteBtn" onclick="AccountManagementPageEvents.bulkDeleteAccounts()" class="btn btn-danger">
                     <i class="fas fa-trash"></i> Xóa mục đã chọn
                 </button>
+                <!-- Add bulk renew button -->
+                <button type="button" id="bulkRenewBtn" onclick="AccountManagementPageEvents.bulkRenewAccounts()" class="btn btn-info">
+                    <i class="fas fa-history"></i> Gia hạn mục đã chọn
+                </button>
             </div>
 
             <div class="transactions-table-wrapper">
@@ -421,6 +425,36 @@ include $private_includes_path . 'admin_sidebar.php';
     </div>
 </div>
 
+<!-- Bulk Renew Modal -->
+<div id="bulkRenewModal" class="modal">
+    <div class="modal-content">
+        <form id="bulkRenewForm">
+            <div class="modal-header">
+                <h4>Gia hạn hàng loạt</h4>
+                <span class="modal-close" onclick="closeModal('bulkRenewModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="bulk-renew-package">Chọn gói gia hạn:</label>
+                    <select id="bulk-renew-package" name="package_id" required>
+                        <option value="">-- Chọn gói --</option>
+                        <?php foreach ($packages as $pkg): ?>
+                            <option value="<?php echo htmlspecialchars($pkg['id']); ?>">
+                                <?php echo htmlspecialchars($pkg['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group error-message" id="bulkRenewError"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('bulkRenewModal')">Hủy</button>
+                <button type="submit" class="btn btn-primary">Xác nhận Gia hạn</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div id="toast-container"></div> <!-- Toast container -->
 
 <script>
@@ -434,6 +468,8 @@ include $private_includes_path . 'admin_sidebar.php';
         '5' => ['years' => 100],
         '7' => ['days' => 7]
     ]); ?>;
+    // expose package list for bulk renew UI
+    const packagesList = <?php echo json_encode($packages); ?>;
 </script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/account/account_management.js"></script>
 
