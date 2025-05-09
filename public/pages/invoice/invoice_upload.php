@@ -1,7 +1,7 @@
 <?php
 // --- Bootstrap and Initialization ---
-$bootstrap_data        = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
-$private_includes_path = $bootstrap_data['private_includes_path'];
+$bootstrap_data        = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
+$private_layouts_path = $bootstrap_data['private_layouts_path'];
 $base_url              = $bootstrap_data['base_url'];
 $admin_role            = $bootstrap_data['admin_role'];
 
@@ -28,8 +28,8 @@ if ($invoiceId <= 0) {
 </head>
 <body>
 <?php 
-    include $private_includes_path . 'admin_header.php';
-    include $private_includes_path . 'admin_sidebar.php';
+    include $private_layouts_path . 'admin_header.php';
+    include $private_layouts_path . 'admin_sidebar.php';
 ?>
 <main class="content-wrapper">
     <div class="card">
@@ -59,5 +59,5 @@ if ($invoiceId <= 0) {
 </body>
 </html>
 <?php
-include $private_includes_path . 'admin_footer.php';
+include $private_layouts_path . 'admin_footer.php';
 ?>

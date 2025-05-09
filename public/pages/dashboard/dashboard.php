@@ -1,8 +1,8 @@
 <?php
-$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db                    = $bootstrap_data['db'];
 $base_path             = $bootstrap_data['base_path'];
-$private_includes_path = $bootstrap_data['private_includes_path'];
+$private_layouts_path = $bootstrap_data['private_layouts_path'];
 $user_display_name     = $bootstrap_data['user_display_name'];
 
 require_once __DIR__ . '/../../../private/actions/dashboard/fetch_dashboard_data.php';
@@ -23,8 +23,8 @@ $referral_chart_data = $data['referral_chart_data'] ?? ['labels' => [], 'data' =
 
 $page_title = 'Admin Dashboard';
 
-include $private_includes_path . 'admin_header.php';
-include $private_includes_path . 'admin_sidebar.php';
+include $private_layouts_path . 'admin_header.php';
+include $private_layouts_path . 'admin_sidebar.php';
 ?>
 
 <!-- Main Content Area -->
@@ -152,4 +152,4 @@ include $private_includes_path . 'admin_sidebar.php';
   };
 </script>
 <script src="<?php echo $base_path; ?>public/assets/js/pages/dashboard/dashboard.js"></script>
-<?php include $private_includes_path . 'admin_footer.php'; ?>
+<?php include $private_layouts_path . 'admin_footer.php'; ?>

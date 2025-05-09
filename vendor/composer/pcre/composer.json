@@ -42,7 +42,7 @@
             "dev-main": "3.x-dev"
         },
         "phpstan": {
-            "includes": [
+            "layouts": [
                 "extension.neon"
             ]
         }

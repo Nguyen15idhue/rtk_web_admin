@@ -1,16 +1,16 @@
 <?php
-$bootstrap = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$bootstrap = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db = $bootstrap['db'];
 $base_path = $bootstrap['base_path'];
 $base_url = $bootstrap['base_url'];
 $user_display_name = $bootstrap['user_display_name'];
-$private_includes_path = $bootstrap['private_includes_path'];
+$private_layouts_path = $bootstrap['private_layouts_path'];
 $is_admin = ($_SESSION['admin_role'] ?? '') === 'admin';
 $admins = $db ? $db->query("SELECT id,name,admin_username,role,created_at FROM admin")->fetchAll(PDO::FETCH_ASSOC) : [];
 $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php' => 'Đăng xuất'];
 ?>
 
-<?php include $private_includes_path . 'admin_sidebar.php'; include $private_includes_path . 'admin_header.php'; ?>
+<?php include $private_layouts_path . 'admin_sidebar.php'; include $private_layouts_path . 'admin_header.php'; ?>
 
 <main class="content-wrapper">
     <div class="content-header">
@@ -232,5 +232,5 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
     </div>
 </div>
 <?php
-include $private_includes_path . 'admin_footer.php';
+include $private_layouts_path . 'admin_footer.php';
 ?>

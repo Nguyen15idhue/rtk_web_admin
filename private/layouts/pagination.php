@@ -1,5 +1,5 @@
 <?php
-// filepath: private\includes\pagination.php
+// filepath: private\layouts\pagination.php
 // Basic Pagination Logic (Create this file if it doesn't exist)
 
 if (!isset($total_pages) || $total_pages <= 1) {

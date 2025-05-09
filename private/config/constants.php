@@ -13,8 +13,9 @@ define('BASE_PATH', dirname(__DIR__));
 define('BASE_URL',  (isset($_SERVER['HTTPS'])?'https':'http')
                   .'://'.$_SERVER['HTTP_HOST'].'/');
 
-// Thêm hằng số cho private includes/actions
-define('PRIVATE_INCLUDES_PATH', BASE_PATH . '/includes/');
+// Thêm hằng số cho private layouts/actions
+define('PRIVATE_LAYOUTS_PATH', BASE_PATH . '/layouts/');
+define('PRIVATE_CORE_PATH', BASE_PATH . '/core/');
 define('PRIVATE_ACTIONS_PATH', BASE_PATH . '/actions/');
 
 // New: session idle timeout in seconds (e.g. 1800 s = 30 min)
@@ -22,7 +23,7 @@ define('SESSION_TIMEOUT', 1800);
 define('USER_SESSIONS_TABLE', 'user_sessions');
 
 // Add full path to error handler
-define('ERROR_HANDLER_PATH', PRIVATE_INCLUDES_PATH . 'error_handler.php');
+define('ERROR_HANDLER_PATH', PRIVATE_CORE_PATH . 'error_handler.php');
 // Add a constant for the logs directory
 define('LOGS_PATH', BASE_PATH . '/logs');
 

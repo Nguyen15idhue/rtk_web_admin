@@ -1,11 +1,8 @@
 <?php
 // Include centralized bootstrap (starts session, validates admin, idle‐timeout, etc.)
-$bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
 
-// Deactivate the session if admin_id is set
-// No explicit Auth::ensureAuthenticated() or Auth::ensureAuthorized() needed here as we are logging out.
-// However, the page_bootstrap.php might already have session validation.
 if (Auth::isAuthenticated()) { // Check if a session exists before trying to deactivate
     deactivateSession(session_id());
 }

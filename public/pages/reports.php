@@ -2,10 +2,10 @@
 // filepath: public\pages\reports.php
 
 // --- Bootstrap and Initialization ---
-$bootstrap_data         = require_once __DIR__ . '/../../private/includes/page_bootstrap.php';
+$bootstrap_data         = require_once __DIR__ . '/../../private/core/page_bootstrap.php';
 $db                      = $bootstrap_data['db'];
 $base_url                = $bootstrap_data['base_url'];
-$private_includes_path   = $bootstrap_data['private_includes_path'];
+$private_layouts_path   = $bootstrap_data['private_layouts_path'];
 $user_display_name       = $bootstrap_data['user_display_name'];
 
 // authorization check
@@ -87,8 +87,8 @@ $stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
 $commission_pending = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 0;
 
 ?>
-<?php include $private_includes_path . 'admin_header.php'; ?>
-<?php include $private_includes_path . 'admin_sidebar.php'; ?>
+<?php include $private_layouts_path . 'admin_header.php'; ?>
+<?php include $private_layouts_path . 'admin_sidebar.php'; ?>
 <main class="content-wrapper">
     <div class="content-header">
         <h2 class="text-2xl font-semibold">Báo cáo Tổng hợp</h2>
@@ -175,4 +175,4 @@ $commission_pending = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 
         window.location.search = urlParams.toString();
     });
 </script>
-<?php include $private_includes_path . 'admin_footer.php'; ?>
+<?php include $private_layouts_path . 'admin_footer.php'; ?>

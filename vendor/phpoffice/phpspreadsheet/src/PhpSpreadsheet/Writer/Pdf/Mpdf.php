@@ -67,7 +67,7 @@ class Mpdf extends Pdf
                 $bodyLocation += strlen(self::BODY_TAG);
             }
         }
-        // Make sure first data presented to Mpdf includes body tag
+        // Make sure first data presented to Mpdf layouts body tag
         //   (and any htmlpageheader/htmlpagefooter tags)
         //   so that Mpdf doesn't parse it as content. Issue 2432.
         if ($bodyLocation !== false) {

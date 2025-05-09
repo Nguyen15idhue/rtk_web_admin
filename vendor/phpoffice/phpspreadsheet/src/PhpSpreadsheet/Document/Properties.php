@@ -471,7 +471,7 @@ class Properties
                 return self::intOrFloatTimestamp($propertyValue);
             case self::PROPERTY_TYPE_BOOLEAN:
                 return is_bool($propertyValue) ? $propertyValue : ($propertyValue === 'true');
-            default: // includes string
+            default: // layouts string
                 return $propertyValue;
         }
     }

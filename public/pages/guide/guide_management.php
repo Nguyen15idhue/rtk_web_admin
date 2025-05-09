@@ -1,8 +1,8 @@
 <?php
-$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $base_url = $bootstrap_data['base_url'];
 $user_display_name = $bootstrap_data['user_display_name'];
-$private_includes_path = $bootstrap_data['private_includes_path'];
+$private_layouts_path = $bootstrap_data['private_layouts_path'];
 
 // Redirect nếu chưa đăng nhập
 if (!isset($_SESSION['admin_id'])) {
@@ -12,8 +12,8 @@ if (!isset($_SESSION['admin_id'])) {
 
 $page_title = 'Quản lý hướng dẫn';
 
-include $private_includes_path . 'admin_header.php';
-include $private_includes_path . 'admin_sidebar.php'; 
+include $private_layouts_path . 'admin_header.php';
+include $private_layouts_path . 'admin_sidebar.php'; 
 ?>
 
 <main class="content-wrapper">
@@ -58,4 +58,4 @@ include $private_includes_path . 'admin_sidebar.php';
 </script>
 <script defer src="<?php echo $base_url; ?>public/assets/js/pages/guide/guide_management.js"></script>
 
-<?php include $private_includes_path . 'admin_footer.php'; ?>
+<?php include $private_layouts_path . 'admin_footer.php'; ?>

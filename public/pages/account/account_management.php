@@ -3,11 +3,11 @@
 
 // --- Bootstrap and Initialization ---
 // Includes session start, auth check, DB connection, base path, etc.
-$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db = $bootstrap_data['db'];
 $base_url = $bootstrap_data['base_url'];
 $user_display_name = $bootstrap_data['user_display_name'];
-$private_includes_path = $bootstrap_data['private_includes_path'];
+$private_layouts_path = $bootstrap_data['private_layouts_path'];
 $private_actions_path = $bootstrap_data['private_actions_path'];
 
 if (!isset($_SESSION['admin_id'])) {
@@ -41,8 +41,8 @@ require_once BASE_PATH . '/utils/dashboard_helpers.php';
 $page_title = 'Quản lý TK Đo đạc - Admin';
 
 // Include header & sidebar (đã chứa <!DOCTYPE html>, <head> và CSS)
-include $private_includes_path . 'admin_header.php';
-include $private_includes_path . 'admin_sidebar.php';
+include $private_layouts_path . 'admin_header.php';
+include $private_layouts_path . 'admin_sidebar.php';
 ?>
 
 <main class="content-wrapper">
@@ -476,5 +476,5 @@ include $private_includes_path . 'admin_sidebar.php';
 </main>
 
 <?php
-include $private_includes_path . 'admin_footer.php';
+include $private_layouts_path . 'admin_footer.php';
 ?>

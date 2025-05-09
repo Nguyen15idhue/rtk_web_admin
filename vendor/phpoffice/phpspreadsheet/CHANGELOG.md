@@ -929,7 +929,7 @@ Note that this will be the last 1.x branch release before the 2.x release. We wi
 - Worksheet methods that reference cells "byColumnandRow". All such methods have an equivalent that references the cell by its address (e.g. '`E3'` rather than `5, 3`).
 
   These functions now accept either a cell address string (`'E3')` or an array with columnId and rowId (`[5, 3]`) or a new `CellAddress` object as their `cellAddress`/`coordinate` argument.
-  This includes the methods:
+  This layouts the methods:
   - `setCellValueByColumnAndRow()` use the equivalent `setCellValue()`
   - `setCellValueExplicitByColumnAndRow()` use the equivalent `setCellValueExplicit()`
   - `getCellByColumnAndRow()` use the equivalent `getCell()`
@@ -1190,7 +1190,7 @@ Note that this will be the last 1.x branch release before the 2.x release. We wi
 - Don't calculate cell width for autosize columns if a cell contains a null or empty string value [Issue #2165](https://github.com/PHPOffice/PhpSpreadsheet/issues/2165) [PR #2167](https://github.com/PHPOffice/PhpSpreadsheet/pull/2167)
 - Allow negative interest rate values in a number of the Financial functions (`PPMT()`, `PMT()`, `FV()`, `PV()`, `NPER()`, etc) [Issue #2163](https://github.com/PHPOffice/PhpSpreadsheet/issues/2163) [PR #2164](https://github.com/PHPOffice/PhpSpreadsheet/pull/2164)
 - Xls Reader changing grey background to black in Excel template [Issue #2147](https://github.com/PHPOffice/PhpSpreadsheet/issues/2147) [PR #2156](https://github.com/PHPOffice/PhpSpreadsheet/pull/2156)
-- Column width and Row height styles in the Html Reader when the value includes a unit of measure [Issue #2145](https://github.com/PHPOffice/PhpSpreadsheet/issues/2145).
+- Column width and Row height styles in the Html Reader when the value layouts a unit of measure [Issue #2145](https://github.com/PHPOffice/PhpSpreadsheet/issues/2145).
 - Data Validation flags not set correctly when reading XLSX files [Issue #2224](https://github.com/PHPOffice/PhpSpreadsheet/issues/2224) [PR #2225](https://github.com/PHPOffice/PhpSpreadsheet/pull/2225)
 - Reading XLSX files without styles.xml throws an exception [Issue #2246](https://github.com/PHPOffice/PhpSpreadsheet/issues/2246)
 - Improved performance of `Style::applyFromArray()` when applied to several cells [PR #1785](https://github.com/PHPOffice/PhpSpreadsheet/issues/1785).
@@ -1883,7 +1883,7 @@ Note that this will be the last 1.x branch release before the 2.x release. We wi
 
 ### Fixed
 
-- Fix to getCell() method when cell reference includes a worksheet reference - @MarkBaker
+- Fix to getCell() method when cell reference layouts a worksheet reference - @MarkBaker
 - Ignore inlineStr type if formula element exists - @ncrypthic [#570](https://github.com/PHPOffice/PHPExcel/issues/570)
 - Excel 2007 Reader freezes because of conditional formatting - @rentalhost [#575](https://github.com/PHPOffice/PHPExcel/issues/575)
 - Readers will now parse files containing worksheet titles over 31 characters [#176](https://github.com/PHPOffice/PhpSpreadsheet/pull/176)

@@ -118,7 +118,7 @@ This is guide for upgrade from version 2.x to 3.0 for using the CLI tool.
 
 ### Various
 
-- `udiff` output now includes the file name in the output (if applicable)
+- `udiff` output now layouts the file name in the output (if applicable)
 
 ## Code BC changes
 

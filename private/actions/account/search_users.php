@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
 Auth::ensureAuthenticated(); // Allow any authenticated user to search
 
-$bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
+$bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 $db = $bootstrap['db'];
 // Đảm bảo đóng PDO khi script kết thúc
 register_shutdown_function(function() use (&$db) {

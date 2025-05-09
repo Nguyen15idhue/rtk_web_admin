@@ -11,7 +11,7 @@ if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
     api_forbidden('Forbidden');
 }
 
-$bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
+$bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc

@@ -1,10 +1,10 @@
 <?php
 // Replace manual session and path setup with bootstrap
-$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db               = $bootstrap_data['db'];
 $base_url         = $bootstrap_data['base_url'];
 $user_display_name= $bootstrap_data['user_display_name'];
-$private_includes_path = $bootstrap_data['private_includes_path'];
+$private_layouts_path = $bootstrap_data['private_layouts_path'];
 $private_actions_path = $bootstrap_data['private_actions_path'];
 
 // Redirect nếu chưa auth
@@ -45,8 +45,8 @@ list($total_revenue, $successful_revenue) = get_revenue_sums($filters);
     <title>Quản lý Giao dịch - Admin</title>
 </head>
 <body>
-    <?php include $private_includes_path . 'admin_header.php'; ?>
-    <?php include $private_includes_path . 'admin_sidebar.php'; ?>
+    <?php include $private_layouts_path . 'admin_header.php'; ?>
+    <?php include $private_layouts_path . 'admin_sidebar.php'; ?>
 
     <main class="content-wrapper">
         <div class="content-header">
@@ -179,9 +179,9 @@ list($total_revenue, $successful_revenue) = get_revenue_sums($filters);
     </script>
     <script src="<?php echo $base_url; ?>public/assets/js/pages/purchase/revenue_management.js"></script>
 
-    <?php include $private_includes_path . 'admin_footer.php'; ?>
+    <?php include $private_layouts_path . 'admin_footer.php'; ?>
 </body>
 </html>
 <?php
-include $private_includes_path . 'admin_footer.php';
+include $private_layouts_path . 'admin_footer.php';
 ?>

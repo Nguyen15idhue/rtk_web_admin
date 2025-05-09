@@ -1,9 +1,9 @@
 <?php
 // filepath: public/pages/invoice/invoice_management.php
-$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db                    = $bootstrap_data['db'];
 $base_url             = $bootstrap_data['base_url'];
-$private_includes_path = $bootstrap_data['private_includes_path'];
+$private_layouts_path = $bootstrap_data['private_layouts_path'];
 $private_actions_path = $bootstrap_data['private_actions_path'];
 $user_display_name     = $bootstrap_data['user_display_name'];
 
@@ -40,8 +40,8 @@ $current_page = $transaction_data['current_page'];
 $pagination_base_url = '?' . http_build_query(array_filter($filters));
 ?>
 
-    <?php include $private_includes_path . 'admin_header.php'; ?>
-    <?php include $private_includes_path . 'admin_sidebar.php'; ?>
+    <?php include $private_layouts_path . 'admin_header.php'; ?>
+    <?php include $private_layouts_path . 'admin_sidebar.php'; ?>
 
     <main class="content-wrapper">
         <div class="content-header">
@@ -333,4 +333,4 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
 <script src="<?php echo $base_url; ?>public/assets/js/pages/purchase/invoice_management.js"></script>
 </body>
 </html>
-<?php include $private_includes_path . 'admin_footer.php'; ?>
+<?php include $private_layouts_path . 'admin_footer.php'; ?>

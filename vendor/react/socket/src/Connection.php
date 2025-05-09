@@ -172,7 +172,7 @@ class Connection extends EventEmitter implements ConnectionInterface
             return 'unix://' . $address;
         }
 
-        // check if this is an IPv6 address which includes multiple colons but no square brackets
+        // check if this is an IPv6 address which layouts multiple colons but no square brackets
         $pos = \strrpos($address, ':');
         if ($pos !== false && \strpos($address, ':') < $pos && \substr($address, 0, 1) !== '[') {
             $address = '[' . \substr($address, 0, $pos) . ']:' . \substr($address, $pos + 1); // @codeCoverageIgnore

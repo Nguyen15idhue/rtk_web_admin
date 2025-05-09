@@ -1,11 +1,11 @@
 <?php
 // --- Bootstrap and Initialization ---
-$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db = $bootstrap_data['db'];
 $base_path = $bootstrap_data['base_path'];
 $base_url = $bootstrap_data['base_url'];
 $user_display_name = $bootstrap_data['user_display_name'];
-$private_includes_path = $bootstrap_data['private_includes_path'];
+$private_layouts_path = $bootstrap_data['private_layouts_path'];
 
 // --- Include Helpers ---
 require_once BASE_PATH . '/utils/dashboard_helpers.php';
@@ -25,8 +25,8 @@ $profile_username = '';
 $profile_role = '';
 
 ?>
-<?php include $private_includes_path . 'admin_header.php'; ?>
-<?php include $private_includes_path . 'admin_sidebar.php'; ?>
+<?php include $private_layouts_path . 'admin_header.php'; ?>
+<?php include $private_layouts_path . 'admin_sidebar.php'; ?>
 <style>
   /* Two-column layout for profile on medium+ screens */
   #admin-profile .profile-grid { display: grid; gap: 1.5rem; }
@@ -106,4 +106,4 @@ $profile_role = '';
     const basePath = '<?php echo $base_url; ?>';
 </script>
 <script defer src="<?php echo $base_url; ?>public/assets/js/pages/setting/profile.js"></script>
-<?php include $private_includes_path . 'admin_footer.php'; ?>
+<?php include $private_layouts_path . 'admin_footer.php'; ?>

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../includes/page_bootstrap.php';
+require_once __DIR__ . '/../../core/page_bootstrap.php';
 require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
 Auth::ensureAuthorized(['admin']); // Only admins can update guides
 

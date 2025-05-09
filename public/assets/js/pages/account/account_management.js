@@ -592,7 +592,7 @@ document.addEventListener('DOMContentLoaded', () => {
              if (matchedUser) {
                  infoElement.innerHTML = `<p style="font-size: var(--font-size-xs); margin-top: 4px; color: var(--gray-600);">Người dùng: <strong>${matchedUser.username}</strong> — SĐT: ${matchedUser.phone || 'N/A'}</p>`;
              } else {
-                 if (selectedEmail && selectedEmail.includes('@')) {
+                 if (selectedEmail && selectedEmail.layouts('@')) {
                      fetchAndDisplayUserInfo(selectedEmail, infoId);
                  } else {
                      infoElement.innerHTML = '';

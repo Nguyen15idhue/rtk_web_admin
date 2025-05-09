@@ -1,6 +1,6 @@
 <?php
 // filepath: private\actions\account\manual_renew_account.php
-$bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
+$bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
 require_once __DIR__ . '/../../classes/Auth.php';
@@ -79,7 +79,7 @@ try {
     
     // 3. Prepare data and call RTK API
     // The buildRtkUpdatePayload method needs all relevant current and new data.
-    // We pass the $input from the form, which includes new dates.
+    // We pass the $input from the form, which layouts new dates.
     // It will merge with existing data from DB where necessary.
     $rtkPayloadInput = [
         'id'              => $accountId, // Critical for AccountModel to fetch full existing data
