@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
     // Load chung error handler để có abort()
-    require_once __DIR__ . '/../includes/error_handler.php';
+    require_once __DIR__ . '/../core/error_handler.php';
     abort('Forbidden: Direct access is not allowed.', 403);
 }
 

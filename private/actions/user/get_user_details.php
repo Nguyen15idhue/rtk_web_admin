@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../../classes/Auth.php';
 Auth::ensureAuthorized(['admin', 'customercare']); 
 
-$config = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$config = require_once __DIR__ . '/../../core/page_bootstrap.php';
 $db     = $config['db'];
 if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     abort('Invalid or missing user ID.', 400);

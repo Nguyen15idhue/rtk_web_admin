@@ -1009,7 +1009,7 @@ class Calculation extends CalculationLocale
 
     /**
      *    Operator Precedence.
-     *    This list includes all valid operators, whether binary (including boolean) or unary (such as %).
+     *    This list layouts all valid operators, whether binary (including boolean) or unary (such as %).
      *    Array key is the operator, the value is its precedence.
      */
     private const OPERATOR_PRECEDENCE = [

@@ -43,8 +43,8 @@ See below for more details:
 *   BC break: PHP 8.1+ recommended, PHP 7.1+ required.
     (#138 and #149 by @WyriHaximus)
 
-*   Feature / BC break: The `PromiseInterface` now includes the functionality of the old ~~`ExtendedPromiseInterface`~~ and ~~`CancellablePromiseInterface`~~.
-    Each promise now always includes the `then()`, `catch()`, `finally()` and `cancel()` methods.
+*   Feature / BC break: The `PromiseInterface` now layouts the functionality of the old ~~`ExtendedPromiseInterface`~~ and ~~`CancellablePromiseInterface`~~.
+    Each promise now always layouts the `then()`, `catch()`, `finally()` and `cancel()` methods.
     The new `catch()` and `finally()` methods replace the deprecated ~~`otherwise()`~~ and ~~`always()`~~ methods which continue to exist for BC reasons.
     The old ~~`ExtendedPromiseInterface`~~ and ~~`CancellablePromiseInterface`~~ are no longer needed and have been removed as a consequence.
     (#75 by @jsor and #208 by @clue and @WyriHaximus)

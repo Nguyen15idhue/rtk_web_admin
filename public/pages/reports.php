@@ -2,10 +2,10 @@
 // filepath: public\pages\reports.php
 
 // --- Bootstrap and Initialization ---
-$bootstrap_data         = require_once __DIR__ . '/../../private/includes/page_bootstrap.php';
+$bootstrap_data         = require_once __DIR__ . '/../../private/core/page_bootstrap.php';
 $db                      = $bootstrap_data['db'];
 $base_url                = $bootstrap_data['base_url'];
-$private_includes_path   = $bootstrap_data['private_includes_path'];
+$private_layouts_path   = $bootstrap_data['private_layouts_path'];
 $user_display_name       = $bootstrap_data['user_display_name'];
 
 // authorization check
@@ -87,90 +87,85 @@ $stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
 $commission_pending = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 0;
 
 ?>
+<?php include $private_layouts_path . 'admin_header.php'; ?>
+<?php include $private_layouts_path . 'admin_sidebar.php'; ?>
+<main class="content-wrapper">
+    <div class="content-header">
+        <h2 class="text-2xl font-semibold">Báo cáo Tổng hợp</h2>
+        <div class="user-info">
+            <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
+            <a href="<?php echo $base_url; ?>public/pages/setting/profile.php">Hồ sơ</a>
+            <a href="<?php echo $base_url; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
+        </div>
+    </div>
 
-<div class="dashboard-wrapper">
-    <?php include $private_includes_path . 'admin_sidebar.php'; ?>
-    <?php include $private_includes_path . 'admin_header.php'; ?>
-
-    <main class="content-wrapper">
-        <div class="content-header">
-            <h2 class="text-2xl font-semibold">Báo cáo Tổng hợp</h2>
-            <div class="user-info">
-                <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-                <a href="<?php echo $base_url; ?>public/pages/setting/profile.php">Hồ sơ</a>
-                <a href="<?php echo $base_url; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
-            </div>
+    <div id="admin-reports" class="content-section">
+        <div class="mb-6 bg-white p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200">
+            <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3">Bộ lọc chung</h3>
+            <form id="report-filter-form">
+                <div class="flex flex-wrap gap-3 sm:gap-4 items-end">
+                    <div>
+                        <label for="report-start-date" class="block text-xs font-medium text-gray-600 mb-1">Từ ngày</label>
+                        <input type="date" id="report-start-date" name="start_date" class="text-sm p-2 min-w-[140px]">
+                    </div>
+                    <div>
+                        <label for="report-end-date" class="block text-xs font-medium text-gray-600 mb-1">Đến ngày</label>
+                        <input type="date" id="report-end-date" name="end_date" class="text-sm p-2 min-w-[140px]">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn-primary"><i class="fas fa-filter mr-1"></i> Xem báo cáo</button>
+                    </div>
+                </div>
+            </form>
         </div>
 
-        <div id="admin-reports" class="content-section">
-            <div class="mb-6 bg-white p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200">
-                <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3">Bộ lọc chung</h3>
-                <form id="report-filter-form">
-                    <div class="flex flex-wrap gap-3 sm:gap-4 items-end">
-                        <div>
-                            <label for="report-start-date" class="block text-xs font-medium text-gray-600 mb-1">Từ ngày</label>
-                            <input type="date" id="report-start-date" name="start_date" class="text-sm p-2 min-w-[140px]">
-                        </div>
-                        <div>
-                            <label for="report-end-date" class="block text-xs font-medium text-gray-600 mb-1">Đến ngày</label>
-                            <input type="date" id="report-end-date" name="end_date" class="text-sm p-2 min-w-[140px]">
-                        </div>
-                        <div>
-                            <button type="submit" class="btn-primary"><i class="fas fa-filter mr-1"></i> Xem báo cáo</button>
-                        </div>
-                    </div>
-                </form>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <!-- Report Card: Người dùng -->
+            <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+                <h3 class="text-base font-semibold text-gray-800 mb-3 flex items-center gap-2"><i class="fas fa-users text-blue-600"></i> Người dùng</h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between"><span>Tổng số đăng ký:</span> <strong class="font-medium"><?php echo $total_registrations; ?></strong></div>
+                    <div class="flex justify-between"><span>Đăng ký mới (kỳ BC):</span> <strong class="font-medium"><?php echo $new_registrations; ?></strong></div>
+                    <div class="flex justify-between"><span>Tài khoản hoạt động:</span> <strong class="font-medium"><?php echo $active_accounts; ?></strong></div>
+                    <div class="flex justify-between"><span>Tài khoản bị khóa:</span> <strong class="font-medium"><?php echo $locked_accounts; ?></strong></div>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                <!-- Report Card: Người dùng -->
-                <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
-                    <h3 class="text-base font-semibold text-gray-800 mb-3 flex items-center gap-2"><i class="fas fa-users text-blue-600"></i> Người dùng</h3>
-                    <div class="space-y-2 text-sm">
-                        <div class="flex justify-between"><span>Tổng số đăng ký:</span> <strong class="font-medium"><?php echo $total_registrations; ?></strong></div>
-                        <div class="flex justify-between"><span>Đăng ký mới (kỳ BC):</span> <strong class="font-medium"><?php echo $new_registrations; ?></strong></div>
-                        <div class="flex justify-between"><span>Tài khoản hoạt động:</span> <strong class="font-medium"><?php echo $active_accounts; ?></strong></div>
-                        <div class="flex justify-between"><span>Tài khoản bị khóa:</span> <strong class="font-medium"><?php echo $locked_accounts; ?></strong></div>
-                    </div>
+            <!-- Report Card: Tài khoản đo đạc -->
+            <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+                <h3 class="text-base font-semibold text-gray-800 mb-3 flex items-center gap-2"><i class="fas fa-ruler-combined text-primary-600"></i> Tài khoản đo đạc</h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between"><span>Tổng số TK đang HĐ:</span> <strong class="font-medium"><?php echo $active_survey_accounts; ?></strong></div>
+                    <div class="flex justify-between"><span>TK kích hoạt mới (kỳ BC):</span> <strong class="font-medium"><?php echo $new_active_survey_accounts; ?></strong></div>
+                    <div class="flex justify-between"><span>TK sắp hết hạn (30 ngày):</span> <strong class="font-medium"><?php echo $expiring_accounts; ?></strong></div>
+                    <div class="flex justify-between"><span>TK đã hết hạn (kỳ BC):</span> <strong class="font-medium"><?php echo $expired_accounts; ?></strong></div>
                 </div>
+            </div>
 
-                <!-- Report Card: Tài khoản đo đạc -->
-                <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
-                    <h3 class="text-base font-semibold text-gray-800 mb-3 flex items-center gap-2"><i class="fas fa-ruler-combined text-primary-600"></i> Tài khoản đo đạc</h3>
-                    <div class="space-y-2 text-sm">
-                        <div class="flex justify-between"><span>Tổng số TK đang HĐ:</span> <strong class="font-medium"><?php echo $active_survey_accounts; ?></strong></div>
-                        <div class="flex justify-between"><span>TK kích hoạt mới (kỳ BC):</span> <strong class="font-medium"><?php echo $new_active_survey_accounts; ?></strong></div>
-                        <div class="flex justify-between"><span>TK sắp hết hạn (30 ngày):</span> <strong class="font-medium"><?php echo $expiring_accounts; ?></strong></div>
-                        <div class="flex justify-between"><span>TK đã hết hạn (kỳ BC):</span> <strong class="font-medium"><?php echo $expired_accounts; ?></strong></div>
-                    </div>
+            <!-- Report Card: Giao dịch -->
+            <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+                <h3 class="text-base font-semibold text-gray-800 mb-3 flex items-center gap-2"><i class="fas fa-file-invoice-dollar text-yellow-600"></i> Giao dịch</h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between"><span>Tổng doanh số (kỳ BC):</span> <strong class="font-medium"><?php echo number_format($total_sales, 0, ',', '.'); ?>đ</strong></div>
+                    <div class="flex justify-between"><span>Số GD thành công:</span> <strong class="font-medium"><?php echo $completed_transactions; ?></strong></div>
+                    <div class="flex justify-between"><span>Số GD chờ duyệt:</span> <strong class="font-medium"><?php echo $pending_transactions; ?></strong></div>
+                    <div class="flex justify-between"><span>Số GD bị từ chối:</span> <strong class="font-medium"><?php echo $failed_transactions; ?></strong></div>
                 </div>
+            </div>
 
-                <!-- Report Card: Giao dịch -->
-                <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
-                    <h3 class="text-base font-semibold text-gray-800 mb-3 flex items-center gap-2"><i class="fas fa-file-invoice-dollar text-yellow-600"></i> Giao dịch</h3>
-                    <div class="space-y-2 text-sm">
-                        <div class="flex justify-between"><span>Tổng doanh số (kỳ BC):</span> <strong class="font-medium"><?php echo number_format($total_sales, 0, ',', '.'); ?>đ</strong></div>
-                        <div class="flex justify-between"><span>Số GD thành công:</span> <strong class="font-medium"><?php echo $completed_transactions; ?></strong></div>
-                        <div class="flex justify-between"><span>Số GD chờ duyệt:</span> <strong class="font-medium"><?php echo $pending_transactions; ?></strong></div>
-                        <div class="flex justify-between"><span>Số GD bị từ chối:</span> <strong class="font-medium"><?php echo $failed_transactions; ?></strong></div>
-                    </div>
-                </div>
-
-                <!-- Report Card: Giới thiệu -->
-                <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
-                    <h3 class="text-base font-semibold text-gray-800 mb-3 flex items-center gap-2"><i class="fas fa-network-wired text-indigo-600"></i> Giới thiệu</h3>
-                    <div class="space-y-2 text-sm">
-                        <div class="flex justify-between"><span>Lượt giới thiệu mới (kỳ BC):</span> <strong class="font-medium"><?php echo $new_referrals; ?></strong></div>
-                        <div class="flex justify-between"><span>Hoa hồng phát sinh (kỳ BC):</span> <strong class="font-medium"><?php echo number_format($commission_generated, 0, ',', '.'); ?>đ</strong></div>
-                        <div class="flex justify-between"><span>Hoa hồng đã thanh toán (kỳ BC):</span> <strong class="font-medium"><?php echo number_format($commission_paid, 0, ',', '.'); ?>đ</strong></div>
-                        <div class="flex justify-between"><span>Tổng HH chờ thanh toán:</span> <strong class="font-medium"><?php echo number_format($commission_pending, 0, ',', '.'); ?>đ</strong></div>
-                    </div>
+            <!-- Report Card: Giới thiệu -->
+            <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+                <h3 class="text-base font-semibold text-gray-800 mb-3 flex items-center gap-2"><i class="fas fa-network-wired text-indigo-600"></i> Giới thiệu</h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between"><span>Lượt giới thiệu mới (kỳ BC):</span> <strong class="font-medium"><?php echo $new_referrals; ?></strong></div>
+                    <div class="flex justify-between"><span>Hoa hồng phát sinh (kỳ BC):</span> <strong class="font-medium"><?php echo number_format($commission_generated, 0, ',', '.'); ?>đ</strong></div>
+                    <div class="flex justify-between"><span>Hoa hồng đã thanh toán (kỳ BC):</span> <strong class="font-medium"><?php echo number_format($commission_paid, 0, ',', '.'); ?>đ</strong></div>
+                    <div class="flex justify-between"><span>Tổng HH chờ thanh toán:</span> <strong class="font-medium"><?php echo number_format($commission_pending, 0, ',', '.'); ?>đ</strong></div>
                 </div>
             </div>
         </div>
-    </main>
-</div>
-
+    </div>
+</main>
 <script>
     document.getElementById('report-filter-form').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -180,6 +175,4 @@ $commission_pending = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 
         window.location.search = urlParams.toString();
     });
 </script>
-<?php
-include $private_includes_path . 'admin_footer.php';
-?>
+<?php include $private_layouts_path . 'admin_footer.php'; ?>

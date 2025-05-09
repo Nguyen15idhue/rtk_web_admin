@@ -1,6 +1,3 @@
-</div> <!-- /.content-wrapper --> <?php // This closing div might need adjustment depending on where content-wrapper is opened ?>
-</div> <!-- /.dashboard-wrapper -->
-
 <!-- Toast Container -->
 <div id="toast-container"></div>
 
@@ -17,6 +14,5 @@ Database::getInstance()->close();
     <!-- Tiếp các script nội bộ -->
     <!-- <script src="<?php echo $public_assets_path; ?>js/vendor.bundle.js"></script> -->
     <!-- <script src="<?php echo $public_assets_path; ?>js/app.bundle.js"></script> -->
-</div> 
 </body>
 </html>

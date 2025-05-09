@@ -2,12 +2,12 @@
 // File: public/pages/user/user_management.php
 
 // --- Bootstrap and Initialization ---
-$bootstrap_data = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db                = $bootstrap_data['db'];
 $base_path         = $bootstrap_data['base_path'];
 $base_url          = $bootstrap_data['base_url'];
 $user_display_name = $bootstrap_data['user_display_name'];
-$private_includes_path = $bootstrap_data['private_includes_path'];
+$private_layouts_path = $bootstrap_data['private_layouts_path'];
 $admin_role        = $bootstrap_data['admin_role'];
 
 // authorization check
@@ -17,7 +17,7 @@ if (!isset($_SESSION['admin_id'])) {
 }
 
 // --- Includes and Setup ---
-require_once BASE_PATH . '/utils/functions.php'; // General helpers (includes format_date)
+require_once BASE_PATH . '/utils/functions.php'; // General helpers (layouts format_date)
 require_once BASE_PATH . '/utils/user_helpers.php'; // User-specific helpers
 require_once BASE_PATH . '/actions/user/fetch_users.php'; // User fetching logic
 
@@ -64,8 +64,8 @@ if (strpos($pagination_base_url, '?') === false) {
 
 // --- Page Setup for Header/Sidebar ---
 $page_title = 'Quản lý Người dùng';
-include $private_includes_path . 'admin_header.php';
-include $private_includes_path . 'admin_sidebar.php';
+include $private_layouts_path . 'admin_header.php';
+include $private_layouts_path . 'admin_sidebar.php';
 ?>
 
 <!-- Main Content Wrapper -->
@@ -322,5 +322,5 @@ include $private_includes_path . 'admin_sidebar.php';
 <script src="<?php echo $base_url; ?>public/assets/js/pages/user/user_management.js"></script>
 
 <?php
-include $private_includes_path . 'admin_footer.php';
+include $private_layouts_path . 'admin_footer.php';
 ?>

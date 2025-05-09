@@ -1,16 +1,16 @@
 <?php
-$bootstrap = require_once __DIR__ . '/../../../private/includes/page_bootstrap.php';
+$bootstrap = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db = $bootstrap['db'];
 $base_path = $bootstrap['base_path'];
 $base_url = $bootstrap['base_url'];
 $user_display_name = $bootstrap['user_display_name'];
-$private_includes_path = $bootstrap['private_includes_path'];
+$private_layouts_path = $bootstrap['private_layouts_path'];
 $is_admin = ($_SESSION['admin_role'] ?? '') === 'admin';
 $admins = $db ? $db->query("SELECT id,name,admin_username,role,created_at FROM admin")->fetchAll(PDO::FETCH_ASSOC) : [];
 $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php' => 'Đăng xuất'];
 ?>
 
-<?php include $private_includes_path . 'admin_sidebar.php'; include $private_includes_path . 'admin_header.php'; ?>
+<?php include $private_layouts_path . 'admin_sidebar.php'; include $private_layouts_path . 'admin_header.php'; ?>
 
 <main class="content-wrapper">
     <div class="content-header">
@@ -109,28 +109,30 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
     <!-- Admin Accounts List -->
     <div class="content-section">
         <h3>Danh sách tài khoản quản trị</h3>
-        <table class="transactions-table" id="adminAccountsTable">
-            <thead>
-                <tr>
-                    <th>ID</th><th>Tên</th><th>Username</th><th>Vai trò</th><th>Ngày tạo</th><th class="actions" style="text-align:center">Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($admins as $a): ?>
-                <tr>
-                    <td><?= htmlspecialchars($a['id']) ?></td>
-                    <td><?= htmlspecialchars($a['name']) ?></td>
-                    <td><?= htmlspecialchars($a['admin_username']) ?></td>
-                    <td><?= ($a['role'] === 'customercare' ? 'Chăm sóc khách hàng' : 'Quản trị viên') ?></td>
-                    <td><?= htmlspecialchars($a['created_at']) ?></td>
-                    <td class="actions">
-                        <button class="btn btn-secondary btn-sm" onclick="PermissionPageEvents.openEditAdminModal(<?= $a['id'] ?>)">Sửa</button>
-                        <button class="btn btn-danger btn-sm" onclick="PermissionPageEvents.openDeleteAdminModal(<?= $a['id'] ?>)">Xóa</button>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <div class="transactions-table-wrapper">
+            <table class="transactions-table" id="adminAccountsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th><th>Tên</th><th>Username</th><th>Vai trò</th><th>Ngày tạo</th><th class="actions" style="text-align:center">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($admins as $a): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($a['id']) ?></td>
+                        <td><?= htmlspecialchars($a['name']) ?></td>
+                        <td><?= htmlspecialchars($a['admin_username']) ?></td>
+                        <td><?= ($a['role'] === 'customercare' ? 'Chăm sóc khách hàng' : 'Quản trị viên') ?></td>
+                        <td><?= htmlspecialchars($a['created_at']) ?></td>
+                        <td class="actions">
+                            <button class="btn btn-secondary btn-sm" onclick="PermissionPageEvents.openEditAdminModal(<?= $a['id'] ?>)">Sửa</button>
+                            <button class="btn btn-danger btn-sm" onclick="PermissionPageEvents.openDeleteAdminModal(<?= $a['id'] ?>)">Xóa</button>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </main>
 
@@ -143,7 +145,7 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
 <script defer src="<?= $base_url ?>public/assets/js/pages/auth/permission_management.js"></script>
 
 <!-- Create Admin/Operator Modal -->
-<div id="createRoleModal" class="modal" style="display: none;">
+<div id="createRoleModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
             <h4>Thêm QTV/Vận hành</h4>
@@ -232,5 +234,5 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
     </div>
 </div>
 <?php
-include $private_includes_path . 'admin_footer.php';
+include $private_layouts_path . 'admin_footer.php';
 ?>

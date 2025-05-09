@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../config/constants.php';        // Load BASE_PATH
 require_once BASE_PATH . '/utils/functions.php'; // For api_error/api_success
-require_once __DIR__ . '/../../includes/error_handler.php'; // thêm
+require_once __DIR__ . '/../../core/error_handler.php'; // thêm
 require_once __DIR__ . '/../../classes/Auth.php';
 require_once BASE_PATH . '/classes/AdminModel.php'; // Add AdminModel
 

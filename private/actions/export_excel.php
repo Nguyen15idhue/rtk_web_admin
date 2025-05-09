@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 // Autoloading and common setup
-require_once __DIR__ . '/../includes/page_bootstrap.php'; // This should include functions.php
+require_once __DIR__ . '/../core/page_bootstrap.php'; // This should include functions.php
 // Service for Excel generation
 require_once __DIR__ . '/../services/ExcelExportService.php';
 
@@ -27,10 +27,6 @@ if (!empty($selectedIds)) {
     $selectedIds = array_map('intval', $selectedIds); // Basic sanitization
     $selectedIds = array_filter($selectedIds, function($id) { return $id > 0; }); // Filter out invalid IDs
 }
-
-// $db should be available from page_bootstrap.php if it's returned by it.
-// If not, uncomment the line below or ensure $db is properly initialized.
-// $db = Database::getInstance()->getConnection(); 
 
 $dataToExport = [];
 $modelInstance = null;
@@ -57,8 +53,6 @@ if (isset($modelMapping[$tableName])) {
     }
 
     if (class_exists($modelClass)) {
-        // Ensure $db is passed if the constructor expects it.
-        // The $db variable is expected to be globally available or passed from page_bootstrap.php
         if (!isset($db) || !$db instanceof PDO) {
             error_log("Export Excel: Database connection (\$db) not available or invalid.");
             api_error("Internal server error: Database connection not available.", 500);

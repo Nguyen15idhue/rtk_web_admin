@@ -101,7 +101,6 @@
     top: 0;
     left: 0;
     bottom: 0; /* Ensures full height */
-    height: 100vh; /* Explicit full height */
 
     /* --- Giao diện --- */
     background: var(--sidebar-bg);

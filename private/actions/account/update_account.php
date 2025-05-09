@@ -1,7 +1,7 @@
 <?php
 // filepath: private\actions\account\update_account.php
 // Khởi bootstrap để có $db, BASE_PATH, BASE_URL
-$bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
+$bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 $db        = $bootstrap['db'];
 $base_path = $bootstrap['base_path'];
 

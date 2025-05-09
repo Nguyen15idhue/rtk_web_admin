@@ -2,7 +2,7 @@
 // filepath: private\actions\account\get_account_details.php
 
 // Khởi bootstrap
-$bootstrap = require __DIR__ . '/../../includes/page_bootstrap.php';
+$bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
 require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class

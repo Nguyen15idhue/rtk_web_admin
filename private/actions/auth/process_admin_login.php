@@ -1,6 +1,5 @@
 <?php
-// Session is now bootstrapped by page_bootstrap.php
-$bootstrap = require_once __DIR__ . '/../../includes/page_bootstrap.php';
+$bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 $base_url  = $bootstrap['base_url'];
 $db = $bootstrap['db'];
 

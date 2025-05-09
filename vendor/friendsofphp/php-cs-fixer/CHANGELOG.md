@@ -1294,7 +1294,7 @@ Changelog for v3.18.0
 * bug: CompactNullableTypehintFixer - fix for whitespace between `?` and `static` (#6993)
 * bug: consider function modifiers for `statement_indentation` (#6978)
 * bug: Exclude `$this` from `TernaryToNullCoalescingFixer` (#7052)
-* bug: False positive on used imports when docblock includes it with mismatching case (#6909)
+* bug: False positive on used imports when docblock layouts it with mismatching case (#6909)
 * bug: Fix chained calls semicolon indent in switch case (#7045)
 * bug: Fix multiline_whitespace_before_semicolons for echo tags (#7019)
 * bug: Fix phpDoc align when there is inconsistent spacing after comment star (#7012)

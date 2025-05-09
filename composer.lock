@@ -34,7 +34,7 @@
             "type": "library",
             "extra": {
                 "phpstan": {
-                    "includes": [
+                    "layouts": [
                         "extension.neon"
                     ]
                 },

@@ -149,7 +149,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
                 ->setDefault([])
                 ->setNormalizer(static function (Options $options, array $value) use ($fixerName): array {
                     if ($value !== array_unique($value)) {
-                        throw new InvalidFixerConfigurationException($fixerName, 'The list includes attributes that are not unique.');
+                        throw new InvalidFixerConfigurationException($fixerName, 'The list layouts attributes that are not unique.');
                     }
 
                     return array_flip(array_values(
