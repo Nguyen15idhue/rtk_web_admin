@@ -52,8 +52,13 @@ $expired_accounts = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
 
 // Transactions
 // Total sales in period
-$stmt = $pdo->prepare("SELECT SUM(r.total_price) as total FROM registration r LEFT JOIN payment p ON r.id = p.registration_id WHERE r.deleted_at IS NULL AND r.created_at BETWEEN :start AND :end AND (r.status = 'active' OR p.confirmed = 1)");
-$stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
+$stmt = $pdo->prepare("
+    SELECT SUM(th.amount) AS total
+    FROM transaction_history th
+    WHERE th.status = 'completed'
+      AND th.created_at BETWEEN :start AND :end
+");
+$stmt->execute([':start' => $start_datetime, ':end' => $end_datetime]);
 $total_sales = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 0;
 // Completed transactions
 $stmt = $pdo->prepare("SELECT COUNT(id) as count FROM transaction_history WHERE status = 'completed' AND created_at BETWEEN :start AND :end");

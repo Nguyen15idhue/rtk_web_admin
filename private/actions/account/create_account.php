@@ -98,7 +98,7 @@ $inputStatus = $input['status'] ?? 'active';
 // xác định registration.status
 $regStatus = in_array($inputStatus, ['pending','rejected']) ? $inputStatus : 'active';
 // override enabled: suspended => 0, ngược lại => 1
-$enabled = ($inputStatus === 'suspended') ? 0 : 1;
+$enabled = ($inputStatus === 'suspended' || $inputStatus === 'pending') ? 0 : 1;
 
 try {
     $database = Database::getInstance();
@@ -129,14 +129,16 @@ try {
         $stmt = $db->prepare(
           "INSERT INTO registration 
            (user_id, package_id, location_id, num_account, start_time, end_time, base_price, vat_percent, vat_amount, total_price, status)
-           VALUES (?, ?, ?, 1, ?, ?, 0, 0, 0, 0, 'pending')"
+           VALUES (?, ?, ?, ?, ?, ?, 0, 0, 0, 0, ?)"
         );
         $stmt->execute([
-            $userId,            // <-- dùng userId thay vì admin_id
+            $userId,
             $package_input,
             $location_input,
+            $account_count,  // use selected number of accounts
             $start_time_db,
-            $end_time_db
+            $end_time_db,
+            $regStatus       // use mapped status from form
         ]);
         $registration_id = (int)$db->lastInsertId();
         error_log("[CA] auto registration inserted, new regId={$registration_id}");
@@ -189,7 +191,7 @@ try {
             "userPwd"        => $password,
             "startTime"      => $startMs,
             "endTime"        => $endMs,
-            "enabled"        => 1,
+            "enabled"        => $enabled,
             "numOnline"      => $input['concurrent_user'],
             "customerName"   => $regInfo['customer_name'],
             "customerPhone"  => $regInfo['phone'],
@@ -220,8 +222,8 @@ try {
             $username,
             $password,
             $concurrent_user,
-            1,
-            1
+            $enabled,    // reflect selected status (0 for pending/rejected)
+            1            // customerBizType
         ]);
         error_log("[CA] survey_account insert rowCount=" . $ins->rowCount());
         // update registration & transaction

@@ -1,5 +1,5 @@
 <?php
-$bootstrap_data = require_once __DIR__ . '/../../private/core/page_bootstrap.php';
+$bootstrap_data = require __DIR__ . '/../../private/core/page_bootstrap.php';
 $base_url = $bootstrap_data['base_url'];
 $private_layouts_path = $bootstrap_data['private_layouts_path'];
 ?>
