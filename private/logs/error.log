@@ -844,3 +844,214 @@
 [09-May-2025 01:57:15 UTC] [Database Close] Connection closed.
 [09-May-2025 01:57:15 UTC] [Database Connect] Connection to database 'sa2' successful.
 [09-May-2025 01:57:15 UTC] [Database Close] Connection closed.
+[09-May-2025 02:09:11 UTC] [Database Connect] Connection to database 'sa2' successful.
+[09-May-2025 02:09:11 UTC] [Database Close] Connection closed.
+[09-May-2025 02:09:19 UTC] [Database Connect] Connection to database 'sa2' successful.
+[09-May-2025 02:09:19 UTC] [PTA] activate survey_account executed, affectedRows=2
+[09-May-2025 02:09:19 UTC] [PTA] Updated registration_id to 157 for accounts: 2189,2190
+[09-May-2025 02:09:19 UTC] [PTA] Accounts slated for renewal: 2189,2190
+[09-May-2025 02:09:19 UTC] [PTA] renewing account 2189 with cookie PHPSESSID=an3p5hnp9din4m4h4s7ijk0uim
+[09-May-2025 02:09:20 UTC] [PTA][2189] HTTP=0 errno=28 resp=
+[09-May-2025 02:09:20 UTC] [PTA] Renewal update cURL FAILED for account 2189. HTTP 0. cURL Errno: 28. Response: 
+[09-May-2025 02:09:20 UTC] [PTA] renewing account 2190 with cookie PHPSESSID=an3p5hnp9din4m4h4s7ijk0uim
+[09-May-2025 02:09:21 UTC] [PTA][2190] HTTP=0 errno=28 resp=
+[09-May-2025 02:09:21 UTC] [PTA] Renewal update cURL FAILED for account 2190. HTTP 0. cURL Errno: 28. Response: 
+[09-May-2025 02:09:21 UTC] [PTA] Renewal completed for accounts: 
+[09-May-2025 02:09:21 UTC] [PTA] Renewal failed for accounts: 2189,2190
+[09-May-2025 02:09:21 UTC] [Database Close] Connection closed.
+[09-May-2025 02:09:21 UTC] [Database Connect] Connection to database 'sa2' successful.
+[09-May-2025 02:09:21 UTC] [Database Close] Connection closed.
+[09-May-2025 02:09:21 UTC] [Database Connect] Connection to database 'sa2' successful.
+[09-May-2025 02:09:21 UTC] [update_account] raw input: {"id":"2189","username_acc":"CMA001","password_acc":"0999999443","status":"active","activation_date":"2025-05-09","expiry_date":"2025-11-09"}
+[09-May-2025 02:09:21 UTC] [update_account] decoded input: Array
+(
+    [id] => 2189
+    [username_acc] => CMA001
+    [password_acc] => 0999999443
+    [status] => active
+    [activation_date] => 2025-05-09
+    [expiry_date] => 2025-11-09
+)
+
+[09-May-2025 02:09:21 UTC] [update_account] input customer_phone: <none>
+[09-May-2025 02:09:21 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => CMA001
+    [password_acc] => 0999999443
+    [status] => active
+    [activation_date] => 2025-05-09
+    [expiry_date] => 2025-11-09
+)
+
+[09-May-2025 02:09:21 UTC] Using default mount points for location ID: 12 - [42]
+[09-May-2025 02:09:21 UTC] [update_account] final sanitized customer_phone: 
+[09-May-2025 02:09:21 UTC] [update_account] final customer_name: 
+[09-May-2025 02:09:21 UTC] Using default mount points for location ID: 12 - [42]
+[09-May-2025 02:09:21 UTC] [update_account] RTK API payload via model: Array
+(
+    [id] => 2189
+    [name] => CMA001
+    [userPwd] => 0999999443
+    [startTime] => 1746748800000
+    [endTime] => 1762732799000
+    [enabled] => 1
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 90
+    [customerName] => Long2002
+    [customerPhone] => 0999999443
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 42
+        )
+
+)
+
+[09-May-2025 02:09:21 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[09-May-2025 02:09:21 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully","account":{"id":"2189","username_acc":"CMA001","enabled":1,"created_at":"2025-05-09 07:54:06","password_acc":"0999999443","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"activation_date":"2025-05-09 00:00:00","expiry_date":"2025-11-09 23:59:59","registration_id":157,"registration_status":"active","num_account":2,"user_id":90,"user_email":"tranhailong2407@gmail.com","user_username":"Long2002","user_phone":"0999999443","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"active"}}
+[09-May-2025 02:09:21 UTC] [Database Close] Connection closed.
+[09-May-2025 02:09:21 UTC] [Database Connect] Connection to database 'sa2' successful.
+[09-May-2025 02:09:21 UTC] [update_account] raw input: {"id":"2190","username_acc":"CMA002","password_acc":"0999999443","status":"active","activation_date":"2025-05-09","expiry_date":"2025-11-09"}
+[09-May-2025 02:09:21 UTC] [update_account] decoded input: Array
+(
+    [id] => 2190
+    [username_acc] => CMA002
+    [password_acc] => 0999999443
+    [status] => active
+    [activation_date] => 2025-05-09
+    [expiry_date] => 2025-11-09
+)
+
+[09-May-2025 02:09:21 UTC] [update_account] input customer_phone: <none>
+[09-May-2025 02:09:21 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => CMA002
+    [password_acc] => 0999999443
+    [status] => active
+    [activation_date] => 2025-05-09
+    [expiry_date] => 2025-11-09
+)
+
+[09-May-2025 02:09:21 UTC] Using default mount points for location ID: 12 - [42]
+[09-May-2025 02:09:22 UTC] [update_account] final sanitized customer_phone: 
+[09-May-2025 02:09:22 UTC] [update_account] final customer_name: 
+[09-May-2025 02:09:22 UTC] Using default mount points for location ID: 12 - [42]
+[09-May-2025 02:09:22 UTC] [update_account] RTK API payload via model: Array
+(
+    [id] => 2190
+    [name] => CMA002
+    [userPwd] => 0999999443
+    [startTime] => 1746748800000
+    [endTime] => 1762732799000
+    [enabled] => 1
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 90
+    [customerName] => Long2002
+    [customerPhone] => 0999999443
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 42
+        )
+
+)
+
+[09-May-2025 02:09:22 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[09-May-2025 02:09:22 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully","account":{"id":"2190","username_acc":"CMA002","enabled":1,"created_at":"2025-05-09 07:54:06","password_acc":"0999999443","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"activation_date":"2025-05-09 00:00:00","expiry_date":"2025-11-09 23:59:59","registration_id":157,"registration_status":"active","num_account":2,"user_id":90,"user_email":"tranhailong2407@gmail.com","user_username":"Long2002","user_phone":"0999999443","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"active"}}
+[09-May-2025 02:09:22 UTC] [Database Close] Connection closed.
+[09-May-2025 02:09:35 UTC] [Database Connect] Connection to database 'sa2' successful.
+[09-May-2025 02:09:35 UTC] Using default mount points for location ID: 12 - [42]
+[09-May-2025 02:09:35 UTC] [Reject Transaction 149] Updating RTK account dates for account 2189: Array
+(
+    [id] => 2189
+    [name] => CMA001
+    [userPwd] => 0999999443
+    [startTime] => 1746781775000
+    [endTime] => 1754783999000
+    [enabled] => 1
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 90
+    [customerName] => Long2002
+    [customerPhone] => 0999999443
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 42
+        )
+
+)
+
+[09-May-2025 02:09:35 UTC] [Reject Transaction 149] RTK update success for account 2189
+[09-May-2025 02:09:35 UTC] Using default mount points for location ID: 12 - [42]
+[09-May-2025 02:09:35 UTC] [Reject Transaction 149] Updating RTK account dates for account 2190: Array
+(
+    [id] => 2190
+    [name] => CMA002
+    [userPwd] => 0999999443
+    [startTime] => 1746781775000
+    [endTime] => 1754783999000
+    [enabled] => 1
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 90
+    [customerName] => Long2002
+    [customerPhone] => 0999999443
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 42
+        )
+
+)
+
+[09-May-2025 02:09:35 UTC] [Reject Transaction 149] RTK update success for account 2190
+[09-May-2025 02:09:35 UTC] [Database Close] Connection closed.
+[09-May-2025 02:09:35 UTC] [Database Connect] Connection to database 'sa2' successful.
+[09-May-2025 02:09:35 UTC] [Database Close] Connection closed.

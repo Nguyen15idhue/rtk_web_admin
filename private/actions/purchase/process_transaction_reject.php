@@ -12,6 +12,7 @@ require_once BASE_PATH . '/api/rtk_system/account_api.php';
 require_once BASE_PATH . '/utils/functions.php';
 require_once BASE_PATH . '/services/TransactionHistoryService.php'; 
 require_once BASE_PATH . '/classes/TransactionModel.php';
+require_once BASE_PATH . '/classes/AccountModel.php'; // <-- add this
 
 // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -51,42 +52,47 @@ $db->beginTransaction();
 $tm = new TransactionModel();
 
 try {
-    $th = $tm->getHistoryById($transaction_id);
+    $th       = $tm->getHistoryById($transaction_id);
     if (!$th) throw new Exception("Transaction history not found");
-    $reg_id = (int)$th['registration_id'];
-
-    // nếu là renewal
-    if ($th['transaction_type'] === 'renewal') {
-        // chỉ trừ lại thời gian đã cộng trên survey_account
-        $tm->adjustAccountTimesForRevert($reg_id, $transaction_id);
-    }
-
-    $reg = $tm->getRegistrationById($reg_id);
+    $reg_id   = (int)$th['registration_id'];
+    $tx_type  = $th['transaction_type'];
+    $reg      = $tm->getRegistrationById($reg_id);
     if (!$reg) throw new Exception("Registration not found");
-    $old_status = $reg['status'];
 
-    $accounts = [];
-    // Fetch all accounts that were ever associated with this registration,
-    // regardless of their current local deleted_at status,
-    // to ensure their RTK counterparts are handled during rejection.
-    // We only need to do this if the registration was 'active', implying accounts might exist on RTK.
-    if ($old_status === 'active') {
-        $accounts = $tm->getAllSurveyAccountsForRegistration($reg_id);
+    // --- If renewal: adjust times and push updated dates to RTK ---
+    if ($tx_type === 'renewal') {
+        $tm->adjustAccountTimesForRevert($reg_id, $transaction_id);
+        $accountModel    = new AccountModel($db);
+        $accountsToUpdate = $tm->getAllSurveyAccountsForRegistration($reg_id);
+        $apiFailures     = [];
+        foreach ($accountsToUpdate as $account) {
+            $payload   = $accountModel->buildRtkUpdatePayload($account['id'], []);
+            error_log("[Reject Transaction {$transaction_id}] Updating RTK account dates for account {$account['id']}: " . print_r($payload, true));
+            $apiResult = updateRtkAccount($payload);
+            if (empty($apiResult['success'])) {
+                $apiFailures[] = $account['id'];
+                error_log("[Reject Transaction {$transaction_id}] FAILED to update RTK account {$account['id']}: " . $apiResult['error']);
+            } else {
+                error_log("[Reject Transaction {$transaction_id}] RTK update success for account {$account['id']}");
+            }
+        }
+        if (!empty($apiFailures)) {
+            throw new Exception('RTK update failed for accounts: ' . implode(',', $apiFailures));
+        }
     }
 
+    // --- Common: revert registration and payment confirmation ---
     $tm->updateRegistrationStatus($reg_id, 'rejected', $reason);
+    $tm->unconfirmPayment($transaction_id);
 
-    if ($old_status === 'active') {
+    // --- Non-renewal: soft-delete and remove RTK accounts ---
+    if ($tx_type !== 'renewal') {
+        $accountsToDelete = $tm->getAllSurveyAccountsForRegistration($reg_id);
         $tm->softDeleteAccounts($reg_id);
-        $tm->unconfirmPayment($transaction_id);
-    }
+        $tm->updateHistoryStatus($transaction_id, 'failed');
 
-    $tm->updateHistoryStatus($transaction_id, 'failed');
-
-    // --- NEW: track API failures & delay commit until after external calls ---
-    $apiFailures = [];
-    if (!empty($accounts)) {
-        foreach ($accounts as $account) {
+        $apiFailures = [];
+        foreach ($accountsToDelete as $account) {
             error_log("[Reject Transaction {$transaction_id}] Deleting RTK account {$account['id']}");
             $apiResult = deleteRtkAccount([$account['id']]);
             if (empty($apiResult['success'])) {
@@ -96,16 +102,14 @@ try {
                 error_log("[Reject Transaction {$transaction_id}] RTK delete success for account {$account['id']}.");
             }
         }
+        if (!empty($apiFailures)) {
+            throw new Exception('RTK deletion failed for account IDs: ' . implode(',', $apiFailures));
+        }
     } else {
-        error_log("[Reject Transaction {$transaction_id}] No associated survey accounts to delete via API.");
+        // renewal: only update history
+        $tm->updateHistoryStatus($transaction_id, 'failed');
     }
 
-    // If any external deletes failed, abort and rollback everything
-    if (!empty($apiFailures)) {
-        throw new Exception('RTK deletion failed for account IDs: ' . implode(',', $apiFailures));
-    }
-
-    // All good – now commit
     $db->commit();
     api_success(null, 'Transaction #' . $transaction_id . ' rejected successfully.');
 } catch (Exception $e) {
