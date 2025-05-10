@@ -77,7 +77,7 @@ class Database {
             $this->conn->query('SELECT 1');
 
             // Log success
-            error_log($logPrefix . "Connection to database '" . $this->db_name . "' successful.");
+            // error_log($logPrefix . "Connection to database '" . $this->db_name . "' successful.");
 
         } catch(PDOException $e) {
             error_log(
@@ -100,7 +100,7 @@ class Database {
                 $this->conn->rollBack();        // Ensure no open transaction remains
             }
             $this->conn = null;
-            error_log("[Database Close] Connection closed.");
+            // error_log("[Database Close] Connection closed.");
         }
         // Reset the singleton so resources can be freed
         self::$instance = null;

@@ -469,14 +469,4 @@ function fetchAndUpdateStations(): void {
     $conn->close();
 }
 
-// HTTP test endpoint: run ?test_update=1
-if (php_sapi_name() !== 'cli' && isset($_GET['test_update'])) {
-    // Add authentication and authorization for the test endpoint
-    Auth::ensureAuthorized(['admin']); // Or a more specific role if needed
-
-    fetchAndUpdateStations();
-    header('Content-Type: application/json');
-    echo json_encode(['success'=>true,'message'=>'Invoked via HTTP test']);
-    exit;
-}
 ?>
