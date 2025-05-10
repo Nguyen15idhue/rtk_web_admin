@@ -134,6 +134,83 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
             </table>
         </div>
     </form>
+
+    <!-- Manager Management Section -->
+    <div id="manager-management" class="content-section" style="margin-top:40px;">
+        <div class="header-actions">
+            <h3>Quản lý Manager</h3>
+            <button class="btn btn-primary" onclick="openCreateManagerModal()"><i class="fas fa-plus"></i> Thêm Manager</button>
+        </div>
+        <div class="transactions-table-wrapper">
+            <table class="transactions-table" id="managersTable">
+                <thead>
+                    <tr>
+                        <th>ID</th><th>Name</th><th>Phone</th><th>Address</th><th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($allManagers as $m): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($m['id']); ?></td>
+                            <td><?php echo htmlspecialchars($m['name']); ?></td>
+                            <td><?php echo htmlspecialchars($m['phone'] ?? ''); ?></td>
+                            <td><?php echo htmlspecialchars($m['address'] ?? ''); ?></td>
+                            <td class="actions text-center">
+                                <button class="btn-icon btn-edit" title="Sửa" onclick="openEditManagerModal('<?php echo $m['id']; ?>')"><i class="fas fa-pencil-alt"></i></button>
+                                <form method="POST" action="<?php echo $base_url; ?>public/handlers/manager/manager_actions.php" style="display:inline">
+                                    <input type="hidden" name="action" value="delete_manager">
+                                    <input type="hidden" name="manager_id" value="<?php echo $m['id']; ?>">
+                                    <button class="btn-icon btn-secondary" title="Xóa"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Create Manager Modal -->
+    <div id="createManagerModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeManagerModal('createManagerModal')">&times;</span>
+            <h4>Thêm Manager</h4>
+            <form id="createManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/manager/manager_actions.php">
+                <input type="hidden" name="action" value="create_manager">
+                <div class="modal-body">
+                    <div class="form-group"><label>Name</label><input name="name" required></div>
+                    <div class="form-group"><label>Phone</label><input name="phone"></div>
+                    <div class="form-group"><label>Address</label><input name="address"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeManagerModal('createManagerModal')">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Manager Modal -->
+    <div id="editManagerModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeManagerModal('editManagerModal')">&times;</span>
+            <h4>Sửa Manager</h4>
+            <form id="editManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/manager/manager_actions.php">
+                <input type="hidden" name="action" value="update_manager">
+                <input type="hidden" id="editManagerId" name="manager_id">
+                <div class="modal-body">
+                    <div class="form-group"><label>Name</label><input id="editManagerName" name="name" required></div>
+                    <div class="form-group"><label>Phone</label><input id="editManagerPhone" name="phone"></div>
+                    <div class="form-group"><label>Address</label><input id="editManagerAddress" name="address"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeManagerModal('editManagerModal')">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </main>
 
 <?php
@@ -146,3 +223,22 @@ document.getElementById('selectAll').addEventListener('change', function(){
     document.querySelectorAll('.rowCheckbox').forEach(cb=>cb.checked = this.checked);
 });
 </script>
+
+<script>
+    // helper functions
+    function openCreateManagerModal() { document.getElementById('createManagerModal').style.display='block'; }
+    function openEditManagerModal(id) {
+        fetch('<?php echo $base_url; ?>public/api/manager_get.php?id='+id)
+            .then(res=>res.json())
+            .then(data=>{
+                document.getElementById('editManagerId').value=data.id;
+                document.getElementById('editManagerName').value=data.name;
+                document.getElementById('editManagerPhone').value=data.phone;
+                document.getElementById('editManagerAddress').value=data.address;
+                document.getElementById('editManagerModal').style.display='block';
+            });
+    }
+    function closeManagerModal(modalId){ document.getElementById(modalId).style.display='none'; }
+</script>
+
+<script src="<?php echo $base_url; ?>public/assets/js/pages/station/station_management.js"></script>
