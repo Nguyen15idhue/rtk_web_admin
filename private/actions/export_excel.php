@@ -39,6 +39,7 @@ $modelMapping = [
     'invoices'     => 'InvoiceModel',
     'transactions' => 'TransactionModel',
     'users'        => 'UserModel',
+    'stations'     => 'StationModel', // thêm để hỗ trợ xuất Excel cho stations
 ];
 
 if (isset($modelMapping[$tableName])) {

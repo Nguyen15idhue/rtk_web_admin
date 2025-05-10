@@ -163,5 +163,31 @@ class StationModel {
             return [];
         }
     }
+
+    /**
+     * Export all data.
+     *
+     * @return array An array of all station data.
+     */
+    public function getAllDataForExport(): array {
+        return $this->getAllStations();
+    }
+
+    /**
+     * Export data by a list of IDs.
+     *
+     * @param array $ids An array of station IDs.
+     * @return array An array of station data corresponding to the provided IDs.
+     */
+    public function getDataByIdsForExport(array $ids): array {
+        $results = [];
+        foreach ($ids as $id) {
+            $station = $this->getStationById($id);
+            if ($station !== null) {
+                $results[] = $station;
+            }
+        }
+        return $results;
+    }
 }
 ?>
