@@ -12,7 +12,6 @@
     flex-wrap: wrap;            /* wrap items instead of overflowing */
     justify-content: center;    /* center wrapped items */
     max-width: 100%;            /* prevent exceeding parent width */
-    margin: 0 auto;             /* center within footer */
 }
 .pagination-controls button, .pagination-controls span {
     padding: 0.4rem 0.8rem; border: 1px solid var(--gray-300);

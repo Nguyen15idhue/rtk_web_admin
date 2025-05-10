@@ -29,3 +29,7 @@ define('LOGS_PATH', BASE_PATH . '/logs');
 
 // Thư mục chung cho tất cả uploads
 define('UPLOADS_PATH', BASE_PATH . '/../public/uploads/');
+
+// API Keys for external services
+define('API_ACCESS_KEY', 'Zb5F6iKUuAISy4qY');
+define('API_SECRET_KEY', 'KL1KEEJj2s6HA8LB');

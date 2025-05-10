@@ -374,7 +374,7 @@ function deleteRtkAccount(array $ids): array {
 }
 
 /**
- * GET list of stations (id→identificationName).
+ * GET list of stations (id→identificationName, lat, lng).
  */
 function fetchAllStations(): array {
     $url = 'http://203.171.25.138:8090/openapi/stream/stations?page=1&size=100&count=true';
@@ -399,7 +399,12 @@ function fetchAllStations(): array {
     $j = json_decode($resp,true);
     $out = [];
     foreach($j['data']['records']??[] as $r){
-        $out[(int)$r['id']] = $r['identificationName'] ?? '';
+        $out[(int)$r['id']] = [
+            'stationName'         => $r['stationName']         ?? '',
+            'identificationName'  => $r['identificationName']  ?? '',
+            'lat'                 => $r['lat']                 ?? null,
+            'lng'                 => $r['lng']                 ?? null,
+        ];
     }
     return $out;
 }
@@ -441,31 +446,81 @@ function fetchStationDynamicInfo(array $ids): array {
  * Fetch stations + dynamic info, then UPDATE `station` table.
  */
 function fetchAndUpdateStations(): void {
-    global $conn; 
-    require_once BASE_PATH . '/config/database.php'; // init global $conn
-
-    if (!isset($conn) || $conn->connect_error) {
-        error_log("DB connect failed");
+    // Initialize MySQLi connection using defined database constants
+    require_once BASE_PATH . '/config/database.php';
+    $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+    if ($conn->connect_error) {
+        error_log("DB connect failed: " . $conn->connect_error);
         return;
     }
+
+    // 1. Lấy danh sách station từ API
     $map = fetchAllStations();
     if (empty($map)) return;
-    $dyn = fetchStationDynamicInfo(array_keys($map));
-    $stmt = $conn->prepare("
-        UPDATE station
-        SET station_name = ?, status = ?
-        WHERE id = ?
-    ");
-    foreach($dyn as $s){
-        $stmt->bind_param(
-            'sii',
-            $s['stationName'],
-            $s['connectStatus'],
-            $s['stationId']
-        );
-        $stmt->execute();
+    $dynList = fetchStationDynamicInfo(array_keys($map));
+    // chuyển thành map theo stationId để tiện truy cập
+    $dyn = [];
+    foreach ($dynList as $s) {
+        $dyn[$s['stationId']] = $s;
     }
-    $stmt->close();
+
+    // 2. Lấy danh sách ID đang có trong DB
+    $existingIds = [];
+    $res = $conn->query("SELECT id FROM station");
+    while ($row = $res->fetch_assoc()) {
+        $existingIds[] = (int)$row['id'];
+    }
+
+    $apiIds = array_map('intval', array_keys($map));
+
+    // 3. Xoá trạm không còn trong API
+    $toDelete = array_diff($existingIds, $apiIds);
+    if (!empty($toDelete)) {
+        $ids = implode(',', $toDelete);
+        // Soft-delete: gán status = -1
+        $conn->query("UPDATE station SET status = -1 WHERE id IN ($ids)");
+    }
+
+    // 4. Thêm mới trạm API chưa có trong DB
+    $toInsert = array_diff($apiIds, $existingIds);
+    if (!empty($toInsert)) {
+        $stmtI = $conn->prepare("
+            INSERT INTO station
+                (id, station_name, identificationName, lat, `long`, status, mountpoint_id)
+            VALUES (?,   ?,            ?,                 ?,    ?,      ?,      NULL)
+        ");
+        foreach ($toInsert as $id) {
+            $stationName = $map[$id]['stationName'] ?? '';
+            $identName   = $map[$id]['identificationName'] ?? '';
+            $lat         = $map[$id]['lat']                ?? 0.0;
+            $lng         = $map[$id]['lng']                ?? 0.0;
+            $status      = $dyn[$id]['connectStatus']      ?? 0;
+            $stmtI->bind_param('sssddi', $id, $stationName, $identName, $lat, $lng, $status);
+            $stmtI->execute();
+        }
+        $stmtI->close();
+    }
+
+    // 5. Cập nhật station_name, identificationName, lat, long, status cho trạm tồn tại
+    $stmtU = $conn->prepare("
+        UPDATE station
+           SET station_name       = ?,
+               identificationName = ?,
+               lat                = ?,
+               `long`             = ?,
+               status             = ?
+         WHERE id = ?
+    ");
+    foreach ($apiIds as $id) {
+        $stationName = $map[$id]['stationName'];
+        $identName   = $map[$id]['identificationName'];
+        $lat         = $map[$id]['lat']            ?? 0.0;
+        $lng         = $map[$id]['lng']            ?? 0.0;
+        $status      = $dyn[$id]['connectStatus']  ?? 0;
+        $stmtU->bind_param('ssddis', $stationName, $identName, $lat, $lng, $status, $id);
+        $stmtU->execute();
+    }
+    $stmtU->close();
     $conn->close();
 }
 

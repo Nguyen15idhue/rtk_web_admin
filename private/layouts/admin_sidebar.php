@@ -11,6 +11,7 @@ $admin_nav_items = [
     ['label' => 'Dashboard', 'icon' => 'fa-tachometer-alt', 'url' => '/public/pages/dashboard/dashboard.php', 'active_check' => 'dashboard.php', 'permission' => 'dashboard'],
     ['label' => 'QL người dùng', 'icon' => 'fa-users', 'url' => '/public/pages/user/user_management.php', 'active_check' => 'user_management.php', 'permission' => 'user_management'],
     ['label' => 'QL TK đo đạc', 'icon' => 'fa-ruler-combined', 'url' => '/public/pages/account/account_management.php', 'active_check' => 'account_management.php', 'permission' => 'account_management'],
+    ['label' => 'QL Trạm', 'icon' => 'fa-broadcast-tower', 'url' => '/public/pages/station/station_management.php', 'active_check' => 'station_management.php', 'permission' => 'station_management'],
     ['label' => 'QL giao dịch', 'icon' => 'fa-file-invoice-dollar', 'url' => '/public/pages/purchase/invoice_management.php', 'active_check' => 'invoice_management.php', 'permission' => 'invoice_management'],
     ['label' => 'QL doanh thu', 'icon' => 'fa-dollar-sign', 'url' => '/public/pages/purchase/revenue_management.php', 'active_check' => 'revenue_management.php', 'permission' => 'revenue_management'],
     ['label' => 'QL người giới thiệu', 'icon' => 'fa-network-wired', 'url' => '/public/pages/referral_management.php', 'active_check' => 'referral_management.php', 'permission' => 'referral_management'],
