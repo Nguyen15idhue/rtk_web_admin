@@ -9,10 +9,19 @@ $allowed = [
     'create_account', 'delete_account', 'fetch_accounts',
     'get_account_details', 'handle_account_list',
     'toggle_account_status', 'update_account',
-    'search_users', 'manual_renew_account' // Add new action
+    'search_users', 'manual_renew_account',
+    'cron_update_stations' // <-- added cron action
 ];
 if (!in_array($action, $allowed, true)) {
     api_error('Invalid action', 400);
+}
+
+// special handler for cron-driven station update
+if ($action === 'cron_update_stations') {
+    require_once dirname(__DIR__, 3) . '/private/api/rtk_system/account_api.php';
+    fetchAndUpdateStations();
+    echo json_encode(['success' => true, 'message' => 'Stations updated']);
+    exit;
 }
 
 $privatePath = PRIVATE_ACTIONS_PATH . '/account/' . $action . '.php';
