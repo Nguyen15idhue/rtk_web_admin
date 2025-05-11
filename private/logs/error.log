@@ -913,3 +913,10 @@ Trace:
 [11-May-2025 09:49:36 UTC] Database Error (Bootstrap): Unable to connect to database 'sa2'
 [11-May-2025 09:49:38 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php on line 71
 [11-May-2025 09:49:42 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php on line 71
+[11-May-2025 10:11:43 UTC] [DEBUG] Search keyword: 
+[11-May-2025 10:14:04 UTC] [DEBUG] Search keyword: 
+[11-May-2025 10:14:32 UTC] [DEBUG] Search keyword: 
+[11-May-2025 10:14:36 UTC] PHP Warning:  Undefined array key "registration_id" in E:\Application\laragon\www\rtk_web_admin\public\pages\invoice\invoice_review.php on line 76
+[11-May-2025 10:14:38 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 166
+[11-May-2025 10:14:38 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 167
+[11-May-2025 10:14:38 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 168

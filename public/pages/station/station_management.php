@@ -13,7 +13,7 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-$page_title = "Station Management";
+$page_title = "Quản lý Trạm";
 $active_nav = 'station_management'; // For highlighting active link in sidebar
 
 // --- Filters ---
@@ -75,16 +75,16 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
                     <tr>
                         <th><input type="checkbox" id="selectAll"></th>
                         <th>ID</th>
-                        <th>Station Name</th>
-                        <th>Identification Name</th>
-                        <th>Current Manager</th>
-                        <th>Current Mountpoint</th>
-                        <th>Action</th>
+                        <th>Tên Trạm</th>
+                        <th>Tên Định danh</th>
+                        <th>Người quản lý Hiện tại</th>
+                        <th>Mountpoint Hiện tại</th>
+                        <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($stations)): ?>
-                        <tr><td colspan="7">No stations found.</td></tr>
+                        <tr><td colspan="7">Không tìm thấy trạm nào.</td></tr>
                     <?php else: foreach ($stations as $station): ?>
                         <tr>
                             <td><input type="checkbox" class="rowCheckbox" name="ids[]" value="<?php echo htmlspecialchars($station['id']); ?>"></td>
@@ -97,7 +97,7 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
                                 <td>
                                     <input list="manager_names_<?php echo $station['id']; ?>" name="manager_name"
                                            class="form-control" value="<?php echo htmlspecialchars($station['manager_name'] ?? ''); ?>"
-                                           placeholder="Enter manager name">
+                                           placeholder="Nhập tên người quản lý">
                                     <datalist id="manager_names_<?php echo $station['id']; ?>">
                                         <?php foreach ($allManagers as $manager): ?>
                                             <option value="<?php echo htmlspecialchars($manager['name']); ?>">
@@ -106,7 +106,7 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
                                 </td>
                                 <td>
                                     <select name="mountpoint_details" class="form-control">
-                                        <option value="">-- Select Mountpoint --</option>
+                                        <option value="">-- Chọn Mountpoint --</option>
                                         <?php foreach ($availableMountpoints as $mp): 
                                             $mountpointValueJson = json_encode([
                                                 'id'=>$mp['id'],'name'=>$mp['name'],
@@ -115,7 +115,7 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
                                             $isSelected = isset($station['mountpoint_id'])
                                                 && (string)$station['mountpoint_id']===(string)$mp['id'];
                                             $displayText = htmlspecialchars($mp['name'])
-                                                .' (Masters: '.htmlspecialchars(implode(', ',$mp['masterStationNames']??[])).')';
+                                                .' (Trạm chủ: '.htmlspecialchars(implode(', ',$mp['masterStationNames']??[])).')';
                                         ?>
                                             <option value='<?php echo htmlspecialchars($mountpointValueJson,ENT_QUOTES,'UTF-8'); ?>'
                                                 <?php echo $isSelected?'selected':''; ?>>
@@ -125,7 +125,7 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
                                     </select>
                                 </td>
                                 <td>
-                                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                                    <button type="submit" class="btn btn-primary btn-sm">Lưu</button>
                                 </td>
                             </form>
                         </tr>
@@ -138,14 +138,14 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
     <!-- Manager Management Section -->
     <div id="manager-management" class="content-section" style="margin-top:40px;">
         <div class="header-actions">
-            <h3>Quản lý Manager</h3>
-            <button type="button" class="btn btn-primary" onclick="openCreateManagerModal()"><i class="fas fa-plus"></i> Thêm Manager</button>
+            <h3>Quản lý Người quản lý</h3>
+            <button type="button" class="btn btn-primary" onclick="openCreateManagerModal()"><i class="fas fa-plus"></i> Thêm Người quản lý</button>
         </div>
         <div class="transactions-table-wrapper">
             <table class="transactions-table" id="managersTable">
                 <thead>
                     <tr>
-                        <th>ID</th><th>Name</th><th>Phone</th><th>Address</th><th class="text-center">Actions</th>
+                        <th>ID</th><th>Tên</th><th>Điện thoại</th><th>Địa chỉ</th><th class="text-center">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -157,7 +157,7 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
                             <td><?php echo htmlspecialchars($m['address'] ?? ''); ?></td>
                             <td class="actions text-center">
                                 <button type="button" class="btn-icon btn-edit" title="Sửa" onclick='openEditManagerModal(<?php echo htmlspecialchars(json_encode($m), ENT_QUOTES, 'UTF-8'); ?>)'><i class="fas fa-pencil-alt"></i></button>
-                                <form method="POST" action="<?php echo $base_url; ?>public/handlers/manager/manager_actions.php" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this manager?');">
+                                <form method="POST" action="<?php echo $base_url; ?>public/handlers/manager/manager_actions.php" style="display:inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người quản lý này không?');">
                                     <input type="hidden" name="action" value="delete_manager">
                                     <input type="hidden" name="manager_id" value="<?php echo $m['id']; ?>">
                                     <button type="submit" class="btn-icon btn-secondary" title="Xóa"><i class="fas fa-trash"></i></button>
@@ -173,14 +173,16 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
     <!-- Create Manager Modal -->
     <div id="createManagerModal" class="modal">
         <div class="modal-content">
-            <span class="modal-close" onclick="closeManagerModal('createManagerModal')">&times;</span>
-            <h4>Thêm Manager</h4>
             <form id="createManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/manager/manager_actions.php">
-                <input type="hidden" name="action" value="create_manager">
+                <div class="modal-header">
+                    <h4>Thêm Người quản lý</h4>
+                    <span class="modal-close" onclick="closeManagerModal('createManagerModal')">&times;</span>
+                </div>
                 <div class="modal-body">
-                    <div class="form-group"><label>Name</label><input name="name" required></div>
-                    <div class="form-group"><label>Phone</label><input name="phone"></div>
-                    <div class="form-group"><label>Address</label><input name="address"></div>
+                    <input type="hidden" name="action" value="create_manager">
+                    <div class="form-group"><label>Tên</label><input type="text" class="form-control" name="name" required></div>
+                    <div class="form-group"><label>Điện thoại</label><input type="text" class="form-control" name="phone"></div>
+                    <div class="form-group"><label>Địa chỉ</label><input type="text" class="form-control" name="address"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeManagerModal('createManagerModal')">Hủy</button>
@@ -193,15 +195,17 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
     <!-- Edit Manager Modal -->
     <div id="editManagerModal" class="modal">
         <div class="modal-content">
-            <span class="modal-close" onclick="closeManagerModal('editManagerModal')">&times;</span>
-            <h4>Sửa Manager</h4>
             <form id="editManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/manager/manager_actions.php">
-                <input type="hidden" name="action" value="update_manager">
-                <input type="hidden" id="editManagerId" name="manager_id">
+                <div class="modal-header">
+                    <h4>Sửa Người quản lý</h4>
+                    <span class="modal-close" onclick="closeManagerModal('editManagerModal')">&times;</span>
+                </div>
                 <div class="modal-body">
-                    <div class="form-group"><label>Name</label><input id="editManagerName" name="name" required></div>
-                    <div class="form-group"><label>Phone</label><input id="editManagerPhone" name="phone"></div>
-                    <div class="form-group"><label>Address</label><input id="editManagerAddress" name="address"></div>
+                    <input type="hidden" name="action" value="update_manager">
+                    <input type="hidden" id="editManagerId" name="manager_id">
+                    <div class="form-group"><label>Tên</label><input type="text" class="form-control" id="editManagerName" name="name" required></div>
+                    <div class="form-group"><label>Điện thoại</label><input type="text" class="form-control" id="editManagerPhone" name="phone"></div>
+                    <div class="form-group"><label>Địa chỉ</label><input type="text" class="form-control" id="editManagerAddress" name="address"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeManagerModal('editManagerModal')">Hủy</button>
