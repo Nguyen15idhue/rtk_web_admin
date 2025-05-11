@@ -67,24 +67,24 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
                                 </datalist>
                             </td>
                             <td>
-                                <select name="mountpoint_details" class="form-control">
-                                    <option value="">-- Chọn Mountpoint --</option>
-                                    <?php foreach ($availableMountpoints as $mp): 
-                                        $mountpointValueJson = json_encode([
-                                            'id'=>$mp['id'],'name'=>$mp['name'],
-                                            'masterStationNames'=>$mp['masterStationNames']??[]
-                                        ]);
-                                        $isSelected = isset($station['mountpoint_id'])
-                                            && (string)$station['mountpoint_id']===(string)$mp['id'];
-                                        $displayText = htmlspecialchars($mp['name'])
-                                            .' (Trạm chủ: '.htmlspecialchars(implode(', ',$mp['masterStationNames']??[])).')';
-                                    ?>
-                                        <option value='<?php echo htmlspecialchars($mountpointValueJson,ENT_QUOTES,'UTF-8'); ?>'
-                                            <?php echo $isSelected?'selected':''; ?>>
-                                            <?php echo $displayText; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
+                                <?php
+                                // find and display current mountpoint info
+                                $currentMp = null;
+                                foreach ($availableMountpoints as $mp) {
+                                    if ((string)$mp['id'] === (string)$station['mountpoint_id']) {
+                                        $currentMp = $mp;
+                                        break;
+                                    }
+                                }
+                                if ($currentMp) {
+                                    echo htmlspecialchars($currentMp['name'])
+                                       . ' (Trạm chủ: '
+                                       . htmlspecialchars(implode(', ', $currentMp['masterStationNames'] ?? []))
+                                       . ')';
+                                } else {
+                                    echo 'N/A';
+                                }
+                                ?>
                             </td>
                             <td>
                                 <button 
@@ -124,7 +124,7 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
                             <td><?php echo htmlspecialchars($m['address'] ?? ''); ?></td>
                             <td class="actions text-center">
                                 <button type="button" class="btn-icon btn-edit" title="Sửa" onclick='openEditManagerModal(<?php echo htmlspecialchars(json_encode($m), ENT_QUOTES, 'UTF-8'); ?>)'><i class="fas fa-pencil-alt"></i></button>
-                                <form method="POST" action="<?php echo $base_url; ?>public/handlers/manager/manager_actions.php" style="display:inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người quản lý này không?');">
+                                <form method="POST" action="<?php echo $base_url; ?>public/handlers/station/manager_index.php" style="display:inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người quản lý này không?');">
                                     <input type="hidden" name="action" value="delete_manager">
                                     <input type="hidden" name="manager_id" value="<?php echo $m['id']; ?>">
                                     <button type="submit" class="btn-icon btn-secondary" title="Xóa"><i class="fas fa-trash"></i></button>
@@ -140,7 +140,7 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
     <!-- Create Manager Modal -->
     <div id="createManagerModal" class="modal">
         <div class="modal-content">
-            <form id="createManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/manager/manager_actions.php">
+            <form id="createManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/station/manager_index.php">
                 <div class="modal-header">
                     <h4>Thêm Người quản lý</h4>
                     <span class="modal-close" onclick="closeManagerModal('createManagerModal')">&times;</span>
@@ -162,7 +162,7 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
     <!-- Edit Manager Modal -->
     <div id="editManagerModal" class="modal">
         <div class="modal-content">
-            <form id="editManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/manager/manager_actions.php">
+            <form id="editManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/station/manager_index.php">
                 <div class="modal-header">
                     <h4>Sửa Người quản lý</h4>
                     <span class="modal-close" onclick="closeManagerModal('editManagerModal')">&times;</span>
@@ -187,25 +187,5 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
 <?php
 require_once PRIVATE_LAYOUTS_PATH . '/admin_footer.php';
 ?>
-
-<!-- JS to toggle all checkboxes -->
-<script>
-document.getElementById('selectAll').addEventListener('change', function(){
-    document.querySelectorAll('.rowCheckbox').forEach(cb=>cb.checked = this.checked);
-});
-</script>
-
-<script>
-    // helper functions
-    function openCreateManagerModal() { document.getElementById('createManagerModal').style.display='block'; }
-    function openEditManagerModal(managerData) {
-        document.getElementById('editManagerId').value = managerData.id;
-        document.getElementById('editManagerName').value = managerData.name;
-        document.getElementById('editManagerPhone').value = managerData.phone || ''; // Handle null phone
-        document.getElementById('editManagerAddress').value = managerData.address || ''; // Handle null address
-        document.getElementById('editManagerModal').style.display = 'block';
-    }
-    function closeManagerModal(modalId){ document.getElementById(modalId).style.display='none'; }
-</script>
 
 <script src="<?php echo $base_url; ?>public/assets/js/pages/station/station_management.js"></script>
