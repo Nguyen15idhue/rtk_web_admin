@@ -1,49 +1,5 @@
 <?php
-require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
-require_once __DIR__ . '/../../../private/classes/StationModel.php';
-require_once __DIR__ . '/../../../private/classes/ManagerModel.php';
-
-// Get base_url from bootstrap data for redirect
-$bootstrap_data = require __DIR__ . '/../../../private/core/page_bootstrap.php';
-$base_url = $bootstrap_data['base_url'] ?? '/'; // Default to root if not set
-
-// Updated authentication check
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
-    exit;
-}
-
-$page_title = "Quản lý Trạm";
-$active_nav = 'station_management'; // For highlighting active link in sidebar
-
-// --- Filters ---
-$filters = [
-    'q' => filter_input(INPUT_GET, 'q', FILTER_SANITIZE_SPECIAL_CHARS) ?: '',
-];
-
-// Instantiate Models
-$db = Database::getInstance()->getConnection(); // Get PDO connection
-$stationModel = new StationModel(); // Assumes Database connection is handled via getInstance within model
-$managerModel = new ManagerModel();
-
-// Fetch data
-$stations = $stationModel->getAllStations();
-if ($filters['q'] !== '') {
-    $stations = array_filter($stations, function($st) use ($filters) {
-        return stripos($st['station_name'], $filters['q']) !== false
-            || stripos($st['identificationName'] ?? '', $filters['q']) !== false
-            || stripos($st['manager_name'] ?? '', $filters['q']) !== false;
-    });
-}
-
-$allManagers = $managerModel->getAllManagers(); // For manager name datalist
-$availableMountpoints = $stationModel->fetchMountpointsFromAPI(); // Fetch all mountpoints
-
-// Handle session messages (e.g., success/error after update)
-$message = $_SESSION['message'] ?? null;
-$message_type = $_SESSION['message_type'] ?? null;
-unset($_SESSION['message']);
-unset($_SESSION['message_type']);
+require __DIR__ . '/../../../private/actions/station/management.php';
 
 require_once PRIVATE_LAYOUTS_PATH . '/admin_header.php';
 require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
@@ -88,7 +44,7 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
                     <?php else: foreach ($stations as $station): ?>
                         <tr>
                             <td><input type="checkbox" class="rowCheckbox" name="ids[]" value="<?php echo htmlspecialchars($station['id']); ?>"></td>
-                            <form action="<?php echo BASE_URL; ?>public/handlers/station/station_actions.php" method="POST">
+                            <form action="<?php echo BASE_URL; ?>public/handlers/station/index.php" method="POST">
                                 <input type="hidden" name="action" value="update_station">
                                 <input type="hidden" name="station_id" value="<?php echo htmlspecialchars($station['id']); ?>">
                                 <td><?php echo htmlspecialchars($station['id']); ?></td>
