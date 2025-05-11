@@ -17,6 +17,7 @@ define('BASE_URL',  (isset($_SERVER['HTTPS'])?'https':'http')
 define('PRIVATE_LAYOUTS_PATH', BASE_PATH . '/layouts/');
 define('PRIVATE_CORE_PATH', BASE_PATH . '/core/');
 define('PRIVATE_ACTIONS_PATH', BASE_PATH . '/actions/');
+define('PRIVATE_CLASSES_PATH', BASE_PATH . '/classes/');
 
 // New: session idle timeout in seconds (e.g. 1800 s = 30 min)
 define('SESSION_TIMEOUT', 1800);
@@ -29,3 +30,7 @@ define('LOGS_PATH', BASE_PATH . '/logs');
 
 // Thư mục chung cho tất cả uploads
 define('UPLOADS_PATH', BASE_PATH . '/../public/uploads/');
+
+// API Keys for external services
+define('API_ACCESS_KEY', 'Zb5F6iKUuAISy4qY');
+define('API_SECRET_KEY', 'KL1KEEJj2s6HA8LB');
