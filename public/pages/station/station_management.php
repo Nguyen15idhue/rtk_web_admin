@@ -139,7 +139,7 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
     <div id="manager-management" class="content-section" style="margin-top:40px;">
         <div class="header-actions">
             <h3>Quản lý Manager</h3>
-            <button class="btn btn-primary" onclick="openCreateManagerModal()"><i class="fas fa-plus"></i> Thêm Manager</button>
+            <button type="button" class="btn btn-primary" onclick="openCreateManagerModal()"><i class="fas fa-plus"></i> Thêm Manager</button>
         </div>
         <div class="transactions-table-wrapper">
             <table class="transactions-table" id="managersTable">
@@ -156,11 +156,11 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
                             <td><?php echo htmlspecialchars($m['phone'] ?? ''); ?></td>
                             <td><?php echo htmlspecialchars($m['address'] ?? ''); ?></td>
                             <td class="actions text-center">
-                                <button class="btn-icon btn-edit" title="Sửa" onclick="openEditManagerModal('<?php echo $m['id']; ?>')"><i class="fas fa-pencil-alt"></i></button>
-                                <form method="POST" action="<?php echo $base_url; ?>public/handlers/manager/manager_actions.php" style="display:inline">
+                                <button type="button" class="btn-icon btn-edit" title="Sửa" onclick='openEditManagerModal(<?php echo htmlspecialchars(json_encode($m), ENT_QUOTES, 'UTF-8'); ?>)'><i class="fas fa-pencil-alt"></i></button>
+                                <form method="POST" action="<?php echo $base_url; ?>public/handlers/manager/manager_actions.php" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this manager?');">
                                     <input type="hidden" name="action" value="delete_manager">
                                     <input type="hidden" name="manager_id" value="<?php echo $m['id']; ?>">
-                                    <button class="btn-icon btn-secondary" title="Xóa"><i class="fas fa-trash"></i></button>
+                                    <button type="submit" class="btn-icon btn-secondary" title="Xóa"><i class="fas fa-trash"></i></button>
                                 </form>
                             </td>
                         </tr>
@@ -227,16 +227,12 @@ document.getElementById('selectAll').addEventListener('change', function(){
 <script>
     // helper functions
     function openCreateManagerModal() { document.getElementById('createManagerModal').style.display='block'; }
-    function openEditManagerModal(id) {
-        fetch('<?php echo $base_url; ?>public/api/manager_get.php?id='+id)
-            .then(res=>res.json())
-            .then(data=>{
-                document.getElementById('editManagerId').value=data.id;
-                document.getElementById('editManagerName').value=data.name;
-                document.getElementById('editManagerPhone').value=data.phone;
-                document.getElementById('editManagerAddress').value=data.address;
-                document.getElementById('editManagerModal').style.display='block';
-            });
+    function openEditManagerModal(managerData) {
+        document.getElementById('editManagerId').value = managerData.id;
+        document.getElementById('editManagerName').value = managerData.name;
+        document.getElementById('editManagerPhone').value = managerData.phone || ''; // Handle null phone
+        document.getElementById('editManagerAddress').value = managerData.address || ''; // Handle null address
+        document.getElementById('editManagerModal').style.display = 'block';
     }
     function closeManagerModal(modalId){ document.getElementById(modalId).style.display='none'; }
 </script>
