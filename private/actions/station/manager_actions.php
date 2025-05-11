@@ -1,5 +1,4 @@
 <?php
-session_start();
 $bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 $base_url = $bootstrap['base_url'] ?? '/';
 require_once __DIR__ . '/../../classes/ManagerModel.php';
