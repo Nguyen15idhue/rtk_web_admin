@@ -3,3 +3,16 @@
 [11-May-2025 13:55:02 UTC] [DEBUG] Search keyword: 
 [11-May-2025 13:56:05 UTC] [DEBUG] Search keyword: 
 [11-May-2025 13:56:36 UTC] [DEBUG] Search keyword: 
+[11-May-2025 14:09:35 UTC] Uncaught exception: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'sa3.withdrawal' doesn't exist in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 82
+[11-May-2025 14:09:38 UTC] Uncaught exception: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'sa3.withdrawal' doesn't exist in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 82
+[11-May-2025 14:09:47 UTC] Uncaught exception: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'sa3.withdrawal' doesn't exist in E:\Application\laragon\www\rtk_web_admin\public\pages\reports.php on line 82
+[11-May-2025 14:11:18 UTC] Uncaught exception: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'sa3.withdrawal' doesn't exist in E:\Application\laragon\www\rtk_web_admin\public\pages\report\reports.php on line 82
+[11-May-2025 14:19:22 UTC] [DEBUG] Search keyword: 
+[11-May-2025 14:22:00 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\report\reports.php on line 182
+[11-May-2025 14:22:00 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\report\reports.php on line 196
+[11-May-2025 14:22:00 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\report\reports.php on line 197
+[11-May-2025 14:22:00 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\report\reports.php on line 198
+[11-May-2025 14:27:57 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\report\reports.php on line 182
+[11-May-2025 14:27:58 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\report\reports.php on line 182
+[11-May-2025 14:28:39 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\report\reports.php on line 182
+[11-May-2025 14:33:09 UTC] PHP Deprecated:  number_format(): Passing null to parameter #1 ($num) of type float is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\report\reports.php on line 201

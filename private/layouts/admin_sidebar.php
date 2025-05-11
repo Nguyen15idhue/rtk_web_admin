@@ -16,7 +16,7 @@ $admin_nav_items = [
     ['label' => 'QL doanh thu', 'icon' => 'fa-dollar-sign', 'url' => '/public/pages/purchase/revenue_management.php', 'active_check' => 'revenue_management.php', 'permission' => 'revenue_management'],
     ['label' => 'QL người giới thiệu', 'icon' => 'fa-network-wired', 'url' => '/public/pages/referral_management.php', 'active_check' => 'referral_management.php', 'permission' => 'referral_management'],
     ['label' => 'Chăm sóc khách hàng', 'icon' => 'fa-headset', 'url' => '/public/pages/support/support_management.php', 'active_check' => 'support_management.php', 'permission' => 'support_management'],
-    ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => '/public/pages/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports'],
+    ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => '/public/pages/report/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports'],
     ['label' => 'QL hướng dẫn', 'icon' => 'fa-book', 'url' => '/public/pages/guide/guide_management.php', 'active_check' => 'guide_management.php', 'permission' => 'guide_management'],
     ['label' => 'Phê duyệt hóa đơn', 'icon' => 'fa-file-invoice', 'url' => '/public/pages/invoice/invoice_review.php', 'active_check' => 'invoice_review.php', 'permission' => 'invoice_review'],
     ['label' => 'QL phân quyền', 'icon' => 'fa-user-lock', 'url' => '/public/pages/auth/permission_management.php', 'active_check' => 'permission_management.php', 'permission' => 'permission_management'],

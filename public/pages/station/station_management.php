@@ -59,7 +59,7 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
                             <td>
                                 <input list="manager_names_<?php echo $station['id']; ?>" name="manager_name"
                                        class="form-control" value="<?php echo htmlspecialchars($station['manager_name'] ?? ''); ?>"
-                                       placeholder="Nhập tên người quản lý">
+                                       placeholder="Chọn người quản lý">
                                 <datalist id="manager_names_<?php echo $station['id']; ?>">
                                     <?php foreach ($allManagers as $manager): ?>
                                         <option value="<?php echo htmlspecialchars($manager['name']); ?>">
@@ -67,24 +67,24 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
                                 </datalist>
                             </td>
                             <td>
-                                <?php
-                                // find and display current mountpoint info
-                                $currentMp = null;
-                                foreach ($availableMountpoints as $mp) {
-                                    if ((string)$mp['id'] === (string)$station['mountpoint_id']) {
-                                        $currentMp = $mp;
-                                        break;
-                                    }
-                                }
-                                if ($currentMp) {
-                                    echo htmlspecialchars($currentMp['name'])
-                                       . ' (Trạm chủ: '
-                                       . htmlspecialchars(implode(', ', $currentMp['masterStationNames'] ?? []))
-                                       . ')';
-                                } else {
-                                    echo 'N/A';
-                                }
-                                ?>
+                                <select name="mountpoint_details" class="form-control">
+                                    <option value="">-- Chọn Mountpoint --</option>
+                                    <?php foreach ($availableMountpoints as $mp): 
+                                        $mountpointValueJson = json_encode([
+                                            'id'=>$mp['id'],'name'=>$mp['name'],
+                                            'masterStationNames'=>$mp['masterStationNames']??[]
+                                        ]);
+                                        $isSelected = isset($station['mountpoint_id'])
+                                            && (string)$station['mountpoint_id']===(string)$mp['id'];
+                                        $displayText = htmlspecialchars($mp['name'])
+                                            .' (Trạm chủ: '.htmlspecialchars(implode(', ',$mp['masterStationNames']??[])).')';
+                                    ?>
+                                        <option value='<?php echo htmlspecialchars($mountpointValueJson,ENT_QUOTES,'UTF-8'); ?>'
+                                            <?php echo $isSelected?'selected':''; ?>>
+                                            <?php echo $displayText; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
                             </td>
                             <td>
                                 <button 
