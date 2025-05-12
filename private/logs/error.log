@@ -399,3 +399,62 @@ Input: {"username_acc":"CMA001","password_acc":"123","user_email":"tranhailong24
 [12-May-2025 15:30:17 UTC] Using default mount points for location ID: 12 - [42]
 [12-May-2025 15:30:17 UTC] [CA] RTK API payload for CMA005: {"name":"CMA005","userPwd":"123","startTime":1746982800000,"endTime":1754931600000,"enabled":1,"numOnline":1,"customerName":"Long2002","customerPhone":"0999999443","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
 [12-May-2025 15:30:17 UTC] [CA] RTK API response for CMA005: {"success":true,"data":{"id":2214,"name":"CMA005","userPwd":"123","startTime":1746982800000,"endTime":1754931600000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2002","customerPhone":"0999999443","customerCompany":""},"error":null}
+[12-May-2025 15:35:57 UTC] Using default mount points for location ID: 12 - [42]
+[12-May-2025 15:35:57 UTC] RTK API Payload: {"id":"2214","name":"CMA005","userPwd":"123","startTime":1747008000000,"endTime":1754956800000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[12-May-2025 15:35:57 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[12-May-2025 15:56:21 UTC] [DEBUG] Search keyword: 
+[12-May-2025 15:59:10 UTC] [PTA] activate survey_account executed, affectedRows=0
+[12-May-2025 15:59:10 UTC] Warning: No survey accounts found or enabled for approved registration ID: 221
+[12-May-2025 15:59:10 UTC] [PTA] province_code=CMA, lastUser=, nextSeq=1, username=CMA001, password=0999999443
+[12-May-2025 15:59:10 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://rtk_web_admin.test/public/handlers/account/index.php?action=create_account with payload={"registration_id":221,"username_acc":"CMA001","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-12 22:59:10","end_time":"2025-09-12 22:59:10","enabled":1,"concurrent_user":1,"account_count":1}
+[12-May-2025 15:59:10 UTC] [CA] Start create_account request
+[12-May-2025 15:59:10 UTC] [CA] Raw input: {"registration_id":221,"username_acc":"CMA001","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-12 22:59:10","end_time":"2025-09-12 22:59:10","enabled":1,"concurrent_user":1,"account_count":1}
+[12-May-2025 15:59:10 UTC] [CA] registration_id=221, username_acc=CMA001, password_len=10
+[12-May-2025 15:59:10 UTC] [CA] location_input=12
+[12-May-2025 15:59:10 UTC] [CA] computed start_time_db=2025-05-12 22:59:10, end_time_db=2025-09-12 22:59:10
+[12-May-2025 15:59:10 UTC] [CA] Validating user_email: tranhailong2407@gmail.com
+[12-May-2025 15:59:10 UTC] [CA] Retrieved userId=90
+[12-May-2025 15:59:10 UTC] [CA] Price=270000.00 => normal flow
+[12-May-2025 15:59:10 UTC] Debug: Non-trial account creation path for registration_id=221
+[12-May-2025 15:59:10 UTC] Using default mount points for location ID: 12 - [42]
+[12-May-2025 15:59:10 UTC] [CA] RTK API payload for CMA001: {"name":"CMA001","userPwd":"0999999443","startTime":1747065550000,"endTime":1757692750000,"enabled":1,"numOnline":1,"customerName":"Long2002","customerPhone":"0999999443","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[12-May-2025 15:59:10 UTC] [CA] RTK API response for CMA001: {"success":false,"data":{"code":"CGBAS20000024","msg":"User name exist","data":null},"error":"User name exist"}
+[12-May-2025 15:59:10 UTC] [PTA] create_account failed (HTTP 500, cURL err 0)
+[12-May-2025 16:00:21 UTC] [PTA] activate survey_account executed, affectedRows=0
+[12-May-2025 16:00:21 UTC] Warning: No survey accounts found or enabled for approved registration ID: 221
+[12-May-2025 16:00:21 UTC] [PTA] province_code=CMA, lastUser=, nextSeq=1, username=CMA001, password=0999999443
+[12-May-2025 16:00:21 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://rtk_web_admin.test/public/handlers/account/index.php?action=create_account with payload={"registration_id":221,"username_acc":"CMA001","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-12 23:00:21","end_time":"2025-09-12 23:00:21","enabled":1,"concurrent_user":1,"account_count":1}
+[12-May-2025 16:00:21 UTC] [CA] Start create_account request
+[12-May-2025 16:00:21 UTC] [CA] Raw input: {"registration_id":221,"username_acc":"CMA001","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-12 23:00:21","end_time":"2025-09-12 23:00:21","enabled":1,"concurrent_user":1,"account_count":1}
+[12-May-2025 16:00:21 UTC] [CA] registration_id=221, username_acc=CMA001, password_len=10
+[12-May-2025 16:00:21 UTC] [CA] location_input=12
+[12-May-2025 16:00:21 UTC] [CA] computed start_time_db=2025-05-12 23:00:21, end_time_db=2025-09-12 23:00:21
+[12-May-2025 16:00:21 UTC] [CA] Validating user_email: tranhailong2407@gmail.com
+[12-May-2025 16:00:21 UTC] [CA] Retrieved userId=90
+[12-May-2025 16:00:21 UTC] [CA] Price=270000.00 => normal flow
+[12-May-2025 16:00:21 UTC] Debug: Non-trial account creation path for registration_id=221
+[12-May-2025 16:00:21 UTC] Using default mount points for location ID: 12 - [42]
+[12-May-2025 16:00:21 UTC] [CA] RTK API payload for CMA001: {"name":"CMA001","userPwd":"0999999443","startTime":1747065621000,"endTime":1757692821000,"enabled":1,"numOnline":1,"customerName":"Long2002","customerPhone":"0999999443","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[12-May-2025 16:00:21 UTC] [CA] RTK API response for CMA001: {"success":true,"data":{"id":2215,"name":"CMA001","userPwd":"0999999443","startTime":1747065621000,"endTime":1757692821000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2002","customerPhone":"0999999443","customerCompany":""},"error":null}
+[12-May-2025 16:00:21 UTC] [PTA] Warning: create_account returned no data. Resp={"success":true,"message":"Accounts created: 1","data":{"accounts":[{"username":"CMA001","id":2215}]},"errors":[],"meta":{}}
+[12-May-2025 16:00:36 UTC] [PTA] activate survey_account executed, affectedRows=0
+[12-May-2025 16:00:36 UTC] Warning: No survey accounts found or enabled for approved registration ID: 222
+[12-May-2025 16:00:36 UTC] [PTA] province_code=CMA, lastUser=CMA001, nextSeq=2, username=CMA002, password=0999999223
+[12-May-2025 16:00:36 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://rtk_web_admin.test/public/handlers/account/index.php?action=create_account with payload={"registration_id":222,"username_acc":"CMA002","password_acc":"0999999223","user_email":"zkz96960@toaik.com","location_id":12,"package_id":2,"start_time":"2025-05-12 23:00:36","end_time":"2025-08-12 23:00:36","enabled":1,"concurrent_user":1,"account_count":1}
+[12-May-2025 16:00:36 UTC] [CA] Start create_account request
+[12-May-2025 16:00:36 UTC] [CA] Raw input: {"registration_id":222,"username_acc":"CMA002","password_acc":"0999999223","user_email":"zkz96960@toaik.com","location_id":12,"package_id":2,"start_time":"2025-05-12 23:00:36","end_time":"2025-08-12 23:00:36","enabled":1,"concurrent_user":1,"account_count":1}
+[12-May-2025 16:00:36 UTC] [CA] registration_id=222, username_acc=CMA002, password_len=10
+[12-May-2025 16:00:36 UTC] [CA] location_input=12
+[12-May-2025 16:00:36 UTC] [CA] computed start_time_db=2025-05-12 23:00:36, end_time_db=2025-08-12 23:00:36
+[12-May-2025 16:00:36 UTC] [CA] Validating user_email: zkz96960@toaik.com
+[12-May-2025 16:00:36 UTC] [CA] Retrieved userId=100
+[12-May-2025 16:00:36 UTC] [CA] Price=270000.00 => normal flow
+[12-May-2025 16:00:36 UTC] Debug: Non-trial account creation path for registration_id=222
+[12-May-2025 16:00:36 UTC] Using default mount points for location ID: 12 - [42]
+[12-May-2025 16:00:36 UTC] [CA] RTK API payload for CMA002: {"name":"CMA002","userPwd":"0999999223","startTime":1747065636000,"endTime":1755014436000,"enabled":1,"numOnline":1,"customerName":"zkz96960@toaik.com","customerPhone":"0999999223","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[12-May-2025 16:00:36 UTC] [CA] RTK API response for CMA002: {"success":true,"data":{"id":2216,"name":"CMA002","userPwd":"0999999223","startTime":1747065636000,"endTime":1755014436000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"zkz96960@toaik.com","customerPhone":"0999999223","customerCompany":""},"error":null}
+[12-May-2025 16:00:36 UTC] [PTA] Warning: create_account returned no data. Resp={"success":true,"message":"Accounts created: 1","data":{"accounts":[{"username":"CMA002","id":2216}]},"errors":[],"meta":{}}
+[12-May-2025 16:03:08 UTC] [Revert Transaction 216] Deleting RTK account 2216
+[12-May-2025 16:03:09 UTC] [Revert Transaction 216] RTK delete success for account 2216.
+[12-May-2025 16:03:10 UTC] [Revert Transaction 215] Deleting RTK account 2215
+[12-May-2025 16:03:10 UTC] [Revert Transaction 215] RTK delete success for account 2215.

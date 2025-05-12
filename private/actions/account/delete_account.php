@@ -43,8 +43,8 @@ $accountModel = new AccountModel($db);
 $db->beginTransaction();
 
 try {
-    // Perform soft delete by setting deleted_at
-    $success = $accountModel->deleteAccount($accountId);
+    // Perform hard delete from database
+    $success = $accountModel->hardDeleteAccount($accountId);
 
     if ($success) {
         // call centralized API function
