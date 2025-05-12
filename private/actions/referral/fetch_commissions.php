@@ -16,7 +16,7 @@ function fetch_paginated_commissions(PDO $db, array $params) {
 
     $where = '1';
     if ($search) {
-        $where .= " AND (u1.username LIKE :search OR u2.username LIKE :search)";
+        $where .= " AND (u1.username LIKE :search1 OR u2.username LIKE :search2)";
     }
     if ($status) {
         $where .= " AND rc.status = :status";
@@ -32,7 +32,8 @@ function fetch_paginated_commissions(PDO $db, array $params) {
             LIMIT :offset, :perPage";
     $stmt = $db->prepare($sql);
     if ($search) {
-        $stmt->bindValue(':search', "%$search%");
+        $stmt->bindValue(':search1', "%$search%");
+        $stmt->bindValue(':search2', "%$search%");
     }
     if ($status) {
         $stmt->bindValue(':status', $status);
@@ -48,7 +49,8 @@ function fetch_paginated_commissions(PDO $db, array $params) {
                  WHERE $where";
     $countStmt = $db->prepare($countSql);
     if ($search) {
-        $countStmt->bindValue(':search', "%$search%");
+        $countStmt->bindValue(':search1', "%$search%");
+        $countStmt->bindValue(':search2', "%$search%");
     }
     if ($status) {
         $countStmt->bindValue(':status', $status);

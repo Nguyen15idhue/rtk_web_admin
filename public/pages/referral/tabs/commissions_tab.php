@@ -25,7 +25,7 @@
                 <th>Người được giới thiệu</th>
                 <th>Mã GD</th>
                 <th>Số tiền</th>
-                <th>Trạng thái</th>
+                <th class="text-center">Trạng thái</th>
                 <th>Ngày tạo</th>
             </tr>
         </thead>
@@ -37,9 +37,9 @@
                         <td><?php echo htmlspecialchars($item['referrer_name']); ?></td>
                         <td><?php echo htmlspecialchars($item['referred_name']); ?></td>
                         <td><?php echo htmlspecialchars($item['transaction_id']); ?></td>
-                        <td><?php echo htmlspecialchars($item['commission_amount']); ?></td>
-                        <td><?php echo htmlspecialchars($item['status']); ?></td>
-                        <td><?php echo htmlspecialchars($item['created_at']); ?></td>
+                        <td><?php echo format_currency($item['commission_amount']); ?></td>
+                        <td class="status text-center"><?php echo get_commission_status_badge($item['status']); ?></td>
+                        <td><?php echo format_datetime($item['created_at']); ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>

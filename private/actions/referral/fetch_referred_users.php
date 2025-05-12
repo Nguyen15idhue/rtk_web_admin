@@ -15,7 +15,7 @@ function fetch_paginated_referred_users(PDO $db, array $params) {
 
     $where = '1';
     if ($search) {
-        $where .= " AND (u1.username LIKE :search OR u2.username LIKE :search)";
+        $where .= " AND (u1.username LIKE :search1 OR u2.username LIKE :search2)";
     }
     $sql = "SELECT ru.id, ru.referrer_id, u1.username AS referrer_name,
                    ru.referred_user_id, u2.username AS referred_name,
@@ -28,7 +28,8 @@ function fetch_paginated_referred_users(PDO $db, array $params) {
             LIMIT :offset, :perPage";
     $stmt = $db->prepare($sql);
     if ($search) {
-        $stmt->bindValue(':search', "%$search%");
+        $stmt->bindValue(':search1', "%$search%");
+        $stmt->bindValue(':search2', "%$search%");
     }
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->bindValue(':perPage', $perPage, PDO::PARAM_INT);
@@ -41,7 +42,8 @@ function fetch_paginated_referred_users(PDO $db, array $params) {
                  WHERE $where";
     $countStmt = $db->prepare($countSql);
     if ($search) {
-        $countStmt->bindValue(':search', "%$search%");
+        $countStmt->bindValue(':search1', "%$search%");
+        $countStmt->bindValue(':search2', "%$search%");
     }
     $countStmt->execute();
     $total = (int)$countStmt->fetchColumn();

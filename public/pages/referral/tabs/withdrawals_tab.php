@@ -26,9 +26,9 @@
                 <th>Ngân hàng</th>
                 <th>Số TK</th>
                 <th>Chủ TK</th>
-                <th>Trạng thái</th>
+                <th class="text-center">Trạng thái</th>
                 <th>Ngày yêu cầu</th>
-                <th>Hành động</th>
+                <th class="actions text-center">Hành động</th>
             </tr>
         </thead>
         <tbody>
@@ -37,19 +37,21 @@
                     <tr>
                         <td><?php echo htmlspecialchars($item['id']); ?></td>
                         <td><?php echo htmlspecialchars($item['username']); ?></td>
-                        <td><?php echo htmlspecialchars($item['amount']); ?></td>
+                        <td><?php echo format_currency($item['amount']); ?></td>
                         <td><?php echo htmlspecialchars($item['bank_name']); ?></td>
                         <td><?php echo htmlspecialchars($item['account_number']); ?></td>
                         <td><?php echo htmlspecialchars($item['account_holder']); ?></td>
-                        <td><?php echo htmlspecialchars($item['status']); ?></td>
-                        <td><?php echo htmlspecialchars($item['created_at']); ?></td>
+                        <td class="status text-center"><?php echo get_withdrawal_status_badge($item['status']); ?></td>
+                        <td><?php echo format_datetime($item['created_at']); ?></td>
                         <td class="actions">
-                            <?php if ($item['status'] === 'pending'): ?>
-                                <button class="btn btn-success btn-approve" data-id="<?php echo $item['id']; ?>">Phê duyệt</button>
-                                <button class="btn btn-danger btn-reject" data-id="<?php echo $item['id']; ?>">Từ chối</button>
-                            <?php else: ?>
-                                -
-                            <?php endif; ?>
+                            <div class="action-buttons">
+                                <?php if ($item['status'] === 'pending'): ?>
+                                    <button class="btn-icon btn-approve" title="Phê duyệt" data-id="<?php echo $item['id']; ?>"><i class="fas fa-check"></i></button>
+                                    <button class="btn-icon btn-reject" title="Từ chối" data-id="<?php echo $item['id']; ?>"><i class="fas fa-times"></i></button>
+                                <?php else: ?>
+                                    <span>-</span>
+                                <?php endif; ?>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>

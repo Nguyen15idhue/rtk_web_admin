@@ -24,3 +24,11 @@
 [12-May-2025 00:35:22 UTC] PHP Warning:  Undefined array key "public_assets_path" in E:\Application\laragon\www\rtk_web_admin\public\pages\referral\referral_management.php on line 7
 [12-May-2025 00:35:22 UTC] PHP Warning:  require_once(E:\Application\laragon\www\rtk_web_admin\private/private/utils/functions.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\public\pages\referral\referral_management.php on line 14
 [12-May-2025 00:35:22 UTC] Uncaught exception: Failed opening required 'E:\Application\laragon\www\rtk_web_admin\private/private/utils/functions.php' (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\public\pages\referral\referral_management.php on line 14
+[12-May-2025 00:46:09 UTC] Uncaught exception: SQLSTATE[HY093]: Invalid parameter number in E:\Application\laragon\www\rtk_web_admin\private\actions\referral\fetch_commissions.php on line 42
+[12-May-2025 00:46:43 UTC] Uncaught exception: SQLSTATE[HY093]: Invalid parameter number in E:\Application\laragon\www\rtk_web_admin\private\actions\referral\fetch_referred_users.php on line 35
+[12-May-2025 00:46:50 UTC] Uncaught exception: SQLSTATE[HY093]: Invalid parameter number in E:\Application\laragon\www\rtk_web_admin\private\actions\referral\fetch_commissions.php on line 42
+[12-May-2025 00:46:56 UTC] Uncaught exception: SQLSTATE[HY093]: Invalid parameter number in E:\Application\laragon\www\rtk_web_admin\private\actions\referral\fetch_referrals.php on line 32
+[12-May-2025 00:47:30 UTC] Uncaught exception: SQLSTATE[HY093]: Invalid parameter number in E:\Application\laragon\www\rtk_web_admin\private\actions\referral\fetch_referred_users.php on line 35
+[12-May-2025 00:49:48 UTC] [DEBUG] Search keyword: 
+[12-May-2025 00:53:46 UTC] Uncaught exception: SQLSTATE[HY093]: Invalid parameter number in E:\Application\laragon\www\rtk_web_admin\private\actions\referral\fetch_referred_users.php on line 35
+[12-May-2025 00:53:51 UTC] Uncaught exception: SQLSTATE[HY093]: Invalid parameter number in E:\Application\laragon\www\rtk_web_admin\private\actions\referral\fetch_referrals.php on line 32

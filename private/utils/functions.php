@@ -106,6 +106,48 @@ function get_account_status_badge(?string $status): string {
 }
 
 /**
+ * Generates an HTML status badge for a withdrawal request status.
+ *
+ * @param string $status The withdrawal status string.
+ * @return string HTML span element for the badge.
+ */
+function get_withdrawal_status_badge(?string $status): string {
+    $status = strtolower($status ?? 'unknown');
+    switch ($status) {
+        case 'pending':
+            return '<span class="status-badge badge-yellow">Chờ xử lý</span>';
+        case 'completed':
+            return '<span class="status-badge badge-green">Hoàn thành</span>';
+        case 'rejected':
+            return '<span class="status-badge badge-red">Từ chối</span>';
+        default:
+            return '<span class="status-badge badge-gray">Không xác định</span>';
+    }
+}
+
+/**
+ * Generates an HTML status badge for a commission status.
+ *
+ * @param string $status The commission status string.
+ * @return string HTML span element for the badge.
+ */
+function get_commission_status_badge(?string $status): string {
+    $status = strtolower($status ?? 'unknown');
+    switch ($status) {
+        case 'pending':
+            return '<span class="status-badge badge-yellow">Chờ xử lý</span>';
+        case 'approved':
+            return '<span class="status-badge badge-green">Đã duyệt</span>';
+        case 'paid':
+            return '<span class="status-badge badge-blue">Đã thanh toán</span>'; // Assuming badge-blue exists or use badge-green
+        case 'cancelled':
+            return '<span class="status-badge badge-gray">Hủy</span>';
+        default:
+            return '<span class="status-badge badge-gray">Không xác định</span>';
+    }
+}
+
+/**
  * Generates HTML action buttons for an account based on its details.
  *
  * @param array $account Associative array containing account details, including 'id', 'enabled', and 'derived_status'.
