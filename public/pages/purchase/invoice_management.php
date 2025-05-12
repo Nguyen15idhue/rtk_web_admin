@@ -127,6 +127,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                             <th>Tỉnh/Thành phố</th>
                             <th>Email</th>
                             <th>Gói</th>
+                            <th>Voucher</th>
                             <th>Số tiền</th>
                             <th>Ngày YC</th>
                             <th class="text-center">Xem MC</th>
@@ -137,7 +138,7 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                     <tbody>
                         <?php if (empty($transactions)): ?>
                             <tr id="no-results-row">
-                                <td colspan="11">Không tìm thấy giao dịch phù hợp.</td>
+                                <td colspan="12">Không tìm thấy giao dịch phù hợp.</td>
                             </tr>
                         <?php else: ?>
                             <?php foreach ($transactions as $transaction): ?>
@@ -162,7 +163,15 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                                         'status_text' => $status_info['text'],
                                         'status_class' => $status_info['class'],
                                         'proof_image' => $proof_image_url,
-                                        'rejection_reason' => $transaction['rejection_reason'] ?? null
+                                        'rejection_reason' => $transaction['rejection_reason'] ?? null,
+                                        'voucher_code' => $transaction['voucher_code'] ?? null,
+                                        'discount_value' => $transaction['discount_value'] ?? null,
+                                        'voucher_type' => $transaction['voucher_type'] ?? null,
+                                        'voucher_description' => $transaction['voucher_description'] ?? null,
+                                        'voucher_max_discount' => $transaction['voucher_max_discount'] ?? null,
+                                        'voucher_min_order_value' => $transaction['voucher_min_order_value'] ?? null,
+                                        'voucher_start_date' => $transaction['voucher_start_date'] ?? null,
+                                        'voucher_end_date' => $transaction['voucher_end_date'] ?? null
                                     ];
                                     $tx_details_json = htmlspecialchars(json_encode($tx_details_for_modal), ENT_QUOTES, 'UTF-8');
                                 ?>
@@ -177,6 +186,13 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                                     <td><?php echo htmlspecialchars($transaction['province'] ?? ''); ?></td>
                                     <td><?php echo htmlspecialchars($transaction['user_email']?? ''); ?></td>
                                     <td><?php echo htmlspecialchars($transaction['package_name']); ?></td>
+                                    <td>
+                                        <?php if (!empty($transaction['voucher_code'])): ?>
+                                            <a href="#" onclick='PurchaseManagementPageEvents.showTransactionDetails(<?php echo $tx_details_json; ?>); return false;'><?php echo htmlspecialchars($transaction['voucher_code']); ?></a>
+                                        <?php else: ?>
+                                            -
+                                        <?php endif; ?>
+                                    </td>
                                     <td class="amount"><?php echo format_currency($transaction['amount']); ?></td>
                                     <td><?php echo format_datetime($transaction['request_date']); ?></td>
                                     <td class="text-center">
@@ -294,6 +310,22 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
             <div class="detail-row">
                 <span class="detail-label">Gói đăng ký:</span>
                 <span class="detail-value" id="modal-tx-package"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Voucher:</span>
+                <span class="detail-value" id="modal-tx-voucher-code"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Mô tả Voucher:</span>
+                <span class="detail-value" id="modal-tx-voucher-description"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Ngày bắt đầu:</span>
+                <span class="detail-value" id="modal-tx-voucher-start-date"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Ngày kết thúc:</span>
+                <span class="detail-value" id="modal-tx-voucher-end-date"></span>
             </div>
             <div class="detail-row">
                 <span class="detail-label">Số tiền:</span>
