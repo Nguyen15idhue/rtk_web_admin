@@ -69,6 +69,37 @@
 .modal-footer .btn {
     margin-left: 0.5rem;
 }
+
+/* Styles for textarea within modal */
+.modal-content textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color, #ccc); /* Use CSS variable or fallback */
+    border-radius: var(--rounded-md, 0.375rem); /* Use CSS variable or fallback */
+    font-size: var(--font-size-base, 1rem); /* Use CSS variable or fallback */
+    line-height: 1.5;
+    box-sizing: border-box; /* Ensures padding and border don't increase width */
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    resize: vertical; /* Allow vertical resizing, disable horizontal */
+    min-height: 80px; /* Minimum height */
+    background-color: var(--gray-50, #f9fafb); /* Light background */
+    color: var(--gray-700, #374151); /* Text color */
+}
+
+.modal-content textarea:focus {
+    border-color: var(--primary-500, #3b82f6); /* Use CSS variable or fallback for focus color */
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25); /* Focus ring, adjust color as needed */
+}
+
+/* Optional: Style placeholder text */
+.modal-content textarea::placeholder {
+    color: var(--gray-400, #9ca3af); /* Lighter color for placeholder */
+    opacity: 1; /* Firefox fix */
+}
+
 .modal-body .status-badge-modal {
     margin-left: 0.2rem;
     display: inline-flex;      /* dùng flex để căn giữa */

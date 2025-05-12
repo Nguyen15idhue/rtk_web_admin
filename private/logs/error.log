@@ -35,3 +35,367 @@
 [12-May-2025 13:43:35 UTC] PHP Warning:  Undefined array key "private_path" in E:\Application\laragon\www\rtk_web_admin\private\actions\account\get_account_details.php on line 6
 [12-May-2025 13:43:35 UTC] PHP Warning:  require_once(/classes/AccountModel.php): Failed to open stream: No such file or directory in E:\Application\laragon\www\rtk_web_admin\private\actions\account\get_account_details.php on line 6
 [12-May-2025 13:43:35 UTC] Uncaught exception: Failed opening required '/classes/AccountModel.php' (include_path='.;E:/Application/laragon/etc/php/pear') in E:\Application\laragon\www\rtk_web_admin\private\actions\account\get_account_details.php on line 6
+[12-May-2025 14:11:05 UTC] Invoice file will be stored at: E:\Application\laragon\www\rtk_web_admin\private/../public/uploads/invoice/1747059065_test.pdf
+[12-May-2025 14:16:14 UTC] [DEBUG] Search keyword: 
+[12-May-2025 14:16:21 UTC] [DEBUG] Search keyword: 
+[12-May-2025 14:16:23 UTC] [DEBUG] Search keyword: 
+[12-May-2025 14:16:27 UTC] [DEBUG] Search keyword: 
+[12-May-2025 14:16:59 UTC] [DEBUG] Search keyword: 
+[12-May-2025 14:17:14 UTC] [DEBUG] Search keyword: 
+[12-May-2025 14:17:40 UTC] [DEBUG] Search keyword: 
+[12-May-2025 14:17:46 UTC] [DEBUG] Search keyword: 
+[12-May-2025 14:17:49 UTC] [DEBUG] Search keyword: 
+[12-May-2025 14:17:59 UTC] Create user error: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'Long2005' for key 'user.uq_user_username'
+[12-May-2025 14:18:01 UTC] Create user error: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'Long2005' for key 'user.uq_user_username'
+[12-May-2025 14:18:06 UTC] [DEBUG] Search keyword: 
+[12-May-2025 14:22:04 UTC] RTK API Payload: {"id":"2211","name":"YBI201","userPwd":"0999999443","startTime":1747079395000,"endTime":1755028195000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[12-May-2025 14:22:04 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[12-May-2025 14:22:04 UTC] RTK API Payload: {"id":"2212","name":"YBI202","userPwd":"0999999443","startTime":1747079395000,"endTime":1755028195000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[12-May-2025 14:22:04 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[12-May-2025 14:22:17 UTC] [update_account] raw input: 
+[12-May-2025 14:22:17 UTC] [update_account] decoded input: Array
+(
+    [id] => 2211
+    [username_acc] => YBI201
+    [password_acc] => 123
+    [user_email] => tranhailong2407@gmail.com
+    [location_id] => 63
+    [package_id] => 2
+    [activation_date] => 2025-05-12
+    [expiry_date] => 2025-08-12
+    [status] => suspended
+)
+
+[12-May-2025 14:22:17 UTC] [update_account] input customer_phone: <none>
+[12-May-2025 14:22:17 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => YBI201
+    [password_acc] => 123
+    [user_email] => tranhailong2407@gmail.com
+    [location_id] => 63
+    [package_id] => 2
+    [activation_date] => 2025-05-12
+    [expiry_date] => 2025-08-12
+    [status] => suspended
+)
+
+[12-May-2025 14:22:18 UTC] [update_account] final sanitized customer_phone: 0999999443
+[12-May-2025 14:22:18 UTC] [update_account] final customer_name: Long2002
+[12-May-2025 14:22:18 UTC] [update_account] RTK API payload via model: Array
+(
+    [id] => 2211
+    [name] => YBI201
+    [userPwd] => 123
+    [startTime] => 1747008000000
+    [endTime] => 1755043199000
+    [enabled] => 0
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 90
+    [customerName] => Long2002
+    [customerPhone] => 0999999443
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 44
+            [1] => 45
+            [2] => 46
+            [3] => 47
+            [4] => 48
+            [5] => 49
+            [6] => 60
+            [7] => 64
+        )
+
+)
+
+[12-May-2025 14:22:18 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[12-May-2025 14:22:18 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully","account":{"id":"2211","username_acc":"YBI201","enabled":0,"created_at":"2025-05-12 19:49:56","password_acc":"123","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"activation_date":"2025-05-12 00:00:00","expiry_date":"2025-08-12 23:59:59","registration_id":217,"registration_status":"active","num_account":2,"user_id":90,"user_email":"tranhailong2407@gmail.com","user_username":"Long2002","user_phone":"0999999443","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":63,"location_name":"Y\u00ean B\u00e1i","derived_status":"suspended"}}
+[12-May-2025 14:22:25 UTC] RTK API Payload: {"id":"2211","name":"YBI201","userPwd":"123","startTime":1747008000000,"endTime":1755043199000,"enabled":1,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[12-May-2025 14:22:25 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[12-May-2025 14:22:40 UTC] [manual_renew_account] RTK API Payload: Array
+(
+    [id] => 2212
+    [name] => YBI202
+    [userPwd] => 0999999443
+    [startTime] => 1747008000000
+    [endTime] => 1762991999000
+    [enabled] => 1
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 90
+    [customerName] => Long2002
+    [customerPhone] => 0999999443
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 44
+            [1] => 45
+            [2] => 46
+            [3] => 47
+            [4] => 48
+            [5] => 49
+            [6] => 60
+            [7] => 64
+        )
+
+)
+
+[12-May-2025 14:22:41 UTC] [manual_renew_account] RTK API Result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[12-May-2025 15:11:55 UTC] [manual_renew_account] RTK API Payload: Array
+(
+    [id] => 2212
+    [name] => YBI202
+    [userPwd] => 0999999443
+    [startTime] => 1762905600000
+    [endTime] => 1778630399000
+    [enabled] => 1
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 90
+    [customerName] => Long2002
+    [customerPhone] => 0999999443
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 44
+            [1] => 45
+            [2] => 46
+            [3] => 47
+            [4] => 48
+            [5] => 49
+            [6] => 60
+            [7] => 64
+        )
+
+)
+
+[12-May-2025 15:11:55 UTC] [manual_renew_account] RTK API Result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[12-May-2025 15:21:32 UTC] [update_account] raw input: 
+[12-May-2025 15:21:32 UTC] [update_account] decoded input: Array
+(
+    [id] => 2212
+    [username_acc] => YBI202
+    [password_acc] => 
+    [user_email] => tranhailong2407@gmail.com
+    [location_id] => 63
+    [package_id] => 1
+    [activation_date] => 2025-05-12
+    [expiry_date] => 2025-06-12
+    [status] => active
+)
+
+[12-May-2025 15:21:32 UTC] [update_account] input customer_phone: <none>
+[12-May-2025 15:21:32 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => YBI202
+    [password_acc] => 
+    [user_email] => tranhailong2407@gmail.com
+    [location_id] => 63
+    [package_id] => 1
+    [activation_date] => 2025-05-12
+    [expiry_date] => 2025-06-12
+    [status] => active
+)
+
+[12-May-2025 15:21:32 UTC] [update_account] Updated registration.package_id to 1 for registration 217
+[12-May-2025 15:21:32 UTC] [update_account] final sanitized customer_phone: 0999999443
+[12-May-2025 15:21:32 UTC] [update_account] final customer_name: Long2002
+[12-May-2025 15:21:32 UTC] [update_account] RTK API payload via model: Array
+(
+    [id] => 2212
+    [name] => YBI202
+    [userPwd] => 0999999443
+    [startTime] => 1747008000000
+    [endTime] => 1749772799000
+    [enabled] => 1
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 90
+    [customerName] => Long2002
+    [customerPhone] => 0999999443
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 44
+            [1] => 45
+            [2] => 46
+            [3] => 47
+            [4] => 48
+            [5] => 49
+            [6] => 60
+            [7] => 64
+        )
+
+)
+
+[12-May-2025 15:21:32 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[12-May-2025 15:21:32 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully","account":{"id":"2212","username_acc":"YBI202","enabled":1,"created_at":"2025-05-12 19:49:56","password_acc":"0999999443","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"activation_date":"2025-05-12 00:00:00","expiry_date":"2025-06-12 23:59:59","registration_id":217,"registration_status":"active","num_account":2,"user_id":90,"user_email":"tranhailong2407@gmail.com","user_username":"Long2002","user_phone":"0999999443","package_id":1,"package_name":"G\u00f3i 1 Th\u00e1ng","package_identifier":"monthly","location_id":63,"location_name":"Y\u00ean B\u00e1i","derived_status":"active"}}
+[12-May-2025 15:21:42 UTC] [update_account] raw input: 
+[12-May-2025 15:21:42 UTC] [update_account] decoded input: Array
+(
+    [id] => 2212
+    [username_acc] => YBI202
+    [password_acc] => 
+    [user_email] => tranhailong2407@gmail.com
+    [location_id] => 63
+    [package_id] => 1
+    [activation_date] => 2025-05-12
+    [expiry_date] => 2025-06-12
+    [status] => suspended
+)
+
+[12-May-2025 15:21:42 UTC] [update_account] input customer_phone: <none>
+[12-May-2025 15:21:42 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => YBI202
+    [password_acc] => 
+    [user_email] => tranhailong2407@gmail.com
+    [location_id] => 63
+    [package_id] => 1
+    [activation_date] => 2025-05-12
+    [expiry_date] => 2025-06-12
+    [status] => suspended
+)
+
+[12-May-2025 15:21:42 UTC] [update_account] final sanitized customer_phone: 0999999443
+[12-May-2025 15:21:42 UTC] [update_account] final customer_name: Long2002
+[12-May-2025 15:21:42 UTC] [update_account] RTK API payload via model: Array
+(
+    [id] => 2212
+    [name] => YBI202
+    [userPwd] => 0999999443
+    [startTime] => 1747008000000
+    [endTime] => 1749772799000
+    [enabled] => 0
+    [numOnline] => 1
+    [customerBizType] => 1
+    [userId] => 90
+    [customerName] => Long2002
+    [customerPhone] => 0999999443
+    [customerCompany] => 
+    [casterIds] => Array
+        (
+        )
+
+    [regionIds] => Array
+        (
+        )
+
+    [mountIds] => Array
+        (
+            [0] => 44
+            [1] => 45
+            [2] => 46
+            [3] => 47
+            [4] => 48
+            [5] => 49
+            [6] => 60
+            [7] => 64
+        )
+
+)
+
+[12-May-2025 15:21:42 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[12-May-2025 15:21:42 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully","account":{"id":"2212","username_acc":"YBI202","enabled":0,"created_at":"2025-05-12 19:49:56","password_acc":"0999999443","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"activation_date":"2025-05-12 00:00:00","expiry_date":"2025-06-12 23:59:59","registration_id":217,"registration_status":"active","num_account":2,"user_id":90,"user_email":"tranhailong2407@gmail.com","user_username":"Long2002","user_phone":"0999999443","package_id":1,"package_name":"G\u00f3i 1 Th\u00e1ng","package_identifier":"monthly","location_id":63,"location_name":"Y\u00ean B\u00e1i","derived_status":"suspended"}}
+[12-May-2025 15:23:22 UTC] [DEBUG] Search keyword: 
+[12-May-2025 15:28:04 UTC] RTK API Payload: {"id":"2211","name":"YBI201","userPwd":"123","startTime":1747008000000,"endTime":1755043199000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[12-May-2025 15:28:04 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[12-May-2025 15:29:45 UTC] [CA] Start create_account request
+[12-May-2025 15:29:45 UTC] [CA] Raw input: null
+[12-May-2025 15:29:45 UTC] Debug: Fallback to $_POST input: {"username_acc":"CMA001","password_acc":"123","user_email":"tranhailong2407@gmail.com","location_id":"12","package_id":"2","start_time":"2025-05-12","end_time":"2025-08-12","status":"active","account_count":"1"}
+[12-May-2025 15:29:45 UTC] [CA] registration_id=, username_acc=CMA001, password_len=3
+[12-May-2025 15:29:45 UTC] [CA] location_input=12
+[12-May-2025 15:29:45 UTC] [CA] computed start_time_db=2025-05-12 00:00:00, end_time_db=2025-08-12 00:00:00
+[12-May-2025 15:29:45 UTC] [CA] Validating user_email: tranhailong2407@gmail.com
+[12-May-2025 15:29:45 UTC] [CA] Retrieved userId=90
+[12-May-2025 15:29:45 UTC] [CA] Inserting auto registration for user 90
+[12-May-2025 15:29:45 UTC] [CA] auto registration inserted, new regId=218
+[12-May-2025 15:29:45 UTC] [CA] Price=270000.00 => normal flow
+[12-May-2025 15:29:45 UTC] Debug: Non-trial account creation path for registration_id=218
+[12-May-2025 15:29:45 UTC] Using default mount points for location ID: 12 - [42]
+[12-May-2025 15:29:45 UTC] [CA] RTK API payload for CMA001: {"name":"CMA001","userPwd":"123","startTime":1746982800000,"endTime":1754931600000,"enabled":1,"numOnline":1,"customerName":"Long2002","customerPhone":"0999999443","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[12-May-2025 15:29:45 UTC] [CA] RTK API response for CMA001: {"success":true,"data":{"id":2213,"name":"CMA001","userPwd":"123","startTime":1746982800000,"endTime":1754931600000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2002","customerPhone":"0999999443","customerCompany":""},"error":null}
+[12-May-2025 15:29:45 UTC] Database error creating account: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'CMA001' for key 'survey_account.username_acc' (SQLState: 23000)
+Trace: #0 E:\Application\laragon\www\rtk_web_admin\private\classes\AccountModel.php(262): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\account\create_account.php(339): AccountModel->createAccount(Array)
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\account\index.php(32): require_once('E:\\Application\\...')
+#3 {main}
+Input: {"username_acc":"CMA001","password_acc":"123","user_email":"tranhailong2407@gmail.com","location_id":"12","package_id":"2","start_time":"2025-05-12","end_time":"2025-08-12","status":"active","account_count":"1"}
+[12-May-2025 15:30:17 UTC] [CA] Start create_account request
+[12-May-2025 15:30:17 UTC] [CA] Raw input: null
+[12-May-2025 15:30:17 UTC] Debug: Fallback to $_POST input: {"username_acc":"CMA005","password_acc":"123","user_email":"tranhailong2407@gmail.com","location_id":"12","package_id":"2","start_time":"2025-05-12","end_time":"2025-08-12","status":"active","account_count":"1"}
+[12-May-2025 15:30:17 UTC] [CA] registration_id=, username_acc=CMA005, password_len=3
+[12-May-2025 15:30:17 UTC] [CA] location_input=12
+[12-May-2025 15:30:17 UTC] [CA] computed start_time_db=2025-05-12 00:00:00, end_time_db=2025-08-12 00:00:00
+[12-May-2025 15:30:17 UTC] [CA] Validating user_email: tranhailong2407@gmail.com
+[12-May-2025 15:30:17 UTC] [CA] Retrieved userId=90
+[12-May-2025 15:30:17 UTC] [CA] Inserting auto registration for user 90
+[12-May-2025 15:30:17 UTC] [CA] auto registration inserted, new regId=219
+[12-May-2025 15:30:17 UTC] [CA] Price=270000.00 => normal flow
+[12-May-2025 15:30:17 UTC] Debug: Non-trial account creation path for registration_id=219
+[12-May-2025 15:30:17 UTC] Using default mount points for location ID: 12 - [42]
+[12-May-2025 15:30:17 UTC] [CA] RTK API payload for CMA005: {"name":"CMA005","userPwd":"123","startTime":1746982800000,"endTime":1754931600000,"enabled":1,"numOnline":1,"customerName":"Long2002","customerPhone":"0999999443","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[12-May-2025 15:30:17 UTC] [CA] RTK API response for CMA005: {"success":true,"data":{"id":2214,"name":"CMA005","userPwd":"123","startTime":1746982800000,"endTime":1754931600000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2002","customerPhone":"0999999443","customerCompany":""},"error":null}

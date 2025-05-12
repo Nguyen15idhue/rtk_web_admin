@@ -97,6 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('No account payload');
             }
 
+            renewAccountForm.dataset.originalOldExpiry = account.expiry_date ? account.expiry_date.split(' ')[0] : ''; // Store original old expiry date
+
             renewAccountForm.querySelector('#renew-account-id').value = account.id;
             renewAccountForm.querySelector('#renew-username-display').textContent = account.username_acc || 'N/A';
             renewAccountForm.querySelector('#renew-current-package-display').textContent = account.package_name || 'N/A';
@@ -541,9 +543,56 @@ document.addEventListener('DOMContentLoaded', () => {
     if (renewPkg && renewAct && renewExp) {
         function updateRenewExpiry() {
             const pid = renewPkg.value;
-            const actDate = renewAct.value;
-            if (packageDurations && packageDurations[pid] && actDate) {
-                renewExp.value = calculateExpiryDate(actDate, pid);
+            const newActivationDateStr = renewAct.value; // Value from the '#renew-activation-date' input
+            const originalOldExpiryStr = renewAccountForm.dataset.originalOldExpiry;
+
+            if (!newActivationDateStr) {
+                renewExp.value = '';
+                return;
+            }
+
+            // 1. Determine the base date for calculation: MAX(originalOldExpiry, newActivationDate)
+            let baseDateForCalcObj;
+            const newActParts = newActivationDateStr.split('-');
+            if (newActParts.length !== 3) {
+                renewExp.value = ''; // Invalid new activation date format
+                return;
+            }
+            // Month is 0-indexed for Date constructor
+            const newActivationDateObj = new Date(parseInt(newActParts[0]), parseInt(newActParts[1]) - 1, parseInt(newActParts[2]));
+            newActivationDateObj.setHours(0,0,0,0);
+
+            if (isNaN(newActivationDateObj.getTime())) {
+                renewExp.value = ''; // Invalid new activation date
+                return;
+            }
+
+            baseDateForCalcObj = newActivationDateObj; // Default to new activation date
+
+            if (originalOldExpiryStr) {
+                const oldExpiryParts = originalOldExpiryStr.split('-');
+                if (oldExpiryParts.length === 3) {
+                    // Month is 0-indexed for Date constructor
+                    const oldExpiryDateCandidateObj = new Date(parseInt(oldExpiryParts[0]), parseInt(oldExpiryParts[1]) - 1, parseInt(oldExpiryParts[2]));
+                    oldExpiryDateCandidateObj.setHours(0,0,0,0);
+
+                    if (!isNaN(oldExpiryDateCandidateObj.getTime()) && oldExpiryDateCandidateObj > newActivationDateObj) {
+                        baseDateForCalcObj = oldExpiryDateCandidateObj;
+                    }
+                }
+            }
+
+            // Convert baseDateForCalcObj to "YYYY-MM-DD" string
+            const baseYear = baseDateForCalcObj.getFullYear();
+            const baseMonth = String(baseDateForCalcObj.getMonth() + 1).padStart(2, '0');
+            const baseDay = String(baseDateForCalcObj.getDate()).padStart(2, '0');
+            const finalBaseDateForCalcString = `${baseYear}-${baseMonth}-${baseDay}`;
+
+            // 2. Calculate and set the "New Expiry Date"
+            if (packageDurations && packageDurations[pid] && finalBaseDateForCalcString) {
+                renewExp.value = calculateExpiryDate(finalBaseDateForCalcString, pid);
+            } else {
+                renewExp.value = ''; // Clear if package not selected or other issue
             }
         }
         renewPkg.addEventListener('change', updateRenewExpiry);

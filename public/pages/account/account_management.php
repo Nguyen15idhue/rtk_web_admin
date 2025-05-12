@@ -179,7 +179,6 @@ include $private_layouts_path . 'admin_sidebar.php';
                             <th>ID TK</th>
                             <th>Username TK</th>
                             <th>Email user</th>
-                            <th>Gói</th>
                             <th>Ngày KH</th>
                             <th>Ngày HH</th>
                             <th class="text-center">Trạng thái</th>
@@ -196,7 +195,6 @@ include $private_layouts_path . 'admin_sidebar.php';
                                     <td><?php echo htmlspecialchars($account['id']); ?></td>
                                     <td><?php echo htmlspecialchars($account['username_acc'] ?? ''); ?></td>
                                     <td><?php echo htmlspecialchars($account['user_email'] ?? ''); ?></td>
-                                    <td><?php echo htmlspecialchars($account['package_name'] ?? ''); ?></td>
                                     <td><?php echo format_date($account['activation_date'] ?? null); ?></td>
                                     <td><?php echo format_date($account['expiry_date'] ?? null); ?></td>
                                     <td class="status"><?php echo get_account_status_badge($account['derived_status'] ?? 'unknown'); ?></td>
@@ -219,7 +217,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr id="no-results-row">
-                                <td colspan="9">Không tìm thấy tài khoản phù hợp.</td>
+                                <td colspan="8">Không tìm thấy tài khoản phù hợp.</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
