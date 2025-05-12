@@ -458,3 +458,8 @@ Input: {"username_acc":"CMA001","password_acc":"123","user_email":"tranhailong24
 [12-May-2025 16:03:09 UTC] [Revert Transaction 216] RTK delete success for account 2216.
 [12-May-2025 16:03:10 UTC] [Revert Transaction 215] Deleting RTK account 2215
 [12-May-2025 16:03:10 UTC] [Revert Transaction 215] RTK delete success for account 2215.
+[12-May-2025 16:14:08 UTC] [DEBUG] Search keyword: 
+[12-May-2025 16:23:50 UTC] Export Excel: Unknown or unmapped table name 'vouchers'.
+[12-May-2025 16:23:55 UTC] Export Excel: Unknown or unmapped table name 'vouchers'.
+[12-May-2025 16:25:10 UTC] Export Excel: Unknown or unmapped table name 'vouchers'.
+[12-May-2025 16:27:00 UTC] Export Excel: Method like getAllDataForExport or getAll not found in VoucherModel for all data.

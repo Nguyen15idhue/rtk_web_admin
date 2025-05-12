@@ -125,4 +125,63 @@ class VoucherModel {
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$id]);
     }
+
+    /**
+     * Lấy toàn bộ dữ liệu voucher để export Excel
+     */
+    public function getAllDataForExport(): array {
+        $sql = "
+            SELECT
+                id,
+                code,
+                description,
+                voucher_type,
+                discount_value,
+                max_discount,
+                min_order_value,
+                quantity,
+                used_quantity,
+                start_date,
+                end_date,
+                is_active
+            FROM voucher
+            ORDER BY created_at DESC
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Lấy dữ liệu các voucher có ID nằm trong $ids để export Excel
+     *
+     * @param array $ids danh sách ID voucher cần export
+     */
+    public function getDataByIdsForExport(array $ids): array {
+        if (empty($ids)) {
+            return [];
+        }
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $sql = "
+            SELECT
+                id,
+                code,
+                description,
+                voucher_type,
+                discount_value,
+                max_discount,
+                min_order_value,
+                quantity,
+                used_quantity,
+                start_date,
+                end_date,
+                is_active
+            FROM voucher
+            WHERE id IN ({$placeholders})
+            ORDER BY created_at DESC
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($ids);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

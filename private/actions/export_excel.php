@@ -40,6 +40,7 @@ $modelMapping = [
     'transactions' => 'TransactionModel',
     'users'        => 'UserModel',
     'stations'     => 'StationModel', // thêm để hỗ trợ xuất Excel cho stations
+    'vouchers'     => 'VoucherModel', // support exporting vouchers
 ];
 
 if (isset($modelMapping[$tableName])) {
