@@ -73,7 +73,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                     <?php foreach ($invoices as $inv): ?>
                     <tr data-id="<?php echo $inv['invoice_id']; ?>">
                         <td><?php echo $inv['invoice_id']; ?></td>
-                        <td><?php echo $inv['registration_id']; ?></td>
+                        <td><?php echo $inv['transaction_history_id']; ?></td>
                         <td><?php echo htmlspecialchars($inv['user_email']); ?></td>
                         <td><?php echo htmlspecialchars($inv['package_name']); ?></td>
                         <td><?php echo $inv['request_date']; ?></td>

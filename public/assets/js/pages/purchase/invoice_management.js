@@ -24,6 +24,23 @@
             document.getElementById('modal-tx-id').textContent = data.id;
             document.getElementById('modal-tx-email').textContent = data.email;
             document.getElementById('modal-tx-package').textContent = data.package_name;
+            // voucher information
+            const voucherEl = document.getElementById('modal-tx-voucher-code');
+            if(data.voucher_code){
+                // display code and discount value
+                const discountText = data.voucher_type === 'percentage_discount'
+                    ? data.discount_value + '%'
+                    : data.voucher_type === 'fixed_discount'
+                        ? data.discount_value
+                        : '';
+                voucherEl.textContent = `${data.voucher_code} (Giảm ${discountText})`;
+            } else {
+                voucherEl.textContent = 'Không có';
+            }
+            // populate other voucher details
+            document.getElementById('modal-tx-voucher-description').textContent = data.voucher_description || '-';
+            document.getElementById('modal-tx-voucher-start-date').textContent = data.voucher_start_date || '-';
+            document.getElementById('modal-tx-voucher-end-date').textContent = data.voucher_end_date || '-';
             document.getElementById('modal-tx-amount').textContent = data.amount;
             document.getElementById('modal-tx-request-date').textContent = data.request_date;
             const badge = document.getElementById('modal-tx-status-badge');

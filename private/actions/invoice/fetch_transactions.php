@@ -55,7 +55,14 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
                 u.email AS user_email,
                 p.name AS package_name,
                 th.payment_image AS payment_image,         /* use transaction_history.payment_image */
-                l.province
+                l.province,
+                th.voucher_id,
+                v.code AS voucher_code,
+                v.discount_value,
+                v.voucher_type,
+                v.description AS voucher_description,
+                v.start_date AS voucher_start_date,
+                v.end_date AS voucher_end_date
         ";
         $base_from  = "
             FROM transaction_history th
@@ -63,6 +70,7 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
             JOIN user u            ON r.user_id = u.id
             JOIN package p         ON r.package_id = p.id
             LEFT JOIN location l   ON l.id = r.location_id
+            LEFT JOIN voucher v    ON th.voucher_id = v.id
         ";
         $base_where = " WHERE 1=1 "; // always true, filters tiếp theo dùng AND
 

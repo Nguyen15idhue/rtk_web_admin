@@ -5,14 +5,10 @@
 $bootstrap_data = require __DIR__ . '/../../../private/core/page_bootstrap.php';
 $base_url = $bootstrap_data['base_url'] ?? '/';
 
-// Authentication check
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
-    exit;
-}
-
 require_once __DIR__ . '/../../../private/classes/StationModel.php';
 require_once __DIR__ . '/../../../private/classes/ManagerModel.php';
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+Auth::ensureAuthenticated();
 
 // Page settings
 $page_title = "Quản lý Trạm";

@@ -24,72 +24,83 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
             <button type="submit" name="export_selected" class="btn btn-info">Xuất mục đã chọn</button>
             <button type="submit" name="export_all" class="btn btn-success">Xuất tất cả</button>
         </div>
-
-        <div class="transactions-table-wrapper">
-            <table id="stationsTable" class="transactions-table">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox" id="selectAll"></th>
-                        <th>ID</th>
-                        <th>Tên Trạm</th>
-                        <th>Tên Định danh</th>
-                        <th>Người quản lý Hiện tại</th>
-                        <th>Mountpoint Hiện tại</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($stations)): ?>
-                        <tr><td colspan="7">Không tìm thấy trạm nào.</td></tr>
-                    <?php else: foreach ($stations as $station): ?>
-                        <tr>
-                            <td><input type="checkbox" class="rowCheckbox" name="ids[]" value="<?php echo htmlspecialchars($station['id']); ?>"></td>
-                            <form action="<?php echo BASE_URL; ?>public/handlers/station/index.php" method="POST">
-                                <input type="hidden" name="action" value="update_station">
-                                <input type="hidden" name="station_id" value="<?php echo htmlspecialchars($station['id']); ?>">
-                                <td><?php echo htmlspecialchars($station['id']); ?></td>
-                                <td><?php echo htmlspecialchars($station['station_name']); ?></td>
-                                <td><?php echo htmlspecialchars($station['identificationName'] ?? 'N/A'); ?></td>
-                                <td>
-                                    <input list="manager_names_<?php echo $station['id']; ?>" name="manager_name"
-                                           class="form-control" value="<?php echo htmlspecialchars($station['manager_name'] ?? ''); ?>"
-                                           placeholder="Nhập tên người quản lý">
-                                    <datalist id="manager_names_<?php echo $station['id']; ?>">
-                                        <?php foreach ($allManagers as $manager): ?>
-                                            <option value="<?php echo htmlspecialchars($manager['name']); ?>">
-                                        <?php endforeach; ?>
-                                    </datalist>
-                                </td>
-                                <td>
-                                    <select name="mountpoint_details" class="form-control">
-                                        <option value="">-- Chọn Mountpoint --</option>
-                                        <?php foreach ($availableMountpoints as $mp): 
-                                            $mountpointValueJson = json_encode([
-                                                'id'=>$mp['id'],'name'=>$mp['name'],
-                                                'masterStationNames'=>$mp['masterStationNames']??[]
-                                            ]);
-                                            $isSelected = isset($station['mountpoint_id'])
-                                                && (string)$station['mountpoint_id']===(string)$mp['id'];
-                                            $displayText = htmlspecialchars($mp['name'])
-                                                .' (Trạm chủ: '.htmlspecialchars(implode(', ',$mp['masterStationNames']??[])).')';
-                                        ?>
-                                            <option value='<?php echo htmlspecialchars($mountpointValueJson,ENT_QUOTES,'UTF-8'); ?>'
-                                                <?php echo $isSelected?'selected':''; ?>>
-                                                <?php echo $displayText; ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <button type="submit" class="btn btn-primary btn-sm">Lưu</button>
-                                </td>
-                            </form>
-                        </tr>
-                    <?php endforeach; endif; ?>
-                </tbody>
-            </table>
-        </div>
     </form>
+
+    <!-- now the table is outside the export form -->
+    <div class="transactions-table-wrapper">
+        <table id="stationsTable" class="transactions-table">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="selectAll"></th>
+                    <th>ID</th>
+                    <th>Tên Trạm</th>
+                    <th>Tên Định danh</th>
+                    <th>Người quản lý Hiện tại</th>
+                    <th>Mountpoint Hiện tại</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($stations)): ?>
+                    <tr><td colspan="7">Không tìm thấy trạm nào.</td></tr>
+                <?php else: foreach ($stations as $station): ?>
+                    <tr>
+                        <td><input type="checkbox" class="rowCheckbox" name="ids[]" value="<?php echo htmlspecialchars($station['id']); ?>"></td>
+                        <form 
+                            id="updateStationForm_<?php echo htmlspecialchars($station['id']); ?>"
+                            action="<?php echo BASE_URL; ?>public/handlers/station/index.php" 
+                            method="POST"
+                        >
+                            <input type="hidden" name="action" value="update_station">
+                            <input type="hidden" name="station_id" value="<?php echo htmlspecialchars($station['id']); ?>">
+                            <td><?php echo htmlspecialchars($station['id']); ?></td>
+                            <td><?php echo htmlspecialchars($station['station_name']); ?></td>
+                            <td><?php echo htmlspecialchars($station['identificationName'] ?? 'N/A'); ?></td>
+                            <td>
+                                <input list="manager_names_<?php echo $station['id']; ?>" name="manager_name"
+                                       class="form-control" value="<?php echo htmlspecialchars($station['manager_name'] ?? ''); ?>"
+                                       placeholder="Chọn người quản lý">
+                                <datalist id="manager_names_<?php echo $station['id']; ?>">
+                                    <?php foreach ($allManagers as $manager): ?>
+                                        <option value="<?php echo htmlspecialchars($manager['name']); ?>">
+                                    <?php endforeach; ?>
+                                </datalist>
+                            </td>
+                            <td>
+                                <select name="mountpoint_details" class="form-control">
+                                    <option value="">-- Chọn Mountpoint --</option>
+                                    <?php foreach ($availableMountpoints as $mp): 
+                                        $mountpointValueJson = json_encode([
+                                            'id'=>$mp['id'],'name'=>$mp['name'],
+                                            'masterStationNames'=>$mp['masterStationNames']??[]
+                                        ]);
+                                        $isSelected = isset($station['mountpoint_id'])
+                                            && (string)$station['mountpoint_id']===(string)$mp['id'];
+                                        $displayText = htmlspecialchars($mp['name'])
+                                            .' (Trạm chủ: '.htmlspecialchars(implode(', ',$mp['masterStationNames']??[])).')';
+                                    ?>
+                                        <option value='<?php echo htmlspecialchars($mountpointValueJson,ENT_QUOTES,'UTF-8'); ?>'
+                                            <?php echo $isSelected?'selected':''; ?>>
+                                            <?php echo $displayText; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+                            <td>
+                                <button 
+                                    type="button" 
+                                    class="btn btn-primary btn-sm"
+                                    onclick="document.getElementById('updateStationForm_<?php echo htmlspecialchars($station['id']); ?>').submit();"
+                                >
+                                    Lưu
+                                </button>
+                            </td>
+                        </form>
+                    </tr>
+                <?php endforeach; endif; ?>
+            </tbody>
+        </table>
+    </div>
 
     <!-- Manager Management Section -->
     <div id="manager-management" class="content-section" style="margin-top:40px;">
@@ -113,7 +124,7 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
                             <td><?php echo htmlspecialchars($m['address'] ?? ''); ?></td>
                             <td class="actions text-center">
                                 <button type="button" class="btn-icon btn-edit" title="Sửa" onclick='openEditManagerModal(<?php echo htmlspecialchars(json_encode($m), ENT_QUOTES, 'UTF-8'); ?>)'><i class="fas fa-pencil-alt"></i></button>
-                                <form method="POST" action="<?php echo $base_url; ?>public/handlers/manager/manager_actions.php" style="display:inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người quản lý này không?');">
+                                <form method="POST" action="<?php echo $base_url; ?>public/handlers/station/manager_index.php" style="display:inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người quản lý này không?');">
                                     <input type="hidden" name="action" value="delete_manager">
                                     <input type="hidden" name="manager_id" value="<?php echo $m['id']; ?>">
                                     <button type="submit" class="btn-icon btn-secondary" title="Xóa"><i class="fas fa-trash"></i></button>
@@ -129,7 +140,7 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
     <!-- Create Manager Modal -->
     <div id="createManagerModal" class="modal">
         <div class="modal-content">
-            <form id="createManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/manager/manager_actions.php">
+            <form id="createManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/station/manager_index.php">
                 <div class="modal-header">
                     <h4>Thêm Người quản lý</h4>
                     <span class="modal-close" onclick="closeManagerModal('createManagerModal')">&times;</span>
@@ -151,7 +162,7 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
     <!-- Edit Manager Modal -->
     <div id="editManagerModal" class="modal">
         <div class="modal-content">
-            <form id="editManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/manager/manager_actions.php">
+            <form id="editManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/station/manager_index.php">
                 <div class="modal-header">
                     <h4>Sửa Người quản lý</h4>
                     <span class="modal-close" onclick="closeManagerModal('editManagerModal')">&times;</span>
@@ -176,25 +187,5 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
 <?php
 require_once PRIVATE_LAYOUTS_PATH . '/admin_footer.php';
 ?>
-
-<!-- JS to toggle all checkboxes -->
-<script>
-document.getElementById('selectAll').addEventListener('change', function(){
-    document.querySelectorAll('.rowCheckbox').forEach(cb=>cb.checked = this.checked);
-});
-</script>
-
-<script>
-    // helper functions
-    function openCreateManagerModal() { document.getElementById('createManagerModal').style.display='block'; }
-    function openEditManagerModal(managerData) {
-        document.getElementById('editManagerId').value = managerData.id;
-        document.getElementById('editManagerName').value = managerData.name;
-        document.getElementById('editManagerPhone').value = managerData.phone || ''; // Handle null phone
-        document.getElementById('editManagerAddress').value = managerData.address || ''; // Handle null address
-        document.getElementById('editManagerModal').style.display = 'block';
-    }
-    function closeManagerModal(modalId){ document.getElementById(modalId).style.display='none'; }
-</script>
 
 <script src="<?php echo $base_url; ?>public/assets/js/pages/station/station_management.js"></script>

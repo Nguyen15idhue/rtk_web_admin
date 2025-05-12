@@ -68,7 +68,7 @@ try {
 // --- User Display Name ---
 // Ensure session variables are checked safely
 $user_display_name = htmlspecialchars($_SESSION['admin_username'] ?? $_SESSION['admin_name'] ?? 'Admin');
-$admin_role = $_SESSION['admin_role'];
+$admin_role = $_SESSION['admin_role'] ?? '';
 // --- Define Private Includes & Actions Path ---
 $private_layouts_path = PRIVATE_LAYOUTS_PATH;
 $private_actions_path  = PRIVATE_ACTIONS_PATH;

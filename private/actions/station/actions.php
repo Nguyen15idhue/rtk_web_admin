@@ -5,13 +5,8 @@
 $bootstrap_data = require __DIR__ . '/../../core/page_bootstrap.php';
 $base_url = $bootstrap_data['base_url'] ?? '/';
 
-// Authentication check
-if (!isset($_SESSION['admin_id'])) {
-    if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) !== 'xmlhttprequest') {
-        header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
-    }
-    exit;
-}
+require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+Auth::ensureAuthenticated();
 
 // Ensure POST request
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

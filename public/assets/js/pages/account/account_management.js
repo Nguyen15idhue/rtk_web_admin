@@ -18,6 +18,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const editAccountError = document.getElementById('editAccountError');
     const renewAccountError = document.getElementById('renewAccountError'); // New error display
 
+    function get_account_status_badge_js(status) {
+        status = (status || 'unknown').toLowerCase();
+        switch (status) {
+            case 'active':
+                return '<span class="status-badge badge-green">Hoạt động</span>';
+            case 'pending':
+                return '<span class="status-badge badge-yellow">Chờ KH</span>';
+            case 'expired':
+                return '<span class="status-badge badge-red">Hết hạn</span>';
+            case 'suspended':
+                return '<span class="status-badge badge-gray">Đình chỉ</span>';
+            case 'rejected':
+                return '<span class="status-badge badge-red">Bị từ chối</span>';
+            default:
+                return '<span class="status-badge badge-gray">Không xác định</span>';
+        }
+    }
+
     function openCreateMeasurementAccountModal() {
         if (createAccountForm) createAccountForm.reset();
         if (createAccountError) createAccountError.textContent = '';
@@ -164,6 +182,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="detail-row"><span class="detail-label">Ghi chú:</span> <span class="detail-value">${account.notes || '-'}</span></div>
                     `;
                 viewDetailsContent.innerHTML = detailsHtml;
+
+                // Hiển thị thông tin Mountpoints
+                const mounts = account.mountpoints || [];
+                viewDetailsContent.innerHTML += `
+                    <div style="margin-top:1em;">
+                      <strong>Mountpoints (Location ID: ${account.location_id}):</strong>
+                      ${mounts.length
+                        ? '<ul>' + mounts.map(mp =>
+                            `<li>${mp.mountpoint} (${mp.ip}:${mp.port})</li>`
+                          ).join('') + '</ul>'
+                        : '<p>Không có mountpoint.</p>'
+                      }
+                    </div>
+                `;
             })
             .catch(error => {
                 console.error('Detailed error fetching account details for view:', error);

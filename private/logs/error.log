@@ -1,1 +1,28 @@
-[11-May-2025 10:49:32 UTC] [DEBUG] Search keyword: 
+[12-May-2025 12:04:25 UTC] [DEBUG] Search keyword: 
+[12-May-2025 12:06:04 UTC] [DEBUG] Search keyword: 
+[12-May-2025 12:06:52 UTC] [DEBUG] Search keyword: 
+[12-May-2025 12:06:59 UTC] [DEBUG] Search keyword: 
+[12-May-2025 12:17:29 UTC] [DEBUG] Search keyword: 
+[12-May-2025 12:36:27 UTC] [Revert Transaction 213] Deleting RTK account 2209
+[12-May-2025 12:36:27 UTC] [Revert Transaction 213] RTK delete success for account 2209.
+[12-May-2025 12:36:27 UTC] [Revert Transaction 213] Deleting RTK account 2210
+[12-May-2025 12:36:27 UTC] [Revert Transaction 213] RTK delete success for account 2210.
+[12-May-2025 12:49:49 UTC] [DEBUG] Search keyword: 
+[12-May-2025 12:49:55 UTC] [PTA] activate survey_account executed, affectedRows=0
+[12-May-2025 12:49:55 UTC] Warning: No survey accounts found or enabled for approved registration ID: 217
+[12-May-2025 12:49:55 UTC] [PTA] province_code=YBI, lastUser=YBI200, nextSeq=201, username=YBI201, password=0999999443
+[12-May-2025 12:49:55 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":217,"username_acc":"YBI201","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-12 19:49:55","end_time":"2025-08-12 19:49:55","enabled":1,"concurrent_user":1,"account_count":2}
+[12-May-2025 12:49:56 UTC] [PTA] create_account timed out (could be pending), transaction 213
+[12-May-2025 12:49:56 UTC] [CA] Start create_account request
+[12-May-2025 12:49:56 UTC] [CA] Raw input: {"registration_id":217,"username_acc":"YBI201","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-12 19:49:55","end_time":"2025-08-12 19:49:55","enabled":1,"concurrent_user":1,"account_count":2}
+[12-May-2025 12:49:56 UTC] [CA] registration_id=217, username_acc=YBI201, password_len=10
+[12-May-2025 12:49:56 UTC] [CA] location_input=63
+[12-May-2025 12:49:56 UTC] [CA] computed start_time_db=2025-05-12 19:49:55, end_time_db=2025-08-12 19:49:55
+[12-May-2025 12:49:56 UTC] [CA] Validating user_email: tranhailong2407@gmail.com
+[12-May-2025 12:49:56 UTC] [CA] Retrieved userId=90
+[12-May-2025 12:49:56 UTC] [CA] Price=270000.00 => normal flow
+[12-May-2025 12:49:56 UTC] Debug: Non-trial account creation path for registration_id=217
+[12-May-2025 12:49:56 UTC] [CA] RTK API payload for YBI201: {"name":"YBI201","userPwd":"0999999443","startTime":1747054195000,"endTime":1755002995000,"enabled":1,"numOnline":1,"customerName":"Long2002","customerPhone":"0999999443","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[12-May-2025 12:49:56 UTC] [CA] RTK API response for YBI201: {"success":true,"data":{"id":2211,"name":"YBI201","userPwd":"0999999443","startTime":1747054195000,"endTime":1755002995000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2002","customerPhone":"0999999443","customerCompany":""},"error":null}
+[12-May-2025 12:49:56 UTC] [CA] RTK API payload for YBI202: {"name":"YBI202","userPwd":"0999999443","startTime":1747054195000,"endTime":1755002995000,"enabled":1,"numOnline":1,"customerName":"Long2002","customerPhone":"0999999443","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[12-May-2025 12:49:56 UTC] [CA] RTK API response for YBI202: {"success":true,"data":{"id":2212,"name":"YBI202","userPwd":"0999999443","startTime":1747054195000,"endTime":1755002995000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2002","customerPhone":"0999999443","customerCompany":""},"error":null}
