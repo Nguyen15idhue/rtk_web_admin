@@ -2,7 +2,7 @@
 // filepath: private/actions/referral/process_withdrawal.php
 // Process approval or rejection of withdrawal requests
 header('Content-Type: application/json; charset=utf-8');
-require_once dirname(__DIR__, 3) . '/config/constants.php';
+require_once dirname(__DIR__, 2) . '/config/constants.php';
 require_once PRIVATE_CORE_PATH . 'error_handler.php';
 require_once PRIVATE_CLASSES_PATH . 'Database.php';
 require_once BASE_PATH . '/utils/functions.php';

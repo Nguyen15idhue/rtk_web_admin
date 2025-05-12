@@ -32,3 +32,4 @@
 [12-May-2025 00:49:48 UTC] [DEBUG] Search keyword: 
 [12-May-2025 00:53:46 UTC] Uncaught exception: SQLSTATE[HY093]: Invalid parameter number in E:\Application\laragon\www\rtk_web_admin\private\actions\referral\fetch_referred_users.php on line 35
 [12-May-2025 00:53:51 UTC] Uncaught exception: SQLSTATE[HY093]: Invalid parameter number in E:\Application\laragon\www\rtk_web_admin\private\actions\referral\fetch_referrals.php on line 32
+[12-May-2025 06:16:34 UTC] PHP Warning:  Undefined array key "admin_role" in E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php on line 71
