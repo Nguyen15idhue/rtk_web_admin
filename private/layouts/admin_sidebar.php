@@ -18,6 +18,7 @@ $admin_nav_items = [
     ['label' => 'Chăm sóc khách hàng', 'icon' => 'fa-headset', 'url' => '/public/pages/support/support_management.php', 'active_check' => 'support_management.php', 'permission' => 'support_management'],
     ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => '/public/pages/report/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports'],
     ['label' => 'QL hướng dẫn', 'icon' => 'fa-book', 'url' => '/public/pages/guide/guide_management.php', 'active_check' => 'guide_management.php', 'permission' => 'guide_management'],
+    ['label' => 'QL Voucher', 'icon' => 'fa-ticket-alt', 'url' => '/public/pages/voucher/voucher_management.php', 'active_check' => 'voucher_management.php', 'permission' => 'voucher_management'],
     ['label' => 'Phê duyệt hóa đơn', 'icon' => 'fa-file-invoice', 'url' => '/public/pages/invoice/invoice_review.php', 'active_check' => 'invoice_review.php', 'permission' => 'invoice_review'],
     ['label' => 'QL phân quyền', 'icon' => 'fa-user-lock', 'url' => '/public/pages/auth/permission_management.php', 'active_check' => 'permission_management.php', 'permission' => 'permission_management'],
     ['type' => 'section', 'label' => 'Cài đặt'],

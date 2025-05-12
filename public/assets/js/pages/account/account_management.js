@@ -182,6 +182,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="detail-row"><span class="detail-label">Ghi chú:</span> <span class="detail-value">${account.notes || '-'}</span></div>
                     `;
                 viewDetailsContent.innerHTML = detailsHtml;
+
+                // Hiển thị thông tin Mountpoints
+                const mounts = account.mountpoints || [];
+                viewDetailsContent.innerHTML += `
+                    <div style="margin-top:1em;">
+                      <strong>Mountpoints (Location ID: ${account.location_id}):</strong>
+                      ${mounts.length
+                        ? '<ul>' + mounts.map(mp =>
+                            `<li>${mp.mountpoint} (${mp.ip}:${mp.port})</li>`
+                          ).join('') + '</ul>'
+                        : '<p>Không có mountpoint.</p>'
+                      }
+                    </div>
+                `;
             })
             .catch(error => {
                 console.error('Detailed error fetching account details for view:', error);

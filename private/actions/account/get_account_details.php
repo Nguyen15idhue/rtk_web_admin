@@ -28,7 +28,20 @@ try {
     $account = $accountModel->getAccountById($accountId);
 
     if ($account) {
-        // envelope.data = the account object
+        // Fetch all mountpoints for this account's location
+        $locationId = $account['location_id'] ?? null;
+        if ($locationId) {
+            $stmt = $db->prepare("
+                SELECT id, ip, port, mountpoint 
+                FROM mount_point 
+                WHERE location_id = ?
+            ");
+            $stmt->execute([$locationId]);
+            $account['mountpoints'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $account['mountpoints'] = [];
+        }
+
         api_success($account, 'Account details fetched successfully.');
     } else {
         api_error('Account not found.', 404);

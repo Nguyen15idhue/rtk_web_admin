@@ -148,6 +148,37 @@ function get_commission_status_badge(?string $status): string {
 }
 
 /**
+ * Get display text for voucher type.
+ *
+ * @param string $type Voucher type key.
+ * @return string Localized voucher type text.
+ */
+function get_voucher_type_display(string $type): string {
+    switch ($type) {
+        case 'fixed_discount':
+            return 'Giảm cố định';
+        case 'percentage_discount':
+            return 'Giảm phần trăm';
+        case 'extend_duration':
+            return 'Tặng tháng';
+        default:
+            return 'Không xác định';
+    }
+}
+
+/**
+ * Generate HTML badge for voucher status.
+ *
+ * @param bool $isActive True if voucher is active.
+ * @return string HTML span for status badge.
+ */
+function get_voucher_status_badge(bool $isActive): string {
+    return $isActive
+        ? '<span class="status-badge badge-green">Hoạt động</span>'
+        : '<span class="status-badge badge-red">Vô hiệu hóa</span>';
+}
+
+/**
  * Generates HTML action buttons for an account based on its details.
  *
  * @param array $account Associative array containing account details, including 'id', 'enabled', and 'derived_status'.
