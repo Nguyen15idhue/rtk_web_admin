@@ -45,6 +45,65 @@ include $private_layouts_path . 'admin_header.php';
 include $private_layouts_path . 'admin_sidebar.php';
 ?>
 
+<style>
+    /* Styles for the modern view account modal */
+    .modern-modal-content .modal-body {
+        padding: 20px 25px; /* Add more padding */
+    }
+
+    .account-details-list {
+        display: grid;
+        grid-template-columns: auto 1fr; /* Label and value */
+        gap: 10px 15px; /* Row and column gap */
+        font-size: 0.95rem;
+    }
+
+    .account-details-list dt {
+        font-weight: 600;
+        color: #333;
+        grid-column: 1;
+    }
+
+    .account-details-list dd {
+        margin-left: 0; /* Reset browser default */
+        color: #555;
+        grid-column: 2;
+        word-break: break-all; /* Prevent long strings from breaking layout */
+    }
+
+    .modern-modal-content h5 {
+        margin-top: 25px;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+        color: #333;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+    }
+
+    .mp-table.modern-table { /* Style for mountpoint table if needed */
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+    .mp-table.modern-table th,
+    .mp-table.modern-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    .mp-table.modern-table th {
+        background-color: #f8f9fa;
+    }
+    #viewAccountLoading, #viewAccountError {
+        padding: 15px;
+        text-align: center;
+    }
+    #viewAccountError p.error {
+        color: var(--danger-color, #dc3545); /* Use CSS variable if available */
+    }
+
+</style>
+
 <main class="content-wrapper">
     <div class="content-header">
         <h2>Quản lý TK Đo đạc</h2>
@@ -215,13 +274,24 @@ include $private_layouts_path . 'admin_sidebar.php';
 </main>
 
 <div id="viewAccountModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content modern-modal-content">
         <div class="modal-header">
             <h4>Chi tiết tài khoản</h4>
             <span class="modal-close" onclick="closeModal('viewAccountModal')">&times;</span>
         </div>
         <div class="modal-body" id="viewAccountDetailsContent">
-            <p>Đang tải...</p>
+            <div id="viewAccountMainDetails">
+                <!-- Main account details will be populated here by JS -->
+            </div>
+            <div id="viewAccountMountpoints" style="margin-top: 15px;">
+                <!-- Mountpoints table will be populated here by JS -->
+            </div>
+            <div id="viewAccountLoading" style="display: none;">
+                 <p>Đang tải...</p>
+            </div>
+            <div id="viewAccountError" style="display: none; color: red;">
+                 <!-- Error message will be populated here by JS -->
+            </div>
         </div>
         <div class="modal-footer">
             <button class="btn btn-secondary" onclick="closeModal('viewAccountModal')">Đóng</button>
