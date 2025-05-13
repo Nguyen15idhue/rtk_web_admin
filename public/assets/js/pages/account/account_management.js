@@ -678,12 +678,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setupEmailAutocomplete('create-user-email', 'emailSuggestionsCreate', 'create-user-info');
     setupEmailAutocomplete('edit-user-email', 'emailSuggestionsEdit', 'edit-user-info');
-
-    const selectAllCheckbox = document.getElementById('selectAll');
-    selectAllCheckbox?.addEventListener('change', () => {
-        const checked = selectAllCheckbox.checked;
-        document.querySelectorAll('.rowCheckbox').forEach(cb => cb.checked = checked);
-    });
+    // Bulk select-all logic now centralized in utils/bulk_actions.js
 
     async function bulkToggleStatus() {
         const ids = Array.from(document.querySelectorAll('.rowCheckbox:checked')).map(cb => cb.value);
