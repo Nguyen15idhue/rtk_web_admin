@@ -85,10 +85,10 @@ try {
     $tm->updateRegistrationStatus($reg_id, 'rejected', $reason);
     $tm->unconfirmPayment($transaction_id);
 
-    // --- Non-renewal: soft-delete and remove RTK accounts ---
+    // --- Non-renewal: hard-delete and remove RTK accounts ---
     if ($tx_type !== 'renewal') {
         $accountsToDelete = $tm->getAllSurveyAccountsForRegistration($reg_id);
-        $tm->softDeleteAccounts($reg_id);
+        $tm->hardDeleteAccounts($reg_id);
         $tm->updateHistoryStatus($transaction_id, 'failed');
 
         $apiFailures = [];

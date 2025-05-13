@@ -88,7 +88,7 @@ try {
     // chỉ xóa mềm và gọi API external khi không phải renewal
     if ($tx_type !== 'renewal') {
         $accounts = $tm->getAllSurveyAccountsForRegistration($reg_id);
-        $tm->softDeleteAccounts($reg_id);
+        $tm->hardDeleteAccounts($reg_id);
         $tm->updateHistoryStatus($transaction_id, 'pending');
 
         // track API failures & delay commit until after external calls

@@ -22,7 +22,7 @@ $start_datetime = $start_date . ' 00:00:00';
 $end_datetime = $end_date . ' 23:59:59';
 
 // Total registrations
-$stmt = $pdo->query("SELECT COUNT(id) as count FROM user WHERE deleted_at IS NULL");
+$stmt = $pdo->query("SELECT COUNT(id) as count FROM user");
 $total_registrations = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
 // New registrations in period
 $stmt = $pdo->prepare("
@@ -34,10 +34,10 @@ $stmt = $pdo->prepare("
 $stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
 $new_registrations = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
 // Active accounts
-$stmt = $pdo->query("SELECT COUNT(id) as count FROM user WHERE status = 'active' AND deleted_at IS NULL");
+$stmt = $pdo->query("SELECT COUNT(id) as count FROM user WHERE deleted_at IS NULL");
 $active_accounts = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
 // Locked accounts (non-active)
-$stmt = $pdo->query("SELECT COUNT(id) as count FROM user WHERE status != 'active' AND deleted_at IS NULL");
+$stmt = $pdo->query("SELECT COUNT(id) as count FROM user WHERE deleted_at IS NOT NULL");
 $locked_accounts = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
 
 // Active survey accounts
@@ -48,8 +48,7 @@ $stmt = $pdo->prepare("
     SELECT COUNT(sa.id) as count
     FROM survey_account sa
     JOIN registration r ON sa.registration_id = r.id
-    WHERE sa.enabled = 1
-      AND sa.deleted_at IS NULL
+    WHERE sa.deleted_at IS NULL
       AND r.deleted_at IS NULL
       AND sa.created_at BETWEEN :start AND :end
 ");
