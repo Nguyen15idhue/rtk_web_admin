@@ -11,14 +11,22 @@ $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php'
 
 // Load all defined permissions from config file
 $all_defined_permissions = require_once __DIR__ . '/../../../private/config/app_permissions.php';
-$roles_to_sync = ['admin', 'customercare']; // Define roles to sync permissions for
 
 if ($db) {
-    // Synchronize permissions: Add new permissions from config to DB if they don't exist
+    // Synchronize permissions:
+    // 1. Get all distinct roles from DB
+    $stmt_get_roles = $db->query("SELECT DISTINCT role FROM role_permissions");
+    $existing_roles_in_db = $stmt_get_roles ? $stmt_get_roles->fetchAll(PDO::FETCH_COLUMN) : [];
+
+    // 2. Ensure 'admin' and 'customercare' are in the list, then add any other roles from DB
+    $roles_to_process = array_unique(array_merge(['admin', 'customercare'], $existing_roles_in_db));
+
+    // 3. For each role, ensure all defined permissions exist, add if not (default to allowed=0)
     $stmt_check_perm = $db->prepare("SELECT 1 FROM role_permissions WHERE role = :role AND permission = :permission");
     $stmt_add_perm = $db->prepare("INSERT INTO role_permissions (role, permission, allowed) VALUES (:role, :permission, 0)");
 
-    foreach ($roles_to_sync as $role_to_sync) {
+    foreach ($roles_to_process as $role_to_sync) {
+        if (empty($role_to_sync)) continue; // Skip if role name is empty
         foreach ($all_defined_permissions as $perm_code => $perm_description) {
             $stmt_check_perm->execute([':role' => $role_to_sync, ':permission' => $perm_code]);
             if ($stmt_check_perm->fetchColumn() === false) {
@@ -46,7 +54,10 @@ if ($db) {
 
 // Prepare UI permissions map by merging defined permissions with DB state
 $ui_permissions = [];
-$roles_to_display = ['admin', 'customercare']; // Roles you want to manage permissions for
+// Fetch all distinct roles again to be displayed, ensuring admin and customercare are first if they exist
+$stmt_display_roles = $db ? $db->query("SELECT DISTINCT role FROM role_permissions ORDER BY CASE role WHEN 'admin' THEN 1 WHEN 'customercare' THEN 2 ELSE 3 END, role ASC") : null;
+$roles_to_display = $stmt_display_roles ? $stmt_display_roles->fetchAll(PDO::FETCH_COLUMN) : ['admin', 'customercare'];
+if (empty($roles_to_display)) $roles_to_display = ['admin', 'customercare']; // Fallback if DB is empty
 
 foreach ($roles_to_display as $role_key) {
     $ui_permissions[$role_key] = [];
@@ -70,6 +81,13 @@ $permission_groups_config = [
     'Hỗ trợ & Giới thiệu' => ['support_management', 'referral_management'],
     'Báo cáo' => ['reports']
 ];
+
+// Helper function to get a display name for a role key
+function getRoleDisplayName($role_key) {
+    if ($role_key === 'admin') return 'Quản trị viên';
+    if ($role_key === 'customercare') return 'Chăm sóc khách hàng';
+    return ucfirst(str_replace('_', ' ', $role_key)); // Default display name
+}
 ?>
 
 <?php include $private_layouts_path . 'admin_sidebar.php'; include $private_layouts_path . 'admin_header.php'; ?>
@@ -88,45 +106,63 @@ $permission_groups_config = [
     <div id="admin-permission-management" class="content-section">
         <div class="flex flex-row justify-between items-center mb-4 gap-3 md:gap-2">
             <h3 class="text-lg md:text-xl font-semibold text-gray-900">Quản lý phân quyền</h3>
-            <button class="btn btn-primary self-start md:self-auto w-auto" onclick="PermissionPageEvents.openCreateRoleModal()" data-permission="admin_user_create">
-                <i class="fas fa-user-plus mr-1"></i> Thêm QTV/Vận hành
-            </button>
+            <div class="flex gap-2">
+                <button class="btn btn-success self-start md:self-auto w-auto" onclick="PermissionPageEvents.openCreateCustomRoleModal()" data-permission="permission_management">
+                    <i class="fas fa-plus-circle mr-1"></i> Tạo Vai trò Mới
+                </button>
+                <button class="btn btn-primary self-start md:self-auto w-auto" onclick="PermissionPageEvents.openCreateRoleModal()" data-permission="admin_user_create">
+                    <i class="fas fa-user-plus mr-1"></i> Thêm QTV/Vận hành
+                </button>
+            </div>
         </div>
         <p class="text-xs sm:text-sm text-gray-600 mb-6">Quản lý vai trò và quyền hạn truy cập cho tài khoản quản trị hệ thống.</p>
 
         <!-- Permission Cards: Responsive Grid -->
         <div class="stats-grid"> 
+            <?php foreach ($roles_to_display as $role_key):
+                if (empty($role_key) || !isset($ui_permissions[$role_key])) continue;
+                $role_display_name = getRoleDisplayName($role_key);
+                $is_admin_role = ($role_key === 'admin');
+                $icon_class = 'fa-users-cog'; // Default icon
+                if ($role_key === 'admin') $icon_class = 'fa-user-shield';
+                if ($role_key === 'customercare') $icon_class = 'fa-headset';
 
-            <!-- Admin stat card -->
+                $card_bg_color_class = 'bg-gray-200';
+                $card_text_color_class = 'text-gray-600';
+                if ($role_key === 'admin') { $card_bg_color_class = 'bg-blue-200'; $card_text_color_class = 'text-blue-600';}
+                if ($role_key === 'customercare') { $card_bg_color_class = 'bg-green-200'; $card_text_color_class = 'text-green-600';}
+            ?>
+            <!-- <?= htmlspecialchars($role_display_name) ?> stat card -->
             <div class="stat-card">
-                <div class="icon bg-blue-200 text-blue-600"><i class="fas fa-user-shield"></i></div>
+                <div class="icon <?= $card_bg_color_class ?> <?= $card_text_color_class ?>"><i class="fas <?= $icon_class ?>"></i></div>
                 <div>
-                    <h3>Quản trị viên</h3>
-                    <p>Quản lý hoạt động hàng ngày.</p>
+                    <h3><?= htmlspecialchars($role_display_name) ?></h3>
+                    <p><?= $is_admin_role ? 'Quản lý hoạt động hàng ngày.' : 'Quyền hạn tùy chỉnh.' ?></p>
                     <form>
-                        <fieldset disabled style="border:none;">
+                        <fieldset <?= $is_admin_role ? 'disabled' : '' ?> style="border:none;">
                             <div class="text-xs max-h-40 sm:max-h-48 overflow-y-auto pr-2 border-t border-b py-2 my-2">
                                 <?php
-                                $rendered_admin_permissions = [];
-                                $admin_group_idx = 0;
+                                $rendered_permissions_for_role = [];
+                                $group_idx_for_role = 0;
                                 foreach ($permission_groups_config as $group_title => $perm_codes_in_group):
-                                    $admin_group_idx++;
-                                    $admin_group_content_id = "admin-group-content-{$admin_group_idx}";
+                                    $group_idx_for_role++;
+                                    $group_content_id = "{$role_key}-group-content-{$group_idx_for_role}";
                                     $group_has_visible_perms = false;
-                                    ob_start(); // Start output buffering to capture group's permissions
+                                    ob_start(); 
                                     foreach ($perm_codes_in_group as $perm_code):
-                                        if (isset($ui_permissions['admin'][$perm_code])):
-                                            $perm_data = $ui_permissions['admin'][$perm_code];
-                                            $is_core_admin_perm = ($perm_code === 'dashboard' || $perm_code === 'permission_management');
-                                            $final_checked_state = $is_core_admin_perm ? true : $perm_data['allowed'];
-                                            $final_disabled_state = $is_core_admin_perm;
-                                            $rendered_admin_permissions[$perm_code] = true;
+                                        if (isset($ui_permissions[$role_key][$perm_code])):
+                                            $perm_data = $ui_permissions[$role_key][$perm_code];
+                                            $is_core_locked_perm = $is_admin_role && ($perm_code === 'dashboard' || $perm_code === 'permission_management');
+                                            $final_checked_state = $is_core_locked_perm ? true : $perm_data['allowed'];
+                                            $final_disabled_state = $is_core_locked_perm;
+                                            
+                                            $rendered_permissions_for_role[$perm_code] = true;
                                             $group_has_visible_perms = true;
                                 ?>
                                 <label class="flex items-center py-1">
                                     <input type="checkbox"
                                            class="mr-2 h-3 w-3 accent-primary-600"
-                                           data-role="Admin"
+                                           data-role="<?= htmlspecialchars($role_key) ?>"
                                            data-permission="<?= htmlspecialchars($perm_code) ?>"
                                            <?= $final_checked_state ? 'checked' : '' ?>
                                            <?= $final_disabled_state ? 'disabled' : '' ?>
@@ -135,16 +171,16 @@ $permission_groups_config = [
                                 <?php
                                         endif;
                                     endforeach;
-                                    $group_permissions_html = ob_get_clean(); // Get buffered output
+                                    $group_permissions_html = ob_get_clean(); 
                                     if ($group_has_visible_perms):
                                 ?>
                                 <div class="permission-group mt-1 first:mt-0">
                                     <h5 class="permission-group-header font-semibold text-gray-700 text-xs mb-1 cursor-pointer flex justify-between items-center py-1" 
-                                        onclick="togglePermissionGroup(this, '<?= $admin_group_content_id ?>')">
+                                        onclick="togglePermissionGroup(this, '<?= $group_content_id ?>')">
                                         <span><?= htmlspecialchars($group_title) ?></span>
                                         <i class="fas fa-chevron-down text-gray-500"></i>
                                     </h5>
-                                    <div id="<?= $admin_group_content_id ?>" class="permission-group-content pl-3 space-y-1" style="display: none;">
+                                    <div id="<?= $group_content_id ?>" class="permission-group-content pl-3 space-y-1" style="display: none;">
                                         <?= $group_permissions_html ?>
                                     </div>
                                 </div>
@@ -156,17 +192,17 @@ $permission_groups_config = [
                                 $other_perms_html = '';
                                 ob_start();
                                 $has_other_perms = false;
-                                foreach ($ui_permissions['admin'] as $perm_code => $perm_data):
-                                    if (!isset($rendered_admin_permissions[$perm_code])):
+                                foreach ($ui_permissions[$role_key] as $perm_code => $perm_data):
+                                    if (!isset($rendered_permissions_for_role[$perm_code])):
                                         $has_other_perms = true;
-                                        $is_core_admin_perm = ($perm_code === 'dashboard' || $perm_code === 'permission_management');
-                                        $final_checked_state = $is_core_admin_perm ? true : $perm_data['allowed'];
-                                        $final_disabled_state = $is_core_admin_perm;
+                                        $is_core_locked_perm = $is_admin_role && ($perm_code === 'dashboard' || $perm_code === 'permission_management');
+                                        $final_checked_state = $is_core_locked_perm ? true : $perm_data['allowed'];
+                                        $final_disabled_state = $is_core_locked_perm;
                                 ?>
                                 <label class="flex items-center py-1">
                                     <input type="checkbox"
                                            class="mr-2 h-3 w-3 accent-primary-600"
-                                           data-role="Admin"
+                                           data-role="<?= htmlspecialchars($role_key) ?>"
                                            data-permission="<?= htmlspecialchars($perm_code) ?>"
                                            <?= $final_checked_state ? 'checked' : '' ?>
                                            <?= $final_disabled_state ? 'disabled' : '' ?>
@@ -177,122 +213,32 @@ $permission_groups_config = [
                                 endforeach;
                                 $other_perms_html = ob_get_clean();
                                 if ($has_other_perms):
-                                    $admin_group_idx++;
-                                    $admin_other_group_content_id = "admin-group-content-{$admin_group_idx}";
+                                    $group_idx_for_role++;
+                                    $other_group_content_id = "{$role_key}-group-content-{$group_idx_for_role}";
                                 ?>
                                 <div class="permission-group mt-1">
                                     <h5 class="permission-group-header font-semibold text-gray-700 text-xs mb-1 cursor-pointer flex justify-between items-center py-1"
-                                        onclick="togglePermissionGroup(this, '<?= $admin_other_group_content_id ?>')">
+                                        onclick="togglePermissionGroup(this, '<?= $other_group_content_id ?>')">
                                         <span>Quyền Khác</span>
                                         <i class="fas fa-chevron-down text-gray-500"></i>
                                     </h5>
-                                    <div id="<?= $admin_other_group_content_id ?>" class="permission-group-content pl-3 space-y-1" style="display: none;">
+                                    <div id="<?= $other_group_content_id ?>" class="permission-group-content pl-3 space-y-1" style="display: none;">
                                         <?= $other_perms_html ?>
                                     </div>
                                 </div>
                                 <?php endif; ?>
                             </div>
-                            <button type="button" class="btn btn-primary mt-2 text-xs" disabled>
-                                Lưu quyền Admin
+                            <button type="button" class="btn btn-primary mt-2 text-xs" 
+                                    onclick="PermissionPageEvents.savePermissions('<?= htmlspecialchars($role_key) ?>', event)" 
+                                    data-permission="permission_edit"
+                                    <?= $is_admin_role ? 'disabled' : '' ?>>
+                                Lưu quyền <?= htmlspecialchars($role_display_name) ?>
                             </button>
                         </fieldset>
                     </form>
                 </div>
             </div>
-
-            <!-- Customer Care stat card -->
-            <div class="stat-card">
-                <div class="icon bg-green-200 text-green-600"><i class="fas fa-headset"></i></div>
-                <div>
-                    <h3>Chăm sóc khách hàng</h3>
-                    <p>Chỉ xem và hỗ trợ cơ bản.</p>
-                    <form>
-                        <div class="text-xs max-h-40 sm:max-h-48 overflow-y-auto pr-2 border-t border-b py-2 my-2">
-                            <?php
-                                $rendered_cskh_permissions = [];
-                                $cskh_group_idx = 0;
-                                foreach ($permission_groups_config as $group_title => $perm_codes_in_group):
-                                    $cskh_group_idx++;
-                                    $cskh_group_content_id = "cskh-group-content-{$cskh_group_idx}";
-                                    $group_has_visible_perms_cskh = false;
-                                    ob_start();
-                                    foreach ($perm_codes_in_group as $perm_code):
-                                        if (isset($ui_permissions['customercare'][$perm_code])):
-                                            $perm_data = $ui_permissions['customercare'][$perm_code];
-                                            $rendered_cskh_permissions[$perm_code] = true;
-                                            $group_has_visible_perms_cskh = true;
-                            ?>
-                            <label class="flex items-center py-1">
-                                <input type="checkbox"
-                                       class="mr-2 h-3 w-3 accent-primary-600"
-                                       data-role="CustomerCare"
-                                       data-permission="<?= htmlspecialchars($perm_code) ?>"
-                                       <?= $perm_data['allowed'] ? 'checked' : '' ?>
-                                > <?= htmlspecialchars($perm_data['description']) ?>
-                            </label>
-                            <?php
-                                        endif;
-                                    endforeach;
-                                    $group_permissions_html_cskh = ob_get_clean();
-                                    if ($group_has_visible_perms_cskh):
-                            ?>
-                            <div class="permission-group mt-1 first:mt-0">
-                                <h5 class="permission-group-header font-semibold text-gray-700 text-xs mb-1 cursor-pointer flex justify-between items-center py-1"
-                                    onclick="togglePermissionGroup(this, '<?= $cskh_group_content_id ?>')">
-                                    <span><?= htmlspecialchars($group_title) ?></span>
-                                    <i class="fas fa-chevron-down text-gray-500"></i>
-                                </h5>
-                                <div id="<?= $cskh_group_content_id ?>" class="permission-group-content pl-3 space-y-1" style="display: none;">
-                                    <?= $group_permissions_html_cskh ?>
-                                </div>
-                            </div>
-                            <?php
-                                    endif;
-                                endforeach;
-
-                                // Display any permissions not in defined groups for CustomerCare
-                                $other_perms_cskh_html = '';
-                                ob_start();
-                                $has_other_perms_cskh = false;
-                                foreach ($ui_permissions['customercare'] as $perm_code => $perm_data):
-                                    if (!isset($rendered_cskh_permissions[$perm_code])):
-                                        $has_other_perms_cskh = true;
-                            ?>
-                            <label class="flex items-center py-1">
-                                <input type="checkbox"
-                                       class="mr-2 h-3 w-3 accent-primary-600"
-                                       data-role="CustomerCare"
-                                       data-permission="<?= htmlspecialchars($perm_code) ?>"
-                                       <?= $perm_data['allowed'] ? 'checked' : '' ?>
-                                > <?= htmlspecialchars($perm_data['description']) ?>
-                            </label>
-                            <?php
-                                    endif;
-                                endforeach;
-                                $other_perms_cskh_html = ob_get_clean();
-                                if ($has_other_perms_cskh):
-                                    $cskh_group_idx++;
-                                    $cskh_other_group_content_id = "cskh-group-content-{$cskh_group_idx}";
-                            ?>
-                            <div class="permission-group mt-1">
-                                 <h5 class="permission-group-header font-semibold text-gray-700 text-xs mb-1 cursor-pointer flex justify-between items-center py-1"
-                                    onclick="togglePermissionGroup(this, '<?= $cskh_other_group_content_id ?>')">
-                                    <span>Quyền Khác</span>
-                                    <i class="fas fa-chevron-down text-gray-500"></i>
-                                </h5>
-                                <div id="<?= $cskh_other_group_content_id ?>" class="permission-group-content pl-3 space-y-1" style="display: none;">
-                                    <?= $other_perms_cskh_html ?>
-                                </div>
-                            </div>
-                            <?php endif; ?>
-                        </div>
-                        <button type="button" class="btn btn-primary mt-2 text-xs" onclick="PermissionPageEvents.savePermissions('CustomerCare', event)" data-permission="permission_edit">
-                            Lưu quyền CSKH
-                        </button>
-                    </form>
-                </div>
-            </div>
-
+            <?php endforeach; ?>
         </div> <!-- end stats-grid -->
         <p class="text-xs text-red-600 mt-4 italic">*Lưu ý: Chỉ Admin có thể thay đổi quyền. TK mới tạo cần đổi MK mặc định.</p>
     </div>
@@ -379,8 +325,9 @@ function togglePermissionGroup(headerElement, contentId) {
                     <label for="roleType">Vai trò:</label>
                     <select id="roleType" name="role" required class="w-full">
                         <option value="">Chọn vai trò</option>
-                        <option value="admin">Quản trị viên</option>
-                        <option value="customercare">Chăm sóc khách hàng</option>
+                        <?php foreach ($roles_to_display as $role_key_option): if(empty($role_key_option)) continue; ?>
+                        <option value="<?= htmlspecialchars($role_key_option) ?>"><?= htmlspecialchars(getRoleDisplayName($role_key_option)) ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
@@ -416,8 +363,9 @@ function togglePermissionGroup(headerElement, contentId) {
                 <div class="form-group">
                     <label for="editAdminRole">Vai trò:</label>
                     <select id="editAdminRole" name="role" required class="w-full form-input">
-                        <option value="admin">Quản trị viên</option>
-                        <option value="customercare">Chăm sóc khách hàng</option>
+                        <?php foreach ($roles_to_display as $role_key_option): if(empty($role_key_option)) continue; ?>
+                        <option value="<?= htmlspecialchars($role_key_option) ?>"><?= htmlspecialchars(getRoleDisplayName($role_key_option)) ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
@@ -444,6 +392,107 @@ function togglePermissionGroup(headerElement, contentId) {
         </div>
     </div>
 </div>
+
+<!-- Create Custom Role Modal -->
+<div id="createCustomRoleModal" class="modal">
+    <div class="modal-content w-1/2 max-w-lg">
+        <div class="modal-header">
+            <h4>Tạo Vai trò Mới</h4>
+        </div>
+        <form id="createCustomRoleForm">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="customRoleName">Tên Vai trò (Hiển thị):</label>
+                    <input type="text" id="customRoleName" name="role_name" required class="w-full" placeholder="Ví dụ: Biên tập viên">
+                </div>
+                <div class="form-group">
+                    <label for="customRoleKey">Khóa Vai trò (Không dấu, không cách, dùng '_'):</label>
+                    <input type="text" id="customRoleKey" name="role_key" required class="w-full" placeholder="Ví dụ: bien_tap_vien">
+                    <p class="text-xs text-gray-500 mt-1">Khóa này là duy nhất và không thể thay đổi sau khi tạo.</p>
+                </div>
+                <div class="form-group">
+                    <label>Chọn Quyền cho Vai trò Mới:</label>
+                    <div class="text-xs max-h-60 overflow-y-auto pr-2 border rounded p-2 mt-1 space-y-2">
+                        <?php
+                        $custom_role_perm_group_idx = 0;
+                        foreach ($permission_groups_config as $group_title => $perm_codes_in_group):
+                            $custom_role_perm_group_idx++;
+                            $modal_group_content_id = "modal-perm-group-{$custom_role_perm_group_idx}";
+                            $group_permissions_html_modal = '';
+                            $group_has_perms_modal = false;
+                            ob_start();
+                            foreach ($perm_codes_in_group as $perm_code):
+                                if (isset($all_defined_permissions[$perm_code])):
+                                    $group_has_perms_modal = true;
+                        ?>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="permissions[]" value="<?= htmlspecialchars($perm_code) ?>" class="mr-2 h-3 w-3 accent-primary-600">
+                            <?= htmlspecialchars($all_defined_permissions[$perm_code]) ?>
+                        </label>
+                        <?php
+                                endif;
+                            endforeach;
+                            $group_permissions_html_modal = ob_get_clean();
+                            if ($group_has_perms_modal):
+                        ?>
+                        <div class="permission-group mt-1 first:mt-0">
+                            <h5 class="permission-group-header font-semibold text-gray-700 text-xs mb-1 cursor-pointer flex justify-between items-center py-1" 
+                                onclick="togglePermissionGroup(this, '<?= $modal_group_content_id ?>')">
+                                <span><?= htmlspecialchars($group_title) ?></span>
+                                <i class="fas fa-chevron-down text-gray-500"></i>
+                            </h5>
+                            <div id="<?= $modal_group_content_id ?>" class="permission-group-content pl-3 space-y-1" style="display: none;">
+                                <?= $group_permissions_html_modal ?>
+                            </div>
+                        </div>
+                        <?php
+                            endif;
+                        endforeach;
+                        
+                        // Ungrouped permissions for modal
+                        $ungrouped_perms_modal_html = '';
+                        $has_ungrouped_perms_modal = false;
+                        $listed_perms_in_modal = [];
+                        foreach($permission_groups_config as $codes) { foreach($codes as $c) { $listed_perms_in_modal[$c] = true; } }
+                        ob_start();
+                        foreach ($all_defined_permissions as $perm_code => $perm_description):
+                            if (!isset($listed_perms_in_modal[$perm_code])):
+                                $has_ungrouped_perms_modal = true;
+                        ?>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="permissions[]" value="<?= htmlspecialchars($perm_code) ?>" class="mr-2 h-3 w-3 accent-primary-600">
+                            <?= htmlspecialchars($perm_description) ?>
+                        </label>
+                        <?php
+                            endif;
+                        endforeach;
+                        $ungrouped_perms_modal_html = ob_get_clean();
+                        if ($has_ungrouped_perms_modal):
+                            $custom_role_perm_group_idx++;
+                            $modal_other_group_id = "modal-perm-group-{$custom_role_perm_group_idx}";
+                        ?>
+                        <div class="permission-group mt-1">
+                            <h5 class="permission-group-header font-semibold text-gray-700 text-xs mb-1 cursor-pointer flex justify-between items-center py-1" 
+                                onclick="togglePermissionGroup(this, '<?= $modal_other_group_id ?>')">
+                                <span>Quyền Khác</span>
+                                <i class="fas fa-chevron-down text-gray-500"></i>
+                            </h5>
+                            <div id="<?= $modal_other_group_id ?>" class="permission-group-content pl-3 space-y-1" style="display: none;">
+                                <?= $ungrouped_perms_modal_html ?>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="PermissionPageEvents.closeModal('createCustomRoleModal')">Hủy</button>
+                <button type="submit" class="btn btn-primary">Tạo Vai trò</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <?php
 include $private_layouts_path . 'admin_footer.php';
 ?>

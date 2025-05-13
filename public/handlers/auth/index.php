@@ -10,7 +10,8 @@ $allowed = [
     'process_permissions_update',
     'process_admin_create',
     'process_admin_update',
-    'process_admin_delete'
+    'process_admin_delete',
+    'process_role_create' // Added new action
 ];
 if (!in_array($action, $allowed, true)) {
     api_error('Invalid auth action', 400);
