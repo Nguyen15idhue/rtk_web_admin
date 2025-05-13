@@ -33,7 +33,7 @@
                         }</td>` +
                         `<td>${new Date(r.created_at).toLocaleString()}</td>` +
                         `<td>${r.updated_at ? new Date(r.updated_at).toLocaleString() : ''}</td>` +
-                        `<td class="actions text-center"><button class="btn-icon btn-view" data-id="${r.id}"><i class="fas fa-eye"></i></button></td>` +
+                        `<td class="actions text-center"><button type="button" class="btn-icon btn-view" data-id="${r.id}"><i class="fas fa-eye"></i></button></td>` +
                     `</tr>`;
                 }).join('');
                 $('#tbl-support tbody').html(rows);
@@ -86,7 +86,8 @@
     $(function() {
         loadRequests();
         $('#searchInput, #categoryFilter, #statusFilter').on('change input', loadRequests);
-        $(document).on('click', '.btn-view', function() {
+        $(document).on('click', '.btn-view', function(event) {
+            event.preventDefault();
             const id = $(this).data('id');
             openModal(id);
         });

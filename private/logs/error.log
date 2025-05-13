@@ -47,3 +47,4 @@
 [13-May-2025 08:13:21 UTC] RTK API Response: {"success":true,"data":true,"error":null}
 [13-May-2025 08:13:38 UTC] [Revert Transaction 216] Deleting RTK account 2217
 [13-May-2025 08:13:38 UTC] [Revert Transaction 216] RTK delete success for account 2217.
+[13-May-2025 08:59:49 UTC] Invoice file will be stored at: E:\Application\laragon\www\rtk_web_admin\private/../public/uploads/invoice/1747126789_test.pdf

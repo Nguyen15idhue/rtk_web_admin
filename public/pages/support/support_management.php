@@ -5,9 +5,10 @@ $base_url = $bootstrap_data['base_url'];
 $user_display_name = $bootstrap_data['user_display_name'];
 $private_layouts_path = $bootstrap_data['private_layouts_path'];
 
-// Restrict to admin and customercare roles
-if (!in_array($_SESSION['admin_role'], ['admin','customercare'])) {
-    header('Location: ' . $base_url . 'public/pages/error.php?msg=Unauthorized');
+// Check if admin is logged in
+if (!isset($_SESSION['admin_id'])) {
+    // Use the calculated base_path for redirection
+    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
     exit;
 }
 

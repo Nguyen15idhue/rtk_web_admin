@@ -25,6 +25,13 @@ $total = $data['total_count'];
 $total_pages = $data['total_pages'];
 $current_page = $data['current_page'];
 
+$status_options = [
+    '' => 'Tất cả trạng thái',
+    'pending' => 'Chờ duyệt',
+    'approved' => 'Đã duyệt',
+    'rejected' => 'Từ chối'
+];
+
 // --- add page bootstrap & title ---
 $page_title = 'Phê duyệt Hóa đơn';
 include $private_layouts_path . 'admin_header.php';
@@ -46,10 +53,11 @@ include $private_layouts_path . 'admin_sidebar.php';
         </div>
         <form method="GET" class="filter-bar">
             <select name="status">
-                <option value="" <?php echo $filters['status']==''?'selected':''; ?>>Tất cả trạng thái</option>
-                <option value="pending" <?php echo $filters['status']=='pending'?'selected':''; ?>>Chờ duyệt</option>
-                <option value="approved" <?php echo $filters['status']=='approved'?'selected':''; ?>>Đã duyệt</option>
-                <option value="rejected" <?php echo $filters['status']=='rejected'?'selected':''; ?>>Từ chối</option>
+                <?php foreach ($status_options as $value => $label): ?>
+                    <option value="<?php echo $value; ?>" <?php echo ($filters['status'] === $value) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($label); ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
             <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
             <a href="<?php echo strtok($_SERVER['REQUEST_URI'],'?'); ?>" class="btn btn-secondary"><i class="fas fa-times"></i> Xóa</a>
@@ -84,7 +92,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                         </td>
                         <td class="status">
                             <span class="status-badge status-<?php echo $inv['status']; ?>">
-                                <?php echo ucfirst($inv['status']); ?>
+                                <?php echo htmlspecialchars($status_options[$inv['status']] ?? ucfirst($inv['status'])); ?>
                             </span>
                         </td>
                         <td>
