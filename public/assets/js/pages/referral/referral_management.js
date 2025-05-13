@@ -28,5 +28,45 @@
             const id = $(this).data('id');
             applyWithdrawalAction(id, 'reject');
         });
+
+        // --- New code for "Select All" and "Export Selected" ---
+
+        function initializeExportCheckboxes(tabPrefix, selectAllCheckboxId, itemCheckboxClass, exportSelectedButtonId) {
+            const $selectAll = $('#' + selectAllCheckboxId);
+            const $itemCheckboxes = $('.' + itemCheckboxClass);
+            const $exportSelectedButton = $('#' + exportSelectedButtonId);
+
+            function updateExportButtonState() {
+                const anySelected = $itemCheckboxes.is(':checked');
+                $exportSelectedButton.prop('disabled', !anySelected);
+            }
+
+            $selectAll.on('change', function() {
+                $itemCheckboxes.prop('checked', $(this).prop('checked'));
+                updateExportButtonState();
+            });
+
+            $itemCheckboxes.on('change', function() {
+                if (!$itemCheckboxes.not(':checked').length) {
+                    $selectAll.prop('checked', true);
+                } else {
+                    $selectAll.prop('checked', false);
+                }
+                updateExportButtonState();
+            });
+
+            // Initial state
+            updateExportButtonState();
+        }
+
+        // Initialize for Commissions tab
+        if ($('#select-all-commissions').length) {
+            initializeExportCheckboxes('commissions', 'select-all-commissions', 'commission-checkbox', 'export-selected-commissions-btn');
+        }
+
+        // Initialize for Withdrawals tab
+        if ($('#select-all-withdrawals').length) {
+            initializeExportCheckboxes('withdrawals', 'select-all-withdrawals', 'withdrawal-checkbox', 'export-selected-withdrawals-btn');
+        }
     });
 })(jQuery);
