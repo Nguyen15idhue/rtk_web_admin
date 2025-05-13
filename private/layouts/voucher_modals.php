@@ -47,6 +47,7 @@
                 <div class="form-group">
                     <label for="discountValue">Giá trị</label>
                     <input type="number" step="0.01" id="discountValue" name="discount_value" required>
+                    <span id="discountUnit"></span>
                 </div>
                 <div class="form-group" id="maxDiscountGroup">
                     <label for="maxDiscount">Giới hạn giảm tối đa</label>

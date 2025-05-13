@@ -443,6 +443,27 @@ class AccountModel {
     }
 
     /**
+     * Permanently delete account from database.
+     *
+     * @param string $accountId
+     * @return bool
+     */
+    public function hardDeleteAccount(string $accountId): bool {
+        if (empty($accountId)) {
+            return false;
+        }
+        try {
+            $sql = "DELETE FROM survey_account WHERE id = :id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $accountId, PDO::PARAM_STR);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Hard delete account ($accountId) failed: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Check if a username already exists (excluding the given account ID if provided).
      *
      * @param string $username The username to check.

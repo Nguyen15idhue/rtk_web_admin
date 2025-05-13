@@ -30,11 +30,15 @@ document.addEventListener('DOMContentLoaded', ()=> {
                     html += `<div class="detail-row"><span class="detail-label">Mã:</span> <span class="detail-value">${v.code}</span></div>`;
                     html += `<div class="detail-row"><span class="detail-label">Mô tả:</span> <span class="detail-value">${v.description}</span></div>`;
                     html += `<div class="detail-row"><span class="detail-label">Loại:</span> <span class="detail-value">${helpers.getVoucherTypeText(v.voucher_type)}</span></div>`;
-                    html += `<div class="detail-row"><span class="detail-label">Giá trị:</span> <span class="detail-value">${
-                        v.voucher_type === 'percentage_discount'
-                            ? v.discount_value + '%'
-                            : helpers.formatCurrency(v.discount_value)
-                    }</span></div>`;
+                    let valueDisplay = '';
+                    if (v.voucher_type === 'percentage_discount') {
+                        valueDisplay = `${v.discount_value}%`;
+                    } else if (v.voucher_type === 'extend_duration') {
+                        valueDisplay = `${v.discount_value} tháng`;
+                    } else {
+                        valueDisplay = helpers.formatCurrency(v.discount_value);
+                    }
+                    html += `<div class="detail-row"><span class="detail-label">Giá trị:</span> <span class="detail-value">${valueDisplay}</span></div>`;
                     html += `<div class="detail-row"><span class="detail-label">Giới hạn giảm:</span> <span class="detail-value">${v.max_discount ? helpers.formatCurrency(v.max_discount) : '-'}</span></div>`;
                     html += `<div class="detail-row"><span class="detail-label">Đơn hàng tối thiểu:</span> <span class="detail-value">${v.min_order_value ? helpers.formatCurrency(v.min_order_value) : '-'}</span></div>`;
                     html += `<div class="detail-row"><span class="detail-label">Số lượng:</span> <span class="detail-value">${v.quantity||'-'}</span></div>`;

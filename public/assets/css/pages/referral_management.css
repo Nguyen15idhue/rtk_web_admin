@@ -1,0 +1,44 @@
+.custom-tabs-nav {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    border-bottom: 1px solid #dee2e6; /* Light border for separation */
+}
+
+.custom-tabs-nav .nav-item {
+    margin-right: 2px; /* Small gap between tabs */
+}
+
+.custom-tabs-nav .nav-link {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #495057; /* Default text color */
+    background-color: transparent;
+    border: 1px solid transparent; /* For consistent height */
+    border-bottom: none; /* Remove bottom border for inactive tabs */
+    border-radius: 4px 4px 0 0; /* Rounded corners on top */
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.custom-tabs-nav .nav-link:hover {
+    color: #0056b3; /* Darker blue on hover */
+    background-color: #e9ecef; /* Light grey background on hover */
+    border-color: #e9ecef #e9ecef #dee2e6;
+}
+
+.custom-tabs-nav .nav-link.active {
+    color: #007bff; /* Blue for active tab */
+    background-color: #fff; /* White background for active tab */
+    border-color: #dee2e6 #dee2e6 #fff; /* Match border with container and make bottom transparent */
+    border-bottom: 2px solid #007bff; /* Blue underline for active tab */
+    font-weight: 600;
+    position: relative;
+    top: 1px; /* To make it visually connect with the content area */
+}
+
+/* Ensure the tab content has some top margin if not already handled */
+.tab-content {
+    padding-top: 20px; /* Or adjust as needed */
+}

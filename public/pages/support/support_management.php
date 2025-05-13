@@ -46,25 +46,39 @@ include $private_layouts_path . 'admin_sidebar.php';
                 <option value="closed">Đã đóng</option>
             </select>
         </form>
-        <div class="table-responsive">
-            <table class="transactions-table" id="tbl-support">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Email</th>
-                        <th>Tiêu đề</th>
-                        <th>Thể loại</th>
-                        <th>Trạng thái</th>
-                        <th>Ngày tạo</th>
-                        <th>Ngày cập nhật</th>
-                        <th class="actions text-center">Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td colspan="8">Đang tải dữ liệu...</td></tr>
-                </tbody>
-            </table>
-        </div>
+
+        <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
+            <input type="hidden" name="table_name" value="support_requests">
+            <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px;">
+                <button type="submit" name="export_selected" class="btn btn-info">
+                    <i class="fas fa-file-excel"></i> Xuất mục đã chọn
+                </button>
+                <button type="submit" name="export_all" class="btn btn-success">
+                    <i class="fas fa-file-excel"></i> Xuất tất cả
+                </button>
+            </div>
+
+            <div class="transactions-table-wrapper">
+                <table class="transactions-table" id="tbl-support">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>ID</th>
+                            <th>Email</th>
+                            <th>Tiêu đề</th>
+                            <th>Thể loại</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày tạo</th>
+                            <th>Ngày cập nhật</th>
+                            <th class="actions text-center">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="9">Đang tải dữ liệu...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
     </div>
 </main>
 
@@ -80,7 +94,7 @@ include $private_layouts_path . 'admin_sidebar.php';
         <p id="modalMessage"></p>
         <p><strong>Thể loại:</strong> <span id="modalCategory"></span></p>
         <p><strong>Trạng thái:</strong>
-            <select id="modalStatus">
+            <select id="modalStatus" class="form-control">
                 <option value="pending">Chờ xử lý</option>
                 <option value="in_progress">Đang xử lý</option>
                 <option value="resolved">Đã giải quyết</option>

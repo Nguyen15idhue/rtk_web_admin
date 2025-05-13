@@ -12,6 +12,7 @@
                 const list = env.data;
                 const rows = list.map(r => {
                     return `<tr data-id="${r.id}">` +
+                        `<td><input type="checkbox" class="rowCheckbox" name="ids[]" value="${r.id}"></td>` +
                         `<td>${r.id}</td>` +
                         `<td>${r.user_email}</td>` +
                         `<td>${r.subject}</td>` +
@@ -91,5 +92,10 @@
         });
         $('#closeModal').on('click', closeModal);
         $('#saveBtn').on('click', saveChanges);
+
+        // add select-all checkbox functionality like revenue page
+        $('#selectAll').on('change', function() {
+            $('.rowCheckbox').prop('checked', this.checked);
+        });
     });
 })(jQuery);

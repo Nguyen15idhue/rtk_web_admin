@@ -76,7 +76,12 @@ include $private_layouts_path . 'admin_sidebar.php';
                         <td><?php echo $inv['transaction_history_id']; ?></td>
                         <td><?php echo htmlspecialchars($inv['user_email']); ?></td>
                         <td><?php echo htmlspecialchars($inv['package_name']); ?></td>
-                        <td><?php echo $inv['request_date']; ?></td>
+                        <td>
+                            <?php 
+                                // đổi định dạng ngày giờ sang dd-mm-yyyy hh:mm:ss
+                                echo date('d-m-Y H:i:s', strtotime($inv['request_date'])); 
+                            ?>
+                        </td>
                         <td class="status">
                             <span class="status-badge status-<?php echo $inv['status']; ?>">
                                 <?php echo ucfirst($inv['status']); ?>

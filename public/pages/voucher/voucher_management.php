@@ -90,61 +90,76 @@ include $private_layouts_path . 'admin_sidebar.php';
             </div>
         </form>
 
-        <div class="table-wrapper">
-            <table class="transactions-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Mã</th>
-                        <th>Mô tả</th>
-                        <th>Loại</th>
-                        <th>Giá trị</th>
-                        <th>Giới hạn</th>
-                        <th>Đơn hàng tối thiểu</th>
-                        <th>Số lượng</th>
-                        <th>Đã dùng</th>
-                        <th>Thời gian</th>
-                        <th>Trạng thái</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($vouchers)): ?>
-                        <?php foreach ($vouchers as $v): ?>
+        <form id="bulkActionForm" method="POST" action="<?php echo $base_path; ?>public/handlers/excel_index.php">
+            <input type="hidden" name="table_name" value="vouchers">
+            <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px;">
+                <button type="submit" name="export_selected" class="btn btn-info">
+                    <i class="fas fa-file-excel"></i> Xuất mục đã chọn
+                </button>
+                <button type="submit" name="export_all" class="btn btn-success">
+                    <i class="fas fa-file-excel"></i> Xuất tất cả
+                </button>
+            </div>
+            <div class="transactions-table-wrapper">
+                <table class="transactions-table">
+                    <thead>
                         <tr>
-                            <td><?php echo htmlspecialchars($v['id']); ?></td>
-                            <td><?php echo htmlspecialchars($v['code']); ?></td>
-                            <td><?php echo htmlspecialchars($v['description']); ?></td>
-                            <td><?php echo htmlspecialchars(get_voucher_type_display($v['voucher_type'])); ?></td>
-                            <td><?php
-                                if ($v['voucher_type'] === 'percentage_discount') {
-                                    echo htmlspecialchars($v['discount_value'] . '%');
-                                } else {
-                                    echo htmlspecialchars(format_currency($v['discount_value']));
-                                }
-                            ?></td>
-                            <td><?php echo htmlspecialchars($v['max_discount'] ? format_currency($v['max_discount']) : '-'); ?></td>
-                            <td><?php echo htmlspecialchars($v['min_order_value'] ? format_currency($v['min_order_value']) : '-'); ?></td>
-                            <td><?php echo htmlspecialchars($v['quantity'] ?? '-'); ?></td>
-                            <td><?php echo htmlspecialchars($v['used_quantity']); ?></td>
-                            <td><?php echo format_date($v['start_date']); ?> - <?php echo format_date($v['end_date']); ?></td>
-                            <td><?php echo get_voucher_status_badge((bool)$v['is_active']); ?></td>
-                            <td>
-                                <button class="btn-icon btn-view" onclick="VoucherPage.viewDetails(<?php echo $v['id']; ?>)"><i class="fas fa-eye"></i></button>
-                                <?php if ($admin_role==='admin'): ?>
-                                <button class="btn-icon btn-edit" onclick="VoucherPage.openEditModal(<?php echo $v['id']; ?>)"><i class="fas fa-pencil-alt"></i></button>
-                                <button class="btn-icon" onclick="VoucherPage.toggleStatus(<?php echo $v['id']; ?>, '<?php echo $v['is_active']? 'disable':'enable'; ?>')"><i class="fas <?php echo $v['is_active']? 'fa-toggle-off':'fa-toggle-on'; ?>"></i></button>
-                                <button class="btn-icon btn-danger" onclick="VoucherPage.deleteVoucher(<?php echo $v['id']; ?>)"><i class="fas fa-trash-alt"></i></button>
-                                <?php endif; ?>
-                            </td>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>ID</th>
+                            <th>Mã</th>
+                            <th>Mô tả</th>
+                            <th>Loại</th>
+                            <th>Giá trị</th>
+                            <th>Giới hạn</th>
+                            <th>Đơn hàng tối thiểu</th>
+                            <th>Số lượng</th>
+                            <th>Đã dùng</th>
+                            <th>Thời gian</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
                         </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr><td colspan="12">Không có voucher phù hợp.</td></tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($vouchers)): ?>
+                            <?php foreach ($vouchers as $v): ?>
+                            <tr>
+                                <td><input type="checkbox" class="rowCheckbox" name="ids[]" value="<?php echo htmlspecialchars($v['id']); ?>"></td>
+                                <td><?php echo htmlspecialchars($v['id']); ?></td>
+                                <td><?php echo htmlspecialchars($v['code']); ?></td>
+                                <td><?php echo htmlspecialchars($v['description']); ?></td>
+                                <td><?php echo htmlspecialchars(get_voucher_type_display($v['voucher_type'])); ?></td>
+                                <td><?php
+                                    if ($v['voucher_type'] === 'percentage_discount') {
+                                        echo htmlspecialchars($v['discount_value'] . '%');
+                                    } elseif ($v['voucher_type'] === 'extend_duration') {
+                                        echo htmlspecialchars($v['discount_value'] . ' tháng');
+                                    } else {
+                                        echo htmlspecialchars(format_currency($v['discount_value']));
+                                    }
+                                ?></td>
+                                <td><?php echo htmlspecialchars($v['max_discount'] ? format_currency($v['max_discount']) : '-'); ?></td>
+                                <td><?php echo htmlspecialchars($v['min_order_value'] ? format_currency($v['min_order_value']) : '-'); ?></td>
+                                <td><?php echo htmlspecialchars($v['quantity'] ?? '-'); ?></td>
+                                <td><?php echo htmlspecialchars($v['used_quantity']); ?></td>
+                                <td><?php echo format_date($v['start_date']); ?> - <?php echo format_date($v['end_date']); ?></td>
+                                <td><?php echo get_voucher_status_badge((bool)$v['is_active']); ?></td>
+                                <td>
+                                    <button type="button" class="btn-icon btn-view" onclick="VoucherPage.viewDetails(<?php echo $v['id']; ?>)"><i class="fas fa-eye"></i></button>
+                                    <?php if ($admin_role==='admin'): ?>
+                                    <button type="button" class="btn-icon btn-edit" onclick="VoucherPage.openEditModal(<?php echo $v['id']; ?>)"><i class="fas fa-pencil-alt"></i></button>
+                                    <button type="button" class="btn-icon" onclick="VoucherPage.toggleStatus(<?php echo $v['id']; ?>, '<?php echo $v['is_active']? 'disable':'enable'; ?>')"><i class="fas <?php echo $v['is_active']? 'fa-toggle-off':'fa-toggle-on'; ?>"></i></button>
+                                    <button type="button" class="btn-icon btn-danger" onclick="VoucherPage.deleteVoucher(<?php echo $v['id']; ?>)"><i class="fas fa-trash-alt"></i></button>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr><td colspan="13">Không có voucher phù hợp.</td></tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </form>
 
         <div class="pagination-footer">
             <div class="pagination-info">

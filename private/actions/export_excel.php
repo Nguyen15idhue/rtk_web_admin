@@ -15,7 +15,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $tableName = $_POST['table_name'] ?? null;
-$selectedIds = $_POST['ids'] ?? []; // Expecting an array of IDs, can be empty
+
+// Determine which set of IDs to use based on the button pressed
+$ids_for_export = [];
+if (isset($_POST['export_selected_excel'])) { // Check if 'Export Selected' button was clicked
+    $ids_for_export = $_POST['selected_ids'] ?? []; // Use IDs from checkboxes
+} else {
+    $ids_for_export = $_POST['ids'] ?? []; // Fallback to existing 'ids' parameter for backward compatibility or other forms
+}
 
 if (empty($tableName)) {
     error_log('Export Excel: Table name not provided.');
@@ -23,9 +30,11 @@ if (empty($tableName)) {
 }
 
 // Sanitize IDs to be integers if they are expected to be numeric
-if (!empty($selectedIds)) {
-    $selectedIds = array_map('intval', $selectedIds); // Basic sanitization
+if (!empty($ids_for_export)) {
+    $selectedIds = array_map('intval', $ids_for_export); // Basic sanitization for the determined ID list
     $selectedIds = array_filter($selectedIds, function($id) { return $id > 0; }); // Filter out invalid IDs
+} else {
+    $selectedIds = []; // Ensure $selectedIds is an empty array if no IDs are provided
 }
 
 $dataToExport = [];
@@ -34,12 +43,16 @@ $modelClass = '';
 $fileName = preg_replace('/[^a-z0-9_]+/', '', strtolower($tableName)) . '_export.xlsx'; // Sanitize filename
 
 $modelMapping = [
-    'accounts'     => 'AccountModel',
-    'guides'       => 'GuideModel',
-    'invoices'     => 'InvoiceModel',
-    'transactions' => 'TransactionModel',
-    'users'        => 'UserModel',
-    'stations'     => 'StationModel', // thêm để hỗ trợ xuất Excel cho stations
+    'accounts'         => 'AccountModel',
+    'guides'           => 'GuideModel',
+    'invoices'         => 'InvoiceModel',
+    'transactions'     => 'TransactionModel',
+    'users'            => 'UserModel',
+    'stations'         => 'StationModel', // thêm để hỗ trợ xuất Excel cho stations
+    'vouchers'         => 'VoucherModel', // support exporting vouchers
+    'support_requests' => 'SupportRequestModel',
+    'commissions'      => 'CommissionModel',      // Added for commissions export
+    'withdrawal_requests' => 'WithdrawalRequestModel', // Added for withdrawal requests export
 ];
 
 if (isset($modelMapping[$tableName])) {
@@ -79,10 +92,28 @@ try {
             $dataToExport = []; // Proceed with empty data to generate an empty Excel with a message
         }
     } else {
+        // If not exporting by specific IDs, collect filter parameters from POST for general export
+        $filters = [];
+        if (isset($_POST['search']) && trim($_POST['search']) !== '') {
+            $filters['search'] = trim($_POST['search']);
+        }
+        if (isset($_POST['status']) && trim($_POST['status']) !== '') {
+            $filters['status'] = trim($_POST['status']);
+        }
+        if (isset($_POST['date_from']) && trim($_POST['date_from']) !== '') {
+            $filters['date_from'] = trim($_POST['date_from']);
+        }
+        if (isset($_POST['date_to']) && trim($_POST['date_to']) !== '') {
+            $filters['date_to'] = trim($_POST['date_to']);
+        }
+        // Add any other general filters that might be passed via POST
+
         if (method_exists($modelInstance, 'getAllDataForExport')) {
-            $dataToExport = $modelInstance->getAllDataForExport();
+            $dataToExport = $modelInstance->getAllDataForExport($filters); // Pass collected filters
         } elseif (method_exists($modelInstance, 'getAll')) {
-            $dataToExport = $modelInstance->getAll();
+            // Fallback if getAllDataForExport doesn't exist, try passing filters to getAll
+            // The model's getAll method would need to be designed to handle an optional filters array
+            $dataToExport = $modelInstance->getAll($filters); 
         } else {
             error_log("Export Excel: Method like getAllDataForExport or getAll not found in {$modelClass} for all data.");
             $dataToExport = []; // Proceed with empty data

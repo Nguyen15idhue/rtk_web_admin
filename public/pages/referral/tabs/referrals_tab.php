@@ -10,7 +10,7 @@
         <a class="btn btn-secondary" href="?tab=referrals">Xóa</a>
     </div>
 </form>
-<div class="table-responsive">
+<div class="transactions-table-wrapper">
     <table class="transactions-table">
         <thead>
             <tr>
@@ -37,9 +37,23 @@
     </table>
 </div>
 <?php if ($data['pages'] > 1): ?>
+<?php
+$filters_query = [];
+if (isset($_GET['search'])) $filters_query['search'] = $_GET['search'];
+// Ensure 'tab' is always part of the base for pagination links
+$filters_query['tab'] = 'referrals';
+$pagination_base = '?' . http_build_query(array_filter($filters_query));
+?>
 <div class="pagination-footer">
-    <?php for ($i = 1; $i <= $data['pages']; $i++): ?>
-        <a class="btn <?php echo $i==$data['current']?'active':''; ?>" href="?tab=referrals&page=<?php echo $i; ?><?php echo isset($_GET['search'])?'&search='.urlencode($_GET['search']):''; ?>"><?php echo $i; ?></a>
-    <?php endfor; ?>
+    <div class="pagination-controls">
+        <button <?php if($data['current'] <= 1) echo 'disabled'; ?> onclick="location.href='<?php echo $pagination_base; ?>&page=<?php echo $data['current'] - 1; ?>'">Tr</button>
+        <?php for($i = 1; $i <= $data['pages']; $i++): ?>
+            <button class="<?php echo $i == $data['current'] ? 'active' : ''; ?>"
+                onclick="location.href='<?php echo $pagination_base; ?>&page=<?php echo $i; ?>'">
+                <?php echo $i; ?>
+            </button>
+        <?php endfor; ?>
+        <button <?php if($data['current'] >= $data['pages']) echo 'disabled'; ?> onclick="location.href='<?php echo $pagination_base; ?>&page=<?php echo $data['current'] + 1; ?>'">Sau</button>
+    </div>
 </div>
 <?php endif; ?>

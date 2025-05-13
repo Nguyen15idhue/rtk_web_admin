@@ -97,6 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('No account payload');
             }
 
+            renewAccountForm.dataset.originalOldExpiry = account.expiry_date ? account.expiry_date.split(' ')[0] : ''; // Store original old expiry date
+
             renewAccountForm.querySelector('#renew-account-id').value = account.id;
             renewAccountForm.querySelector('#renew-username-display').textContent = account.username_acc || 'N/A';
             renewAccountForm.querySelector('#renew-current-package-display').textContent = account.package_name || 'N/A';
@@ -149,58 +151,70 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function viewAccountDetails(accountId) {
-        if (!viewModal || !viewDetailsContent) {
-            console.error('View modal elements not found');
-            alert('Lỗi giao diện: Không tìm thấy cửa sổ chi tiết.');
-            return;
+        const mainDetailsContainer = document.getElementById('viewAccountMainDetails');
+        const mountpointsContainer = document.getElementById('viewAccountMountpoints');
+        const loadingIndicator = document.getElementById('viewAccountLoading');
+        const errorIndicator = document.getElementById('viewAccountError');
+
+        // Reset content and show loading
+        if (mainDetailsContainer) mainDetailsContainer.innerHTML = '';
+        if (mountpointsContainer) mountpointsContainer.innerHTML = '';
+        if (errorIndicator) {
+            errorIndicator.innerHTML = '';
+            errorIndicator.style.display = 'none';
         }
-        viewDetailsContent.innerHTML = '<p>Đang tải...</p>';
-        viewModal.style.display = 'block';
+        if (loadingIndicator) loadingIndicator.style.display = 'block';
+        
+        if (viewModal) viewModal.style.display = 'block';
 
         getJson(`${apiBasePath}?action=get_account_details&id=${accountId}`)
             .then(env => {
-                if (!env.success) {
-                    throw new Error(env.message || 'Lỗi server');
-                }
-                const account = env.data || env.account;
-                if (!account) {
-                    throw new Error('No account payload');
-                }
-                let detailsHtml = `
-                    <div class="detail-row"><span class="detail-label">ID TK:</span> <span class="detail-value">${account.id || 'N/A'}</span></div>
-                    <div class="detail-row"><span class="detail-label">Username TK:</span> <span class="detail-value">${account.username_acc || '-'}</span></div>
-                    <div class="detail-row"><span class="detail-label">Email User:</span> <span class="detail-value">${account.user_email || '-'}</span></div>
-                    <div class="detail-row"><span class="detail-label">Tên User:</span> <span class="detail-value">${account.user_username || '-'}</span></div>
-                    <div class="detail-row"><span class="detail-label">SĐT User:</span> <span class="detail-value">${account.user_phone || '-'}</span></div>
-                    <div class="detail-row"><span class="detail-label">Tỉnh/Thành:</span> <span class="detail-value">${account.location_name || '-'}</span></div>
-                    <div class="detail-row"><span class="detail-label">Gói:</span> <span class="detail-value">${account.package_name || '-'}</span></div>
-                    <div class="detail-row"><span class="detail-label">Ngày KH:</span> <span class="detail-value">${account.activation_date_formatted || account.activation_date || '-'}</span></div>
-                    <div class="detail-row"><span class="detail-label">Ngày HH:</span> <span class="detail-value">${account.expiry_date_formatted || account.expiry_date || '-'}</span></div>
-                    <div class="detail-row"><span class="detail-label">Trạng thái:</span> <span class="detail-value">${get_account_status_badge_js(account.derived_status || account.status)}</span></div>
-                    <div class="detail-row"><span class="detail-label">Ngày tạo:</span> <span class="detail-value">${account.created_at_formatted || account.created_at || '-'}</span></div>
-                    <div class="detail-row"><span class="detail-label">Cập nhật:</span> <span class="detail-value">${account.updated_at_formatted || account.updated_at || '-'}</span></div>
-                    <div class="detail-row"><span class="detail-label">Ghi chú:</span> <span class="detail-value">${account.notes || '-'}</span></div>
-                    `;
-                viewDetailsContent.innerHTML = detailsHtml;
+                if (loadingIndicator) loadingIndicator.style.display = 'none';
 
-                // Hiển thị thông tin Mountpoints
-                const mounts = account.mountpoints || [];
-                viewDetailsContent.innerHTML += `
-                    <div style="margin-top:1em;">
-                      <strong>Mountpoints (Location ID: ${account.location_id}):</strong>
-                      ${mounts.length
-                        ? '<ul>' + mounts.map(mp =>
-                            `<li>${mp.mountpoint} (${mp.ip}:${mp.port})</li>`
-                          ).join('') + '</ul>'
-                        : '<p>Không có mountpoint.</p>'
-                      }
-                    </div>
-                `;
+                if (!env.success) {
+                    if (errorIndicator) {
+                        errorIndicator.innerHTML = `<p class="error">Không thể tải chi tiết tài khoản. ${env.message || ''}</p>`;
+                        errorIndicator.style.display = 'block';
+                    } else if (viewDetailsContent) { // Fallback if new elements aren't found
+                        viewDetailsContent.innerHTML = `<p class="error">Không thể tải chi tiết tài khoản.</p>`;
+                    }
+                    return;
+                }
+                const account = env.data || env.account || {};
+                
+                if (mainDetailsContainer) {
+                    let mainHtml = '<dl class="account-details-list">';
+                    mainHtml += `<dt>ID TK</dt><dd>${account.id || 'N/A'}</dd>`;
+                    mainHtml += `<dt>Username TK</dt><dd>${account.username_acc || 'N/A'}</dd>`;
+                    mainHtml += `<dt>Mật khẩu TK</dt><dd>${account.password_acc || 'N/A'}</dd>`; // Consider security implications
+                    mainHtml += `<dt>Ngày KH</dt><dd>${account.activation_date ? account.activation_date.split(' ')[0] : 'N/A'}</dd>`;
+                    mainHtml += `<dt>Ngày HH</dt><dd>${account.expiry_date ? account.expiry_date.split(' ')[0] : 'N/A'}</dd>`;
+                    mainHtml += '</dl>';
+                    mainDetailsContainer.innerHTML = mainHtml;
+                }
+
+                if (mountpointsContainer) {
+                    if (Array.isArray(account.mountpoints) && account.mountpoints.length > 0) {
+                        let mpHtml = '<h5>Các Mount Point</h5>';
+                        mpHtml += '<table class="mp-table modern-table"><thead><tr><th>IP</th><th>Port</th><th>Tên Mount</th></tr></thead><tbody>';
+                        account.mountpoints.forEach(mp => {
+                            mpHtml += `<tr><td>${mp.ip || ''}</td><td>${mp.port || ''}</td><td>${mp.mountpoint || ''}</td></tr>`;
+                        });
+                        mpHtml += '</tbody></table>';
+                        mountpointsContainer.innerHTML = mpHtml;
+                    } else {
+                        mountpointsContainer.innerHTML = '<p>Không có mount point nào được cấu hình.</p>';
+                    }
+                }
             })
             .catch(error => {
-                console.error('Detailed error fetching account details for view:', error);
-                viewDetailsContent.innerHTML =
-                    `<p style="color: red;">Đã xảy ra lỗi: ${error.message}</p>`;
+                if (loadingIndicator) loadingIndicator.style.display = 'none';
+                if (errorIndicator) {
+                    errorIndicator.innerHTML = `<p class="error">Lỗi khi tải chi tiết: ${error.message}</p>`;
+                    errorIndicator.style.display = 'block';
+                } else if (viewDetailsContent) { // Fallback
+                     viewDetailsContent.innerHTML = `<p class="error">Lỗi: ${error.message}</p>`;
+                }
             });
     }
 
@@ -529,9 +543,56 @@ document.addEventListener('DOMContentLoaded', () => {
     if (renewPkg && renewAct && renewExp) {
         function updateRenewExpiry() {
             const pid = renewPkg.value;
-            const actDate = renewAct.value;
-            if (packageDurations && packageDurations[pid] && actDate) {
-                renewExp.value = calculateExpiryDate(actDate, pid);
+            const newActivationDateStr = renewAct.value; // Value from the '#renew-activation-date' input
+            const originalOldExpiryStr = renewAccountForm.dataset.originalOldExpiry;
+
+            if (!newActivationDateStr) {
+                renewExp.value = '';
+                return;
+            }
+
+            // 1. Determine the base date for calculation: MAX(originalOldExpiry, newActivationDate)
+            let baseDateForCalcObj;
+            const newActParts = newActivationDateStr.split('-');
+            if (newActParts.length !== 3) {
+                renewExp.value = ''; // Invalid new activation date format
+                return;
+            }
+            // Month is 0-indexed for Date constructor
+            const newActivationDateObj = new Date(parseInt(newActParts[0]), parseInt(newActParts[1]) - 1, parseInt(newActParts[2]));
+            newActivationDateObj.setHours(0,0,0,0);
+
+            if (isNaN(newActivationDateObj.getTime())) {
+                renewExp.value = ''; // Invalid new activation date
+                return;
+            }
+
+            baseDateForCalcObj = newActivationDateObj; // Default to new activation date
+
+            if (originalOldExpiryStr) {
+                const oldExpiryParts = originalOldExpiryStr.split('-');
+                if (oldExpiryParts.length === 3) {
+                    // Month is 0-indexed for Date constructor
+                    const oldExpiryDateCandidateObj = new Date(parseInt(oldExpiryParts[0]), parseInt(oldExpiryParts[1]) - 1, parseInt(oldExpiryParts[2]));
+                    oldExpiryDateCandidateObj.setHours(0,0,0,0);
+
+                    if (!isNaN(oldExpiryDateCandidateObj.getTime()) && oldExpiryDateCandidateObj > newActivationDateObj) {
+                        baseDateForCalcObj = oldExpiryDateCandidateObj;
+                    }
+                }
+            }
+
+            // Convert baseDateForCalcObj to "YYYY-MM-DD" string
+            const baseYear = baseDateForCalcObj.getFullYear();
+            const baseMonth = String(baseDateForCalcObj.getMonth() + 1).padStart(2, '0');
+            const baseDay = String(baseDateForCalcObj.getDate()).padStart(2, '0');
+            const finalBaseDateForCalcString = `${baseYear}-${baseMonth}-${baseDay}`;
+
+            // 2. Calculate and set the "New Expiry Date"
+            if (packageDurations && packageDurations[pid] && finalBaseDateForCalcString) {
+                renewExp.value = calculateExpiryDate(finalBaseDateForCalcString, pid);
+            } else {
+                renewExp.value = ''; // Clear if package not selected or other issue
             }
         }
         renewPkg.addEventListener('change', updateRenewExpiry);

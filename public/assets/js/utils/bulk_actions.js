@@ -34,8 +34,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (bulkActionForm && exportSelectedButton) {
         exportSelectedButton.addEventListener('click', function(event) {
+            // Fetch the current set of checkboxes after rows are loaded
+            const currentCheckboxes = document.querySelectorAll('.rowCheckbox');
             let oneChecked = false;
-            rowCheckboxes.forEach(checkbox => {
+            currentCheckboxes.forEach(checkbox => {
                 if (checkbox.checked) {
                     oneChecked = true;
                 }
