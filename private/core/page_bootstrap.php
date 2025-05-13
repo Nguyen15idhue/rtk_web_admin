@@ -74,14 +74,19 @@ $private_layouts_path = PRIVATE_LAYOUTS_PATH;
 $private_actions_path  = PRIVATE_ACTIONS_PATH;
 
 // Return values needed by the calling page
-return [
+$final_bootstrap_data = [
     'db'                     => $db,
     'base_path'              => $base_path,
     'base_url'               => $base_url,
     'user_display_name'      => $user_display_name,
-    'private_layouts_path'  => $private_layouts_path,
+    'private_layouts_path'   => $private_layouts_path,
     'private_actions_path'   => $private_actions_path,
-    'admin_role' => $admin_role
+    'admin_role'             => $admin_role
 ];
+
+// Make this data globally accessible for subsequent require_once calls
+$GLOBALS['__PAGE_BOOTSTRAP_INSTANCE_DATA__'] = $final_bootstrap_data;
+
+return $final_bootstrap_data;
 
 ?>

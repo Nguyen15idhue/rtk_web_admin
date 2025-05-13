@@ -1,13 +1,12 @@
 <?php
 declare(strict_types=1);
 header('Content-Type: application/json; charset=utf-8');
-require_once __DIR__ . '/../../core/page_bootstrap.php';
+$bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 require_once __DIR__ . '/../../utils/functions.php';
 require_once __DIR__ . '/../../classes/Auth.php';
 require_once BASE_PATH . '/classes/InvoiceModel.php';
 Auth::ensureAuthorized(['admin','customercare']);
 
-$bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc
