@@ -20,19 +20,17 @@ if (!isset($_SESSION['admin_id'])) {
 require_once BASE_PATH . '/utils/functions.php';
 require_once BASE_PATH . '/actions/voucher/fetch_vouchers.php';
 
-// --- Get Filters ---
+// --- Get Filters and Pagination Setup ---
 $filters = [
-    'q'     => isset($_GET['q']) ? (string)$_GET['q'] : '',
-    'type'  => isset($_GET['type']) ? (string)$_GET['type'] : '',
-    'status'=> isset($_GET['status']) ? (string)$_GET['status'] : ''
+    'q'     => (string)(filter_input(INPUT_GET, 'q', FILTER_SANITIZE_SPECIAL_CHARS) ?? ''),
+    'type'  => (string)(filter_input(INPUT_GET, 'type', FILTER_SANITIZE_SPECIAL_CHARS) ?? ''),
+    'status'=> (string)(filter_input(INPUT_GET, 'status', FILTER_SANITIZE_SPECIAL_CHARS) ?? ''),
 ];
-
-// --- Pagination Setup ---
 $items_per_page = 10;
-$current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+$page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, ['options' => ['default' => 1, 'min_range' => 1]]);
 
 // --- Fetch Vouchers ---
-$data = fetch_paginated_vouchers($filters, $current_page, $items_per_page);
+$data = fetch_paginated_vouchers($filters, $page, $items_per_page);
 $vouchers = $data['vouchers'];
 $total_items = $data['total_count'];
 $total_pages = $data['total_pages'];
@@ -142,7 +140,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                                 <td><?php echo htmlspecialchars($v['quantity'] ?? '-'); ?></td>
                                 <td><?php echo htmlspecialchars($v['used_quantity']); ?></td>
                                 <td><?php echo format_date($v['start_date']); ?> - <?php echo format_date($v['end_date']); ?></td>
-                                <td><?php echo get_voucher_status_badge((bool)$v['is_active']); ?></td>
+                                <td><?php echo get_status_badge('voucher', $v['is_active'] ? 'active' : 'inactive'); ?></td>
                                 <td>
                                     <button type="button" class="btn-icon btn-view" onclick="VoucherPage.viewDetails(<?php echo $v['id']; ?>)"><i class="fas fa-eye"></i></button>
                                     <?php if ($admin_role==='admin'): ?>

@@ -48,3 +48,26 @@
 [13-May-2025 08:13:38 UTC] [Revert Transaction 216] Deleting RTK account 2217
 [13-May-2025 08:13:38 UTC] [Revert Transaction 216] RTK delete success for account 2217.
 [13-May-2025 08:59:49 UTC] Invoice file will be stored at: E:\Application\laragon\www\rtk_web_admin\private/../public/uploads/invoice/1747126789_test.pdf
+[13-May-2025 10:38:25 UTC] Uncaught exception: Call to undefined function get_withdrawal_status_badge() in E:\Application\laragon\www\rtk_web_admin\public\pages\referral\tabs\withdrawals_tab.php on line 63
+[13-May-2025 10:38:25 UTC] PHP Warning:  http_response_code(): Cannot set response code - headers already sent (output started at E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php:136) in E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php on line 19
+[13-May-2025 10:38:28 UTC] Uncaught exception: Call to undefined function get_withdrawal_status_badge() in E:\Application\laragon\www\rtk_web_admin\public\pages\referral\tabs\withdrawals_tab.php on line 63
+[13-May-2025 10:38:28 UTC] PHP Warning:  http_response_code(): Cannot set response code - headers already sent (output started at E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php:136) in E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php on line 19
+[13-May-2025 11:24:55 UTC] [PTA] activate survey_account executed, affectedRows=0
+[13-May-2025 11:24:55 UTC] Warning: No survey accounts found or enabled for approved registration ID: 222
+[13-May-2025 11:24:55 UTC] [PTA] province_code=CMA, lastUser=, nextSeq=1, username=CMA001, password=0999999223
+[13-May-2025 11:24:55 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":222,"username_acc":"CMA001","password_acc":"0999999223","user_email":"zkz96960@toaik.com","location_id":12,"package_id":2,"start_time":"2025-05-13 18:24:55","end_time":"2025-08-13 18:24:55","enabled":1,"concurrent_user":1,"account_count":1}
+[13-May-2025 11:24:56 UTC] [PTA] create_account timed out (could be pending), transaction 216
+[13-May-2025 11:24:56 UTC] [CA] Start create_account request
+[13-May-2025 11:24:56 UTC] [CA] Raw input: {"registration_id":222,"username_acc":"CMA001","password_acc":"0999999223","user_email":"zkz96960@toaik.com","location_id":12,"package_id":2,"start_time":"2025-05-13 18:24:55","end_time":"2025-08-13 18:24:55","enabled":1,"concurrent_user":1,"account_count":1}
+[13-May-2025 11:24:56 UTC] [CA] registration_id=222, username_acc=CMA001, password_len=10
+[13-May-2025 11:24:56 UTC] [CA] location_input=12
+[13-May-2025 11:24:56 UTC] [CA] computed start_time_db=2025-05-13 18:24:55, end_time_db=2025-08-13 18:24:55
+[13-May-2025 11:24:56 UTC] [CA] Validating user_email: zkz96960@toaik.com
+[13-May-2025 11:24:56 UTC] [CA] Retrieved userId=100
+[13-May-2025 11:24:56 UTC] [CA] Price=270000.00 => normal flow
+[13-May-2025 11:24:56 UTC] Debug: Non-trial account creation path for registration_id=222
+[13-May-2025 11:24:56 UTC] Using default mount points for location ID: 12 - [42]
+[13-May-2025 11:24:56 UTC] [CA] RTK API payload for CMA001: {"name":"CMA001","userPwd":"0999999223","startTime":1747135495000,"endTime":1755084295000,"enabled":1,"numOnline":1,"customerName":"zkz96960@toaik.com","customerPhone":"0999999223","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[13-May-2025 11:24:56 UTC] [CA] RTK API response for CMA001: {"success":true,"data":{"id":2218,"name":"CMA001","userPwd":"0999999223","startTime":1747135495000,"endTime":1755084295000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"zkz96960@toaik.com","customerPhone":"0999999223","customerCompany":""},"error":null}
+[13-May-2025 11:25:03 UTC] [Revert Transaction 216] Deleting RTK account 2218
+[13-May-2025 11:25:03 UTC] [Revert Transaction 216] RTK delete success for account 2218.

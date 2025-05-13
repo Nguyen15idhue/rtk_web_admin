@@ -66,7 +66,7 @@ try {
     // Regenerate action buttons HTML using the updated function
     $newButtonsHtml = get_account_action_buttons($updatedAccount);
     // Regenerate status badge HTML using the updated function
-    $newStatusBadgeHtml = get_account_status_badge($newDerivedStatus);
+    $newStatusBadgeHtml = get_status_badge('account', $newDerivedStatus);
 
     // Prepare and call external RTK API to sync status
     $stmtPwd = $db->prepare("SELECT password_acc FROM survey_account WHERE id = ?");

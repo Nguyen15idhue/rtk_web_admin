@@ -57,7 +57,7 @@
                             <td><?php echo htmlspecialchars($item['referred_name']); ?></td>
                             <td><?php echo htmlspecialchars($item['transaction_id']); ?></td>
                             <td><?php echo format_currency($item['commission_amount']); ?></td>
-                            <td class="status text-center"><?php echo get_commission_status_badge($item['status']); ?></td>
+                            <td class="status text-center"><?php echo get_status_badge('commission', $item['status']); ?></td>
                             <td><?php echo format_datetime($item['created_at']); ?></td>
                         </tr>
                     <?php endforeach; ?>

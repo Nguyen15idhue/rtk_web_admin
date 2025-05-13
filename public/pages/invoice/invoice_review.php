@@ -91,9 +91,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                             ?>
                         </td>
                         <td class="status">
-                            <span class="status-badge status-<?php echo $inv['status']; ?>">
-                                <?php echo htmlspecialchars($status_options[$inv['status']] ?? ucfirst($inv['status'])); ?>
-                            </span>
+                            <?php echo get_status_badge('invoice', $inv['status']); ?>
                         </td>
                         <td>
                             <?php if ($inv['invoice_file']): ?>
