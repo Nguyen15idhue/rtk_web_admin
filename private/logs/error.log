@@ -2,3 +2,6 @@
 [13-May-2025 01:31:12 UTC] Export Excel: Unknown or unmapped table name 'withdrawal_requests'.
 [13-May-2025 02:52:54 UTC] Export Excel: Error fetching data from model WithdrawalRequestModel: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'sa3.users' doesn't exist
 [13-May-2025 02:53:21 UTC] Export Excel: Error fetching data from model WithdrawalRequestModel: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'wr.currency' in 'field list'
+[13-May-2025 03:30:03 UTC] [DEBUG] Search keyword: 
+[13-May-2025 03:53:28 UTC] Export Excel: Method like getDataByIdsForExport or getByIds not found in SupportRequestModel for selected IDs.
+[13-May-2025 03:57:04 UTC] [DEBUG] Search keyword: 

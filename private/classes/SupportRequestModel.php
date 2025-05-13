@@ -72,4 +72,25 @@ class SupportRequestModel {
             ':id' => $id
         ]);
     }
+
+    /**
+     * Get multiple support requests by IDs for export.
+     * @param array $ids
+     * @return array
+     */
+    public function getDataByIdsForExport(array $ids): array {
+        if (empty($ids)) {
+            return [];
+        }
+        // Create parameter placeholders
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $sql = "SELECT sr.*, u.email AS user_email FROM support_requests sr JOIN user u ON sr.user_id = u.id WHERE sr.id IN ($placeholders) ORDER BY sr.created_at DESC";
+        $stmt = $this->db->prepare($sql);
+        // Bind each ID value as integer
+        foreach ($ids as $index => $id) {
+            $stmt->bindValue($index + 1, (int) $id, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
