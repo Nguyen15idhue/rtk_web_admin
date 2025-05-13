@@ -19,7 +19,14 @@ $tableName = $_POST['table_name'] ?? null;
 // Determine which set of IDs to use based on the button pressed
 $ids_for_export = [];
 if (isset($_POST['export_selected_excel'])) { // Check if 'Export Selected' button was clicked
-    $ids_for_export = $_POST['selected_ids'] ?? []; // Use IDs from checkboxes
+    $raw_selected_ids = $_POST['selected_ids'] ?? null; // Use IDs from checkboxes
+    if (is_string($raw_selected_ids) && !empty($raw_selected_ids)) {
+        $ids_for_export = explode(',', $raw_selected_ids);
+    } elseif (is_array($raw_selected_ids)) {
+        $ids_for_export = $raw_selected_ids;
+    } else {
+        $ids_for_export = []; // Default to empty array if not a non-empty string or array
+    }
 } else {
     $ids_for_export = $_POST['ids'] ?? []; // Fallback to existing 'ids' parameter for backward compatibility or other forms
 }

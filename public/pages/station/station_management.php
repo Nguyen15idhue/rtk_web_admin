@@ -27,8 +27,9 @@ if (!isset($_SESSION['admin_id'])) {
     <!-- Bulk Export Form -->
     <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
         <input type="hidden" name="table_name" value="stations">
+        <input type="hidden" name="selected_ids" id="selected_ids_for_export" value="">
         <div class="bulk-actions-bar" style="margin-bottom:15px;">
-            <button type="submit" name="export_selected" class="btn btn-info">Xuất mục đã chọn</button>
+            <button type="submit" name="export_selected_excel" class="btn btn-info">Xuất mục đã chọn</button>
             <button type="submit" name="export_all" class="btn btn-success">Xuất tất cả</button>
         </div>
     </form>
@@ -149,6 +150,29 @@ if (!isset($_SESSION['admin_id'])) {
 <script>
     // Define basePath for station_management.js, consistent with other pages
     window.basePath = '<?php echo rtrim($base_url, '/'); ?>';
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const bulkActionForm = document.getElementById('bulkActionForm');
+        if (bulkActionForm) {
+            bulkActionForm.addEventListener('submit', function(event) {
+                const selectedIds = [];
+                document.querySelectorAll('.rowCheckbox:checked').forEach(function(checkbox) {
+                    selectedIds.push(checkbox.value);
+                });
+                document.getElementById('selected_ids_for_export').value = selectedIds.join(',');
+            });
+        }
+
+        // Handle "Select All" checkbox
+        const selectAllCheckbox = document.getElementById('selectAll');
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', function() {
+                document.querySelectorAll('.rowCheckbox').forEach(function(checkbox) {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+            });
+        }
+    });
 </script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/station/station_management.js"></script>
 

@@ -156,7 +156,7 @@ class TransactionModel {
             JOIN registration r ON th.registration_id = r.id
             JOIN user u ON r.user_id = u.id
             JOIN package p ON r.package_id = p.id
-            WHERE r.id IN ({$placeholders})
+            WHERE th.id IN ({$placeholders})
             ORDER BY th.created_at DESC
         ";
         $stmt = $this->db->prepare($sql);
