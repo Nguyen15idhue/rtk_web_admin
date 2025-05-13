@@ -1,7 +1,6 @@
 <?php
 // filepath: public\pages\reports.php
 
-// --- Bootstrap and Initialization ---
 $bootstrap_data         = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db                      = $bootstrap_data['db'];
 $base_url                = $bootstrap_data['base_url'];
@@ -21,115 +20,8 @@ $end_date = $_GET['end_date'] ?? date('Y-m-t');
 $start_datetime = $start_date . ' 00:00:00';
 $end_datetime = $end_date . ' 23:59:59';
 
-// Total registrations
-$stmt = $pdo->query("SELECT COUNT(id) as count FROM user");
-$total_registrations = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-// New registrations in period
-$stmt = $pdo->prepare("
-    SELECT COUNT(id) as count
-    FROM user
-    WHERE deleted_at IS NULL
-      AND created_at BETWEEN :start AND :end
-");
-$stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-$new_registrations = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-// Active accounts
-$stmt = $pdo->query("SELECT COUNT(id) as count FROM user WHERE deleted_at IS NULL");
-$active_accounts = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-// Locked accounts (non-active)
-$stmt = $pdo->query("SELECT COUNT(id) as count FROM user WHERE deleted_at IS NOT NULL");
-$locked_accounts = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-
-// Active survey accounts
-$stmt = $pdo->query("SELECT COUNT(sa.id) as count FROM survey_account sa JOIN registration r ON sa.registration_id = r.id WHERE sa.enabled = 1 AND sa.deleted_at IS NULL AND r.deleted_at IS NULL");
-$active_survey_accounts = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-// New active survey accounts in period
-$stmt = $pdo->prepare("
-    SELECT COUNT(sa.id) as count
-    FROM survey_account sa
-    JOIN registration r ON sa.registration_id = r.id
-    WHERE sa.deleted_at IS NULL
-      AND r.deleted_at IS NULL
-      AND sa.created_at BETWEEN :start AND :end
-");
-$stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-$new_active_survey_accounts = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-// Accounts expiring in 30 days
-$stmt = $pdo->query("
-    SELECT COUNT(sa.id) as count
-    FROM survey_account sa
-    JOIN registration r ON sa.registration_id = r.id
-    WHERE sa.end_time BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 30 DAY)
-      AND sa.deleted_at IS NULL
-      AND r.deleted_at IS NULL
-");
-$expiring_accounts = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-// Accounts expired in period
-$stmt = $pdo->prepare("
-    SELECT COUNT(sa.id) as count
-    FROM survey_account sa
-    JOIN registration r ON sa.registration_id = r.id
-    WHERE sa.end_time BETWEEN :start AND :end
-      AND sa.deleted_at IS NULL
-      AND r.deleted_at IS NULL
-");
-$stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-$expired_accounts = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-
-// Transactions
-// Total sales in period
-$stmt = $pdo->prepare("
-    SELECT SUM(th.amount) AS total
-    FROM transaction_history th
-    WHERE th.status = 'completed'
-      AND th.created_at BETWEEN :start AND :end
-");
-$stmt->execute([':start' => $start_datetime, ':end' => $end_datetime]);
-$total_sales = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 0;
-// Completed transactions
-$stmt = $pdo->prepare("SELECT COUNT(id) as count FROM transaction_history WHERE status = 'completed' AND created_at BETWEEN :start AND :end");
-$stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-$completed_transactions = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-// Pending transactions
-$stmt = $pdo->prepare("SELECT COUNT(id) as count FROM transaction_history WHERE status = 'pending' AND created_at BETWEEN :start AND :end");
-$stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-$pending_transactions = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-// Failed transactions
-$stmt = $pdo->prepare("SELECT COUNT(id) as count FROM transaction_history WHERE status = 'failed' AND created_at BETWEEN :start AND :end");
-$stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-$failed_transactions = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-
-// Referrals
-// New referrals in period
-$stmt = $pdo->prepare("SELECT COUNT(id) as count FROM registration WHERE collaborator_id IS NOT NULL AND deleted_at IS NULL AND created_at BETWEEN :start AND :end");
-$stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-$new_referrals = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-// Commission generated (sum of withdrawal_request)
-$stmt = $pdo->prepare("
-    SELECT SUM(amount) as total
-    FROM withdrawal_request
-    WHERE created_at BETWEEN :start AND :end
-");
-$stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-$commission_generated = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 0;
-// Commission paid
-$stmt = $pdo->prepare("
-    SELECT SUM(amount) as total
-    FROM withdrawal_request
-    WHERE status = 'completed'
-      AND updated_at BETWEEN :start AND :end
-");
-$stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-$commission_paid = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 0;
-// Commission pending
-$stmt = $pdo->prepare("
-    SELECT SUM(amount) as total
-    FROM withdrawal_request
-    WHERE status = 'pending'
-      AND created_at BETWEEN :start AND :end
-");
-$stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-$commission_pending = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 0;
+// Include the data processing logic
+require_once __DIR__ . '/../../../private/actions/report/process_reports_data.php';
 
 ?>
 <?php include $private_layouts_path . 'admin_header.php'; ?>
@@ -220,13 +112,5 @@ $commission_pending = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 
         </div>
     </div>
 </main>
-<script>
-    document.getElementById('report-filter-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const startDate = document.getElementById('report-start-date').value;
-        const endDate = document.getElementById('report-end-date').value;
-        const urlParams = new URLSearchParams({ start_date: startDate, end_date: endDate });
-        window.location.search = urlParams.toString();
-    });
-</script>
+<script src="<?php echo $base_url; ?>public/assets/js/pages/report/reports.js"></script>
 <?php include $private_layouts_path . 'admin_footer.php'; ?>
