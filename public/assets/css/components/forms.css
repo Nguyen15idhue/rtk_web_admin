@@ -54,6 +54,22 @@
     margin-top: 0.25rem;
 }
 
+/* Styles for form-check to align checkbox and label */
+.form-group.form-check {
+    display: flex;
+    align-items: center; /* Vertically aligns items in the center */
+    gap: 0.5rem; /* Adds a small space between checkbox and label */
+}
+
+.form-group.form-check input[type="checkbox"] {
+    margin: 0; /* Removes default margins from checkbox */
+}
+
+.form-group.form-check label {
+    display: inline; /* Overrides the default block display for labels within form-check */
+    margin-bottom: 0; /* Removes bottom margin from label */
+}
+
 /* company‐fields show/hide */
 #editUserForm .company-fields,
 #createUserForm .company-fields {

@@ -83,33 +83,6 @@ include $private_layouts_path . 'admin_sidebar.php';
     </div>
 </main>
 
-<!-- Modal -->
-<div id="supportModal" class="modal">
-    <div class="modal-content">
-        <span id="closeModal" class="modal-close">&times;</span>
-        <h3>Chi tiết yêu cầu hỗ trợ</h3>
-        <p><strong>ID:</strong> <span id="modalId"></span></p>
-        <p><strong>Email:</strong> <span id="modalEmail"></span></p>
-        <p><strong>Tiêu đề:</strong> <span id="modalSubject"></span></p>
-        <p><strong>Nội dung:</strong></p>
-        <p id="modalMessage"></p>
-        <p><strong>Thể loại:</strong> <span id="modalCategory"></span></p>
-        <p><strong>Trạng thái:</strong>
-            <select id="modalStatus" class="form-control">
-                <option value="pending">Chờ xử lý</option>
-                <option value="in_progress">Đang xử lý</option>
-                <option value="resolved">Đã giải quyết</option>
-                <option value="closed">Đã đóng</option>
-            </select>
-        </p>
-        <p><strong>Phản hồi của Admin:</strong></p>
-        <textarea id="modalResponse" rows="4"></textarea>
-        <p><strong>Ngày tạo:</strong> <span id="modalCreated"></span></p>
-        <p><strong>Ngày cập nhật:</strong> <span id="modalUpdated"></span></p>
-        <button id="saveBtn" class="btn btn-primary">Lưu thay đổi</button>
-    </div>
-</div>
-
 <script>
     window.basePath = '<?php echo rtrim($base_url, '/'); ?>';
 </script>

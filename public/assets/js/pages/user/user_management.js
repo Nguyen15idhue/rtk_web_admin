@@ -2,61 +2,164 @@ document.addEventListener('DOMContentLoaded', ()=> {
     const basePath = ('/' + (window.appConfig.basePath || ''))
                        .replace(/\/+/g,'/')
                        .replace(/\/?$/,'/') ;
-    const viewBody = document.getElementById('viewUserDetailsBody');
 
-    // open/close helpers
-    const helpers = window.helpers; // Use helpers from window.helpers
-    const { closeModal, toggleCompanyFields } = helpers; // Destructure helpers
-    const { getJson, postJson, postForm }      = window.api;
+    const helpers = window.helpers;
+    const { closeModal, toggleCompanyFields, openModal } = helpers;
+    const { getJson, postJson, postForm } = window.api;
 
-    // Thay thế base path cho API
     const apiBasePath = `${basePath}public/handlers/user/index.php`;
 
-    // CREATE USER
-    const createForm = document.getElementById('createUserForm');
-    createForm.addEventListener('submit', e => {
-        e.preventDefault();
-        const errEl = document.getElementById('createUserError');
-        errEl.textContent = '';
-        const btn = createForm.querySelector('button[type="submit"]');
-        btn.disabled = true; btn.textContent = 'Đang thêm...';
+    // Generic Modal Elements
+    const genericModalTitle = document.getElementById('genericModalTitle');
+    const genericModalBody = document.getElementById('genericModalBody');
+    const genericModalPrimaryButton = document.getElementById('genericModalPrimaryButton');
 
-        const fd = new FormData(createForm);
-        if (!fd.has('is_company')) fd.set('is_company', '0');
+    function getCreateUserFormHTML() {
+        return `
+            <form id="userForm">
+                <input type="hidden" id="userId" name="user_id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="username">Tên người dùng:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group" id="passwordGroup">
+                        <label for="password">Mật khẩu:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại:</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" id="isCompany" name="is_company">
+                        <label for="isCompany">Là công ty?</label>
+                    </div>
+                    <div id="companyFields" class="company-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="companyName">Tên công ty:</label>
+                            <input type="text" id="companyName" name="company_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="taxCode">Mã số thuế:</label>
+                            <input type="text" id="taxCode" name="tax_code">
+                        </div>
+                    </div>
+                    <p id="userFormError" class="error-message"></p>
+                </div>
+            </form>
+        `;
+    }
 
-        // map formdata to plain object with correct is_company
-        const data = {};
-        fd.forEach((v,k) => {
-            if (k === 'is_company') {
-                data[k] = (v === 'on' ? 1 : 0);
-            } else {
-                data[k] = v;
-            }
-        });
+    function getEditUserFormHTML() {
+        return `
+            <form id="userForm">
+                <input type="hidden" id="userId" name="user_id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="username">Tên đăng nhập</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="isCompany" name="is_company">
+                            <label for="isCompany">Là tài khoản công ty?</label>
+                        </div>
+                    </div>
+                    <div class="company-fields" id="companyFields" style="display: none;">
+                        <div class="form-group">
+                            <label for="companyName">Tên công ty</label>
+                            <input type="text" id="companyName" name="company_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="taxCode">Mã số thuế</label>
+                            <input type="text" id="taxCode" name="tax_code">
+                        </div>
+                    </div>
+                    <p id="userFormError" class="error-message"></p>
+                </div>
+            </form>
+        `;
+    }
 
-        postJson(`${apiBasePath}?action=create_user`, data)
-        .then(res => {
-            if(res.success){
-                closeModal('createUserModal'); // Rút gọn
-                window.showToast(res.message || 'Thêm người dùng thành công!', 'success');
-                location.reload();
-            } else {
-                errEl.textContent = res.message;
-                window.showToast(res.message, 'error');
-            }
-        })
-        .catch(err => {
-            errEl.textContent = 'Lỗi khi gửi yêu cầu: ' + err.message;
-        })
-        .finally(()=>{
-            btn.disabled = false; btn.textContent = 'Thêm người dùng';
-        });
-    });
+    function setupUserFormEventListeners(formType) {
+        const userForm = document.getElementById('userForm');
+        if (!userForm) return;
 
-    // VIEW DETAILS
+        userForm.addEventListener('submit', handleUserFormSubmit);
+
+        const isCompanyCheckbox = document.getElementById('isCompany');
+        const companyFieldsDiv = document.getElementById('companyFields');
+        const companyNameInput = document.getElementById('companyName');
+        const taxCodeInput = document.getElementById('taxCode');
+
+        if (isCompanyCheckbox && companyFieldsDiv) {
+            isCompanyCheckbox.addEventListener('change', () => {
+                const isChecked = isCompanyCheckbox.checked;
+                companyFieldsDiv.style.display = isChecked ? 'block' : 'none';
+                if (companyNameInput) companyNameInput.required = isChecked;
+                if (taxCodeInput) taxCodeInput.required = isChecked;
+            });
+            isCompanyCheckbox.dispatchEvent(new Event('change'));
+        }
+    }
+
+    function handleUserFormSubmit(e) {
+        if (e) e.preventDefault();
+        const userForm = document.getElementById('userForm');
+        const errorEl = document.getElementById('userFormError');
+        if (!userForm || !errorEl) return;
+
+        errorEl.textContent = '';
+        const userIdInput = document.getElementById('userId');
+        const isEdit = userIdInput && !!userIdInput.value;
+
+        genericModalPrimaryButton.disabled = true;
+        genericModalPrimaryButton.textContent = isEdit ? 'Đang lưu...' : 'Đang thêm...';
+
+        const fd = new FormData(userForm);
+        fd.set('is_company', document.getElementById('isCompany').checked ? '1' : '0');
+
+        const action = isEdit ? 'update_user' : 'create_user';
+
+        postForm(`${apiBasePath}?action=${action}`, fd)
+            .then(res => {
+                if(res.success){
+                    closeModal('genericModal');
+                    window.showToast(res.message || (isEdit ? 'Cập nhật thành công!' : 'Thêm người dùng thành công!'), 'success');
+                    location.reload();
+                } else {
+                    errorEl.textContent = res.message;
+                    window.showToast(res.message, 'error');
+                }
+            })
+            .catch(err => {
+                errorEl.textContent = 'Lỗi khi gửi yêu cầu: ' + err.message;
+                window.showToast('Lỗi: ' + err.message, 'error');
+            })
+            .finally(()=>{
+                genericModalPrimaryButton.disabled = false;
+                genericModalPrimaryButton.textContent = isEdit ? 'Lưu thay đổi' : 'Thêm người dùng';
+            });
+    }
+
     function viewUserDetails(userId) {
-        viewBody.innerHTML = '<p>Đang tải...</p>';
-        document.getElementById('viewUserModal').style.display = 'block';
+        genericModalTitle.textContent = 'Chi tiết Người dùng';
+        genericModalBody.innerHTML = '<p>Đang tải...</p>';
+        genericModalPrimaryButton.style.display = 'none';
+        openModal('genericModal');
 
         getJson(`${apiBasePath}?action=get_user_details&id=${encodeURIComponent(userId)}`)
         .then(res => {
@@ -76,79 +179,90 @@ document.addEventListener('DOMContentLoaded', ()=> {
                     <div class="detail-row"><span class="detail-label">Cập nhật lần cuối:</span> <span class="detail-value">${u.updated_at_formatted || '-'}</span></div>
                     <div class="detail-row"><span class="detail-label">Trạng thái:</span> <span class="detail-value">${u.status_text}${u.deleted_at_formatted ? ' (' + u.deleted_at_formatted + ')' : ''}</span></div>
                 `;
-                viewBody.innerHTML = html;
+                genericModalBody.innerHTML = html;
             } else {
-                viewBody.innerHTML = `<p style="color:red;">${res.message}</p>`;
+                genericModalBody.innerHTML = `<p style="color:red;">${res.message}</p>`;
             }
         })
         .catch(err => {
-            viewBody.innerHTML = `<p style="color:red;">Lỗi tải dữ liệu: ${err.message}</p>`;
+            genericModalBody.innerHTML = `<p style="color:red;">Lỗi tải dữ liệu: ${err.message}</p>`;
         });
     };
 
-    // EDIT USER
-    const editForm = document.getElementById('editUserForm');
     function openEditUserModal(userId) {
-        ['Username','Email','Phone'].forEach(f=> document.getElementById('edit'+f).value = '');
-        toggleCompanyFields('edit'); // Rút gọn
-        document.getElementById('editUserModal').style.display = 'block';
+        genericModalTitle.textContent = 'Chỉnh sửa Người dùng';
+        genericModalBody.innerHTML = getEditUserFormHTML();
+        genericModalPrimaryButton.textContent = 'Lưu thay đổi';
+        genericModalPrimaryButton.style.display = 'block';
+        genericModalPrimaryButton.onclick = () => document.getElementById('userForm').requestSubmit();
+        setupUserFormEventListeners('edit');
+
+        const userForm = document.getElementById('userForm');
+        const errorEl = document.getElementById('userFormError');
+        if(userForm) userForm.reset();
+        if(errorEl) errorEl.textContent = '';
+
+        const passwordGroup = document.getElementById('passwordGroup');
+        if (passwordGroup) passwordGroup.style.display = 'none'; 
+
+        openModal('genericModal');
         getJson(`${apiBasePath}?action=get_user_details&id=${encodeURIComponent(userId)}`)
         .then(res => {
             if(res.success){
                 const u = res.data;
-                document.getElementById('editUserId').value = u.id;
-                document.getElementById('editUsername').value = u.username||'';
-                document.getElementById('editEmail').value    = u.email||'';
-                document.getElementById('editPhone').value    = u.phone||'';
-                document.getElementById('editIsCompany').checked = (u.is_company==1);
-                toggleCompanyFields('edit'); // Rút gọn
+                document.getElementById('userId').value = u.id;
+                document.getElementById('username').value = u.username||'';
+                document.getElementById('email').value    = u.email||'';
+                document.getElementById('phone').value    = u.phone||'';
+                const isCompanyCheckbox = document.getElementById('isCompany');
+                if (isCompanyCheckbox) {
+                    isCompanyCheckbox.checked = (u.is_company==1);
+                    isCompanyCheckbox.dispatchEvent(new Event('change'));
+                }
                 if(u.is_company==1){
-                    document.getElementById('editCompanyName').value = u.company_name||'';
-                    document.getElementById('editTaxCode').value    = u.tax_code||'';
+                    const companyNameInput = document.getElementById('companyName');
+                    const taxCodeInput = document.getElementById('taxCode');
+                    if (companyNameInput) companyNameInput.value = u.company_name||'';
+                    if (taxCodeInput) taxCodeInput.value = u.tax_code||'';
                 }
             } else {
-                document.getElementById('editUserError').textContent = res.message;
+                if(errorEl) errorEl.textContent = res.message;
+                window.showToast(res.message, 'error');
+                closeModal('genericModal');
             }
         })
         .catch(err => {
-            document.getElementById('editUserError').textContent = 'Lỗi tải dữ liệu: ' + err.message;
+            if(errorEl) errorEl.textContent = 'Lỗi tải dữ liệu: ' + err.message;
+            window.showToast('Lỗi tải dữ liệu: ' + err.message, 'error');
+            closeModal('genericModal');
         });
     };
 
-    editForm.addEventListener('submit', e => {
-        e.preventDefault();
-        const errEl = document.getElementById('editUserError');
-        errEl.textContent = '';
-        const btn = editForm.querySelector('button[type="submit"]');
-        btn.disabled = true; btn.textContent = 'Đang lưu...';
+    function openCreateUserModal() {
+        genericModalTitle.textContent = 'Thêm người dùng mới';
+        genericModalBody.innerHTML = getCreateUserFormHTML();
+        genericModalPrimaryButton.textContent = 'Thêm người dùng';
+        genericModalPrimaryButton.style.display = 'block';
+        genericModalPrimaryButton.onclick = () => document.getElementById('userForm').requestSubmit();
+        setupUserFormEventListeners('create');
 
-        const fd = new FormData(editForm);
-        fd.set('is_company', fd.has('is_company')?'1':'0');
+        const userForm = document.getElementById('userForm');
+        const errorEl = document.getElementById('userFormError');
+        if(userForm) userForm.reset();
+        if(errorEl) errorEl.textContent = '';
+        
+        const passwordGroup = document.getElementById('passwordGroup');
+        if (passwordGroup) passwordGroup.style.display = 'block'; 
+        const passwordInput = document.getElementById('password');
+        if (passwordInput) passwordInput.required = true;
 
-        postForm(`${apiBasePath}?action=update_user`, fd)
-        .then(res => {
-            if(res.success){
-                window.showToast(res.message, 'success');
-                closeModal('editUserModal'); // Rút gọn
-                location.reload();
-            } else {
-                errEl.textContent = res.message;
-                window.showToast(res.message, 'error');
-            }
-        })
-        .catch(err => {
-            errEl.textContent = 'Lỗi gửi yêu cầu: ' + err.message;
-        })
-        .finally(()=>{
-            btn.disabled = false; btn.textContent = 'Lưu thay đổi';
-        });
-    });
+        openModal('genericModal');
+    };
 
-    // TOGGLE STATUS
     function toggleUserStatus(userId, action) {
         const txt = action==='disable'?'vô hiệu hóa':'kích hoạt';
         if(!confirm(`Bạn có chắc muốn ${txt} người dùng ID ${userId}?`)) return;
-        const body = new URLSearchParams({ user_id: userId, action }); // action ở đây là 'disable' hoặc 'enable'
+        const body = new URLSearchParams({ user_id: userId, action });
         postForm(`${apiBasePath}?action=toggle_user_status`, body)
         .then(res => {
             if(res.success){
@@ -163,16 +277,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
         });
     };
 
-    // OPEN CREATE
-    function openCreateUserModal() {
-        // reset form state
-        createForm.reset();
-        document.getElementById('createUserError').textContent = '';
-        toggleCompanyFields('create'); // Rút gọn
-        document.getElementById('createUserModal').style.display = 'block';
-    };
-
-    // BULK TOGGLE STATUS
     function bulkToggleUserStatus() {
         const selectedCheckboxes = document.querySelectorAll('.rowCheckbox:checked');
         const userIds = Array.from(selectedCheckboxes).map(cb => cb.value);
@@ -186,22 +290,20 @@ document.addEventListener('DOMContentLoaded', ()=> {
             return;
         }
 
-        // Gửi user_ids và một cờ để backend biết đây là thao tác đảo ngược hàng loạt
         const data = { 
             user_ids: userIds,
-            bulk_operation: 'invert_status' // Cờ để backend nhận diện
+            bulk_operation: 'invert_status'
         };
 
-        postJson(`${apiBasePath}?action=toggle_user_status`, data) // Gọi action 'toggle_user_status'
+        postJson(`${apiBasePath}?action=toggle_user_status`, data)
             .then(res => {
                 if (res.success) {
                     window.showToast(res.message || 'Cập nhật trạng thái hàng loạt thành công!', 'success');
                     location.reload();
                 } else {
-                    // Xử lý trường hợp có lỗi một phần (nếu backend hỗ trợ)
                     if (res.data && res.data.errors && res.data.errors.length > 0) {
                         let errorMessages = res.data.errors.join('\n');
-                        window.showToast(`${res.message}\nChi tiết:\n${errorMessages}`, 'error', 10000); // Hiển thị lâu hơn
+                        window.showToast(`${res.message}\nChi tiết:\n${errorMessages}`, 'error', 10000);
                     } else {
                         window.showToast(res.message || 'Có lỗi xảy ra khi cập nhật trạng thái.', 'error');
                     }
@@ -212,18 +314,11 @@ document.addEventListener('DOMContentLoaded', ()=> {
             });
     }
 
-    // bind company‑checkbox visibility
-    ['edit','create'].forEach(t => {
-        document.getElementById(t+'IsCompany')
-                .addEventListener('change', ()=> toggleCompanyFields(t)); // Rút gọn
-    });
-
-    // Expose functions to window object under a namespace
     window.UserManagementPageEvents = {
         viewUserDetails,
         openEditUserModal,
         toggleUserStatus,
         openCreateUserModal,
-        bulkToggleUserStatus // Add the new function here
+        bulkToggleUserStatus
     };
 });

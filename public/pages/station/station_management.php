@@ -144,55 +144,14 @@ if (!isset($_SESSION['admin_id'])) {
         </div>
     </div>
 
-    <!-- Create Manager Modal -->
-    <div id="createManagerModal" class="modal">
-        <div class="modal-content">
-            <form id="createManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/station/manager_index.php">
-                <div class="modal-header">
-                    <h4>Thêm Người quản lý</h4>
-                    <span class="modal-close" onclick="closeManagerModal('createManagerModal')">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="create_manager">
-                    <div class="form-group"><label>Tên</label><input type="text" class="form-control" name="name" required></div>
-                    <div class="form-group"><label>Điện thoại</label><input type="text" class="form-control" name="phone"></div>
-                    <div class="form-group"><label>Địa chỉ</label><input type="text" class="form-control" name="address"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeManagerModal('createManagerModal')">Hủy</button>
-                    <button type="submit" class="btn btn-primary">Thêm</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Edit Manager Modal -->
-    <div id="editManagerModal" class="modal">
-        <div class="modal-content">
-            <form id="editManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/station/manager_index.php">
-                <div class="modal-header">
-                    <h4>Sửa Người quản lý</h4>
-                    <span class="modal-close" onclick="closeManagerModal('editManagerModal')">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="update_manager">
-                    <input type="hidden" id="editManagerId" name="manager_id">
-                    <div class="form-group"><label>Tên</label><input type="text" class="form-control" id="editManagerName" name="name" required></div>
-                    <div class="form-group"><label>Điện thoại</label><input type="text" class="form-control" id="editManagerPhone" name="phone"></div>
-                    <div class="form-group"><label>Địa chỉ</label><input type="text" class="form-control" id="editManagerAddress" name="address"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeManagerModal('editManagerModal')">Hủy</button>
-                    <button type="submit" class="btn btn-primary">Lưu</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
 </main>
+
+<script>
+    // Define basePath for station_management.js, consistent with other pages
+    window.basePath = '<?php echo rtrim($base_url, '/'); ?>';
+</script>
+<script src="<?php echo $base_url; ?>public/assets/js/pages/station/station_management.js"></script>
 
 <?php
 require_once PRIVATE_LAYOUTS_PATH . '/admin_footer.php';
 ?>
-
-<script src="<?php echo $base_url; ?>public/assets/js/pages/station/station_management.js"></script>
