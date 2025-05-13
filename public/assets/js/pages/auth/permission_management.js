@@ -91,6 +91,17 @@
         }
     }
 
+    function openCreateCustomRoleModal() {
+        const modal = document.getElementById('createCustomRoleModal');
+        if (modal) {
+            modal.style.display = 'block';
+        }
+        const form = document.getElementById('createCustomRoleForm');
+        if (form) {
+            form.reset(); // Reset form fields when opening
+        }
+    }
+
     // Wire up forms on DOMContentLoaded
     window.addEventListener('DOMContentLoaded',()=>{
         // create form
@@ -147,11 +158,52 @@
                 }
             });
         }
+        // Add event listener for the new custom role form
+        const createCustomRoleForm = document.getElementById('createCustomRoleForm');
+        if (createCustomRoleForm) {
+            createCustomRoleForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const formData = new FormData(createCustomRoleForm);
+                const roleKey = formData.get('role_key');
+                const roleName = formData.get('role_name');
+                const permissions = formData.getAll('permissions[]');
+
+                if (!roleKey || !/^[a-z0-9_]+$/.test(roleKey)) {
+                    alert('Khóa Vai trò không hợp lệ. Chỉ cho phép chữ thường, số và dấu gạch dưới (_).');
+                    return;
+                }
+                if (!roleName) {
+                    alert('Tên Vai trò không được để trống.');
+                    return;
+                }
+
+                console.log('Submitting new role:', { roleKey, roleName, permissions });
+                try {
+                    const response = await fetch(`${basePath}public/handlers/auth/index.php?action=process_role_create`, {
+                        method: 'POST',
+                        body: JSON.stringify({ role_key: roleKey, role_name: roleName, permissions: permissions }),
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        alert(result.message || 'Tạo vai trò mới thành công!');
+                        helperCloseModal('createCustomRoleModal');
+                        window.location.reload(); // Or update UI dynamically
+                    } else {
+                        alert('Lỗi: ' + (result.message || 'Không thể tạo vai trò.'));
+                    }
+                } catch (error) {
+                    console.error('Error creating custom role:', error);
+                    alert('Đã xảy ra lỗi khi tạo vai trò.');
+                }
+            });
+        }
         // expose globals for inline onclick attributes
         window.PermissionPageEvents = {
             openCreateRoleModal,
             openEditAdminModal,
             openDeleteAdminModal,
+            openCreateCustomRoleModal,
             closeModal: helperCloseModal,  // dùng chung
             savePermissions
         };

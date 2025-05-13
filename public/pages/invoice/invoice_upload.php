@@ -7,11 +7,11 @@ $admin_role            = $bootstrap_data['admin_role'];
 
 // authorization check
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
+    header('Location: ' . htmlspecialchars($base_url, ENT_QUOTES, 'UTF-8') . 'public/pages/auth/admin_login.php');
     exit;
 }
 
-$invoiceId = isset($_GET['invoice_id']) ? (int)$_GET['invoice_id'] : 0;
+$invoiceId = (int)($_GET['invoice_id'] ?? 0); // Using null coalescing operator
 if ($invoiceId <= 0) {
     header('Location: invoice_review.php');
     exit;
@@ -22,7 +22,7 @@ if ($invoiceId <= 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Hóa đơn #<?php echo $invoiceId; ?></title>
+    <title>Upload Hóa đơn #<?php echo htmlspecialchars((string)$invoiceId, ENT_QUOTES, 'UTF-8'); ?></title>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
@@ -34,13 +34,13 @@ if ($invoiceId <= 0) {
 <main class="content-wrapper">
     <div class="card">
         <div class="card-header">
-            <h2><i class="fas fa-file-upload"></i> Upload Hóa đơn #<?php echo $invoiceId; ?></h2>
+            <h2><i class="fas fa-file-upload"></i> Upload Hóa đơn #<?php echo htmlspecialchars((string)$invoiceId, ENT_QUOTES, 'UTF-8'); ?></h2>
         </div>
         <div class="card-body">
-            <form action="<?php echo $base_url; ?>public/handlers/invoice/index.php?action=process_invoice_send"
+            <form action="<?php echo htmlspecialchars($base_url, ENT_QUOTES, 'UTF-8'); ?>public/handlers/invoice/index.php?action=process_invoice_send"
                   method="post" enctype="multipart/form-data"
                   class="form-section">
-                <input type="hidden" name="invoice_id" value="<?php echo $invoiceId; ?>">
+                <input type="hidden" name="invoice_id" value="<?php echo htmlspecialchars((string)$invoiceId, ENT_QUOTES, 'UTF-8'); ?>">
                 <div class="form-group">
                     <label for="invoice_file"><i class="fas fa-file-pdf"></i> Chọn file PDF:</label>
                     <input type="file" name="invoice_file" id="invoice_file"

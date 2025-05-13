@@ -110,26 +110,6 @@ include $private_layouts_path . 'admin_sidebar.php';
                             <?php if (empty($transactions)): ?>
                                 <tr><td colspan="7" style="text-align:center;">Không có giao dịch.</td></tr>
                             <?php else: foreach ($transactions as $tx): ?>
-                                <?php
-                                    $status = htmlspecialchars($tx['registration_status']);
-                                    // Việt hóa trạng thái
-                                    switch ($status) {
-                                        case 'active':
-                                            $text = 'Thành công';
-                                            break;
-                                        case 'pending':
-                                            $text = 'Đang chờ';
-                                            break;
-                                        case 'rejected':
-                                            $text = 'Bị từ chối';
-                                            break;
-                                        default:
-                                            $text = ucfirst($status);
-                                    }
-                                    $cls = $status === 'active' ? 'status-approved'
-                                          : ($status === 'pending' ? 'status-pending'
-                                          : ($status === 'rejected' ? 'status-rejected' : 'status-unknown'));
-                                ?>
                                 <tr>
                                     <td>
                                         <input type="checkbox" class="rowCheckbox" name="ids[]" 
@@ -140,7 +120,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                                     <td><?php echo htmlspecialchars($tx['package_name']); ?></td>
                                     <td><?php echo number_format($tx['amount'], 0, ',', '.'); ?> đ</td>
                                     <td><?php echo date('d/m/Y H:i', strtotime($tx['request_date'])); ?></td>
-                                    <td><span class="status-badge <?php echo $cls; ?>"><?php echo $text; ?></span></td>
+                                    <td><?php echo get_status_badge('transaction', $tx['registration_status']); ?></td>
                                 </tr>
                             <?php endforeach; endif; ?>
                         </tbody>

@@ -27,12 +27,7 @@ $profile_role = '';
 ?>
 <?php include $private_layouts_path . 'admin_header.php'; ?>
 <?php include $private_layouts_path . 'admin_sidebar.php'; ?>
-<style>
-  /* Two-column layout for profile on medium+ screens */
-  #admin-profile .profile-grid { display: grid; gap: 1.5rem; }
-  @media (min-width: 768px) { #admin-profile .profile-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
-  @media (max-width: 767px) { #admin-profile .profile-grid { grid-template-columns: 1fr; } }
-</style>
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/pages/setting/profile.css">
 <main class="content-wrapper">
     <div class="content-header">
         <h2>Hồ sơ Quản trị</h2>

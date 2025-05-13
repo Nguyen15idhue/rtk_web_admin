@@ -61,8 +61,8 @@ class TransactionModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function softDeleteAccounts(int $rid): bool {
-        $sql = "UPDATE survey_account SET deleted_at=NOW(), updated_at=NOW() WHERE registration_id=:id AND deleted_at IS NULL";
+    public function hardDeleteAccounts(int $rid): bool {
+        $sql = "DELETE FROM survey_account WHERE registration_id=:id";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([':id' => $rid]);
     }

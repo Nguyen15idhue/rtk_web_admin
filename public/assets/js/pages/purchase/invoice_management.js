@@ -26,14 +26,23 @@
             document.getElementById('modal-tx-package').textContent = data.package_name;
             // voucher information
             const voucherEl = document.getElementById('modal-tx-voucher-code');
-            if(data.voucher_code){
-                // display code and discount value
-                const discountText = data.voucher_type === 'percentage_discount'
-                    ? data.discount_value + '%'
-                    : data.voucher_type === 'fixed_discount'
-                        ? data.discount_value
-                        : '';
-                voucherEl.textContent = `${data.voucher_code} (Giảm ${discountText})`;
+            if (data.voucher_code) {
+                let detailsText = "";
+                if (data.voucher_type === 'percentage_discount') {
+                    detailsText = `Giảm ${data.discount_value}%`;
+                } else if (data.voucher_type === 'fixed_discount') {
+                    // Assuming data.discount_value is a pre-formatted string or simple number based on original behavior
+                    detailsText = `Giảm ${data.discount_value}`;
+                } else if (data.voucher_type === 'extend_duration') {
+                    detailsText = `Tặng ${data.discount_value} tháng`;
+                }
+                
+                if (detailsText) {
+                    voucherEl.textContent = `${data.voucher_code} (${detailsText})`;
+                } else {
+                    // Fallback for unknown types or if no specific detail text is generated
+                    voucherEl.textContent = data.voucher_code;
+                }
             } else {
                 voucherEl.textContent = 'Không có';
             }

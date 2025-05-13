@@ -197,7 +197,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                                     <td><?php echo htmlspecialchars($account['user_email'] ?? ''); ?></td>
                                     <td><?php echo format_date($account['activation_date'] ?? null); ?></td>
                                     <td><?php echo format_date($account['expiry_date'] ?? null); ?></td>
-                                    <td class="status"><?php echo get_account_status_badge($account['derived_status'] ?? 'unknown'); ?></td>
+                                    <td class="status"><?php echo get_status_badge('account', $account['derived_status'] ?? 'unknown'); ?></td>
                                     <td class="actions">
                                         <div class="action-buttons">
                                             <?php 

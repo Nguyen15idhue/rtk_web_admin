@@ -19,8 +19,8 @@ define('PRIVATE_CORE_PATH', BASE_PATH . '/core/');
 define('PRIVATE_ACTIONS_PATH', BASE_PATH . '/actions/');
 define('PRIVATE_CLASSES_PATH', BASE_PATH . '/classes/');
 
-// New: session idle timeout in seconds (e.g. 1800 s = 30 min)
-define('SESSION_TIMEOUT', 1800);
+// New: session idle timeout in seconds (e.g. 3600 s = 1 hour)
+define('SESSION_TIMEOUT', 3600);
 define('USER_SESSIONS_TABLE', 'user_sessions');
 
 // Add full path to error handler

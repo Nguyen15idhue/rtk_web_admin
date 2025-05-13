@@ -60,7 +60,7 @@
                             <td><?php echo htmlspecialchars($item['bank_name']); ?></td>
                             <td><?php echo htmlspecialchars($item['account_number']); ?></td>
                             <td><?php echo htmlspecialchars($item['account_holder']); ?></td>
-                            <td class="status text-center"><?php echo get_withdrawal_status_badge($item['status']); ?></td>
+                            <td class="status text-center"><?php echo get_status_badge('withdrawal', $item['status']); ?></td>
                             <td><?php echo format_datetime($item['created_at']); ?></td>
                             <td class="actions">
                                 <div class="action-buttons">

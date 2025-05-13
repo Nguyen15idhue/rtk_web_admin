@@ -82,69 +82,48 @@ function format_date(?string $date_string): string {
 }
 
 /**
- * Generates an HTML status badge for an account status.
+ * Generic function to generate an HTML status badge based on provided mapping.
  *
- * @param string $status The derived account status string.
+ * @param string|null $status The status key.
+ * @param array $map Associative array mapping status to ['class'=> CSS class, 'text'=> label].
  * @return string HTML span element for the badge.
  */
-function get_account_status_badge(?string $status): string {
-     $status = strtolower($status ?? 'unknown');
-    switch ($status) {
-        case 'active': // Registration active, enabled, not expired
-            return '<span class="status-badge badge-green">Hoạt động</span>';
-        case 'pending': // Registration pending
-            return '<span class="status-badge badge-yellow">Chờ KH</span>';
-        case 'expired': // Registration active, but expired
-            return '<span class="status-badge badge-red">Hết hạn</span>';
-        case 'suspended': // Registration active, but disabled (enabled=0)
-            return '<span class="status-badge badge-gray">Đình chỉ</span>'; // Using gray for suspended/disabled
-        case 'rejected': // Registration rejected
-            return '<span class="status-badge badge-red">Bị từ chối</span>'; // Using red for rejected
-        default:
-            return '<span class="status-badge badge-gray">Không xác định</span>';
+function render_status_badge(?string $status, array $map): string {
+    $key = strtolower($status ?? '');
+    if (isset($map[$key])) {
+        $class = $map[$key]['class'];
+        $text = $map[$key]['text'];
+    } else {
+        $class = 'badge-gray';
+        $text = 'Không xác định';
     }
+    return '<span class="status-badge ' . $class . '">' . $text . '</span>';
 }
 
 /**
- * Generates an HTML status badge for a withdrawal request status.
+ * Generic function to get a status badge by category.
  *
- * @param string $status The withdrawal status string.
- * @return string HTML span element for the badge.
+ * @param string $type Category key in mappings (e.g., 'account', 'withdrawal').
+ * @param string|null $status Status to lookup.
+ * @return string HTML badge.
  */
-function get_withdrawal_status_badge(?string $status): string {
-    $status = strtolower($status ?? 'unknown');
-    switch ($status) {
-        case 'pending':
-            return '<span class="status-badge badge-yellow">Chờ xử lý</span>';
-        case 'completed':
-            return '<span class="status-badge badge-green">Hoàn thành</span>';
-        case 'rejected':
-            return '<span class="status-badge badge-red">Từ chối</span>';
-        default:
-            return '<span class="status-badge badge-gray">Không xác định</span>';
+function get_status_badge(string $type, ?string $status): string {
+    // Load the status badge maps from the dedicated config file
+    static $loadedStatusBadgeMaps = null;
+    if ($loadedStatusBadgeMaps === null) {
+        // Ensure the path is correct relative to functions.php
+        $configPath = __DIR__ . '/../config/status_badge_maps.php';
+        if (file_exists($configPath)) {
+            $loadedStatusBadgeMaps = require $configPath;
+        } else {
+            // Fallback or error handling if the config file is missing
+            error_log("Error: Status badge map file not found at " . $configPath);
+            $loadedStatusBadgeMaps = []; // Return empty map to avoid further errors
+        }
     }
-}
-
-/**
- * Generates an HTML status badge for a commission status.
- *
- * @param string $status The commission status string.
- * @return string HTML span element for the badge.
- */
-function get_commission_status_badge(?string $status): string {
-    $status = strtolower($status ?? 'unknown');
-    switch ($status) {
-        case 'pending':
-            return '<span class="status-badge badge-yellow">Chờ xử lý</span>';
-        case 'approved':
-            return '<span class="status-badge badge-green">Đã duyệt</span>';
-        case 'paid':
-            return '<span class="status-badge badge-blue">Đã thanh toán</span>'; // Assuming badge-blue exists or use badge-green
-        case 'cancelled':
-            return '<span class="status-badge badge-gray">Hủy</span>';
-        default:
-            return '<span class="status-badge badge-gray">Không xác định</span>';
-    }
+    
+    $map = $loadedStatusBadgeMaps[$type] ?? [];
+    return render_status_badge($status, $map);
 }
 
 /**
@@ -164,18 +143,6 @@ function get_voucher_type_display(string $type): string {
         default:
             return 'Không xác định';
     }
-}
-
-/**
- * Generate HTML badge for voucher status.
- *
- * @param bool $isActive True if voucher is active.
- * @return string HTML span for status badge.
- */
-function get_voucher_status_badge(bool $isActive): string {
-    return $isActive
-        ? '<span class="status-badge badge-green">Hoạt động</span>'
-        : '<span class="status-badge badge-red">Vô hiệu hóa</span>';
 }
 
 /**
