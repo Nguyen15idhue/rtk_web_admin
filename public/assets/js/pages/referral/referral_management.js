@@ -59,14 +59,6 @@
             updateExportButtonState();
         }
 
-        // Initialize for Commissions tab
-        if ($('#select-all-commissions').length) {
-            initializeExportCheckboxes('commissions', 'select-all-commissions', 'commission-checkbox', 'export-selected-commissions-btn');
-        }
-
-        // Initialize for Withdrawals tab
-        if ($('#select-all-withdrawals').length) {
-            initializeExportCheckboxes('withdrawals', 'select-all-withdrawals', 'withdrawal-checkbox', 'export-selected-withdrawals-btn');
-        }
+        // Bulk select-all logic now centralized in utils/bulk_actions.js
     });
 })(jQuery);

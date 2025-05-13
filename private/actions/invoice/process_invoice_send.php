@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/../../core/page_bootstrap.php'; // đã include error_handler
+$bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php'; // đã include error_handler
 require_once __DIR__ . '/../../classes/Auth.php';
 require_once BASE_PATH . '/classes/InvoiceModel.php';    // thêm
 Auth::ensureAuthorized(['admin','customercare']);
@@ -11,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     abort('Method Not Allowed.', 405);
 }
 
-$bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc

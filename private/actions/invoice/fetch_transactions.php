@@ -10,7 +10,10 @@ if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
     api_forbidden('Forbidden: Direct access not allowed');
 }
 
-$bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
+$bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
+if ($bootstrap === true) {
+    $bootstrap = $GLOBALS['__PAGE_BOOTSTRAP_INSTANCE_DATA__'];
+}
 $db        = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc

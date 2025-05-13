@@ -27,8 +27,9 @@ if (!isset($_SESSION['admin_id'])) {
     <!-- Bulk Export Form -->
     <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
         <input type="hidden" name="table_name" value="stations">
+        <input type="hidden" name="selected_ids" id="selected_ids_for_export" value="">
         <div class="bulk-actions-bar" style="margin-bottom:15px;">
-            <button type="submit" name="export_selected" class="btn btn-info">Xuất mục đã chọn</button>
+            <button type="submit" name="export_selected_excel" class="btn btn-info">Xuất mục đã chọn</button>
             <button type="submit" name="export_all" class="btn btn-success">Xuất tất cả</button>
         </div>
     </form>
@@ -144,55 +145,37 @@ if (!isset($_SESSION['admin_id'])) {
         </div>
     </div>
 
-    <!-- Create Manager Modal -->
-    <div id="createManagerModal" class="modal">
-        <div class="modal-content">
-            <form id="createManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/station/manager_index.php">
-                <div class="modal-header">
-                    <h4>Thêm Người quản lý</h4>
-                    <span class="modal-close" onclick="closeManagerModal('createManagerModal')">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="create_manager">
-                    <div class="form-group"><label>Tên</label><input type="text" class="form-control" name="name" required></div>
-                    <div class="form-group"><label>Điện thoại</label><input type="text" class="form-control" name="phone"></div>
-                    <div class="form-group"><label>Địa chỉ</label><input type="text" class="form-control" name="address"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeManagerModal('createManagerModal')">Hủy</button>
-                    <button type="submit" class="btn btn-primary">Thêm</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Edit Manager Modal -->
-    <div id="editManagerModal" class="modal">
-        <div class="modal-content">
-            <form id="editManagerForm" method="POST" action="<?php echo $base_url; ?>public/handlers/station/manager_index.php">
-                <div class="modal-header">
-                    <h4>Sửa Người quản lý</h4>
-                    <span class="modal-close" onclick="closeManagerModal('editManagerModal')">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="action" value="update_manager">
-                    <input type="hidden" id="editManagerId" name="manager_id">
-                    <div class="form-group"><label>Tên</label><input type="text" class="form-control" id="editManagerName" name="name" required></div>
-                    <div class="form-group"><label>Điện thoại</label><input type="text" class="form-control" id="editManagerPhone" name="phone"></div>
-                    <div class="form-group"><label>Địa chỉ</label><input type="text" class="form-control" id="editManagerAddress" name="address"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeManagerModal('editManagerModal')">Hủy</button>
-                    <button type="submit" class="btn btn-primary">Lưu</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
 </main>
+
+<script>
+    // Define basePath for station_management.js, consistent with other pages
+    window.basePath = '<?php echo rtrim($base_url, '/'); ?>';
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const bulkActionForm = document.getElementById('bulkActionForm');
+        if (bulkActionForm) {
+            bulkActionForm.addEventListener('submit', function(event) {
+                const selectedIds = [];
+                document.querySelectorAll('.rowCheckbox:checked').forEach(function(checkbox) {
+                    selectedIds.push(checkbox.value);
+                });
+                document.getElementById('selected_ids_for_export').value = selectedIds.join(',');
+            });
+        }
+
+        // Handle "Select All" checkbox
+        const selectAllCheckbox = document.getElementById('selectAll');
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', function() {
+                document.querySelectorAll('.rowCheckbox').forEach(function(checkbox) {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+            });
+        }
+    });
+</script>
+<script src="<?php echo $base_url; ?>public/assets/js/pages/station/station_management.js"></script>
 
 <?php
 require_once PRIVATE_LAYOUTS_PATH . '/admin_footer.php';
 ?>
-
-<script src="<?php echo $base_url; ?>public/assets/js/pages/station/station_management.js"></script>

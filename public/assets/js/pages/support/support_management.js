@@ -41,35 +41,52 @@
             .catch(err => alert(err.message));
     }
 
-    function openModal(id) {
+    function getSupportModalContentHTML(data) {
+        return `
+            <p><strong>ID:</strong> <span id="modalId">${data.id}</span></p>
+            <p><strong>Email:</strong> <span>${data.user_email}</span></p>
+            <p><strong>Tiêu đề:</strong> <span>${data.subject}</span></p>
+            <p><strong>Nội dung:</strong></p>
+            <p>${data.message}</p>
+            <p><strong>Thể loại:</strong> <span>${
+                data.category === 'technical' ? 'Kỹ thuật'
+                : data.category === 'billing' ? 'Thanh toán'
+                : data.category === 'account' ? 'Tài khoản'
+                : 'Khác'
+            }</span></p>
+            <p><strong>Trạng thái:</strong>
+                <select id="modalStatus" class="form-control">
+                    <option value="pending" ${data.status === 'pending' ? 'selected' : ''}>Chờ xử lý</option>
+                    <option value="in_progress" ${data.status === 'in_progress' ? 'selected' : ''}>Đang xử lý</option>
+                    <option value="resolved" ${data.status === 'resolved' ? 'selected' : ''}>Đã giải quyết</option>
+                    <option value="closed" ${data.status === 'closed' ? 'selected' : ''}>Đã đóng</option>
+                </select>
+            </p>
+            <p><strong>Phản hồi của Admin:</strong></p>
+            <textarea id="modalResponse" class="form-control" rows="4">${data.admin_response || ''}</textarea>
+            <p><strong>Ngày tạo:</strong> <span>${new Date(data.created_at).toLocaleString()}</span></p>
+            <p><strong>Ngày cập nhật:</strong> <span>${data.updated_at ? new Date(data.updated_at).toLocaleString() : ''}</span></p>
+        `;
+    }
+
+    function openSupportModal(id) {
         api.getJson(`${apiUrl}?action=get_support_request_details&id=${id}`)
             .then(env => {
                 if (!env.success) throw new Error(env.message);
                 const data = env.data;
-                $('#modalId').text(data.id);
-                $('#modalEmail').text(data.user_email);
-                $('#modalSubject').text(data.subject);
-                $('#modalMessage').text(data.message);
-                $('#modalCategory').text(
-                    data.category === 'technical' ? 'Kỹ thuật'
-                    : data.category === 'billing' ? 'Thanh toán'
-                    : data.category === 'account' ? 'Tài khoản'
-                    : 'Khác'
-                );
-                $('#modalStatus').val(data.status);
-                $('#modalResponse').val(data.admin_response || '');
-                $('#modalCreated').text(new Date(data.created_at).toLocaleString());
-                $('#modalUpdated').text(data.updated_at ? new Date(data.updated_at).toLocaleString() : '');
-                $('#supportModal').show();
+                document.getElementById('genericModalTitle').textContent = 'Chi tiết yêu cầu hỗ trợ';
+                document.getElementById('genericModalBody').innerHTML = getSupportModalContentHTML(data);
+                
+                const primaryButton = document.getElementById('genericModalPrimaryButton');
+                primaryButton.textContent = 'Lưu thay đổi';
+                primaryButton.onclick = saveSupportChanges;
+                
+                helpers.openModal('genericModal');
             })
             .catch(err => alert(err.message));
     }
 
-    function closeModal() {
-        $('#supportModal').hide();
-    }
-
-    function saveChanges() {
+    function saveSupportChanges() {
         const id = $('#modalId').text();
         const status = $('#modalStatus').val();
         const response = $('#modalResponse').val();
@@ -77,7 +94,7 @@
             .then(env => {
                 if (!env.success) throw new Error(env.message);
                 alert('Cập nhật thành công');
-                closeModal();
+                helpers.closeModal('genericModal');
                 loadRequests();
             })
             .catch(err => alert(err.message));
@@ -89,12 +106,9 @@
         $(document).on('click', '.btn-view', function(event) {
             event.preventDefault();
             const id = $(this).data('id');
-            openModal(id);
+            openSupportModal(id);
         });
-        $('#closeModal').on('click', closeModal);
-        $('#saveBtn').on('click', saveChanges);
 
-        // add select-all checkbox functionality like revenue page
         $('#selectAll').on('change', function() {
             $('.rowCheckbox').prop('checked', this.checked);
         });
