@@ -128,6 +128,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                             <th>Mã số thuế</th>
                             <th>Ngày tạo</th>
                             <th class="text-center">Trạng thái</th>
+                            <th class="text-center">Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -141,8 +142,9 @@ include $private_layouts_path . 'admin_sidebar.php';
                                     <td><?php echo htmlspecialchars($user['phone'] ?? '-'); ?></td>
                                     <td><?php echo $user['is_company'] ? 'Công ty' : 'Cá nhân'; ?></td>
                                     <td><?php echo $user['is_company'] ? htmlspecialchars($user['company_name'] ?? '-') : '-'; ?></td>
+                                    <td><?php echo htmlspecialchars($user['tax_code'] ?? '-'); ?></td>
                                     <td><?php echo format_date($user['created_at']); ?></td>
-                                    <td><?php echo get_user_status_display($user); ?></td>
+                                    <td class="text-center"><?php echo get_user_status_display($user); ?></td>
                                     <td class="actions">
                                         <div class="action-buttons">
                                             <button type="button" class="btn-icon btn-view" title="Xem chi tiết" onclick="UserManagementPageEvents.viewUserDetails('<?php echo htmlspecialchars($user['id']); ?>')"><i class="fas fa-eye"></i></button>
@@ -166,7 +168,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr id="no-results-row">
-                                <td colspan="10">Không tìm thấy người dùng phù hợp.</td>
+                                <td colspan="11">Không tìm thấy người dùng phù hợp.</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>

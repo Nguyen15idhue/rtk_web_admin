@@ -15,10 +15,6 @@ $packages = $packages_stmt->fetchAll(PDO::FETCH_ASSOC);
 $provinces_stmt = $db->query("SELECT province FROM location WHERE status=1 ORDER BY province");
 $provinces = $provinces_stmt->fetchAll(PDO::FETCH_COLUMN);
 
-// --- Define the correct base URL for the image host ---
-// !!! IMPORTANT: Replace this with the actual URL where your images are hosted !!!
-define('IMAGE_HOST_BASE_URL', 'https://taikhoandodac.vn/'); // Example URL
-
 $current_page   = isset($_GET['page']) ? max(1,(int)$_GET['page']) : 1;
 $items_per_page = 15;
 $filters = [

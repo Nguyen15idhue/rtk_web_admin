@@ -6,20 +6,27 @@
 // Include base constants
 require_once __DIR__ . '/../config/constants.php';
 
-// Admin navigation items - Updated structure
+// Admin navigation items - Updated structure with submenus for grouping
 $admin_nav_items = [
     ['label' => 'Dashboard', 'icon' => 'fa-tachometer-alt', 'url' => '/public/pages/dashboard/dashboard.php', 'active_check' => 'dashboard.php', 'permission' => 'dashboard'],
-    ['label' => 'QL người dùng', 'icon' => 'fa-users', 'url' => '/public/pages/user/user_management.php', 'active_check' => 'user_management.php', 'permission' => 'user_management'],
-    ['label' => 'QL TK đo đạc', 'icon' => 'fa-ruler-combined', 'url' => '/public/pages/account/account_management.php', 'active_check' => 'account_management.php', 'permission' => 'account_management'],
-    ['label' => 'QL Trạm', 'icon' => 'fa-broadcast-tower', 'url' => '/public/pages/station/station_management.php', 'active_check' => 'station_management.php', 'permission' => 'station_management'],
-    ['label' => 'QL giao dịch', 'icon' => 'fa-file-invoice-dollar', 'url' => '/public/pages/purchase/invoice_management.php', 'active_check' => 'invoice_management.php', 'permission' => 'invoice_management'],
-    ['label' => 'QL doanh thu', 'icon' => 'fa-dollar-sign', 'url' => '/public/pages/purchase/revenue_management.php', 'active_check' => 'revenue_management.php', 'permission' => 'revenue_management'],
-    ['label' => 'QL người giới thiệu', 'icon' => 'fa-network-wired', 'url' => '/public/pages/referral/referral_management.php', 'active_check' => 'referral_management.php', 'permission' => 'referral_management'],
-    ['label' => 'Chăm sóc khách hàng', 'icon' => 'fa-headset', 'url' => '/public/pages/support/support_management.php', 'active_check' => 'support_management.php', 'permission' => 'support_management'],
+    ['type' => 'section', 'label' => 'Quản lý chung'],
+    ['label' => 'Người & Trạm', 'icon' => 'fa-users-cog', 'children' => [
+        ['label' => 'QL người dùng', 'icon' => 'fa-users', 'url' => '/public/pages/user/user_management.php', 'active_check' => 'user_management.php', 'permission' => 'user_management'],
+        ['label' => 'QL TK đo đạc', 'icon' => 'fa-ruler-combined', 'url' => '/public/pages/account/account_management.php', 'active_check' => 'account_management.php', 'permission' => 'account_management'],
+        ['label' => 'QL Trạm', 'icon' => 'fa-broadcast-tower', 'url' => '/public/pages/station/station_management.php', 'active_check' => 'station_management.php', 'permission' => 'station_management'],
+    ]],
+    ['type' => 'section', 'label' => 'Giao dịch'],
+    ['label' => 'Mua bán', 'icon' => 'fa-file-invoice-dollar', 'children' => [
+        ['label' => 'QL giao dịch', 'icon' => 'fa-file-invoice-dollar', 'url' => '/public/pages/purchase/invoice_management.php', 'active_check' => 'invoice_management.php', 'permission' => 'invoice_management'],
+        ['label' => 'QL doanh thu', 'icon' => 'fa-dollar-sign', 'url' => '/public/pages/purchase/revenue_management.php', 'active_check' => 'revenue_management.php', 'permission' => 'revenue_management'],
+        ['label' => 'Phê duyệt hóa đơn', 'icon' => 'fa-file-invoice', 'url' => '/public/pages/invoice/invoice_review.php', 'active_check' => 'invoice_review.php', 'permission' => 'invoice_review'],
+    ]],
+    ['label' => 'Hướng dẫn & Khách', 'icon' => 'fa-network-wired', 'children' => [
+        ['label' => 'QL người giới thiệu', 'icon' => 'fa-network-wired', 'url' => '/public/pages/referral/referral_management.php', 'active_check' => 'referral_management.php', 'permission' => 'referral_management'],
+        ['label' => 'Chăm sóc khách hàng', 'icon' => 'fa-headset', 'url' => '/public/pages/support/support_management.php', 'active_check' => 'support_management.php', 'permission' => 'support_management'],
+    ]],
     ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => '/public/pages/report/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports'],
-    ['label' => 'QL hướng dẫn', 'icon' => 'fa-book', 'url' => '/public/pages/guide/guide_management.php', 'active_check' => 'guide_management.php', 'permission' => 'guide_management'],
     ['label' => 'QL Voucher', 'icon' => 'fa-ticket-alt', 'url' => '/public/pages/voucher/voucher_management.php', 'active_check' => 'voucher_management.php', 'permission' => 'voucher_management'],
-    ['label' => 'Phê duyệt hóa đơn', 'icon' => 'fa-file-invoice', 'url' => '/public/pages/invoice/invoice_review.php', 'active_check' => 'invoice_review.php', 'permission' => 'invoice_review'],
     ['label' => 'QL phân quyền', 'icon' => 'fa-user-lock', 'url' => '/public/pages/auth/permission_management.php', 'active_check' => 'permission_management.php', 'permission' => 'permission_management'],
     ['type' => 'section', 'label' => 'Cài đặt'],
     ['label' => 'Thông tin tài khoản', 'icon' => 'fa-id-card', 'url' => '/public/pages/setting/profile.php', 'active_check' => 'profile.php', 'permission' => 'settings'],
@@ -76,6 +83,9 @@ $admin_user_role = isset($role_vietnamese[$role]) ? $role_vietnamese[$role] : uc
             <i class="logo-icon fas fa-user-shield"></i>
             <span class="logo-text">Trang Quản Trị</span>
         </a>
+        <button id="collapse-btn" class="collapse-btn" title="Thu gọn thanh điều hướng">
+            <i class="fas fa-angle-double-left"></i>
+        </button>
     </div>
 
      <!-- Admin User Info -->
@@ -101,35 +111,61 @@ $admin_user_role = isset($role_vietnamese[$role]) ? $role_vietnamese[$role] : uc
                 $current_script = basename($_SERVER['PHP_SELF']);
                 ?>
                 <?php foreach ($admin_nav_items as $item): ?>
-                    <?php
-                        // Skip unauthorized items (except sections or logout)
-                        if (!isset($item['type']) && isset($item['permission']) && !in_array($item['permission'], $allowed_perms)) {
-                            continue;
-                        }
-                    ?>
                     <?php if (isset($item['type']) && $item['type'] === 'section'): ?>
-                        <li class="nav-section-title-li"> <!-- Class from example -->
+                        <li class="nav-section-title-li">
                             <p class="nav-section-title"><?php echo htmlspecialchars($item['label']); ?></p>
                         </li>
-                    <?php else:
-                        // Determine if the item is active
-                        $is_active = false;
-                        if (isset($item['active_check']) && $current_script === $item['active_check']) {
-                            $is_active = true;
-                        }
-                        // Handle dashboard specifically if base path matches URL
-                        elseif (isset($item['active_check']) && $item['active_check'] === 'dashboard.php' && strpos($_SERVER['REQUEST_URI'], $item['url']) !== false) {
-                             // Basic check, might need refinement depending on URL structure
-                             // $is_active = true; // Uncomment if dashboard needs special check
-                        }
+                    <?php elseif (isset($item['children'])): ?>
+                        <?php
+                            // Parent menu with submenu
+                            $any_allowed = false;
+                            foreach ($item['children'] as $sub) {
+                                if (in_array($sub['permission'], $allowed_perms)) { $any_allowed = true; break; }
+                            }
+                            if (!$any_allowed) continue;
+                        ?>
+                        <li class="nav-parent">
+                            <a href="javascript:void(0)" class="nav-item parent-toggle">
+                                <i class="icon fas <?php echo htmlspecialchars($item['icon']); ?>"></i>
+                                <span><?php echo htmlspecialchars($item['label']); ?></span>
+                                <i class="fas fa-chevron-down toggle-icon"></i>
+                            </a>
+                            <ul class="nav-submenu">
+                                <?php foreach ($item['children'] as $sub): ?>
+                                    <?php if (!in_array($sub['permission'], $allowed_perms)) continue; ?>
+                                    <?php $active = $current_script === $sub['active_check'] ? ' active' : ''; ?>
+                                    <li>
+                                        <a href="<?php echo $base_url . ltrim($sub['url'], '/'); ?>" class="nav-item<?php echo $active; ?>">
+                                            <i class="icon fas <?php echo htmlspecialchars($sub['icon']); ?>"></i>
+                                            <span><?php echo htmlspecialchars($sub['label']); ?></span>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </li>
+                    <?php else: ?>
+                        <?php
+                            // Skip unauthorized items (except sections or logout)
+                            if (!isset($item['type']) && isset($item['permission']) && !in_array($item['permission'], $allowed_perms)) {
+                                continue;
+                            }
+                            // Determine if the item is active
+                            $is_active = false;
+                            if (isset($item['active_check']) && $current_script === $item['active_check']) {
+                                $is_active = true;
+                            }
+                            // Handle dashboard specifically if base path matches URL
+                            elseif (isset($item['active_check']) && $item['active_check'] === 'dashboard.php' && strpos($_SERVER['REQUEST_URI'], $item['url']) !== false) {
+                                // Basic check, might need refinement depending on URL structure
+                                // $is_active = true; // Uncomment if dashboard needs special check
+                            }
 
-                        $item_class = isset($item['class']) ? $item['class'] : '';
-                        if ($is_active) {
-                            $item_class .= ' active';
-                        }
-                    ?>
+                            $item_class = isset($item['class']) ? $item['class'] : '';
+                            if ($is_active) {
+                                $item_class .= ' active';
+                            }
+                        ?>
                         <li>
-                             <!-- Use 'a' tag with href. Add active class dynamically -->
                             <a href="<?php echo $base_url . ltrim($item['url'], '/'); ?>"
                                class="nav-item <?php echo trim($item_class); ?>">
                                 <i class="icon fas <?php echo htmlspecialchars($item['icon']); ?>"></i>
@@ -146,3 +182,20 @@ $admin_user_role = isset($role_vietnamese[$role]) ? $role_vietnamese[$role] : uc
 <!-- Overlay for mobile -->
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
 <!-- =================== HẾT SIDEBAR (ADMIN) =================== -->
+
+<script>
+    document.querySelectorAll('.parent-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const submenu = btn.parentElement.querySelector('.nav-submenu');
+            submenu.classList.toggle('open');
+            btn.querySelector('.toggle-icon').classList.toggle('rotated');
+        });
+    });
+</script>
+
+<style>
+    .nav-submenu { display: none; list-style: none; padding-left: 1em; }
+    .nav-submenu.open { display: block; }
+    .toggle-icon { transition: transform .3s; }
+    .toggle-icon.rotated { transform: rotate(180deg); }
+</style>

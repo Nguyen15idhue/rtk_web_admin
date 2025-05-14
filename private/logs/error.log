@@ -235,3 +235,47 @@ Trace:
 #31 E:\Application\laragon\www\rtk_web_admin\public\pages\referral\referral_management.php(4): require_once('E:\\Application\\...')
 #32 {main}
 [14-May-2025 00:49:26 UTC] Database Error (Bootstrap): Unable to connect to database 'sa3'
+[14-May-2025 01:52:59 UTC] PHP Warning:  Trying to access array offset on true in E:\Application\laragon\www\rtk_web_admin\private\actions\invoice\fetch_invoices.php on line 14
+[14-May-2025 01:58:44 UTC] [DEBUG] Search keyword: 
+[14-May-2025 02:02:13 UTC] [DEBUG] Search keyword: 
+[14-May-2025 02:16:59 UTC] [DEBUG] Search keyword: 
+[14-May-2025 02:56:06 UTC] [PTA] activate survey_account executed, affectedRows=0
+[14-May-2025 02:56:06 UTC] Warning: No survey accounts found or enabled for approved registration ID: 222
+[14-May-2025 02:56:06 UTC] [PTA] province_code=CMA, lastUser=, nextSeq=1, username=CMA001, password=0999999223
+[14-May-2025 02:56:06 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":222,"username_acc":"CMA001","password_acc":"0999999223","user_email":"zkz96960@toaik.com","location_id":12,"package_id":2,"start_time":"2025-05-14 09:56:06","end_time":"2025-08-14 09:56:06","enabled":1,"concurrent_user":1,"account_count":1}
+[14-May-2025 02:56:07 UTC] [PTA] create_account timed out (could be pending), transaction 216
+[14-May-2025 02:56:07 UTC] [CA] Start create_account request
+[14-May-2025 02:56:07 UTC] [CA] Raw input: {"registration_id":222,"username_acc":"CMA001","password_acc":"0999999223","user_email":"zkz96960@toaik.com","location_id":12,"package_id":2,"start_time":"2025-05-14 09:56:06","end_time":"2025-08-14 09:56:06","enabled":1,"concurrent_user":1,"account_count":1}
+[14-May-2025 02:56:07 UTC] [CA] registration_id=222, username_acc=CMA001, password_len=10
+[14-May-2025 02:56:07 UTC] [CA] location_input=12
+[14-May-2025 02:56:07 UTC] [CA] computed start_time_db=2025-05-14 09:56:06, end_time_db=2025-08-14 09:56:06
+[14-May-2025 02:56:07 UTC] [CA] Validating user_email: zkz96960@toaik.com
+[14-May-2025 02:56:07 UTC] [CA] Retrieved userId=100
+[14-May-2025 02:56:07 UTC] [CA] Price=270000.00 => normal flow
+[14-May-2025 02:56:07 UTC] Debug: Non-trial account creation path for registration_id=222
+[14-May-2025 02:56:07 UTC] Using default mount points for location ID: 12 - [42]
+[14-May-2025 02:56:07 UTC] [CA] RTK API payload for CMA001: {"name":"CMA001","userPwd":"0999999223","startTime":1747191366000,"endTime":1755140166000,"enabled":1,"numOnline":1,"customerName":"zkz96960@toaik.com","customerPhone":"0999999223","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[14-May-2025 02:56:07 UTC] [CA] RTK API response for CMA001: {"success":true,"data":{"id":2226,"name":"CMA001","userPwd":"0999999223","startTime":1747191366000,"endTime":1755140166000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"zkz96960@toaik.com","customerPhone":"0999999223","customerCompany":""},"error":null}
+[14-May-2025 02:58:28 UTC] Uncaught exception: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'sa3.users' doesn't exist in E:\Application\laragon\www\rtk_web_admin\public\pages\account\account_management.php on line 38
+[14-May-2025 02:58:30 UTC] Uncaught exception: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'sa3.users' doesn't exist in E:\Application\laragon\www\rtk_web_admin\public\pages\account\account_management.php on line 38
+[14-May-2025 03:00:56 UTC] [CA] Start create_account request
+[14-May-2025 03:00:56 UTC] [CA] Raw input: null
+[14-May-2025 03:00:56 UTC] Debug: Fallback to $_POST input: {"username_acc":"CMA002","password_acc":"123456","user_email":"tranhailong2408@gmail.com","location_id":"12","package_id":"2","start_time":"2025-02-22","end_time":"2025-05-22","status":"active","account_count":"1"}
+[14-May-2025 03:00:56 UTC] [CA] registration_id=, username_acc=CMA002, password_len=6
+[14-May-2025 03:00:56 UTC] [CA] location_input=12
+[14-May-2025 03:00:56 UTC] [CA] computed start_time_db=2025-02-22 00:00:00, end_time_db=2025-05-22 00:00:00
+[14-May-2025 03:00:56 UTC] [CA] Validating user_email: tranhailong2408@gmail.com
+[14-May-2025 03:00:56 UTC] [CA] Retrieved userId=88
+[14-May-2025 03:00:56 UTC] [CA] Inserting auto registration for user 88
+[14-May-2025 03:00:56 UTC] [CA] auto registration inserted, new regId=223
+[14-May-2025 03:00:56 UTC] [CA] Price=270000.00 => normal flow
+[14-May-2025 03:00:56 UTC] Debug: Non-trial account creation path for registration_id=223
+[14-May-2025 03:00:56 UTC] Using default mount points for location ID: 12 - [42]
+[14-May-2025 03:00:56 UTC] [CA] RTK API payload for CMA002: {"name":"CMA002","userPwd":"123456","startTime":1740157200000,"endTime":1747846800000,"enabled":1,"numOnline":1,"customerName":"Long2004","customerPhone":"0999999445","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[14-May-2025 03:00:56 UTC] [CA] RTK API response for CMA002: {"success":true,"data":{"id":2227,"name":"CMA002","userPwd":"123456","startTime":1740157200000,"endTime":1747846800000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2004","customerPhone":"0999999445","customerCompany":""},"error":null}
+[14-May-2025 03:01:49 UTC] [DEBUG] Search keyword: 
+[14-May-2025 03:04:34 UTC] Using default mount points for location ID: 12 - [42]
+[14-May-2025 03:04:34 UTC] RTK API Payload: {"id":"2227","name":"CMA002","userPwd":"123456","startTime":1740182400000,"endTime":1747872000000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[14-May-2025 03:04:34 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[14-May-2025 03:04:56 UTC] [Revert Transaction 216] Deleting RTK account 2226
+[14-May-2025 03:04:56 UTC] [Revert Transaction 216] RTK delete success for account 2226.

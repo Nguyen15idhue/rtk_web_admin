@@ -8,7 +8,7 @@
     --sidebar-width-min: 220px; /* Minimum width for mobile */
     --sidebar-width-max: 300px; /* Maximum width for mobile */
     --sidebar-width: 260px; /* Default width for desktop */
-    --sidebar-width-collapsed: 70px; /* Example collapsed width */
+    --sidebar-width-collapsed: 100px; /* Example collapsed width */
     --sidebar-bg: var(--gray-800, #1f2937); /* Dark background example */
     --sidebar-text-color: var(--gray-300, #d1d5db); /* Light text */
     --sidebar-text-secondary-color: var(--gray-500, #6b7280);
@@ -268,6 +268,33 @@
     .sidebar {
         /* Ensure mobile width is constrained */
         width: clamp(var(--sidebar-width-min, 220px), 80vw, var(--sidebar-width-max, 300px));
+    }
+}
+
+
+/* --- Collapse Button (Desktop) --- */
+.collapse-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--gray-300);
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: color var(--sidebar-transition-speed) ease-in-out;
+}
+.collapse-btn:hover {
+    color: var(--gray-100);
+}
+/* Rotate icon when collapsed */
+body.sidebar-is-collapsed .collapse-btn i {
+    transform: rotate(180deg);
+    transition: transform var(--sidebar-transition-speed) ease-in-out;
+}
+/* Hide collapse button on mobile */
+@media (max-width: 1024px) {
+    .collapse-btn {
+        display: none;
     }
 }
 

@@ -315,7 +315,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                 </div>
                 <div class="form-group">
                     <label for="create-user-email">Email User:</label>
-                    <input type="email" id="create-user-email" name="user_email" required list="emailSuggestionsCreate">
+                    <input type="email" id="create-user-email" name="user_email" autocomplete="off" required list="emailSuggestionsCreate">
                     <datalist id="emailSuggestionsCreate"></datalist>
                     <div id="create-user-info" class="user-info"></div>
                 </div>
@@ -390,7 +390,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                 </div>
                 <div class="form-group">
                     <label for="edit-user-email">Email User:</label>
-                    <input type="email" id="edit-user-email" name="user_email" required list="emailSuggestionsEdit">
+                    <input type="email" id="edit-user-email" name="user_email" autocomplete="off" required list="emailSuggestionsEdit">
                     <datalist id="emailSuggestionsEdit"></datalist>
                     <div id="edit-user-info" class="user-info"></div>
                 </div>
