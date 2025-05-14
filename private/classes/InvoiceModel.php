@@ -118,8 +118,4 @@ class InvoiceModel {
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$fileName, $id]);
     }
-
-    public function __destruct() {
-        Database::getInstance()->close();
-    }
 }

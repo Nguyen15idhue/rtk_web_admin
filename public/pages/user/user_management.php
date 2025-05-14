@@ -13,7 +13,6 @@ $private_layouts_path = $bootstrap_data['private_layouts_path'];
 $admin_role        = $bootstrap_data['admin_role'];
 
 // --- Includes and Setup ---
-require_once BASE_PATH . '/utils/functions.php'; // General helpers (layouts format_date)
 require_once BASE_PATH . '/utils/user_helpers.php'; // User-specific helpers
 require_once BASE_PATH . '/actions/user/fetch_users.php'; // User fetching logic
 
@@ -158,8 +157,6 @@ include $private_layouts_path . 'admin_sidebar.php';
         <?php include $private_layouts_path . 'pagination.php'; ?>
 
     </div> <!-- End content-section -->
-
-    <!-- Modals have been moved to generic_modal.php, included in admin_footer.php -->
 
 </main> <!-- End content-wrapper -->
 

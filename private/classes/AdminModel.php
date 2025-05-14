@@ -144,11 +144,5 @@ class AdminModel {
             return false;
         }
     }
-
-    public function __destruct() {
-        if ($this->db) {
-            // $this->db->close(); // Database class should handle its own lifecycle or be closed at script end
-        }
-    }
 }
 ?>
