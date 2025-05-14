@@ -2,7 +2,7 @@
 
 header('Content-Type: application/json');
 require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
-Auth::ensureAuthorized(['admin']); // Only admins can create other admins
+Auth::ensureAuthorized('admin_user_create'); // Only admins can create other admins
 
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 

@@ -1,16 +1,12 @@
 <?php
+$GLOBALS['required_permission'] = 'invoice_review'; // Added permission requirement
+
 // --- Bootstrap and Initialization ---
 $bootstrap_data        = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db                     = $bootstrap_data['db'];
 $base_url               = $bootstrap_data['base_url'];
 $private_layouts_path  = $bootstrap_data['private_layouts_path'];
 $user_display_name      = $bootstrap_data['user_display_name'];
-
-// authorization check
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
-    exit;
-}
 
 require_once BASE_PATH . '/actions/invoice/fetch_invoices.php';
 define('PDF_BASE_URL', $base_url . 'public/uploads/invoice/');

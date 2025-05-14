@@ -6,7 +6,7 @@ if (!isset($db)) {
 }
 require_once __DIR__ . '/../../core/error_handler.php';
 require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
-Auth::ensureAuthorized(['admin']); // Assuming only admins can list all accounts
+Auth::ensureAuthorized('account_management'); // Ensure the user has 'account_management' permission
 
 // Đảm bảo đóng PDO khi script kết thúc
 register_shutdown_function(function() use (&$db) {

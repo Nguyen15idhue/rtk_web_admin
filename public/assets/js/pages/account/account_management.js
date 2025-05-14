@@ -1,4 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Base path and API base path for account handlers
+    const basePath = ('/' + ((window.appConfig && window.appConfig.basePath) || ''))
+        .replace(/\/\/+/, '/')  // normalize multiple slashes
+        .replace(/\/?$/, '/');    // ensure trailing slash
+    const apiBasePath = `${basePath}public/handlers/account/index.php`;
+
     const { getJson, postJson, postForm } = window.api;
     const { closeModal: helperCloseModal } = window.helpers;
 

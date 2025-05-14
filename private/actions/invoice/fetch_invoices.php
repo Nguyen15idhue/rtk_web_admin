@@ -3,7 +3,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../../utils/functions.php';
 require_once __DIR__ . '/../../classes/Auth.php';
 require_once BASE_PATH . '/classes/InvoiceModel.php';   // thêm
-Auth::ensureAuthorized(['admin','customercare']);
+Auth::ensureAuthorized('invoice_management');
 
 // Prevent direct access
 if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {

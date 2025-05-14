@@ -4,7 +4,7 @@ declare(strict_types=1);
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php'; // đã include error_handler
 require_once __DIR__ . '/../../classes/Auth.php';
 require_once BASE_PATH . '/classes/InvoiceModel.php';    // thêm
-Auth::ensureAuthorized(['admin','customercare']);
+Auth::ensureAuthorized('invoice_management');
 
 // only POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

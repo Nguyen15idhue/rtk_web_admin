@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../classes/Auth.php';
-Auth::ensureAuthorized(['admin', 'customercare']); 
+Auth::ensureAuthorized('user_management'); 
 
 $config = require_once __DIR__ . '/../../core/page_bootstrap.php';
 $db     = $config['db'];

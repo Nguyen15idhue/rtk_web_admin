@@ -73,6 +73,9 @@ $admin_role = $_SESSION['admin_role'] ?? '';
 $private_layouts_path = PRIVATE_LAYOUTS_PATH;
 $private_actions_path  = PRIVATE_ACTIONS_PATH;
 
+// --- Authorization Check ---
+require_once BASE_PATH . '/classes/Auth.php';
+
 // Return values needed by the calling page
 $final_bootstrap_data = [
     'db'                     => $db,

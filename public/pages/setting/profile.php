@@ -1,4 +1,6 @@
 <?php
+$GLOBALS['required_permission'] = 'settings'; // Added permission requirement
+
 // --- Bootstrap and Initialization ---
 $bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db = $bootstrap_data['db'];
@@ -9,13 +11,6 @@ $private_layouts_path = $bootstrap_data['private_layouts_path'];
 
 // --- Include Helpers ---
 require_once BASE_PATH . '/utils/dashboard_helpers.php';
-
-// Check if admin is logged in
-if (!isset($_SESSION['admin_id'])) {
-    // Use the calculated base_path for redirection
-    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
-    exit;
-}
 
 $admin_id = $_SESSION['admin_id'];
 

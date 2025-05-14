@@ -20,7 +20,7 @@ require_once $private_actions_path . 'invoice/get_revenue_sums.php';
 
 // Lấy params phân trang & filter
 $current_page  = max(1, (int)($_GET['page'] ?? 1));
-$per_page      = 1;
+$per_page      = DEFAULT_ITEMS_PER_PAGE;
 $filters = [
     'search'    => trim($_GET['search'] ?? ''),
     'status'    => trim($_GET['status'] ?? ''),

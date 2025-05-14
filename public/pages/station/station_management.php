@@ -1,15 +1,9 @@
 <?php
+$GLOBALS['required_permission'] = 'station_management'; // Added permission requirement
 require __DIR__ . '/../../../private/actions/station/management.php';
 
 require_once PRIVATE_LAYOUTS_PATH . '/admin_header.php';
 require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
-
-// Check if admin is logged in
-if (!isset($_SESSION['admin_id'])) {
-    // Use the calculated base_path for redirection
-    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
-    exit;
-}
 ?>
 
 <main class="content-wrapper">

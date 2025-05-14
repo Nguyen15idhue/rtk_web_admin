@@ -2,7 +2,7 @@
 // filepath: private/actions/support/update_support_request.php
 require_once __DIR__ . '/../../core/page_bootstrap.php';
 require_once __DIR__ . '/../../classes/Auth.php';
-Auth::ensureAuthorized(['admin','customercare']);
+Auth::ensureAuthorized('support_management');
 header('Content-Type: application/json');
 
 require_once __DIR__ . '/../../classes/SupportRequestModel.php';

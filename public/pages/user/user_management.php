@@ -1,6 +1,8 @@
 <?php
 // File: public/pages/user/user_management.php
 
+$GLOBALS['required_permission'] = 'user_management'; // Added permission requirement
+
 // --- Bootstrap and Initialization ---
 $bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db                = $bootstrap_data['db'];
@@ -9,12 +11,6 @@ $base_url          = $bootstrap_data['base_url'];
 $user_display_name = $bootstrap_data['user_display_name'];
 $private_layouts_path = $bootstrap_data['private_layouts_path'];
 $admin_role        = $bootstrap_data['admin_role'];
-
-// authorization check
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
-    exit;
-}
 
 // --- Includes and Setup ---
 require_once BASE_PATH . '/utils/functions.php'; // General helpers (layouts format_date)

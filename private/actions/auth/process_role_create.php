@@ -3,8 +3,8 @@ header('Content-Type: application/json');
 require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
 require_once __DIR__ . '/../../config/app_permissions.php'; // Include app permissions
 
-// Use Auth class for authentication and authorization - ensure only admins can create roles
-Auth::ensureAuthorized(['admin']);
+// Use Auth class for authentication and authorization - ensure only users with 'permission_management' can create roles
+Auth::ensureAuthorized('permission_management');
 
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 $db = $bootstrap['db'];

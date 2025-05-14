@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
-Auth::ensureAuthorized(['admin']); // Only admins can update other admins
+Auth::ensureAuthorized('permission_management'); // Only admins can update other admins
 
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 $db        = $bootstrap['db'];
