@@ -5,9 +5,9 @@
 /* ============================================= */
 :root {
     /* Use variables defined globally or redefine/add specific ones here */
-    --sidebar-width-min: 220px; /* Minimum width for mobile */
-    --sidebar-width-max: 300px; /* Maximum width for mobile */
-    --sidebar-width: 260px; /* Default width for desktop */
+    --sidebar-width-min: 250px; /* Minimum width for mobile */
+    --sidebar-width-max: 320px; /* Maximum width for mobile */
+    --sidebar-width: 300px; /* Default width for desktop */
     --sidebar-width-collapsed: 100px; /* Example collapsed width */
     --sidebar-bg: var(--gray-800, #1f2937); /* Dark background example */
     --sidebar-text-color: var(--gray-300, #d1d5db); /* Light text */
@@ -496,6 +496,11 @@ body.sidebar-is-collapsed .collapse-btn i {
     visibility: visible;
     transition-delay: 0s;
 }
+
+.nav-submenu { display: none; list-style: none; padding-left: 1em; }
+.nav-submenu.open { display: block; }
+.toggle-icon { transition: transform .3s; }
+.toggle-icon.rotated { transform: rotate(180deg); }
 
 @media (min-width: 1025px) {
     .sidebar-overlay {

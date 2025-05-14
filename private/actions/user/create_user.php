@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/../../classes/Auth.php';
-Auth::ensureAuthorized(['admin', 'customercare']); 
+
 
 $config = require_once __DIR__ . '/../../core/page_bootstrap.php';
+Auth::ensureAuthorized('user_create'); 
 $db     = $config['db'];
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

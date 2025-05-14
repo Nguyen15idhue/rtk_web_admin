@@ -1,10 +1,9 @@
 <?php
 header('Content-Type: application/json');
 
-require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
-Auth::ensureAuthenticated(); // All logged-in users can fetch their own accounts by default
-
 $bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
+
+Auth::ensureAuthenticated(); // All logged-in users can fetch their own accounts by default
 $db        = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc

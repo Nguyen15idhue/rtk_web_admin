@@ -5,8 +5,6 @@ $bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 $db        = $bootstrap['db'];
 $base_path = $bootstrap['base_path'];
 
-require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
-
 // Đảm bảo đóng PDO khi script kết thúc
 register_shutdown_function(function() use (&$db) {
     $db = null;
@@ -15,7 +13,7 @@ register_shutdown_function(function() use (&$db) {
 header('Content-Type: application/json');
 
 // Use Auth class for authentication and authorization
-Auth::ensureAuthorized(['admin']);
+Auth::ensureAuthorized('account_management');
 
 require_once BASE_PATH . '/classes/AccountModel.php';
 require_once BASE_PATH . '/api/rtk_system/account_api.php';

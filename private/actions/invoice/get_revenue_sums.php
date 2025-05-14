@@ -2,9 +2,7 @@
 // filepath: private/actions/invoice/get_revenue_sums.php
 declare(strict_types=1);
 
-require_once __DIR__ . '/../../utils/functions.php';  // add helper
-require_once __DIR__ . '/../../classes/Auth.php';
-Auth::ensureAuthorized(['admin','customercare']);
+require_once __DIR__ . '/../../utils/functions.php';  
 
 // Prevent direct access
 if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
@@ -12,6 +10,8 @@ if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
 }
 
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
+
+Auth::ensureAuthorized('revenue_management');
 if ($bootstrap === true) {
     $bootstrap = $GLOBALS['__PAGE_BOOTSTRAP_INSTANCE_DATA__'];
 }

@@ -1,11 +1,9 @@
 <?php
 
 header('Content-Type: application/json');
-require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
-Auth::ensureAuthorized(['admin']); // Only admins can create other admins
-
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 
+Auth::ensureAuthorized('admin_user_create'); // Only admins can create other admins
 $db      = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc

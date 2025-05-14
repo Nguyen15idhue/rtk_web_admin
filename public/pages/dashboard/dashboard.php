@@ -1,4 +1,5 @@
 <?php
+$GLOBALS['required_permission'] = 'dashboard'; // Added permission requirement
 $bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db                    = $bootstrap_data['db'];
 $base_path             = $bootstrap_data['base_path'];

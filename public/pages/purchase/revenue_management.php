@@ -20,7 +20,7 @@ require_once $private_actions_path . 'invoice/get_revenue_sums.php';
 
 // Lấy params phân trang & filter
 $current_page  = max(1, (int)($_GET['page'] ?? 1));
-$per_page      = 15;
+$per_page      = DEFAULT_ITEMS_PER_PAGE;
 $filters = [
     'search'    => trim($_GET['search'] ?? ''),
     'status'    => trim($_GET['status'] ?? ''),
@@ -34,7 +34,7 @@ $transactions = $data['transactions'];
 $total_items  = $data['total_count'];
 $total_pages  = $data['total_pages'];
 $current_page = $data['current_page'];
-$pagination_base = '?' . http_build_query(array_filter($filters));
+$pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
 
 // Get total and successful revenue using private action
 list($total_revenue, $successful_revenue) = get_revenue_sums($filters);
@@ -128,20 +128,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                 </div>
             </form>  <!-- End bulkActionForm -->
 
-            <?php if ($total_pages > 1): ?>
-            <div class="pagination-footer">
-                <div class="pagination-controls">
-                    <button <?php if($current_page<=1) echo 'disabled'; ?> onclick="location.href='<?php echo $pagination_base; ?>&page=<?php echo $current_page-1;?>'">Tr</button>
-                    <?php for($i=1;$i<=$total_pages;$i++): ?>
-                        <button class="<?php echo $i==$current_page?'active':''; ?>"
-                            onclick="location.href='<?php echo $pagination_base; ?>&page=<?php echo $i;?>'">
-                            <?php echo $i;?>
-                        </button>
-                    <?php endfor; ?>
-                    <button <?php if($current_page>=$total_pages) echo 'disabled'; ?> onclick="location.href='<?php echo $pagination_base; ?>&page=<?php echo $current_page+1;?>'">Sau</button>
-                </div>
-            </div>
-            <?php endif; ?>
+            <?php include $private_layouts_path . 'pagination.php'; ?>
 
         </div>
     </main>

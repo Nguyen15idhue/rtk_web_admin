@@ -4,7 +4,7 @@ declare(strict_types=1);
 header('Content-Type: application/json'); // Set response type
 
 require_once __DIR__ . '/../../classes/Auth.php';
-Auth::ensureAuthorized(['admin']); 
+Auth::ensureAuthorized('invoice_management'); 
 
 require_once __DIR__ . '/../../config/constants.php';
 require_once BASE_PATH . '/classes/Database.php';

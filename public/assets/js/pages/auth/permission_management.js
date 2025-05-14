@@ -3,6 +3,24 @@
     const isAdmin = window.isAdmin;
     console.log('Debug isAdmin value:', window.isAdmin, typeof window.isAdmin, '=>', isAdmin);
 
+    window.togglePermissionGroup = function(headerElement, contentId) {
+        const contentElement = document.getElementById(contentId);
+        const icon = headerElement.querySelector('i.fas');
+        if (contentElement) {
+            const isHidden = contentElement.style.display === 'none' || contentElement.style.display === '';
+            contentElement.style.display = isHidden ? 'block' : 'none';
+            if (icon) {
+                if (isHidden) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                } else {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            }
+        }
+    };
+
     // Load current permissions on page load
     ['Admin','CustomerCare'].forEach(async role => {
         try {

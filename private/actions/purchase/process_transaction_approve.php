@@ -6,13 +6,7 @@ header('Content-Type: application/json');
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
-// --- Permission check ---
-require_once __DIR__ . '/../../classes/Auth.php';
-Auth::ensureAuthorized(['admin']); 
-
-if (!isset($_SESSION['admin_id']) || ($_SESSION['admin_role'] ?? '') !== 'admin') {
-    api_error('Permission denied.', 403);
-}
+Auth::ensureAuthorized('invoice_management');
 
 // Load any additional services you still need
 require_once BASE_PATH . '/services/TransactionHistoryService.php';

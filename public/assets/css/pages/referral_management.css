@@ -48,3 +48,13 @@
 .tab-content {
     padding-top: 20px; /* Or adjust as needed */
 }
+
+@media (max-width: 576px) {
+    .custom-tabs-nav .nav-item {
+        margin-right: 5px;
+    }
+    .custom-tabs-nav .nav-link {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+}

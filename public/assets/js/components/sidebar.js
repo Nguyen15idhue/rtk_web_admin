@@ -53,4 +53,13 @@
     // Expose for inline handlers
     window.toggleSidebar = toggleSidebar;
 
+    // Submenu toggle for parent items
+    document.querySelectorAll('.parent-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const submenu = btn.parentElement.querySelector('.nav-submenu');
+            submenu.classList.toggle('open');
+            btn.querySelector('.toggle-icon').classList.toggle('rotated');
+        });
+    });
+
 })(window, document);

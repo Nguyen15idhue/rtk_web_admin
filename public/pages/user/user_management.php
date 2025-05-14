@@ -1,6 +1,8 @@
 <?php
 // File: public/pages/user/user_management.php
 
+$GLOBALS['required_permission'] = 'user_management'; // Added permission requirement
+
 // --- Bootstrap and Initialization ---
 $bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db                = $bootstrap_data['db'];
@@ -9,12 +11,6 @@ $base_url          = $bootstrap_data['base_url'];
 $user_display_name = $bootstrap_data['user_display_name'];
 $private_layouts_path = $bootstrap_data['private_layouts_path'];
 $admin_role        = $bootstrap_data['admin_role'];
-
-// authorization check
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
-    exit;
-}
 
 // --- Includes and Setup ---
 require_once BASE_PATH . '/utils/functions.php'; // General helpers (layouts format_date)
@@ -32,7 +28,7 @@ error_log('[DEBUG] Search keyword: ' . $filters['q']);
 echo '<script>console.log("DEBUG Search keyword:", ' . json_encode($filters['q'], JSON_UNESCAPED_UNICODE) . ');</script>';
 
 // --- Pagination Setup ---
-$items_per_page = 10;
+$items_per_page = DEFAULT_ITEMS_PER_PAGE;
 $current_page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 
 // --- Fetch Users ---
@@ -43,24 +39,7 @@ $total_pages = $userData['total_pages'];
 $current_page = $userData['current_page']; // Use the validated page number from the function
 
 // --- Build Pagination URL ---
-$pagination_params = $filters; // Start with existing filters
-unset($pagination_params['page']);
-// Ensure the base URL for pagination doesn't include existing query string if filters are empty
 $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
-if (!empty($pagination_params)) {
-    $pagination_base_url .= '?' . http_build_query($pagination_params);
-    $pagination_base_url .= '&'; // Add separator for the page param
-} else {
-    $pagination_base_url .= '?'; // Start query string for the page param
-}
-// Remove trailing '&' if it exists
-$pagination_base_url = rtrim($pagination_base_url, '&');
-// Ensure there's a '?' before adding 'page=' if no other params exist
-if (strpos($pagination_base_url, '?') === false) {
-    $pagination_base_url .= '?';
-} else if (substr($pagination_base_url, -1) !== '?') {
-    $pagination_base_url .= '&';
-}
 
 // --- Page Setup for Header/Sidebar ---
 $page_title = 'Quản lý Người dùng';
@@ -176,27 +155,8 @@ include $private_layouts_path . 'admin_sidebar.php';
             </div>
         </form> <!-- End Bulk Actions Form -->
 
-        <div class="pagination-footer">
-             <div class="pagination-info">
-                <?php if ($total_items > 0):
-                    $start_item = ($current_page - 1) * $items_per_page + 1;
-                    $end_item = min($start_item + $items_per_page - 1, $total_items);
-                ?>
-                    Hiển thị <?php echo $start_item; ?>-<?php echo $end_item; ?> của <?php echo $total_items; ?> người dùng
-                <?php else: ?>
-                    Không có người dùng nào
-                <?php endif; ?>
-            </div>
-            <?php if ($total_pages > 1): ?>
-            <div class="pagination-controls">
-                <button onclick="window.location.href='<?php echo $pagination_base_url . 'page=' . ($current_page - 1); ?>'" <?php echo ($current_page <= 1) ? 'disabled' : ''; ?>>Tr</button>
-                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                    <button class="<?php echo ($i == $current_page) ? 'active' : ''; ?>" onclick="window.location.href='<?php echo $pagination_base_url . 'page=' . $i; ?>'"><?php echo $i; ?></button>
-                <?php endfor; ?>
-                <button onclick="window.location.href='<?php echo $pagination_base_url . 'page=' . ($current_page + 1); ?>'" <?php echo ($current_page >= $total_pages) ? 'disabled' : ''; ?>>Sau</button>
-            </div>
-             <?php endif; ?>
-        </div>
+        <?php include $private_layouts_path . 'pagination.php'; ?>
+
     </div> <!-- End content-section -->
 
     <!-- Modals have been moved to generic_modal.php, included in admin_footer.php -->

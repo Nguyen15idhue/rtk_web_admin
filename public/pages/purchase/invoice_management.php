@@ -16,7 +16,7 @@ $provinces_stmt = $db->query("SELECT province FROM location WHERE status=1 ORDER
 $provinces = $provinces_stmt->fetchAll(PDO::FETCH_COLUMN);
 
 $current_page   = isset($_GET['page']) ? max(1,(int)$_GET['page']) : 1;
-$items_per_page = 15;
+$items_per_page = DEFAULT_ITEMS_PER_PAGE;
 $filters = [
     'search'     => trim($_GET['search']    ?? ''),
     'status'     => trim($_GET['status']    ?? ''),
@@ -33,7 +33,7 @@ $total_items = $transaction_data['total_count'];
 $total_pages = $transaction_data['total_pages'];
 $current_page = $transaction_data['current_page'];
 
-$pagination_base_url = '?' . http_build_query(array_filter($filters));
+$pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
 ?>
 
     <?php include $private_layouts_path . 'admin_header.php'; ?>
@@ -229,51 +229,10 @@ $pagination_base_url = '?' . http_build_query(array_filter($filters));
                 </table>
             </div>
 
-            <div class="pagination-footer">
-                <div class="pagination-info">
-                    <?php if ($total_items > 0):
-                        $start_item = ($current_page - 1) * $items_per_page + 1;
-                        $end_item = min($start_item + $items_per_page - 1, $total_items);
-                    ?>
-                        Hiển thị <?php echo $start_item; ?>-<?php echo $end_item; ?> của <?php echo $total_items; ?> GD
-                    <?php else: ?>
-                        Không có giao dịch nào
-                    <?php endif; ?>
-                </div>
-                <?php if ($total_pages > 1): ?>
-                <div class="pagination-controls">
-                    <button onclick="window.location.href='<?php echo $pagination_base_url . '&page=' . ($current_page - 1); ?>'" <?php echo ($current_page <= 1) ? 'disabled' : ''; ?>>Tr</button>
-                    <?php
-                        $max_pages_to_show = 7;
-                        $start_page = max(1, $current_page - floor($max_pages_to_show / 2));
-                        $end_page = min($total_pages, $start_page + $max_pages_to_show - 1);
-                        $start_page = max(1, $end_page - $max_pages_to_show + 1);
-
-                        if ($start_page > 1) {
-                            echo '<button onclick="window.location.href=\'' . $pagination_base_url . '&page=1\'">1</button>';
-                            if ($start_page > 2) {
-                                echo '<button disabled>...</button>';
-                            }
-                        }
-
-                        for ($i = $start_page; $i <= $end_page; $i++): ?>
-                            <button class="<?php echo ($i == $current_page) ? 'active' : ''; ?>" onclick="window.location.href='<?php echo $pagination_base_url . '&page=' . $i; ?>'"><?php echo $i; ?></button>
-                        <?php endfor;
-
-                        if ($end_page < $total_pages) {
-                             if ($end_page < $total_pages - 1) {
-                                echo '<button disabled>...</button>';
-                            }
-                            echo '<button onclick="window.location.href=\'' . $pagination_base_url . '&page=' . $total_pages . '\'">' . $total_pages . '</button>';
-                        }
-                    ?>
-                    <button onclick="window.location.href='<?php echo $pagination_base_url . '&page=' . ($current_page + 1); ?>'" <?php echo ($current_page >= $total_pages) ? 'disabled' : ''; ?>>Sau</button>
-                </div>
-                 <?php endif; ?>
-            </div>
-        </div>
-    </main>
-
+            <?php include $private_layouts_path . 'pagination.php'; ?>
+        </form> <!-- This form closes before the pagination was originally -->
+    </div> <!-- End #admin-invoice-management -->
+</main>
 
 <div id="proofModal" class="modal-overlay">
     <div class="modal-content">

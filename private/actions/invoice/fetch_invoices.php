@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/../../utils/functions.php';
-require_once __DIR__ . '/../../classes/Auth.php';
 require_once BASE_PATH . '/classes/InvoiceModel.php';   // thêm
-Auth::ensureAuthorized(['admin','customercare']);
 
 // Prevent direct access
 if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
     api_forbidden('Forbidden');
 }
 
-$bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
+$bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
+
+Auth::ensureAuthorized('invoice_management');
 $db        = $bootstrap['db'];
 register_shutdown_function(fn() => $db = null);
 

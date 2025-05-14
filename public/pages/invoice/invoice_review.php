@@ -1,4 +1,6 @@
 <?php
+$GLOBALS['required_permission'] = 'invoice_review'; // Added permission requirement
+
 // --- Bootstrap and Initialization ---
 $bootstrap_data        = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db                     = $bootstrap_data['db'];
@@ -6,17 +8,11 @@ $base_url               = $bootstrap_data['base_url'];
 $private_layouts_path  = $bootstrap_data['private_layouts_path'];
 $user_display_name      = $bootstrap_data['user_display_name'];
 
-// authorization check
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
-    exit;
-}
-
 require_once BASE_PATH . '/actions/invoice/fetch_invoices.php';
 define('PDF_BASE_URL', $base_url . 'public/uploads/invoice/');
 
 $current_page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-$items_per_page = 10;
+$items_per_page = DEFAULT_ITEMS_PER_PAGE;
 $filters = ['status' => trim($_GET['status'] ?? '')];
 
 $data = fetch_admin_invoices($filters, $current_page, $items_per_page);
@@ -24,6 +20,9 @@ $invoices = $data['invoices'];
 $total = $data['total_count'];
 $total_pages = $data['total_pages'];
 $current_page = $data['current_page'];
+
+// --- Build Pagination URL ---
+$pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
 
 $status_options = [
     '' => 'Tất cả trạng thái',
@@ -111,9 +110,17 @@ include $private_layouts_path . 'admin_sidebar.php';
                                     <i class="fas fa-times"></i>
                                 </button>
                             <?php elseif ($inv['status'] === 'approved'): ?>
-                                <span>Đã duyệt</span>
-                            <?php else: ?>
-                                <span>Đã từ chối</span>
+                                <button class="btn-icon btn-undo"
+                                        onclick="InvoiceReviewPageEvents.undoInvoice(<?php echo $inv['invoice_id']; ?>)"
+                                        title="Hoàn tác">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                            <?php else: // rejected ?>
+                                <button class="btn-icon btn-undo"
+                                        onclick="InvoiceReviewPageEvents.undoInvoice(<?php echo $inv['invoice_id']; ?>)"
+                                        title="Hoàn tác">
+                                    <i class="fas fa-undo"></i>
+                                </button>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -121,6 +128,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                 </tbody>
             </table>
         </div>
+        <?php include $private_layouts_path . 'pagination.php'; ?>
     </div>
 </main>
 <script>
