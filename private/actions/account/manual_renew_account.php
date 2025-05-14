@@ -3,7 +3,6 @@
 $bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
-require_once __DIR__ . '/../../classes/Auth.php';
 Auth::ensureAuthorized('account_management');
 
 require_once BASE_PATH . '/classes/AccountModel.php';

@@ -110,9 +110,17 @@ include $private_layouts_path . 'admin_sidebar.php';
                                     <i class="fas fa-times"></i>
                                 </button>
                             <?php elseif ($inv['status'] === 'approved'): ?>
-                                <span>Đã duyệt</span>
-                            <?php else: ?>
-                                <span>Đã từ chối</span>
+                                <button class="btn-icon btn-undo"
+                                        onclick="InvoiceReviewPageEvents.undoInvoice(<?php echo $inv['invoice_id']; ?>)"
+                                        title="Hoàn tác">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                            <?php else: // rejected ?>
+                                <button class="btn-icon btn-undo"
+                                        onclick="InvoiceReviewPageEvents.undoInvoice(<?php echo $inv['invoice_id']; ?>)"
+                                        title="Hoàn tác">
+                                    <i class="fas fa-undo"></i>
+                                </button>
                             <?php endif; ?>
                         </td>
                     </tr>

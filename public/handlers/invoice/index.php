@@ -6,7 +6,8 @@ require_once dirname(__DIR__, 3) . '/private/utils/functions.php';
 $action = basename($_GET['action'] ?? '');
 $allowed = [
     'process_invoice_reject',
-    'process_invoice_send'
+    'process_invoice_send',
+    'process_invoice_revert'
 ];
 
 if (!in_array($action, $allowed, true)) {

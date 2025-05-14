@@ -1,7 +1,6 @@
 <?php
 // filepath: private/actions/support/fetch_support_requests.php
 require_once __DIR__ . '/../../core/page_bootstrap.php';
-require_once __DIR__ . '/../../classes/Auth.php';
 Auth::ensureAuthorized('support_management');
 header('Content-Type: application/json');
 

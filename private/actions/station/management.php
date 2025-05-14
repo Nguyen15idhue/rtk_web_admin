@@ -7,7 +7,6 @@ $base_url = $bootstrap_data['base_url'] ?? '/';
 
 require_once __DIR__ . '/../../../private/classes/StationModel.php';
 require_once __DIR__ . '/../../../private/classes/ManagerModel.php';
-require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
 Auth::ensureAuthenticated();
 
 // Page settings

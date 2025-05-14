@@ -1,7 +1,6 @@
 <?php
 // filepath: private\actions\account\create_account.php
 $config = require_once __DIR__ . '/../../core/page_bootstrap.php';
-require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
 
 // Use Auth class for authentication and authorization
 Auth::ensureAuthorized('account_management');

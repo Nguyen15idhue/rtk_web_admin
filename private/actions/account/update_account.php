@@ -5,8 +5,6 @@ $bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 $db        = $bootstrap['db'];
 $base_path = $bootstrap['base_path'];
 
-require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
-
 // Đảm bảo đóng PDO khi script kết thúc
 register_shutdown_function(function() use (&$db) {
     $db = null;

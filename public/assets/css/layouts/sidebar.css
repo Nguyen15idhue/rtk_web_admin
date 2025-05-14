@@ -5,9 +5,9 @@
 /* ============================================= */
 :root {
     /* Use variables defined globally or redefine/add specific ones here */
-    --sidebar-width-min: 220px; /* Minimum width for mobile */
-    --sidebar-width-max: 300px; /* Maximum width for mobile */
-    --sidebar-width: 260px; /* Default width for desktop */
+    --sidebar-width-min: 250px; /* Minimum width for mobile */
+    --sidebar-width-max: 320px; /* Maximum width for mobile */
+    --sidebar-width: 300px; /* Default width for desktop */
     --sidebar-width-collapsed: 100px; /* Example collapsed width */
     --sidebar-bg: var(--gray-800, #1f2937); /* Dark background example */
     --sidebar-text-color: var(--gray-300, #d1d5db); /* Light text */

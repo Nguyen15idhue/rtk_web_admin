@@ -1,12 +1,9 @@
 <?php
 header('Content-Type: application/json');
 
-require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
-
-// Use Auth class for authentication and authorization
-Auth::ensureAuthorized('permission_management');
-
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
+
+Auth::ensureAuthorized('permission_management');
 $db      = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc

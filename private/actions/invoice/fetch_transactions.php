@@ -2,15 +2,15 @@
 // filepath: private\actions\invoice\fetch_transactions.php
 declare(strict_types=1);
 
-require_once __DIR__ . '/../../utils/functions.php';  // add helper
-require_once __DIR__ . '/../../classes/Auth.php';
-Auth::ensureAuthorized('invoice_management');
+require_once __DIR__ . '/../../utils/functions.php';  
 
 if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
     api_forbidden('Forbidden: Direct access not allowed');
 }
 
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
+
+Auth::ensureAuthorized('invoice_management');
 if ($bootstrap === true) {
     $bootstrap = $GLOBALS['__PAGE_BOOTSTRAP_INSTANCE_DATA__'];
 }

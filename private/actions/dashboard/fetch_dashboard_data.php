@@ -1,9 +1,9 @@
 <?php
 // filepath: private\actions\dashboard\fetch_dashboard_data.php
-require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
-Auth::ensureAuthorized('dashboard'); // Changed to string permission
 
 $config = require __DIR__ . '/../../core/page_bootstrap.php';
+
+Auth::ensureAuthorized('dashboard'); // Changed to string permission
 $pdo = $config['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc

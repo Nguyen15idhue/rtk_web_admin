@@ -1,8 +1,7 @@
 <?php
-require_once __DIR__ . '/../../classes/Auth.php';
-Auth::ensureAuthorized('user_management'); 
-
 $config = require_once __DIR__ . '/../../core/page_bootstrap.php';
+
+Auth::ensureAuthorized('user_management'); 
 $db = $config['db'];
 header('Content-Type: application/json');
 

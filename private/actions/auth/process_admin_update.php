@@ -1,9 +1,9 @@
 <?php
 header('Content-Type: application/json');
-require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
-Auth::ensureAuthorized('permission_management'); // Only admins can update other admins
 
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
+
+Auth::ensureAuthorized('permission_management'); // Only admins can update other admins
 $db        = $bootstrap['db'];
 
 // Ensure PDO is closed when the script ends

@@ -2,11 +2,10 @@
 // filepath: private\actions\account\toggle_status.php
 header('Content-Type: application/json');
 
-require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
-Auth::ensureAuthorized('account_management'); // Only admins can toggle account status
-
 // Khởi bootstrap
 $bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
+
+Auth::ensureAuthorized('account_management'); 
 $db        = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc

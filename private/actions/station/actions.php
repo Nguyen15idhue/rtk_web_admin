@@ -5,7 +5,6 @@
 $bootstrap_data = require_once __DIR__ . '/../../core/page_bootstrap.php';
 $base_url = $bootstrap_data['base_url'] ?? '/';
 
-require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
 Auth::ensureAuthenticated();
 
 // Ensure POST request
