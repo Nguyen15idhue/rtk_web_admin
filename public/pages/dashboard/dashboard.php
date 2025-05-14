@@ -31,16 +31,7 @@ include $private_layouts_path . 'admin_sidebar.php';
 <!-- Main Content Area -->
 <main class="content-wrapper">
     <!-- Header Section within Content -->
-    <div class="content-header">
-        <h2>Admin Dashboard</h2>
-        <div class="user-info">
-            <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-            <!-- Link to Profile Settings (Adjust path if needed) -->
-            <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
-            <!-- Logout Link (Adjust path if needed) -->
-            <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php" class="text-gray-600">Đăng xuất</a>
-        </div>
-    </div>
+    <?php include $private_layouts_path . 'content_header.php'; ?>
 
     <!-- Stats Grid - Adapted for Admin Data -->
     <div class="stats-grid">

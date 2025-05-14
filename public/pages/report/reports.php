@@ -27,14 +27,7 @@ require_once __DIR__ . '/../../../private/actions/report/process_reports_data.ph
 <?php include $private_layouts_path . 'admin_header.php'; ?>
 <?php include $private_layouts_path . 'admin_sidebar.php'; ?>
 <main class="content-wrapper">
-    <div class="content-header">
-        <h2 class="text-2xl font-semibold">Báo cáo Tổng hợp</h2>
-        <div class="user-info">
-            <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-            <a href="<?php echo $base_url; ?>public/pages/setting/profile.php">Hồ sơ</a>
-            <a href="<?php echo $base_url; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
-        </div>
-    </div>
+    <?php include $private_layouts_path . 'content_header.php'; ?>
 
     <div id="admin-reports" class="content-section">
         <div class="mb-6 bg-white p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200">
