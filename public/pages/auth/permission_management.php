@@ -273,26 +273,6 @@ function getRoleDisplayName($role_key) {
     </div>
 </main>
 
-<script>
-function togglePermissionGroup(headerElement, contentId) {
-    const contentElement = document.getElementById(contentId);
-    const icon = headerElement.querySelector('i.fas');
-    if (contentElement) {
-        const isHidden = contentElement.style.display === 'none' || contentElement.style.display === '';
-        contentElement.style.display = isHidden ? 'block' : 'none';
-        if (icon) {
-            if (isHidden) {
-                icon.classList.remove('fa-chevron-down');
-                icon.classList.add('fa-chevron-up');
-            } else {
-                icon.classList.remove('fa-chevron-up');
-                icon.classList.add('fa-chevron-down');
-            }
-        }
-    }
-}
-</script>
-
 <!-- Export PHP vars and load external JS -->
 <script>
     window.basePath        = '<?= $base_path ?>';

@@ -21,7 +21,7 @@ $filters = [
 ];
 
 // --- Pagination ---
-$items_per_page = 1;
+$items_per_page = DEFAULT_ITEMS_PER_PAGE;
 $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
 // --- Data Fetching ---

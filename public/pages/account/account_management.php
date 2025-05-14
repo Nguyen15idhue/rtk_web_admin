@@ -428,20 +428,6 @@ include $private_layouts_path . 'admin_sidebar.php';
 
 <div id="toast-container"></div> <!-- Toast container -->
 
-<script>
-    const apiBasePath = '<?php echo $base_url; ?>public/handlers/account/index.php';
-    const basePath = '<?php echo $base_url; ?>';
-    const packageDurations = <?php echo json_encode([
-        '1' => ['months' => 1],
-        '2' => ['months' => 3],
-        '3' => ['months' => 6],
-        '4' => ['years' => 1],
-        '5' => ['years' => 100],
-        '7' => ['days' => 7]
-    ]); ?>;
-    // expose package list for bulk renew UI
-    const packagesList = <?php echo json_encode($packages); ?>;
-</script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/account/account_management.js"></script>
 
 <?php
