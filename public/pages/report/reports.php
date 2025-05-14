@@ -54,7 +54,17 @@ require_once __DIR__ . '/../../../private/actions/report/process_reports_data.ph
                 </div>
             </form>
         </div>
-
+        <!-- Export Excel Button -->
+        <div class="mb-6">
+            <form id="export-report-excel" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
+                <input type="hidden" name="action" value="export_report_excel">
+                <input type="hidden" name="start_date" value="<?php echo htmlspecialchars($start_date); ?>">
+                <input type="hidden" name="end_date" value="<?php echo htmlspecialchars($end_date); ?>">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-file-excel"></i> Xuất Excel
+                </button>
+            </form>
+        </div>
         <!-- Reports cards: using stats-grid/stat-card -->
         <div class="stats-grid">
             <!-- Người dùng -->

@@ -183,8 +183,6 @@ include $private_layouts_path . 'admin_sidebar.php';
     </div>
 </main>
 
-<!-- Include modals and JS -->
-<?php include $private_layouts_path . 'voucher_modals.php'; ?>
 <script>
     // Ensure appConfig is defined for JS
     window.appConfig = { basePath: '' };
