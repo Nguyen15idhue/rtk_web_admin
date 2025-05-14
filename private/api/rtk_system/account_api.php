@@ -453,6 +453,10 @@ function fetchAndUpdateStations(): void {
         error_log("DB connect failed: " . $conn->connect_error);
         return;
     }
+    // Set charset to UTF-8
+    if (!$conn->set_charset("utf8mb4")) {
+        error_log(sprintf("Error loading character set utf8mb4: %s\n", $conn->error));
+    }
 
     // 1. Lấy danh sách station từ API
     $map = fetchAllStations();

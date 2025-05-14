@@ -36,6 +36,52 @@ if (empty($tableName)) {
     api_error('Table name is required.', 400);
 }
 
+// START: Special handling for 'reports' table export
+if ($tableName === 'reports') {
+    // Read date filters from POST, defaulting to current month if not provided
+    $start_date     = $_POST['date_from'] ?? date('Y-m-01');
+    $end_date       = $_POST['date_to']   ?? date('Y-m-t');
+    $start_datetime = $start_date . ' 00:00:00';
+    $end_datetime   = $end_date   . ' 23:59:59';
+
+    // Ensure $db (from page_bootstrap.php) is available and passed as $pdo
+    // The $db variable should be globally available after page_bootstrap.php is included.
+    if (!isset($db) || !$db instanceof PDO) {
+        error_log("Export Excel (Reports): Database connection (\$db) not available or invalid.");
+        api_error("Internal server error: Database connection not available for reports.", 500);
+    }
+    $pdo = $db; // Make $pdo available for process_reports_data.php
+
+    // Load and process report data
+    // $start_datetime and $end_datetime will be used by process_reports_data.php
+    require_once __DIR__ . '/report/process_reports_data.php';
+
+    // Define fields expected from process_reports_data.php
+    $fields = [
+        'total_registrations', 'new_registrations', 'active_accounts', 'locked_accounts',
+        'active_survey_accounts', 'new_active_survey_accounts', 'expiring_accounts', 'expired_accounts',
+        'total_sales', 'completed_transactions', 'pending_transactions', 'failed_transactions',
+        'new_referrals', 'commission_generated', 'commission_paid', 'commission_pending'
+    ];
+
+    $report_row_data = [];
+    foreach ($fields as $field) {
+        if (isset($$field)) {
+            $report_row_data[$field] = $$field;
+        } else {
+            // Log if a field is unexpectedly missing and provide a default value
+            error_log("Export Excel (Reports): Report field '{$field}' was not set after process_reports_data.php. Defaulting to 0 or empty.");
+            $report_row_data[$field] = 0; // Or use '' or 'N/A' depending on expected data type
+        }
+    }
+    $dataToExport = [$report_row_data]; // Prepare data for Excel export
+
+    // Export directly and terminate script
+    ExcelExportService::export($dataToExport, 'reports_' . date('Ymd_His') . '.xlsx');
+    exit; // IMPORTANT: Stop script execution after handling report export
+}
+// END: Special handling for 'reports' table export
+
 // Sanitize IDs to be integers if they are expected to be numeric
 if (!empty($ids_for_export)) {
     $selectedIds = array_map('intval', $ids_for_export); // Basic sanitization for the determined ID list
