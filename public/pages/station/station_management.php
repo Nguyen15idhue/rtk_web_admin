@@ -65,14 +65,21 @@ if (!isset($_SESSION['admin_id'])) {
                             <td><?php echo htmlspecialchars($station['station_name']); ?></td>
                             <td><?php echo htmlspecialchars($station['identificationName'] ?? 'N/A'); ?></td>
                             <td>
-                                <input list="manager_names_<?php echo $station['id']; ?>" name="manager_name"
-                                       class="form-control" value="<?php echo htmlspecialchars($station['manager_name'] ?? ''); ?>"
-                                       placeholder="Chọn người quản lý">
-                                <datalist id="manager_names_<?php echo $station['id']; ?>">
-                                    <?php foreach ($allManagers as $manager): ?>
-                                        <option value="<?php echo htmlspecialchars($manager['name']); ?>">
+                                <select name="manager_name" class="form-control">
+                                    <option value="">-- Chọn người quản lý --</option>
+                                    <?php
+                                    $currentManagerAssignedName = $station['manager_name'] ?? null;
+                                    foreach ($allManagers as $manager):
+                                        $managerName = $manager['name'];
+                                        $escapedManagerNameForValue = htmlspecialchars($managerName, ENT_QUOTES, 'UTF-8');
+                                        $escapedManagerNameForDisplay = htmlspecialchars($managerName);
+                                        $isSelected = ($currentManagerAssignedName === $managerName);
+                                    ?>
+                                        <option value="<?php echo $escapedManagerNameForValue; ?>" <?php if ($isSelected) echo 'selected'; ?>>
+                                            <?php echo $escapedManagerNameForDisplay; ?>
+                                        </option>
                                     <?php endforeach; ?>
-                                </datalist>
+                                </select>
                             </td>
                             <td>
                                 <select name="mountpoint_details" class="form-control">
