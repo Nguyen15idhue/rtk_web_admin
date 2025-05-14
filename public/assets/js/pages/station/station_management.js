@@ -65,3 +65,16 @@ function openEditManagerModal(managerData) {
 // function closeManagerModal(modalId) {
 //     helpers.closeModal(modalId);
 // }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Bulk export: collect checked IDs into hidden input before submit
+    const bulkActionForm = document.getElementById('bulkActionForm');
+    if (bulkActionForm) {
+        bulkActionForm.addEventListener('submit', function() {
+            const selectedIds = Array.from(
+                document.querySelectorAll('.rowCheckbox:checked')
+            ).map(cb => cb.value);
+            document.getElementById('selected_ids_for_export').value = selectedIds.join(',');
+        });
+    }
+});

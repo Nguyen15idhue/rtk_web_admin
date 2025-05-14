@@ -146,33 +146,13 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
 
 </main>
 
+<!-- only define basePath inline -->
 <script>
-    // Define basePath for station_management.js, consistent with other pages
     window.basePath = '<?php echo rtrim($base_url, '/'); ?>';
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const bulkActionForm = document.getElementById('bulkActionForm');
-        if (bulkActionForm) {
-            bulkActionForm.addEventListener('submit', function(event) {
-                const selectedIds = [];
-                document.querySelectorAll('.rowCheckbox:checked').forEach(function(checkbox) {
-                    selectedIds.push(checkbox.value);
-                });
-                document.getElementById('selected_ids_for_export').value = selectedIds.join(',');
-            });
-        }
-
-        // Handle "Select All" checkbox
-        const selectAllCheckbox = document.getElementById('selectAll');
-        if (selectAllCheckbox) {
-            selectAllCheckbox.addEventListener('change', function() {
-                document.querySelectorAll('.rowCheckbox').forEach(function(checkbox) {
-                    checkbox.checked = selectAllCheckbox.checked;
-                });
-            });
-        }
-    });
 </script>
+
+<!-- external scripts -->
+<script src="<?php echo $base_url; ?>public/assets/js/utils/bulk_actions.js"></script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/station/station_management.js"></script>
 
 <?php
