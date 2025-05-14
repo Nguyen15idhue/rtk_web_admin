@@ -26,8 +26,8 @@ $filters = [
     'type'  => (string)(filter_input(INPUT_GET, 'type', FILTER_SANITIZE_SPECIAL_CHARS) ?? ''),
     'status'=> (string)(filter_input(INPUT_GET, 'status', FILTER_SANITIZE_SPECIAL_CHARS) ?? ''),
 ];
-$items_per_page = 10;
-$page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, ['options' => ['default' => 1, 'min_range' => 1]]);
+$items_per_page = DEFAULT_ITEMS_PER_PAGE;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
 // --- Fetch Vouchers ---
 $data = fetch_paginated_vouchers($filters, $page, $items_per_page);
@@ -37,14 +37,7 @@ $total_pages = $data['total_pages'];
 $current_page = $data['current_page'];
 
 // --- Build Pagination URL ---
-$pagination_params = $filters;
-unset($pagination_params['page']);
 $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
-if (!empty($pagination_params)) {
-    $pagination_base_url .= '?' . http_build_query($pagination_params) . '&';
-} else {
-    $pagination_base_url .= '?';
-}
 
 // --- Page Setup for Header/Sidebar ---
 $page_title = 'Quản lý Voucher';
@@ -159,28 +152,8 @@ include $private_layouts_path . 'admin_sidebar.php';
             </div>
         </form>
 
-        <div class="pagination-footer">
-            <div class="pagination-info">
-                <?php if ($total_items>0):
-                    $start = ($current_page-1)*$items_per_page+1;
-                    $end   = min($start+$items_per_page-1, $total_items);
-                ?>
-                Hiển thị <?php echo $start; ?>-<?php echo $end; ?> của <?php echo $total_items; ?> voucher
-                <?php else: ?>
-                Không có voucher nào
-                <?php endif; ?>
-            </div>
-            <?php if ($total_pages>1): ?>
-            <div class="pagination-controls">
-                <button onclick="window.location.href='<?php echo $pagination_base_url.'page='.($current_page-1); ?>'" <?php echo $current_page<=1?'disabled':''; ?>>Tr</button>
-                <?php for ($i=1;$i<=$total_pages;$i++): ?>
-                <button class="<?php echo $i==$current_page?'active':''; ?>" onclick="window.location.href='<?php echo $pagination_base_url.'page='.$i; ?>'"><?php echo $i; ?></button>
-                <?php endfor; ?>
-                <button onclick="window.location.href='<?php echo $pagination_base_url.'page='.($current_page+1); ?>'" <?php echo $current_page>=$total_pages?'disabled':''; ?>>Sau</button>
-            </div>
-            <?php endif; ?>
-        </div>
-    </div>
+        <?php include $private_layouts_path . 'pagination.php'; ?>
+    </div> <!-- End #voucher-management -->
 </main>
 
 <script>

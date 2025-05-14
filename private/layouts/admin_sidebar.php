@@ -178,24 +178,3 @@ $admin_user_role = isset($role_vietnamese[$role]) ? $role_vietnamese[$role] : uc
         </nav>
     </div>
 </aside>
-
-<!-- Overlay for mobile -->
-<div class="sidebar-overlay" id="sidebar-overlay"></div>
-<!-- =================== HẾT SIDEBAR (ADMIN) =================== -->
-
-<script>
-    document.querySelectorAll('.parent-toggle').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const submenu = btn.parentElement.querySelector('.nav-submenu');
-            submenu.classList.toggle('open');
-            btn.querySelector('.toggle-icon').classList.toggle('rotated');
-        });
-    });
-</script>
-
-<style>
-    .nav-submenu { display: none; list-style: none; padding-left: 1em; }
-    .nav-submenu.open { display: block; }
-    .toggle-icon { transition: transform .3s; }
-    .toggle-icon.rotated { transform: rotate(180deg); }
-</style>

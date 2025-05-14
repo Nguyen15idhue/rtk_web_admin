@@ -57,10 +57,7 @@
     }
     .pagination-footer .pagination-controls {
         width: 100%;
-        display: flex;
-        flex-wrap: wrap;
         gap: 0.5rem; /* Increased gap for wrapped items */
-        justify-content: center;
     }
     .pagination-controls button, .pagination-controls span {
         padding: 0.5rem 0.6rem; /* Adjust padding for smaller screens if needed */
@@ -70,8 +67,90 @@
 
 @media (min-width: var(--bp-mobile)) and (max-width: var(--bp-tablet)) {
     .pagination-footer .pagination-controls {
-        flex-wrap: wrap; /* Allow controls to wrap on tablets */
         gap: 0.5rem; /* Consistent gap for wrapped items */
         justify-content: flex-start; /* Align to start on tablets if space allows */
+    }
+}
+
+/* Basic Pagination Styles (Moved from pagination.php) */
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: .25rem;
+    justify-content: center; /* Center pagination */
+    margin-top: 1rem;
+}
+
+.page-item {
+    margin: 0 2px;
+}
+
+.page-link {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #0d6efd; /* Updated Bootstrap 5 link color */
+    background-color: #fff; /* Background */
+    border: 1px solid #dee2e6; /* Border */
+    text-decoration: none;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-link {
+    transition: none;
+  }
+}
+
+.page-link:hover {
+    z-index: 2;
+    color: #0a58ca; /* Updated hover color */
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.page-item.active .page-link {
+    z-index: 3; /* Ensure active is above hover */
+    color: #fff;
+    background-color: #0d6efd; /* Active background */
+    border-color: #0d6efd;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d; /* Disabled color */
+    pointer-events: none;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .pagination {
+        flex-wrap: wrap; /* Allow items to wrap if they don't fit */
+    }
+    .page-item {
+        margin: 2px; /* Original was 0 2px, this adds a bit of vertical spacing for wrapped items */
+    }
+}
+
+@media (max-width: 576px) {
+    .page-link {
+        padding: .3rem .5rem; /* Smaller padding for very small screens */
+        font-size: 0.85rem;    /* Smaller font size for very small screens */
+    }
+
+    /* Hide all page items initially on very small screens */
+    .pagination .page-item {
+        display: none;
+    }
+
+    /* Then, show only the 'Previous', 'Next', and 'Active' page items */
+    .pagination .page-item:first-child, /* Previous button */
+    .pagination .page-item:last-child,  /* Next button */
+    .pagination .page-item.active {     /* Active page number */
+        display: block; 
     }
 }

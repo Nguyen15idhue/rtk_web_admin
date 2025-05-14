@@ -16,7 +16,7 @@ require_once BASE_PATH . '/actions/invoice/fetch_invoices.php';
 define('PDF_BASE_URL', $base_url . 'public/uploads/invoice/');
 
 $current_page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-$items_per_page = 10;
+$items_per_page = DEFAULT_ITEMS_PER_PAGE;
 $filters = ['status' => trim($_GET['status'] ?? '')];
 
 $data = fetch_admin_invoices($filters, $current_page, $items_per_page);
@@ -24,6 +24,9 @@ $invoices = $data['invoices'];
 $total = $data['total_count'];
 $total_pages = $data['total_pages'];
 $current_page = $data['current_page'];
+
+// --- Build Pagination URL ---
+$pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
 
 $status_options = [
     '' => 'Tất cả trạng thái',
@@ -121,6 +124,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                 </tbody>
             </table>
         </div>
+        <?php include $private_layouts_path . 'pagination.php'; ?>
     </div>
 </main>
 <script>

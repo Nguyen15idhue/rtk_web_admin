@@ -27,7 +27,7 @@ $profile_role = '';
 ?>
 <?php include $private_layouts_path . 'admin_header.php'; ?>
 <?php include $private_layouts_path . 'admin_sidebar.php'; ?>
-<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/pages/setting/profile.css">
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/pages/profile.css">
 <main class="content-wrapper">
     <div class="content-header">
         <h2>Hồ sơ Quản trị</h2>

@@ -21,8 +21,8 @@ $filters = [
 ];
 
 // --- Pagination ---
-$items_per_page = 10; // Consider making this configurable
-$current_page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, ['options' => ['default' => 1, 'min_range' => 1]]);
+$items_per_page = 1;
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
 // --- Data Fetching ---
 $accountModel = new AccountModel($db);
@@ -47,8 +47,8 @@ $accounts = $accountModel->getAccounts($filters, $items_per_page, $offset);
 // Remove 'page' param from existing query string to build the base URL
 $query_params = $_GET;
 unset($query_params['page']);
-$pagination_query = http_build_query(array_filter($query_params)); // Use array_filter to remove empty params if desired
-$pagination_base_url = '?' . $pagination_query . (empty($pagination_query) ? '' : '&');
+$pagination_query = http_build_query(array_filter($query_params));
+$pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
 
 
 // Return the processed data

@@ -77,17 +77,13 @@ if (isset($_GET['status'])) $filters_query['status'] = $_GET['status'];
 // Ensure 'tab' is always part of the base for pagination links
 $filters_query['tab'] = 'commissions';
 $pagination_base = '?' . http_build_query(array_filter($filters_query));
+$pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?'); // Added for pagination.php
 ?>
-<div class="pagination-footer">
-    <div class="pagination-controls">
-        <button <?php if($data['current'] <= 1) echo 'disabled'; ?> onclick="location.href='<?php echo $pagination_base; ?>&page=<?php echo $data['current'] - 1; ?>'">Tr</button>
-        <?php for($i = 1; $i <= $data['pages']; $i++): ?>
-            <button class="<?php echo $i == $data['current'] ? 'active' : ''; ?>"
-                onclick="location.href='<?php echo $pagination_base; ?>&page=<?php echo $i; ?>'">
-                <?php echo $i; ?>
-            </button>
-        <?php endfor; ?>
-        <button <?php if($data['current'] >= $data['pages']) echo 'disabled'; ?> onclick="location.href='<?php echo $pagination_base; ?>&page=<?php echo $data['current'] + 1; ?>'">Sau</button>
-    </div>
-</div>
+<?php 
+$total_pages = $data['pages'];
+$current_page = $data['current'];
+// $items_per_page is not available here, but pagination.php has a default.
+// $total_items is not available here, but pagination.php can handle this.
+include PRIVATE_LAYOUTS_PATH . 'pagination.php'; 
+?>
 <?php endif; ?>

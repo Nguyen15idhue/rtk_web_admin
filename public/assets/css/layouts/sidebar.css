@@ -497,6 +497,11 @@ body.sidebar-is-collapsed .collapse-btn i {
     transition-delay: 0s;
 }
 
+.nav-submenu { display: none; list-style: none; padding-left: 1em; }
+.nav-submenu.open { display: block; }
+.toggle-icon { transition: transform .3s; }
+.toggle-icon.rotated { transform: rotate(180deg); }
+
 @media (min-width: 1025px) {
     .sidebar-overlay {
         display: none !important; /* Ensure overlay is never shown on desktop */

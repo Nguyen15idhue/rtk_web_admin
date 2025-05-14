@@ -44,65 +44,8 @@ $page_title = 'Quản lý TK Đo đạc - Admin';
 include $private_layouts_path . 'admin_header.php';
 include $private_layouts_path . 'admin_sidebar.php';
 ?>
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/pages/account_management.css">
 
-<style>
-    /* Styles for the modern view account modal */
-    .modern-modal-content .modal-body {
-        padding: 20px 25px; /* Add more padding */
-    }
-
-    .account-details-list {
-        display: grid;
-        grid-template-columns: auto 1fr; /* Label and value */
-        gap: 10px 15px; /* Row and column gap */
-        font-size: 0.95rem;
-    }
-
-    .account-details-list dt {
-        font-weight: 600;
-        color: #333;
-        grid-column: 1;
-    }
-
-    .account-details-list dd {
-        margin-left: 0; /* Reset browser default */
-        color: #555;
-        grid-column: 2;
-        word-break: break-all; /* Prevent long strings from breaking layout */
-    }
-
-    .modern-modal-content h5 {
-        margin-top: 25px;
-        margin-bottom: 10px;
-        font-size: 1.1rem;
-        color: #333;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 5px;
-    }
-
-    .mp-table.modern-table { /* Style for mountpoint table if needed */
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.9rem;
-    }
-    .mp-table.modern-table th,
-    .mp-table.modern-table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-    .mp-table.modern-table th {
-        background-color: #f8f9fa;
-    }
-    #viewAccountLoading, #viewAccountError {
-        padding: 15px;
-        text-align: center;
-    }
-    #viewAccountError p.error {
-        color: var(--danger-color, #dc3545); /* Use CSS variable if available */
-    }
-
-</style>
 
 <main class="content-wrapper">
     <div class="content-header">
@@ -226,49 +169,9 @@ include $private_layouts_path . 'admin_sidebar.php';
         </form>
 
         <!-- Pagination -->
-        <div class="pagination-footer">
-            <div class="pagination-info">
-                <?php if ($total_items > 0):
-                    $start_item = ($current_page - 1) * $items_per_page + 1;
-                    $end_item = min($start_item + $items_per_page - 1, $total_items);
-                ?>
-                    Hiển thị <?php echo $start_item; ?>-<?php echo $end_item; ?> của <?php echo $total_items; ?> tài khoản
-                <?php else: ?>
-                    Không có tài khoản nào
-                <?php endif; ?>
-            </div>
-            <?php if ($total_pages > 1): ?>
-            <div class="pagination-controls">
-                <button onclick="window.location.href='<?php echo $pagination_base_url . 'page=' . ($current_page - 1); ?>'" <?php echo ($current_page <= 1) ? 'disabled' : ''; ?>>Tr</button>
-                <?php
-                    $max_pages_to_show = 5;
-                    $start_page = max(1, $current_page - floor($max_pages_to_show / 2));
-                    $end_page = min($total_pages, $start_page + $max_pages_to_show - 1);
-                    if ($end_page - $start_page + 1 < $max_pages_to_show) {
-                        $start_page = max(1, $end_page - $max_pages_to_show + 1);
-                    }
+        <?php include $private_layouts_path . 'pagination.php'; ?>
 
-                    if ($start_page > 1) {
-                        echo '<button onclick="window.location.href=\'' . $pagination_base_url . 'page=1\'">1</button>';
-                        if ($start_page > 2) echo '<span>...</span>';
-                    }
-
-                    for ($i = $start_page; $i <= $end_page; $i++):
-                ?>
-                    <button class="<?php echo ($i == $current_page) ? 'active' : ''; ?>" onclick="window.location.href='<?php echo $pagination_base_url . 'page=' . $i; ?>'"><?php echo $i; ?></button>
-                <?php
-                    endfor;
-
-                    if ($end_page < $total_pages) {
-                        if ($end_page < $total_pages - 1) echo '<span>...</span>';
-                        echo '<button onclick="window.location.href=\'' . $pagination_base_url . 'page=' . $total_pages . '\'">' . $total_pages . '</button>';
-                    }
-                ?>
-                <button onclick="window.location.href='<?php echo $pagination_base_url . 'page=' . ($current_page + 1); ?>'" <?php echo ($current_page >= $total_pages) ? 'disabled' : ''; ?>>Sau</button>
-            </div>
-            <?php endif; ?>
-        </div>
-    </div>
+    </div> <!-- End admin-account-management -->
 </main>
 
 <div id="viewAccountModal" class="modal">
@@ -540,8 +443,6 @@ include $private_layouts_path . 'admin_sidebar.php';
     const packagesList = <?php echo json_encode($packages); ?>;
 </script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/account/account_management.js"></script>
-
-</main>
 
 <?php
 include $private_layouts_path . 'admin_footer.php';

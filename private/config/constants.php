@@ -37,3 +37,6 @@ define('IMAGE_HOST_BASE_URL', 'http://localhost:8000/');
 // API Keys for external services
 define('API_ACCESS_KEY', 'Zb5F6iKUuAISy4qY');
 define('API_SECRET_KEY', 'KL1KEEJj2s6HA8LB');
+
+// Pagination
+define('DEFAULT_ITEMS_PER_PAGE', 1);
