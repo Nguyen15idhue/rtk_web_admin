@@ -677,9 +677,4 @@ class AccountModel {
             return [];
         }
     }
-
-    // Giải phóng kết nối DB khi object bị hủy
-    public function __destruct() {
-        $this->db = null;
-    }
 }

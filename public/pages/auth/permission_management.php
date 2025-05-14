@@ -1,5 +1,6 @@
 <?php
 $bootstrap = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
+$page_title = 'Quản lý Phân quyền';
 $db = $bootstrap['db'];
 $base_path = $bootstrap['base_path'];
 $base_url = $bootstrap['base_url'];
@@ -93,15 +94,7 @@ function getRoleDisplayName($role_key) {
 <?php include $private_layouts_path . 'admin_sidebar.php'; include $private_layouts_path . 'admin_header.php'; ?>
 
 <main class="content-wrapper">
-    <div class="content-header">
-        <h2 class="text-2xl font-semibold">Quản lý Phân quyền</h2>
-        <div class="user-info">
-            <span>Chào mừng, <span class="highlight"><?= htmlspecialchars($user_display_name) ?></span>!</span>
-            <?php foreach ($nav as $u => $t): ?>
-                <a href="<?= $base_url ?>public/<?= $u ?>"><?= $t ?></a>
-            <?php endforeach; ?>
-        </div>
-    </div>
+    <?php include $private_layouts_path . 'content_header.php'; ?>
 
     <div id="admin-permission-management" class="content-section">
         <div class="flex flex-row justify-between items-center mb-4 gap-3 md:gap-2">

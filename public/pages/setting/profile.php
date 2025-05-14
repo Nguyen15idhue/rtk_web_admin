@@ -1,5 +1,6 @@
 <?php
 $GLOBALS['required_permission'] = 'settings'; // Added permission requirement
+$page_title = 'Hồ sơ Quản trị viên';
 
 // --- Bootstrap and Initialization ---
 $bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
@@ -24,14 +25,7 @@ $profile_role = '';
 <?php include $private_layouts_path . 'admin_sidebar.php'; ?>
 <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/pages/profile.css">
 <main class="content-wrapper">
-    <div class="content-header">
-        <h2>Hồ sơ Quản trị</h2>
-        <div class="user-info">
-            <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-            <a href="<?php echo $base_url; ?>public/pages/setting/profile.php">Hồ sơ</a>
-            <a href="<?php echo $base_url; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
-        </div>
-    </div>
+    <?php include $private_layouts_path . 'content_header.php'; ?>
 
     <div id="admin-profile" class="content-section">
         <div class="profile-grid">  <!-- two columns from md breakpoint -->

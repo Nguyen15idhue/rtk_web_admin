@@ -1,12 +1,14 @@
 <?php
 require_once __DIR__ . '/../../config/constants.php';
 require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
+require_once __DIR__ . '/../../classes/RtkApiClient.php'; // Include the RtkApiClient class
 
 // Prevent PHP from outputting HTML errors directly
 error_reporting(E_ALL); // Report all errors for logging
 ini_set('display_errors', 0); // Keep off for browser output
 ini_set('log_errors', 1); // Ensure errors are logged
 ini_set('error_log', LOGS_PATH . '/error.log');
+
 /**
  * Tạo tài khoản RTK mới qua API.
  * 
@@ -38,87 +40,8 @@ function createRtkAccount(array $accountData): array {
             'mountIds' => []
         ], $accountData);
 
-        // API endpoint
-        $url = 'http://203.171.25.138:8090/openapi/broadcast/users';
-
-        // Generate headers
-        $nonce = bin2hex(random_bytes(16));
-        $timestamp = (string)(round(microtime(true) * 1000));
-        $accessKey = 'Zb5F6iKUuAISy4qY';
-        $secretKey = 'KL1KEEJj2s6HA8LB';
-        $signMethod = 'HmacSHA256';
-
-        $headers = [
-            'X-Nonce' => $nonce,
-            'X-Access-Key' => $accessKey,
-            'X-Sign-Method' => $signMethod,
-            'X-Timestamp' => $timestamp
-        ];
-
-        // Calculate signature
-        $method = 'POST';
-        $uri = '/openapi/broadcast/users';
-        $signStr = "$method $uri ";
-        ksort($headers);
-        foreach ($headers as $key => $value) {
-            $signStr .= strtolower($key) . "=" . $value . "&";
-        }
-        $signStr = rtrim($signStr, "&");
-        
-        $sign = hash_hmac('sha256', $signStr, $secretKey);
-        $headers['Sign'] = $sign;
-        $headers['Content-Type'] = 'application/json';
-
-        // Prepare cURL request
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($accountData));
-
-        // Set headers
-        $curlHeaders = [];
-        foreach ($headers as $key => $value) {
-            $curlHeaders[] = "$key: $value";
-        }
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $curlHeaders);
-
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-        // disable SSL verification for self-signed certificate
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        // Execute request
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $curlError = curl_error($ch);
-        curl_close($ch);
-
-        if ($curlError) {
-            return [
-                'success' => false,
-                'data' => null,
-                'error' => "cURL Error: $curlError"
-            ];
-        }
-
-        $responseData = json_decode($response, true);
-
-        // Check response
-        if ($httpCode >= 200 && $httpCode < 300 && isset($responseData['code']) && 
-            ($responseData['code'] === 'SUCCESS' || $responseData['code'] === 'OK')) {
-            return [
-                'success' => true,
-                'data' => $responseData['data'] ?? $responseData,
-                'error' => null
-            ];
-        }
-
-        return [
-            'success' => false,
-            'data' => $responseData,
-            'error' => $responseData['msg'] ?? "HTTP Error: $httpCode"
-        ];
-
+        $client = new RtkApiClient();
+        return $client->request('POST', '/openapi/broadcast/users', $accountData);
     } catch (Exception $e) {
         error_log(
             "createRtkAccount Exception: " . $e->getMessage() .
@@ -248,63 +171,8 @@ function updateRtkAccount(array $accountData): array {
             'mountIds'        => []
         ], $accountData);
 
-        // Endpoint and signature setup
-        $url       = "http://203.171.25.138:8090/openapi/broadcast/users/{$id}";
-        $method    = 'PUT';
-        $uri       = "/openapi/broadcast/users/{$id}";
-        $nonce     = bin2hex(random_bytes(16));
-        $timestamp = (string)round(microtime(true) * 1000);
-        $accessKey = 'Zb5F6iKUuAISy4qY';
-        $secretKey = 'KL1KEEJj2s6HA8LB';
-        $signMethod= 'HmacSHA256';
-
-        $headers = [
-            'X-Nonce'       => $nonce,
-            'X-Access-Key'  => $accessKey,
-            'X-Sign-Method' => $signMethod,
-            'X-Timestamp'   => $timestamp,
-        ];
-        ksort($headers);
-
-        // Build sign string
-        $signStr = "$method $uri ";
-        foreach ($headers as $k => $v) {
-            $signStr .= strtolower($k) . "=" . $v . "&";
-        }
-        $sign = hash_hmac('sha256', rtrim($signStr, "&"), $secretKey);
-        $headers['Sign']          = $sign;
-        $headers['Content-Type']  = 'application/json';
-
-        // cURL setup
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($accountData));
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-
-        $curlH = [];
-        foreach ($headers as $k => $v) {
-            $curlH[] = "$k: $v";
-        }
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $curlH);
-
-        $resp     = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $err      = curl_error($ch);
-        curl_close($ch);
-
-        if ($err) {
-            return ['success' => false, 'data' => null, 'error' => "cURL Error: $err"];
-        }
-
-        $data = json_decode($resp, true);
-        if ($httpCode >= 200 && $httpCode < 300 && isset($data['code']) &&
-           ($data['code'] === 'SUCCESS' || $data['code'] === 'OK')) {
-            return ['success' => true, 'data' => $data['data'] ?? $data, 'error' => null];
-        }
-
-        return ['success' => false, 'data' => $data, 'error' => $data['msg'] ?? "HTTP Error: $httpCode"];
+        $client = new RtkApiClient();
+        return $client->request('PUT', "/openapi/broadcast/users/{$id}", $accountData);
     } catch (Exception $e) {
         error_log(
             "updateRtkAccount Exception for ID {$id}: " . $e->getMessage() .
@@ -322,83 +190,19 @@ function updateRtkAccount(array $accountData): array {
  * @return array ['success'=>bool,'data'=>array|null,'error'=>string|null]
  */
 function deleteRtkAccount(array $ids): array {
-    $url       = 'http://203.171.25.138:8090/openapi/broadcast/users/delete';
-    $method    = 'POST';
-    $uri       = '/openapi/broadcast/users/delete';
-    $secretKey = 'KL1KEEJj2s6HA8LB';
-    $accessKey = 'Zb5F6iKUuAISy4qY';
-    $signMethod= 'HmacSHA256';
-    $nonce     = bin2hex(random_bytes(16));
-    $timestamp = (string)round(microtime(true)*1000);
-
-    $headers = [
-        'X-Nonce'       => $nonce,
-        'X-Access-Key'  => $accessKey,
-        'X-Sign-Method' => $signMethod,
-        'X-Timestamp'   => $timestamp,
-    ];
-    ksort($headers);
-
-    // build sign string
-    $signStr = "$method $uri ";
-    foreach ($headers as $k => $v) {
-        $signStr .= strtolower($k)."=".$v."&";
-    }
-    $sign    = hash_hmac('sha256', rtrim($signStr, "&"), $secretKey);
-    $headers['Sign']         = $sign;
-    $headers['Content-Type'] = 'application/json';
-
-    $ch = curl_init($url);
-    curl_setopt_array($ch, [
-        CURLOPT_RETURNTRANSFER    => true,
-        CURLOPT_POST              => true,
-        CURLOPT_POSTFIELDS        => json_encode(['ids'=>$ids]),
-        CURLOPT_HTTPHEADER        => array_map(fn($k,$v)=>"$k: $v", array_keys($headers), $headers),
-        CURLOPT_CONNECTTIMEOUT    => 5,
-        CURLOPT_TIMEOUT           => 15,
-    ]);
-    $resp     = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $err      = curl_error($ch);
-    curl_close($ch);
-
-    if ($err) {
-        return ['success'=>false,'data'=>null,'error'=>"cURL Error: $err"];
-    }
-    $data = json_decode($resp, true);
-    if ($httpCode>=200 && $httpCode<300 && isset($data['code']) 
-        && in_array($data['code'], ['SUCCESS','OK'], true)) {
-        return ['success'=>true,'data'=>$data['data']??$data,'error'=>null];
-    }
-    return ['success'=>false,'data'=>$data,'error'=>$data['msg'] ?? "HTTP $httpCode"];
+    $client = new RtkApiClient();
+    return $client->request('POST', '/openapi/broadcast/users/delete', ['ids' => $ids]);
 }
 
 /**
  * GET list of stations (id→identificationName, lat, lng).
  */
 function fetchAllStations(): array {
-    $url = 'http://203.171.25.138:8090/openapi/stream/stations?page=1&size=100&count=true';
-    // build and sign headers (reuse your X-Nonce/X-Timestamp logic)
-    $nonce     = bin2hex(random_bytes(16));
-    $timestamp = (string)round(microtime(true)*1000);
-    $accessKey = 'Zb5F6iKUuAISy4qY';
-    $secretKey = 'KL1KEEJj2s6HA8LB';
-    $signMethod= 'HmacSHA256';
-    $method = 'GET';
-    $uri    = '/openapi/stream/stations';
-    $hdr = ['X-Nonce'=>$nonce,'X-Access-Key'=>$accessKey,'X-Sign-Method'=>$signMethod,'X-Timestamp'=>$timestamp];
-    ksort($hdr);
-    $signStr = "$method $uri ";
-    foreach($hdr as $k=>$v) $signStr .= strtolower($k)."=$v&";
-    $hdr['Sign']=hash_hmac('sha256',rtrim($signStr,'&'),$secretKey);
-    $curlH=[];
-    foreach($hdr as $k=>$v) $curlH[]="$k: $v";
-    $ch = curl_init("$url");
-    curl_setopt_array($ch,[CURLOPT_RETURNTRANSFER=>1,CURLOPT_HTTPHEADER=>$curlH]);
-    $resp = curl_exec($ch); curl_close($ch);
-    $j = json_decode($resp,true);
+    $client = new RtkApiClient();
+    $resp = $client->request('GET', '/openapi/stream/stations?page=1&size=100&count=true');
+    $records = $resp['data']['records'] ?? [];
     $out = [];
-    foreach($j['data']['records']??[] as $r){
+    foreach ($records as $r) {
         $out[(int)$r['id']] = [
             'stationName'         => $r['stationName']         ?? '',
             'identificationName'  => $r['identificationName']  ?? '',
@@ -413,33 +217,9 @@ function fetchAllStations(): array {
  * POST dynamic-info with array of ids.
  */
 function fetchStationDynamicInfo(array $ids): array {
-    $url = 'http://203.171.25.138:8090/openapi/stream/stations/dynamic-info';
-    // generate & sign headers as above but METHOD=POST and URI='/openapi/stream/stations/dynamic-info'
-    $nonce     = bin2hex(random_bytes(16));
-    $timestamp = (string)round(microtime(true)*1000);
-    $accessKey = 'Zb5F6iKUuAISy4qY';
-    $secretKey = 'KL1KEEJj2s6HA8LB';
-    $signMethod= 'HmacSHA256';
-    $method = 'POST';
-    $uri    = '/openapi/stream/stations/dynamic-info';
-    $hdr = ['X-Nonce'=>$nonce,'X-Access-Key'=>$accessKey,'X-Sign-Method'=>$signMethod,'X-Timestamp'=>$timestamp];
-    ksort($hdr);
-    $signStr = "$method $uri ";
-    foreach($hdr as $k=>$v) $signStr .= strtolower($k)."=$v&";
-    $hdr['Sign']=hash_hmac('sha256',rtrim($signStr,'&'),$secretKey);
-    $hdr['Content-Type']='application/json';
-    $curlH=[];
-    foreach($hdr as $k=>$v) $curlH[]="$k: $v";
-    $ch = curl_init($url);
-    curl_setopt_array($ch,[
-        CURLOPT_RETURNTRANSFER=>1,
-        CURLOPT_POST=>1,
-        CURLOPT_POSTFIELDS=>json_encode(['ids'=>$ids]),
-        CURLOPT_HTTPHEADER=>$curlH
-    ]);
-    $resp = curl_exec($ch); curl_close($ch);
-    $j = json_decode($resp,true);
-    return $j['data'] ?? [];
+    $client = new RtkApiClient();
+    $resp = $client->request('POST', '/openapi/stream/stations/dynamic-info', ['ids' => $ids]);
+    return $resp['data'] ?? [];
 }
 
 /**

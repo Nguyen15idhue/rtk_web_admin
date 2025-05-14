@@ -13,7 +13,6 @@ $private_layouts_path = $bootstrap_data['private_layouts_path'];
 $admin_role        = $bootstrap_data['admin_role'];
 
 // --- Includes and Setup ---
-require_once BASE_PATH . '/utils/functions.php'; // General helpers (layouts format_date)
 require_once BASE_PATH . '/utils/user_helpers.php'; // User-specific helpers
 require_once BASE_PATH . '/actions/user/fetch_users.php'; // User fetching logic
 
@@ -50,14 +49,7 @@ include $private_layouts_path . 'admin_sidebar.php';
 <!-- Main Content Wrapper -->
 <main class="content-wrapper">
     <!-- Content Header -->
-    <div class="content-header">
-        <h2><?php echo $page_title; ?></h2>
-        <div class="user-info">
-            <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-            <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
-            <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
-        </div>
-    </div>
+    <?php include $private_layouts_path . 'content_header.php'; ?>
 
     <!-- Main Content Section -->
     <div id="admin-user-management" class="content-section">
@@ -158,8 +150,6 @@ include $private_layouts_path . 'admin_sidebar.php';
         <?php include $private_layouts_path . 'pagination.php'; ?>
 
     </div> <!-- End content-section -->
-
-    <!-- Modals have been moved to generic_modal.php, included in admin_footer.php -->
 
 </main> <!-- End content-wrapper -->
 

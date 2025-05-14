@@ -18,14 +18,7 @@ include $private_layouts_path . 'admin_sidebar.php';
 ?>
 
 <main class="content-wrapper">
-    <div class="content-header">
-        <h2><?php echo $page_title; ?></h2>
-        <div class="user-info">
-            <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-            <a href="<?php echo $base_url; ?>public/pages/setting/profile.php">Hồ sơ</a>
-            <a href="<?php echo $base_url; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
-        </div>
-    </div>
+    <?php include $private_layouts_path . 'content_header.php'; ?>
     <div class="content-section">
         <div class="header-actions">
             <h3>Danh sách yêu cầu hỗ trợ</h3>

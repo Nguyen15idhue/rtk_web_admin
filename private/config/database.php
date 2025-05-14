@@ -1,7 +1,14 @@
 <?php
 // filepath: private\config\database.php
-define('DB_SERVER',   '127.0.0.1');
-define('DB_USERNAME', 'root'); // Thay bằng username của bạn
-define('DB_PASSWORD', '');     // Thay bằng password của bạn
-define('DB_NAME',     'sa3');
+
+$db_server = getenv('DB_SERVER') ?: '127.0.0.1';
+$db_username = getenv('DB_USERNAME') ?: 'root';
+$db_password = getenv('DB_PASSWORD') ?: '';
+$db_name = getenv('DB_NAME') ?: 'sa3';
+
+define('DB_SERVER', $db_server);
+define('DB_USERNAME', $db_username);
+define('DB_PASSWORD', $db_password);
+define('DB_NAME', $db_name);
+
 ?>

@@ -2,6 +2,7 @@
 // filepath: public/pages/referral_management.php
 // --- Bootstrap and Initialization ---
 $bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
+$page_title = 'Quản lý Giới thiệu';
 $db                  = $bootstrap_data['db'];
 $base_url            = $bootstrap_data['base_url'];
 $private_layouts_path= $bootstrap_data['private_layouts_path'];
@@ -54,14 +55,7 @@ include $private_layouts_path . 'admin_sidebar.php';
     <link rel="stylesheet" href="<?= BASE_URL ?>public/assets/css/pages/referral_management.css">
 </head>
 <main class="content-wrapper">
-    <div class="content-header">
-        <h2>Quản lý Người Giới Thiệu</h2>
-        <div class="user-info">
-            <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-            <a href="<?php echo $base_url; ?>public/pages/setting/profile.php">Hồ sơ</a>
-            <a href="<?php echo $base_url; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
-        </div>
-    </div>
+    <?php include $private_layouts_path . 'content_header.php'; ?>
     <div class="content-section">
         <ul class="custom-tabs-nav">
             <li class="nav-item"><a class="nav-link <?php echo $current_tab=='referrals'?'active':''?>" href="?tab=referrals">Mã Giới Thiệu</a></li>

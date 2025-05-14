@@ -205,8 +205,4 @@ class UserModel {
         $stmt->execute($ids);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-    public function __destruct() {
-        Database::getInstance()->close();
-    }
 }

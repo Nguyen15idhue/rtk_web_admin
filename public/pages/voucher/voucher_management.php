@@ -46,14 +46,8 @@ include $private_layouts_path . 'admin_sidebar.php';
 ?>
 
 <main class="content-wrapper">
-    <div class="content-header">
-        <h2><?php echo $page_title; ?></h2>
-        <div class="user-info">
-            <span>Chào mừng, <span class="highlight"><?php echo htmlspecialchars($user_display_name); ?></span>!</span>
-            <a href="<?php echo $base_path; ?>public/pages/setting/profile.php">Hồ sơ</a>
-            <a href="<?php echo $base_path; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
-        </div>
-    </div>
+    <!-- Content Header -->
+    <?php include $private_layouts_path . 'content_header.php'; ?>
 
     <div id="voucher-management" class="content-section">
         <div class="header-actions">

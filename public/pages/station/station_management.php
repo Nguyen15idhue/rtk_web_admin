@@ -7,9 +7,7 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
 ?>
 
 <main class="content-wrapper">
-    <div class="content-header">
-        <h2><?php echo htmlspecialchars($page_title); ?></h2>
-    </div>
+    <?php include $private_layouts_path . 'content_header.php'; ?>
 
     <!-- Filter Form -->
     <form method="GET" action="" class="filter-bar" style="margin-bottom:15px;">
