@@ -3,39 +3,45 @@
     list-style: none;
     padding: 0;
     margin: 0 0 20px 0;
-    border-bottom: 1px solid #dee2e6; /* Light border for separation */
+    border-bottom: none;
+    margin-bottom: 20px;
 }
 
 .custom-tabs-nav .nav-item {
-    margin-right: 2px; /* Small gap between tabs */
+    margin-right: 10px;
 }
 
 .custom-tabs-nav .nav-link {
     display: block;
-    padding: 10px 15px;
+    padding: 12px 20px;
     text-decoration: none;
-    color: #495057; /* Default text color */
-    background-color: transparent;
-    border: 1px solid transparent; /* For consistent height */
-    border-bottom: none; /* Remove bottom border for inactive tabs */
-    border-radius: 4px 4px 0 0; /* Rounded corners on top */
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    color: #495057;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    transition: color 0.2s ease, border-bottom-color 0.2s ease;
+    outline: none;
 }
 
-.custom-tabs-nav .nav-link:hover {
-    color: #0056b3; /* Darker blue on hover */
-    background-color: #e9ecef; /* Light grey background on hover */
-    border-color: #e9ecef #e9ecef #dee2e6;
+.custom-tabs-nav .nav-link:hover,
+.custom-tabs-nav .nav-link:focus {
+    color: #007bff;
+    border-bottom-color: #007bff;
+    background: transparent;
+    outline: none;
 }
 
 .custom-tabs-nav .nav-link.active {
-    color: #007bff; /* Blue for active tab */
-    background-color: #fff; /* White background for active tab */
-    border-color: #dee2e6 #dee2e6 #fff; /* Match border with container and make bottom transparent */
-    border-bottom: 2px solid #007bff; /* Blue underline for active tab */
+    color: #007bff;
+    border-bottom-color: #007bff;
     font-weight: 600;
-    position: relative;
-    top: 1px; /* To make it visually connect with the content area */
+    background: transparent;
+}
+
+.custom-tabs-nav .nav-item:hover { /* Made selector more specific */
+    background-color: transparent; 
+    color: #fff; /* White text on hover */
 }
 
 /* Ensure the tab content has some top margin if not already handled */

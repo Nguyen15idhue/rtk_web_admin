@@ -64,10 +64,10 @@ include $private_layouts_path . 'admin_sidebar.php';
     </div>
     <div class="content-section">
         <ul class="custom-tabs-nav">
-            <li class="nav-item"><a class="nav-link <?php echo $current_tab=='referrals'?'active':''?>" href="?tab=referrals">Referral Codes</a></li>
-            <li class="nav-item"><a class="nav-link <?php echo $current_tab=='commissions'?'active':''?>" href="?tab=commissions">Commissions</a></li>
-            <li class="nav-item"><a class="nav-link <?php echo $current_tab=='referred'?'active':''?>" href="?tab=referred">Referred Users</a></li>
-            <li class="nav-item"><a class="nav-link <?php echo $current_tab=='withdrawals'?'active':''?>" href="?tab=withdrawals">Withdrawal Requests</a></li>
+            <li class="nav-item"><a class="nav-link <?php echo $current_tab=='referrals'?'active':''?>" href="?tab=referrals">Mã Giới Thiệu</a></li>
+            <li class="nav-item"><a class="nav-link <?php echo $current_tab=='commissions'?'active':''?>" href="?tab=commissions">Hoa Hồng</a></li>
+            <li class="nav-item"><a class="nav-link <?php echo $current_tab=='referred'?'active':''?>" href="?tab=referred">Người Được Giới Thiệu</a></li>
+            <li class="nav-item"><a class="nav-link <?php echo $current_tab=='withdrawals'?'active':''?>" href="?tab=withdrawals">Yêu Cầu Rút Tiền</a></li>
         </ul>
         <div class="tab-content" style="margin-top:20px;">
             <?php if ($current_tab=='referrals'): ?>
