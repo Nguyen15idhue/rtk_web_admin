@@ -20,20 +20,6 @@
         m.style.display = 'block';
     }
 
-    function toggleCompanyFields(formType){
-        const chk = document.getElementById(`${formType}IsCompany`);
-        const div = document.getElementById(`${formType}CompanyFields`);
-        const name = document.getElementById(`${formType}CompanyName`);
-        const tax  = document.getElementById(`${formType}TaxCode`);
-        if(chk.checked){
-            div.classList.add('visible');
-            name.required = tax.required = true;
-        } else {
-            div.classList.remove('visible');
-            name.required = tax.required = false;
-        }
-    }
-
     /**
      * Get localized text for voucher type.
      */
@@ -101,6 +87,6 @@
     });
 
     // expose to helpers namespace
-    window.helpers = { closeModal, openModal, toggleCompanyFields, getVoucherTypeText, formatDate, formatCurrency, parseCurrency };
+    window.helpers = { closeModal, openModal, getVoucherTypeText, formatDate, formatCurrency, parseCurrency };
 
 })(window);

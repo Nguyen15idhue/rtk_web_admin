@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
                        .replace(/\/?$/,'/') ;
 
     const helpers = window.helpers;
-    const { closeModal, toggleCompanyFields, openModal } = helpers;
+    const { closeModal, openModal } = helpers;
     const { getJson, postJson, postForm } = window.api;
 
     const apiBasePath = `${basePath}public/handlers/user/index.php`;
