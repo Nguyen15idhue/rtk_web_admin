@@ -90,7 +90,7 @@ require_once __DIR__ . '/../../../private/actions/report/process_reports_data.ph
                 <div>
                     <h3>Giao dịch</h3>
                     <div class="space-y-2 text-sm">
-                        <div class="flex justify-between"><span>Tổng doanh số (kỳ BC):</span> <strong><?php echo number_format($total_sales,0,',','.'); ?>đ</strong></div>
+                        <div class="flex justify-between"><span>Tổng doanh số (kỳ BC):</span> <strong><?php echo format_currency($total_sales); ?></strong></div>
                         <div class="flex justify-between"><span>Số GD thành công:</span> <strong><?php echo $completed_transactions; ?></strong></div>
                         <div class="flex justify-between"><span>Số GD chờ duyệt:</span> <strong><?php echo $pending_transactions; ?></strong></div>
                         <div class="flex justify-between"><span>Số GD bị từ chối:</span> <strong><?php echo $failed_transactions; ?></strong></div>
@@ -104,9 +104,9 @@ require_once __DIR__ . '/../../../private/actions/report/process_reports_data.ph
                     <h3>Giới thiệu</h3>
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between"><span>Lượt giới thiệu mới (kỳ BC):</span> <strong><?php echo $new_referrals; ?></strong></div>
-                        <div class="flex justify-between"><span>Hoa hồng phát sinh (kỳ BC):</span> <strong><?php echo number_format($commission_generated,0,',','.'); ?>đ</strong></div>
-                        <div class="flex justify-between"><span>Hoa hồng đã thanh toán (kỳ BC):</span> <strong><?php echo number_format($commission_paid,0,',','.'); ?>đ</strong></div>
-                        <div class="flex justify-between"><span>Tổng HH chờ thanh toán:</span> <strong><?php echo number_format($commission_pending,0,',','.'); ?>đ</strong></div>
+                        <div class="flex justify-between"><span>Hoa hồng phát sinh (kỳ BC):</span> <strong><?php echo format_currency($commission_generated); ?></strong></div>
+                        <div class="flex justify-between"><span>Hoa hồng đã thanh toán (kỳ BC):</span> <strong><?php echo format_currency($commission_paid); ?></strong></div>
+                        <div class="flex justify-between"><span>Tổng HH chờ thanh toán:</span> <strong><?php echo format_currency($commission_pending); ?></strong></div>
                     </div>
                 </div>
             </div>

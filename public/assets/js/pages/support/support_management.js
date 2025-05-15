@@ -31,8 +31,8 @@
                                         ? '<span class="status-badge badge-green">Đã giải quyết</span>'
                                         : '<span class="status-badge badge-secondary">Đã đóng</span>'
                         }</td>` +
-                        `<td>${new Date(r.created_at).toLocaleString()}</td>` +
-                        `<td>${r.updated_at ? new Date(r.updated_at).toLocaleString() : ''}</td>` +
+                        `<td>${helpers.formatDateTime(r.created_at)}</td>` +
+                        `<td>${r.updated_at ? helpers.formatDateTime(r.updated_at) : ''}</td>` +
                         `<td class="actions text-center"><button type="button" class="btn-icon btn-view" data-id="${r.id}"><i class="fas fa-eye"></i></button></td>` +
                     `</tr>`;
                 }).join('');
@@ -64,8 +64,8 @@
             </p>
             <p><strong>Phản hồi của Admin:</strong></p>
             <textarea id="modalResponse" class="form-control" rows="4">${data.admin_response || ''}</textarea>
-            <p><strong>Ngày tạo:</strong> <span>${new Date(data.created_at).toLocaleString()}</span></p>
-            <p><strong>Ngày cập nhật:</strong> <span>${data.updated_at ? new Date(data.updated_at).toLocaleString() : ''}</span></p>
+            <p><strong>Ngày tạo:</strong> <span>${helpers.formatDateTime(data.created_at)}</span></p>
+            <p><strong>Ngày cập nhật:</strong> <span>${data.updated_at ? helpers.formatDateTime(data.updated_at) : ''}</span></p>
         `;
     }
 

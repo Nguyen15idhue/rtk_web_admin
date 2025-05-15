@@ -27,7 +27,7 @@
                         <td><?php echo htmlspecialchars($item['id']); ?></td>
                         <td><?php echo htmlspecialchars($item['referrer_name']); ?></td>
                         <td><?php echo htmlspecialchars($item['referred_name']); ?></td>
-                        <td><?php echo htmlspecialchars($item['created_at']); ?></td>
+                        <td><?php echo format_datetime($item['created_at']); ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>

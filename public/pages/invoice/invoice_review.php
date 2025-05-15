@@ -79,7 +79,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                         <td>
                             <?php 
                                 // đổi định dạng ngày giờ sang dd-mm-yyyy hh:mm:ss
-                                echo date('d-m-Y H:i:s', strtotime($inv['request_date'])); 
+                                echo format_datetime($inv['request_date']); 
                             ?>
                         </td>
                         <td class="status">

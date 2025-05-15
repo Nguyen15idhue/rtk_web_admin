@@ -1,0 +1,12 @@
+[15-May-2025 08:06:31 UTC] [DEBUG] Search keyword: 
+[15-May-2025 08:06:38 UTC] PHP Warning:  Undefined variable $page_title in E:\Application\laragon\www\rtk_web_admin\private\layouts\content_header.php on line 5
+[15-May-2025 08:06:38 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in E:\Application\laragon\www\rtk_web_admin\private\layouts\content_header.php on line 5
+[15-May-2025 08:15:11 UTC] PHP Warning:  Undefined variable $page_title in E:\Application\laragon\www\rtk_web_admin\private\layouts\content_header.php on line 5
+[15-May-2025 08:15:11 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in E:\Application\laragon\www\rtk_web_admin\private\layouts\content_header.php on line 5
+[15-May-2025 08:31:55 UTC] PHP Warning:  Undefined variable $page_title in E:\Application\laragon\www\rtk_web_admin\private\layouts\content_header.php on line 5
+[15-May-2025 08:31:55 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in E:\Application\laragon\www\rtk_web_admin\private\layouts\content_header.php on line 5
+[15-May-2025 08:32:05 UTC] PHP Warning:  Undefined variable $page_title in E:\Application\laragon\www\rtk_web_admin\private\layouts\content_header.php on line 5
+[15-May-2025 08:32:05 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in E:\Application\laragon\www\rtk_web_admin\private\layouts\content_header.php on line 5
+[15-May-2025 08:32:29 UTC] PHP Warning:  Undefined variable $page_title in E:\Application\laragon\www\rtk_web_admin\private\layouts\content_header.php on line 5
+[15-May-2025 08:32:29 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in E:\Application\laragon\www\rtk_web_admin\private\layouts\content_header.php on line 5
+[15-May-2025 11:50:10 UTC] [DEBUG] Search keyword: 

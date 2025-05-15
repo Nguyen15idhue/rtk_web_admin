@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renewAccountForm.querySelector('#renew-account-id').value = account.id;
             renewAccountForm.querySelector('#renew-username-display').textContent = account.username_acc || 'N/A';
             renewAccountForm.querySelector('#renew-current-package-display').textContent = account.package_name || 'N/A';
-            renewAccountForm.querySelector('#renew-current-expiry-display').textContent = account.expiry_date ? account.expiry_date.split(' ')[0] : 'N/A';
+            renewAccountForm.querySelector('#renew-current-expiry-display').textContent = helpers.formatDate(account.expiry_date) || 'N/A';
             
             renewAccountForm.querySelector('#renew-package').value = account.package_id || '';
 
@@ -175,8 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     mainHtml += `<dt>ID TK</dt><dd>${account.id || 'N/A'}</dd>`;
                     mainHtml += `<dt>Username TK</dt><dd>${account.username_acc || 'N/A'}</dd>`;
                     mainHtml += `<dt>Mật khẩu TK</dt><dd>${account.password_acc || 'N/A'}</dd>`; // Consider security implications
-                    mainHtml += `<dt>Ngày KH</dt><dd>${account.activation_date ? account.activation_date.split(' ')[0] : 'N/A'}</dd>`;
-                    mainHtml += `<dt>Ngày HH</dt><dd>${account.expiry_date ? account.expiry_date.split(' ')[0] : 'N/A'}</dd>`;
+                    mainHtml += `<dt>Ngày KH</dt><dd>${helpers.formatDate(account.activation_date) || 'N/A'}</dd>`;
+                    mainHtml += `<dt>Ngày HH</dt><dd>${helpers.formatDate(account.expiry_date) || 'N/A'}</dd>`;
                     mainHtml += '</dl>';
                     mainDetailsContainer.innerHTML = mainHtml;
                 }
