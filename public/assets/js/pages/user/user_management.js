@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
                        .replace(/\/?$/,'/') ;
 
     const helpers = window.helpers;
-    const { closeModal, toggleCompanyFields, openModal } = helpers;
+    const { closeModal, openModal } = helpers;
     const { getJson, postJson, postForm } = window.api;
 
     const apiBasePath = `${basePath}public/handlers/user/index.php`;
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
             })
             .catch(err => {
                 errorEl.textContent = 'Lỗi khi gửi yêu cầu: ' + err.message;
-                window.showToast('Lỗi: ' + err.message, 'error');
+                window.showToast('Đã có lỗi, hãy đảm bảo thông tin được nhập không bị trùng với tài khoản khác', 'error');
             })
             .finally(()=>{
                 genericModalPrimaryButton.disabled = false;

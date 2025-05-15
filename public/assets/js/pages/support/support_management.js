@@ -2,6 +2,18 @@
 (function($) {
     const apiUrl = basePath + '/public/handlers/support/index.php';
 
+    // Add centralized badge map and helper for support statuses
+    const supportStatusBadgeMap = {
+        pending:      { class: 'badge-yellow',    text: 'Chờ xử lý' },
+        in_progress:  { class: 'badge-info',      text: 'Đang xử lý' },
+        resolved:     { class: 'badge-green',     text: 'Đã giải quyết' },
+        closed:       { class: 'badge-secondary', text: 'Đã đóng' }
+    };
+    function getStatusBadge(status) {
+        const m = supportStatusBadgeMap[status] || { class: 'badge-secondary', text: status };
+        return `<span class="status-badge ${m.class}">${m.text}</span>`;
+    }
+
     function loadRequests() {
         const search = $('#searchInput').val();
         const category = $('#categoryFilter').val();
@@ -22,17 +34,9 @@
                             : r.category === 'account' ? 'Tài khoản'
                             : 'Khác'
                         }</td>` +
-                        `<td>${
-                            r.status === 'pending'
-                                ? '<span class="status-badge badge-yellow">Chờ xử lý</span>'
-                                : r.status === 'in_progress'
-                                    ? '<span class="status-badge badge-info">Đang xử lý</span>'
-                                    : r.status === 'resolved'
-                                        ? '<span class="status-badge badge-green">Đã giải quyết</span>'
-                                        : '<span class="status-badge badge-secondary">Đã đóng</span>'
-                        }</td>` +
-                        `<td>${new Date(r.created_at).toLocaleString()}</td>` +
-                        `<td>${r.updated_at ? new Date(r.updated_at).toLocaleString() : ''}</td>` +
+                        `<td>${getStatusBadge(r.status)}</td>` +
+                        `<td>${helpers.formatDateTime(r.created_at)}</td>` +
+                        `<td>${r.updated_at ? helpers.formatDateTime(r.updated_at) : ''}</td>` +
                         `<td class="actions text-center"><button type="button" class="btn-icon btn-view" data-id="${r.id}"><i class="fas fa-eye"></i></button></td>` +
                     `</tr>`;
                 }).join('');
@@ -64,8 +68,8 @@
             </p>
             <p><strong>Phản hồi của Admin:</strong></p>
             <textarea id="modalResponse" class="form-control" rows="4">${data.admin_response || ''}</textarea>
-            <p><strong>Ngày tạo:</strong> <span>${new Date(data.created_at).toLocaleString()}</span></p>
-            <p><strong>Ngày cập nhật:</strong> <span>${data.updated_at ? new Date(data.updated_at).toLocaleString() : ''}</span></p>
+            <p><strong>Ngày tạo:</strong> <span>${helpers.formatDateTime(data.created_at)}</span></p>
+            <p><strong>Ngày cập nhật:</strong> <span>${data.updated_at ? helpers.formatDateTime(data.updated_at) : ''}</span></p>
         `;
     }
 
@@ -93,7 +97,7 @@
         api.postJson(apiUrl + '?action=update_support_request', { id, status, admin_response: response })
             .then(env => {
                 if (!env.success) throw new Error(env.message);
-                alert('Cập nhật thành công');
+                window.showToast('Cập nhật thành công!', 'success');
                 helpers.closeModal('genericModal');
                 loadRequests();
             })

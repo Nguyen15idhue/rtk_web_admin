@@ -4,7 +4,7 @@
 
 .content-wrapper {
     flex-grow: 1; /* Take up remaining space */
-    padding: 1.5rem; /* Default padding */
+    padding: 1rem; /* Default padding */
     transition: margin-left var(--sidebar-transition-speed, 300ms) ease-in-out; /* Smooth transition for margin change */
     /* background-color: var(--gray-50, #f9fafb); /* Background for content area */
     min-width: 0; /* Prevent content from overflowing container in flex context */

@@ -1,5 +1,7 @@
 <?php
 // filepath: public/pages/invoice/invoice_management.php
+$page_title = 'Quản lý Giao dịch';
+
 $bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db                    = $bootstrap_data['db'];
 $base_url             = $bootstrap_data['base_url'];
@@ -106,8 +108,8 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
                 </div>
             </form>
 
-            <div class="transactions-table-wrapper">
-                <table class="transactions-table" id="transactionsTable">
+            <div class="table-wrapper">
+                <table class="table" id="transactionsTable">
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="selectAllTx"></th>

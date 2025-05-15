@@ -1,6 +1,6 @@
 <?php
 // filepath: public\pages\reports.php
-
+$page_title             = 'Báo cáo';
 $bootstrap_data         = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $db                      = $bootstrap_data['db'];
 $base_url                = $bootstrap_data['base_url'];
@@ -32,8 +32,8 @@ require_once __DIR__ . '/../../../private/actions/report/process_reports_data.ph
     <div id="admin-reports" class="content-section">
         <div class="mb-6 bg-white p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200">
             <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-3">Bộ lọc chung</h3>
-            <form id="report-filter-form" method="GET" action="">
-                <div class="filter-bar">
+            <div class="filter-bar flex items-end gap-2">
+                <form id="report-filter-form" method="GET" action="" class="flex items-end gap-2">
                     <input type="date" id="report-start-date" name="start_date"
                            value="<?php echo htmlspecialchars($start_date); ?>" placeholder="Từ ngày">
                     <input type="date" id="report-end-date" name="end_date"
@@ -44,17 +44,16 @@ require_once __DIR__ . '/../../../private/actions/report/process_reports_data.ph
                     <a href="<?php echo strtok($_SERVER['REQUEST_URI'], '?'); ?>" class="btn btn-secondary">
                         <i class="fas fa-times"></i> Xóa lọc
                     </a>
-                    <!-- Export Excel Button moved here -->
-                    <form id="export-report-excel" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php" class="inline-block ml-2">
-                        <input type="hidden" name="action" value="export_report_excel">
-                        <input type="hidden" name="start_date" value="<?php echo htmlspecialchars($start_date); ?>">
-                        <input type="hidden" name="end_date" value="<?php echo htmlspecialchars($end_date); ?>">
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-file-excel"></i> Xuất Excel
-                        </button>
-                    </form>
-                </div>
-            </form>
+                </form>
+                <form id="export-report-excel" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php" class="inline-block">
+                    <input type="hidden" name="action" value="export_report_excel">
+                    <input type="hidden" name="start_date" value="<?php echo htmlspecialchars($start_date); ?>">
+                    <input type="hidden" name="end_date" value="<?php echo htmlspecialchars($end_date); ?>">
+                    <button type="submit" class="btn btn-success ml-2">
+                        <i class="fas fa-file-excel"></i> Xuất Excel
+                    </button>
+                </form>
+            </div>
         </div>
         <!-- Reports cards: using stats-grid/stat-card -->
         <div class="stats-grid">
@@ -90,7 +89,7 @@ require_once __DIR__ . '/../../../private/actions/report/process_reports_data.ph
                 <div>
                     <h3>Giao dịch</h3>
                     <div class="space-y-2 text-sm">
-                        <div class="flex justify-between"><span>Tổng doanh số (kỳ BC):</span> <strong><?php echo number_format($total_sales,0,',','.'); ?>đ</strong></div>
+                        <div class="flex justify-between"><span>Tổng doanh số (kỳ BC):</span> <strong><?php echo format_currency($total_sales); ?></strong></div>
                         <div class="flex justify-between"><span>Số GD thành công:</span> <strong><?php echo $completed_transactions; ?></strong></div>
                         <div class="flex justify-between"><span>Số GD chờ duyệt:</span> <strong><?php echo $pending_transactions; ?></strong></div>
                         <div class="flex justify-between"><span>Số GD bị từ chối:</span> <strong><?php echo $failed_transactions; ?></strong></div>
@@ -104,9 +103,9 @@ require_once __DIR__ . '/../../../private/actions/report/process_reports_data.ph
                     <h3>Giới thiệu</h3>
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between"><span>Lượt giới thiệu mới (kỳ BC):</span> <strong><?php echo $new_referrals; ?></strong></div>
-                        <div class="flex justify-between"><span>Hoa hồng phát sinh (kỳ BC):</span> <strong><?php echo number_format($commission_generated,0,',','.'); ?>đ</strong></div>
-                        <div class="flex justify-between"><span>Hoa hồng đã thanh toán (kỳ BC):</span> <strong><?php echo number_format($commission_paid,0,',','.'); ?>đ</strong></div>
-                        <div class="flex justify-between"><span>Tổng HH chờ thanh toán:</span> <strong><?php echo number_format($commission_pending,0,',','.'); ?>đ</strong></div>
+                        <div class="flex justify-between"><span>Hoa hồng phát sinh (kỳ BC):</span> <strong><?php echo format_currency($commission_generated); ?></strong></div>
+                        <div class="flex justify-between"><span>Hoa hồng đã thanh toán (kỳ BC):</span> <strong><?php echo format_currency($commission_paid); ?></strong></div>
+                        <div class="flex justify-between"><span>Tổng HH chờ thanh toán:</span> <strong><?php echo format_currency($commission_pending); ?></strong></div>
                     </div>
                 </div>
             </div>

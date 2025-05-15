@@ -31,8 +31,8 @@ include $private_layouts_path . 'admin_sidebar.php';
             <a href="<?php echo strtok($_SERVER['REQUEST_URI'],'?'); ?>" class="btn btn-secondary"><i class="fas fa-times"></i> Xóa</a>
         </form>
 
-        <div class="transactions-table-wrapper">
-            <table class="transactions-table" id="tbl-guides">
+        <div class="table-wrapper">
+            <table class="table" id="tbl-guides">
                 <thead>
                     <tr>
                         <th>ID</th><th>Tiêu đề</th><th>Tác giả</th><th class="status text-center">Trạng thái</th><th class="actions text-center">Hành động</th>

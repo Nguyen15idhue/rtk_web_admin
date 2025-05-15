@@ -239,8 +239,8 @@ function getRoleDisplayName($role_key) {
     <!-- Admin Accounts List -->
     <div class="content-section">
         <h3>Danh sách tài khoản quản trị</h3>
-        <div class="transactions-table-wrapper">
-            <table class="transactions-table" id="adminAccountsTable">
+        <div class="table-wrapper">
+            <table class="table" id="adminAccountsTable">
                 <thead>
                     <tr>
                         <th>ID</th><th>Tên</th><th>Username</th><th>Vai trò</th><th>Ngày tạo</th><th class="actions" style="text-align:center">Hành động</th>

@@ -85,8 +85,8 @@ include $private_layouts_path . 'admin_sidebar.php';
                     <i class="fas fa-file-excel"></i> Xuất tất cả
                 </button>
             </div>
-            <div class="transactions-table-wrapper">
-                <table class="transactions-table">
+            <div class="table-wrapper">
+                <table class="table">
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="selectAll"></th>

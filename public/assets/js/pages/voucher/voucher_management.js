@@ -1,4 +1,15 @@
 // filepath: public/assets/js/pages/voucher/voucher_management.js
+
+// Thêm helper local để thay thế
+function getVoucherTypeText(type) {
+    switch (type) {
+        case 'fixed_discount':        return 'Giảm cố định';
+        case 'percentage_discount':   return 'Giảm phần trăm';
+        case 'extend_duration':       return 'Tặng tháng';
+        default:                      return 'Không xác định';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', ()=> {
     const basePath = ('/' + (window.appConfig.basePath || ''))
                        .replace(/\/+/g,'/')
@@ -108,7 +119,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
                     let html = `<div class="detail-row"><span class="detail-label">ID:</span> <span class="detail-value">${v.id}</span></div>`;
                     html += `<div class="detail-row"><span class="detail-label">Mã:</span> <span class="detail-value">${v.code}</span></div>`;
                     html += `<div class="detail-row"><span class="detail-label">Mô tả:</span> <span class="detail-value">${v.description || '-'}</span></div>`;
-                    html += `<div class="detail-row"><span class="detail-label">Loại:</span> <span class="detail-value">${helpers.getVoucherTypeText(v.voucher_type)}</span></div>`;
+                    html += `<div class="detail-row"><span class="detail-label">Loại:</span> <span class="detail-value">${getVoucherTypeText(v.voucher_type)}</span></div>`;
                     let valueDisplay = '';
                     if (v.voucher_type === 'percentage_discount') {
                         valueDisplay = `${parseFloat(v.discount_value)}%`;

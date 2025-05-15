@@ -54,8 +54,8 @@ include $private_layouts_path . 'admin_sidebar.php';
             <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
             <a href="<?php echo strtok($_SERVER['REQUEST_URI'],'?'); ?>" class="btn btn-secondary"><i class="fas fa-times"></i> Xóa</a>
         </form>
-        <div class="transactions-table-wrapper">
-            <table class="transactions-table">
+        <div class="table-wrapper">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -79,7 +79,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                         <td>
                             <?php 
                                 // đổi định dạng ngày giờ sang dd-mm-yyyy hh:mm:ss
-                                echo date('d-m-Y H:i:s', strtotime($inv['request_date'])); 
+                                echo format_datetime($inv['request_date']); 
                             ?>
                         </td>
                         <td class="status">

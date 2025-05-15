@@ -20,32 +20,6 @@
         m.style.display = 'block';
     }
 
-    function toggleCompanyFields(formType){
-        const chk = document.getElementById(`${formType}IsCompany`);
-        const div = document.getElementById(`${formType}CompanyFields`);
-        const name = document.getElementById(`${formType}CompanyName`);
-        const tax  = document.getElementById(`${formType}TaxCode`);
-        if(chk.checked){
-            div.classList.add('visible');
-            name.required = tax.required = true;
-        } else {
-            div.classList.remove('visible');
-            name.required = tax.required = false;
-        }
-    }
-
-    /**
-     * Get localized text for voucher type.
-     */
-    function getVoucherTypeText(type) {
-        switch (type) {
-            case 'fixed_discount': return 'Giảm cố định';
-            case 'percentage_discount': return 'Giảm phần trăm';
-            case 'extend_duration': return 'Tặng tháng';
-            default: return 'Không xác định';
-        }
-    }
-
     /**
      * Formats a date string 'YYYY-MM-DD HH:MM:SS' to 'DD/MM/YYYY'.
      */
@@ -55,6 +29,44 @@
         const parts = date.split('-');
         if (parts.length !== 3) return date;
         return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+
+        /**
+     * Formats a date string (e.g., 'YYYY-MM-DD HH:MM:SS') or Date object to 'DD/MM/YYYY HH:MM:SS'.
+     */
+    function formatDateTime(datetimeInput) {
+        if (!datetimeInput) return '-';
+
+        let dateObj;
+        if (typeof datetimeInput === 'string') {
+            // Handles 'YYYY-MM-DD HH:MM:SS' or 'YYYY-MM-DD'.
+            // Replace hyphens in date part with slashes for broader compatibility if it's a string,
+            // especially for Date constructor, but ensure it's a valid format.
+            // A more robust solution might involve a library if formats are very diverse.
+            let normalizedDateTimeString = datetimeInput;
+            if (datetimeInput.length === 10 && datetimeInput.includes('-')) { // YYYY-MM-DD
+                normalizedDateTimeString = datetimeInput + 'T00:00:00'; // Treat as local time
+            }
+            dateObj = new Date(normalizedDateTimeString);
+        } else if (datetimeInput instanceof Date) {
+            dateObj = datetimeInput;
+        } else {
+            return String(datetimeInput); // Not a string or Date, return as is or handle error
+        }
+
+        if (isNaN(dateObj.getTime())) { // Check if date is valid
+             // If parsing failed, return original string or a placeholder
+            return (typeof datetimeInput === 'string') ? datetimeInput : '-';
+        }
+
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+        const year = dateObj.getFullYear();
+        const hours = String(dateObj.getHours()).padStart(2, '0');
+        const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+        const seconds = String(dateObj.getSeconds()).padStart(2, '0');
+
+        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
     }
 
     /**
@@ -101,6 +113,6 @@
     });
 
     // expose to helpers namespace
-    window.helpers = { closeModal, openModal, toggleCompanyFields, getVoucherTypeText, formatDate, formatCurrency, parseCurrency };
+    window.helpers = { closeModal, openModal, formatDate, formatDateTime, formatCurrency, parseCurrency };
 
 })(window);
