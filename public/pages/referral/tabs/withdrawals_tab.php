@@ -33,8 +33,8 @@
         <button type="submit" name="export_selected_excel" class="btn btn-info" id="export-selected-withdrawals-btn">Xuất mục đã chọn</button>
     </div>
 
-    <div class="transactions-table-wrapper">
-        <table class="transactions-table">
+    <div class="table-wrapper">
+        <table class="table">
             <thead>
                 <tr>
                     <th><input type="checkbox" id="select-all-withdrawals"></th>

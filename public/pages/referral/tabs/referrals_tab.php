@@ -10,8 +10,8 @@
         <a class="btn btn-secondary" href="?tab=referrals">Xóa</a>
     </div>
 </form>
-<div class="transactions-table-wrapper">
-    <table class="transactions-table">
+<div class="table-wrapper">
+    <table class="table">
         <thead>
             <tr>
                 <th>ID</th>

@@ -1,3 +1,6 @@
+/* Import centralized status-badge styles */
+@import url('./status-badge.css');
+
 .modal {
     display: none;
     position: fixed;

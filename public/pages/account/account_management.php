@@ -111,8 +111,8 @@ include $private_layouts_path . 'admin_sidebar.php';
                 </button>
             </div>
 
-            <div class="transactions-table-wrapper">
-                <table class="transactions-table" id="accountsTable">
+            <div class="table-wrapper">
+                <table class="table" id="accountsTable">
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="selectAll"></th>

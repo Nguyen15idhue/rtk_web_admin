@@ -27,8 +27,8 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
     </form>
 
     <!-- now the table is outside the export form -->
-    <div class="transactions-table-wrapper">
-        <table id="stationsTable" class="transactions-table">
+    <div class="table-wrapper">
+        <table id="stationsTable" class="table">
             <thead>
                 <tr>
                     <th><input type="checkbox" id="selectAll"></th>
@@ -115,8 +115,8 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
             <h3>Quản lý Người quản lý</h3>
             <button type="button" class="btn btn-primary" onclick="openCreateManagerModal()"><i class="fas fa-plus"></i> Thêm Người quản lý</button>
         </div>
-        <div class="transactions-table-wrapper">
-            <table class="transactions-table" id="managersTable">
+        <div class="table-wrapper">
+            <table class="table" id="managersTable">
                 <thead>
                     <tr>
                         <th>ID</th><th>Tên</th><th>Điện thoại</th><th>Địa chỉ</th><th class="text-center">Hành động</th>

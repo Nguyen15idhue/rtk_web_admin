@@ -85,8 +85,8 @@ include $private_layouts_path . 'admin_sidebar.php';
                 <button type="button" id="bulkToggleStatusBtn" onclick="UserManagementPageEvents.bulkToggleUserStatus()" class="btn btn-warning"><i class="fas fa-sync-alt"></i> Đảo trạng thái</button>
             </div>
 
-            <div class="transactions-table-wrapper">
-                <table class="transactions-table" id="usersTable">
+            <div class="table-wrapper">
+                <table class="table" id="usersTable">
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="selectAll"></th>

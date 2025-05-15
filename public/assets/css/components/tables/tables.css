@@ -1,9 +1,10 @@
 /* Common table wrapper styling */
 /* import các rule của button và badges */
 @import url('./tables-buttons.css');
-@import url('./tables-badges.css');
+/* Import centralized status-badge styles */
+@import url('../status-badge.css');
 
-.content-wrapper .transactions-table-wrapper {
+.content-wrapper .table-wrapper {
     overflow-x: auto;
     background: white;
     border-radius: var(--rounded-lg);
@@ -13,14 +14,14 @@
 }
 
 /* Table styling */
-.content-wrapper .transactions-table {
+.content-wrapper .table {
     width: 100%;
     border-collapse: collapse;
     min-width: 800px;
 }
 
-.content-wrapper .transactions-table th,
-.content-wrapper .transactions-table td {
+.content-wrapper .table th,
+.content-wrapper .table td {
     padding: 0.9rem 1rem;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
@@ -28,7 +29,7 @@
     vertical-align: middle;
 }
 
-.content-wrapper .transactions-table th {
+.content-wrapper .table th {
     background-color: var(--gray-50);
     font-weight: var(--font-semibold);
     color: var(--gray-600);
@@ -36,25 +37,25 @@
 }
 
 /* Status header centered */
-.content-wrapper .transactions-table th.status {
+.content-wrapper .table th.status {
     text-align: center;
 }
 
-.content-wrapper .transactions-table tr:last-child td {
+.content-wrapper .table tr:last-child td {
     border-bottom: none;
 }
 
-.content-wrapper .transactions-table tr:hover {
+.content-wrapper .table tr:hover {
     background-color: var(--gray-50);
 }
 
 /* Action and status cells */
-.content-wrapper .transactions-table td.status,
-.content-wrapper .transactions-table td.actions {
+.content-wrapper .table td.status,
+.content-wrapper .table td.actions {
     text-align: center;
 }
 
-.content-wrapper .transactions-table td .action-buttons {
+.content-wrapper .table td .action-buttons {
     display: inline-flex;
     gap: 0.5rem;
     justify-content: center;
@@ -78,6 +79,6 @@
 /* No results row */
 .content-wrapper #no-results-row td { text-align: center; padding: 3rem; color: var(--gray-500); font-size: var(--font-size-base); }
 
-.transactions-table th.text-center {
+.table th.text-center {
     text-align: center;
 }

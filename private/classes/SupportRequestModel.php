@@ -19,8 +19,11 @@ class SupportRequestModel {
         $where = [];
         $params = [];
         if (!empty($filters['search'])) {
-            $where[] = "(sr.subject LIKE :search OR sr.message LIKE :search OR u.email LIKE :search)";
-            $params[':search'] = '%' . trim($filters['search']) . '%';
+            $searchTerm = '%' . trim($filters['search']) . '%';
+            $where[] = "(sr.subject LIKE :search_subject OR sr.message LIKE :search_message OR u.email LIKE :search_email)";
+            $params[':search_subject'] = $searchTerm;
+            $params[':search_message'] = $searchTerm;
+            $params[':search_email'] = $searchTerm;
         }
         if (!empty($filters['status'])) {
             $where[] = "sr.status = :status";
@@ -36,10 +39,15 @@ class SupportRequestModel {
         $sql .= ' ORDER BY sr.created_at DESC';
 
         $stmt = $this->db->prepare($sql);
+        // Bind each parameter explicitly
         foreach ($params as $key => $value) {
-            $stmt->bindValue($key, $value);
+            if (stripos($key, ':search') === 0) {
+                $stmt->bindValue($key, $value, PDO::PARAM_STR);
+            } else {
+                $stmt->bindValue($key, $value);
+            }
         }
-        $stmt->execute();
+        $stmt->execute(); // Execute without parameters since they're already bound
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

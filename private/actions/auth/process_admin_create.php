@@ -28,7 +28,7 @@ $password = $input['password'] ?? '';
 $role = $input['role'] ?? '';
 
 // Basic validation
-if (!$name || !$username || !$password || !in_array($role, ['admin','customercare'])) {
+if (!$name || !$username || !$password) {
     api_error('Missing or invalid fields', 400);
 }
 
