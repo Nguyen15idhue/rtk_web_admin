@@ -21,18 +21,6 @@
     }
 
     /**
-     * Get localized text for voucher type.
-     */
-    function getVoucherTypeText(type) {
-        switch (type) {
-            case 'fixed_discount': return 'Giảm cố định';
-            case 'percentage_discount': return 'Giảm phần trăm';
-            case 'extend_duration': return 'Tặng tháng';
-            default: return 'Không xác định';
-        }
-    }
-
-    /**
      * Formats a date string 'YYYY-MM-DD HH:MM:SS' to 'DD/MM/YYYY'.
      */
     function formatDate(datetime) {
@@ -87,6 +75,6 @@
     });
 
     // expose to helpers namespace
-    window.helpers = { closeModal, openModal, getVoucherTypeText, formatDate, formatCurrency, parseCurrency };
+    window.helpers = { closeModal, openModal, formatDate, formatCurrency, parseCurrency };
 
 })(window);
