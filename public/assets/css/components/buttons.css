@@ -63,3 +63,14 @@
     background-color: var(--danger-700);
     border-color: var(--danger-700);
 }
+
+/* Modern blue for info button */
+.btn-info {
+    background-color: #3b82f6;    /* blue-500 */
+    color: white;
+    border-color: #3b82f6;
+}
+.btn-info:hover {
+    background-color: #2563eb;    /* blue-600 */
+    border-color: #2563eb;
+}
