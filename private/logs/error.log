@@ -1,2 +1,2 @@
-[14-May-2025 16:22:27 UTC] [DEBUG] Search keyword: 
-[14-May-2025 16:22:38 UTC] [DEBUG] Search keyword: 
+[15-May-2025 05:34:40 UTC] Uncaught exception: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'duration_value' in 'field list' in E:\Application\laragon\www\rtk_web_admin\public\pages\account\account_management.php on line 34
+[15-May-2025 05:36:18 UTC] Uncaught exception: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'duration_value' in 'field list' in E:\Application\laragon\www\rtk_web_admin\public\pages\account\account_management.php on line 34

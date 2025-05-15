@@ -26,13 +26,10 @@ $current_page = $account_list_data['current_page'];
 $items_per_page = $account_list_data['items_per_page'];
 $pagination_base_url = $account_list_data['pagination_base_url'];
 
-// Fetch provinces list for create account form
-$locationsStmt = $db->query("SELECT id, province FROM location WHERE status = 1 ORDER BY province");
-$locations = $locationsStmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Fetch package list for create account form
-$packagesStmt = $db->query("SELECT id, name FROM package WHERE is_active = 1 ORDER BY display_order");
-$packages = $packagesStmt->fetchAll(PDO::FETCH_ASSOC);
+// Use data fetched in action handler
+$locations = $account_list_data['locations'];
+$packages = $account_list_data['packages'];
+$packageDurations = $account_list_data['packageDurations'];
 
 // --- Include Helpers needed for the View ---
 require_once BASE_PATH . '/utils/dashboard_helpers.php';
@@ -246,7 +243,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                 </div>
                 <div class="form-group">
                     <label for="create-activation-date">Ngày kích hoạt:</label>
-                    <input type="date" id="create-activation-date" name="start_time">
+                    <input type="date" id="create-activation-date" name="start_time" value="<?php echo date('Y-m-d'); ?>">
                 </div>
                 <div class="form-group">
                     <label for="create-expiry-date">Ngày hết hạn:</label>
@@ -428,6 +425,11 @@ include $private_layouts_path . 'admin_sidebar.php';
 
 <div id="toast-container"></div> <!-- Toast container -->
 
+<!-- expose packagesList and packageDurations before loading the account_management.js -->
+<script>
+window.packagesList     = <?php echo json_encode($packages,          JSON_UNESCAPED_UNICODE); ?>;
+window.packageDurations = <?php echo json_encode($packageDurations, JSON_UNESCAPED_UNICODE); ?>;
+</script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/account/account_management.js"></script>
 
 <?php
