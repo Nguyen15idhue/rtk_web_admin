@@ -133,5 +133,19 @@ class Auth {
         self::ensureSessionStarted();
         return isset($_SESSION['admin_role']) && $_SESSION['admin_role'] === $role;
     }
+
+    /**
+     * Checks if the current user has a specific permission without enforcing.
+     * @param string $permission The permission to check.
+     * @return bool True if the user has the permission.
+     */
+    public static function can(string $permission): bool {
+        self::ensureSessionStarted();
+        if (!isset($_SESSION['admin_role'])) {
+            return false;
+        }
+        // Access private hasPermission via self
+        return self::hasPermission($_SESSION['admin_role'], $permission);
+    }
 }
 ?>

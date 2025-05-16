@@ -86,3 +86,13 @@
 [16-May-2025 14:45:29 UTC] Using default mount points for location ID: 12 - [42]
 [16-May-2025 14:45:29 UTC] RTK API Payload: {"id":"2248","name":"CMA001","userPwd":"09999993232","startTime":1747353600000,"endTime":1763337599000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
 [16-May-2025 14:45:29 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[16-May-2025 16:22:17 UTC] Error updating support request: SQLSTATE[01000]: Warning: 1265 Data truncated for column 'status' at row 1
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\SupportRequestModel.php(77): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\support\update_support_request.php(23): SupportRequestModel->update(4, 'rejected', '')
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\support\index.php(20): require_once('E:\\Application\\...')
+#3 {main}
+[16-May-2025 16:22:19 UTC] Error updating support request: SQLSTATE[01000]: Warning: 1265 Data truncated for column 'status' at row 1
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\SupportRequestModel.php(77): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\support\update_support_request.php(23): SupportRequestModel->update(4, 'approved', '')
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\support\index.php(20): require_once('E:\\Application\\...')
+#3 {main}

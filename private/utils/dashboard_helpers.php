@@ -58,7 +58,7 @@ function get_payment_proof_status($registration_id) {
  * Formats an activity log entry into a user-friendly message and icon.
  *
  * @param array $log The activity log data array.
- * @return array An array containing the formatted 'icon', 'message', and 'time'.
+ * @return array An array containing the formatted 'icon', 'message', 'time', 'action_type', 'details_url', and 'required_permission'.
  */
 function format_activity_log($log) {
     $actor = htmlspecialchars($log['actor_name'] ?? 'System'); // Add null coalescing for safety
@@ -70,6 +70,9 @@ function format_activity_log($log) {
 
     $message = "";
     $icon = "fas fa-info-circle text-gray-500"; // Default icon
+    $action_type = null;
+    $details_url = null;
+    $required_permission = null;
 
     switch ($action) {
         case 'purchase':
@@ -94,16 +97,27 @@ function format_activity_log($log) {
             if ($registration) {
                 $message .= get_payment_proof_status($registration);
             }
+            if (isset($registration)) {
+                $action_type = 'navigate';
+                $details_url = BASE_URL . 'public/pages/purchase/invoice_management.php#transaction-' . $registration;
+            }
+            $required_permission = 'invoice_management_view';
             break;
         case 'create_support_request':
             $message = "<strong class='font-medium'>{$actor}</strong> đã tạo yêu cầu hỗ trợ #<strong>{$entity_id}</strong>.";
             $icon    = "fas fa-headset text-blue-500";
+            $action_type = 'navigate';
+            $details_url = BASE_URL . 'public/pages/support/support_management.php#support-' . $entity_id;
+            $required_permission = 'support_management_view';
             break;
         case 'request_invoice':
             $details = json_decode($log['new_values'] ?? '', true) ?: [];
             $transaction_id = htmlspecialchars($details['transaction_history_id'] ?? $entity_id); // Sử dụng transaction_history_id từ new_values, fallback về entity_id
             $message = "<strong class='font-medium'>{$actor}</strong> đã yêu cầu xuất hóa đơn cho giao dịch #<strong class='font-medium'>{$transaction_id}</strong>.";
             $icon    = "fas fa-file-invoice text-blue-500";
+            $action_type = 'navigate';
+            $details_url = BASE_URL . 'public/pages/invoice/invoice_review.php#invoice-' . $transaction_id;
+            $required_permission = 'invoice_review_view';
             break;
         case 'renewal_request':
             $details = json_decode($log['new_values'] ?? '', true) ?: [];
@@ -123,6 +137,11 @@ function format_activity_log($log) {
             if ($registration) {
                 $message .= get_payment_proof_status($registration);
             }
+            if (isset($registration)) {
+                $action_type = 'navigate';
+                $details_url = BASE_URL . 'public/pages/purchase/invoice_management.php#transaction-' . $registration;
+            }
+            $required_permission = 'invoice_management_view';
             break;
         case 'withdrawal_request':
             $details = json_decode($log['new_values'] ?? '', true) ?: [];
@@ -143,6 +162,9 @@ function format_activity_log($log) {
             }
             $message .= ".";
             $icon    = "fas fa-money-bill-wave text-yellow-500";
+            $action_type = 'navigate';
+            $details_url = BASE_URL . 'public/pages/referral/referral_management.php?tab=withdrawals#request-' . $entity_id;
+            $required_permission = 'referral_management_view';
             break;
         default:
             $message = "<strong class='font-medium'>{$actor}</strong> thực hiện: {$action} trên {$entity_type} <strong class='font-medium'>{$entity_id}</strong>.";
@@ -151,7 +173,10 @@ function format_activity_log($log) {
     return [
         'icon' => $icon,
         'message' => $message,
-        'time' => $time
+        'time' => $time,
+        'action_type' => $action_type,
+        'details_url' => $details_url,
+        'required_permission' => $required_permission,
     ];
 }
 
