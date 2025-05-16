@@ -1,7 +1,7 @@
 <?php
 $config = require_once __DIR__ . '/../../core/page_bootstrap.php';
 
-Auth::ensureAuthorized('user_management'); 
+Auth::ensureAuthorized('user_management_view'); 
 $db     = $config['db'];
 if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     abort('Invalid or missing user ID.', 400);

@@ -12,9 +12,7 @@ register_shutdown_function(function() use (&$db) {
 
 header('Content-Type: application/json');
 
-// Use Auth class for authentication
-Auth::ensureAuthenticated(); // Allow any authenticated user to get details, or restrict further if needed.
-
+Auth::ensureAuthorized('account_management_view');
 if (!isset($_GET['id'])) {
     abort('Account ID not provided.', 400);
 }

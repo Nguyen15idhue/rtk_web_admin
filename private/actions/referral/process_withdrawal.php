@@ -6,6 +6,8 @@ require_once dirname(__DIR__, 2) . '/config/constants.php';
 require_once PRIVATE_CORE_PATH . 'error_handler.php';
 require_once PRIVATE_CLASSES_PATH . 'Database.php';
 require_once BASE_PATH . '/utils/functions.php';
+require_once __DIR__ . '/../../classes/Auth.php';
+Auth::ensureAuthorized('referral_management_edit'); 
 
 // Ensure request method is POST or GET
 $method = $_SERVER['REQUEST_METHOD'];

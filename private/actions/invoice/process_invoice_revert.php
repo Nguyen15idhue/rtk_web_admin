@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../core/page_bootstrap.php';
 header('Content-Type: application/json');
-Auth::ensureAuthorized('invoice_management');
+Auth::ensureAuthorized('invoice_review_edit');
 
 $input = json_decode(file_get_contents('php://input'), true);
 $invoiceId = isset($input['invoice_id']) ? (int)$input['invoice_id'] : 0;

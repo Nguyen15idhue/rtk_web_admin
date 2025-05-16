@@ -74,12 +74,12 @@ foreach ($roles_to_display as $role_key) {
 // Define permission groups for UI display
 $permission_groups_config = [
     'Tổng quan & Hệ thống Căn bản' => ['dashboard', 'settings'],
-    'Quản lý Truy cập & Quản trị viên' => ['permission_management', 'permission_edit', 'admin_user_create'],
-    'Quản lý Người dùng (Khách hàng)' => ['user_management', 'user_create'],
-    'Quản lý Tài khoản Đo đạc' => ['account_management'],
-    'Quản lý Tài chính & Giao dịch' => ['invoice_management', 'invoice_review', 'revenue_management', 'voucher_management'],
-    'Quản lý Nội dung & Trạm' => ['guide_management', 'station_management'],
-    'Hỗ trợ & Giới thiệu' => ['support_management', 'referral_management'],
+    'Quản lý Truy cập & Quản trị viên' => ['permission_management_view', 'permission_management_edit', 'admin_user_create'],
+    'Quản lý Người dùng (Khách hàng)' => ['user_management_view', 'user_management_edit', 'user_create'],
+    'Quản lý Tài khoản Đo đạc' => ['account_management_view', 'account_management_edit'],
+    'Quản lý Tài chính & Giao dịch' => ['invoice_management_view', 'invoice_management_edit', 'invoice_review_view', 'invoice_review_edit', 'revenue_management_view', 'revenue_management_edit', 'voucher_management_view', 'voucher_management_edit'],
+    'Quản lý Nội dung & Trạm' => ['guide_management_view', 'guide_management_edit', 'station_management_view', 'station_management_edit'],
+    'Hỗ trợ & Giới thiệu' => ['support_management_view', 'support_management_edit', 'referral_management_view', 'referral_management_edit'],
     'Báo cáo' => ['reports']
 ];
 

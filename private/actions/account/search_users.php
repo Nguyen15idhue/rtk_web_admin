@@ -1,7 +1,7 @@
 <?php
 
 $bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
-Auth::ensureAuthenticated(); // Allow any authenticated user to search
+Auth::ensureAuthorized('account_management_view');
 
 $db = $bootstrap['db'];
 // Đảm bảo đóng PDO khi script kết thúc

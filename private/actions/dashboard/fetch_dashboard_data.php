@@ -3,7 +3,7 @@
 
 $config = require __DIR__ . '/../../core/page_bootstrap.php';
 
-Auth::ensureAuthorized('dashboard'); // Changed to string permission
+Auth::ensureAuthenticated();
 $pdo = $config['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc

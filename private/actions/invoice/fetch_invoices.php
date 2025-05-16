@@ -10,7 +10,7 @@ if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
 
 $bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 
-Auth::ensureAuthorized('invoice_management');
+Auth::ensureAuthorized('invoice_management_view'); 
 $db        = $bootstrap['db'];
 register_shutdown_function(fn() => $db = null);
 

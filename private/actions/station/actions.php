@@ -5,7 +5,7 @@
 $bootstrap_data = require_once __DIR__ . '/../../core/page_bootstrap.php';
 $base_url = $bootstrap_data['base_url'] ?? '/';
 
-Auth::ensureAuthenticated();
+Auth::ensureAuthorized('station_management_edit');
 
 // Ensure POST request
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

@@ -3,7 +3,7 @@
 header('Content-Type: application/json');
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 
-Auth::ensureAuthorized('admin_user_create'); // Only admins can create other admins
+Auth::ensureAuthorized('permission_management_edit'); // Only admins can create other admins
 $db      = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc

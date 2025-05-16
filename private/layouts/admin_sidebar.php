@@ -11,19 +11,19 @@ $admin_nav_items = [
     ['label' => 'Dashboard', 'icon' => 'fa-tachometer-alt', 'url' => '/public/pages/dashboard/dashboard.php', 'active_check' => 'dashboard.php', 'permission' => 'dashboard'],
 
     ['type' => 'section', 'label' => 'Quản lý Hệ thống'],
-    ['label' => 'QL Trạm', 'icon' => 'fa-broadcast-tower', 'url' => '/public/pages/station/station_management.php', 'active_check' => 'station_management.php', 'permission' => 'station_management'],
-    ['label' => 'QL Voucher', 'icon' => 'fa-ticket-alt', 'url' => '/public/pages/voucher/voucher_management.php', 'active_check' => 'voucher_management.php', 'permission' => 'voucher_management'],
-    ['label' => 'QL phân quyền', 'icon' => 'fa-user-lock', 'url' => '/public/pages/auth/permission_management.php', 'active_check' => 'permission_management.php', 'permission' => 'permission_management'],
+    ['label' => 'QL Trạm', 'icon' => 'fa-broadcast-tower', 'url' => '/public/pages/station/station_management.php', 'active_check' => 'station_management.php', 'permission' => 'station_management_view'],
+    ['label' => 'QL Voucher', 'icon' => 'fa-ticket-alt', 'url' => '/public/pages/voucher/voucher_management.php', 'active_check' => 'voucher_management.php', 'permission' => 'voucher_management_view'],
+    ['label' => 'QL phân quyền', 'icon' => 'fa-user-lock', 'url' => '/public/pages/auth/permission_management.php', 'active_check' => 'permission_management.php', 'permission' => 'permission_management_view'],
 
     ['type' => 'section', 'label' => 'Quản lý Người dùng & KH'],
     ['label' => 'Người dùng & Tài khoản', 'icon' => 'fa-users-cog', 'children' => [
-        ['label' => 'QL người dùng', 'icon' => 'fa-users', 'url' => '/public/pages/user/user_management.php', 'active_check' => 'user_management.php', 'permission' => 'user_management'],
-        ['label' => 'QL TK đo đạc', 'icon' => 'fa-ruler-combined', 'url' => '/public/pages/account/account_management.php', 'active_check' => 'account_management.php', 'permission' => 'account_management'],
+        ['label' => 'QL người dùng', 'icon' => 'fa-users', 'url' => '/public/pages/user/user_management.php', 'active_check' => 'user_management.php', 'permission' => 'user_management_view'],
+        ['label' => 'QL TK đo đạc', 'icon' => 'fa-ruler-combined', 'url' => '/public/pages/account/account_management.php', 'active_check' => 'account_management.php', 'permission' => 'account_management_view'],
     ]],
     ['label' => 'Khách hàng & Hỗ trợ', 'icon' => 'fa-hands-helping', 'children' => [
-        ['label' => 'QL người giới thiệu', 'icon' => 'fa-network-wired', 'url' => '/public/pages/referral/referral_management.php', 'active_check' => 'referral_management.php', 'permission' => 'referral_management'],
-        ['label' => 'Chăm sóc khách hàng', 'icon' => 'fa-headset', 'url' => '/public/pages/support/support_management.php', 'active_check' => 'support_management.php', 'permission' => 'support_management'],
-        ['label' => 'QL Hướng dẫn', 'icon' => 'fa-book', 'url' => '/public/pages/guide/guide_management.php', 'active_check' => 'guide_management.php', 'permission' => 'guide_management'],
+        ['label' => 'QL người giới thiệu', 'icon' => 'fa-network-wired', 'url' => '/public/pages/referral/referral_management.php', 'active_check' => 'referral_management.php', 'permission' => 'referral_management_view'],
+        ['label' => 'Chăm sóc khách hàng', 'icon' => 'fa-headset', 'url' => '/public/pages/support/support_management.php', 'active_check' => 'support_management.php', 'permission' => 'support_management_view'],
+        ['label' => 'QL Hướng dẫn', 'icon' => 'fa-book', 'url' => '/public/pages/guide/guide_management.php', 'active_check' => 'guide_management.php', 'permission' => 'guide_management_view'],
     ]],
 
     ['type' => 'section', 'label' => 'Quản lý Tài chính'],

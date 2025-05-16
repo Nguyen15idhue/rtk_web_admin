@@ -3,7 +3,7 @@
 $bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
-Auth::ensureAuthorized('account_management');
+Auth::ensureAuthorized('account_management_edit');
 
 require_once BASE_PATH . '/classes/AccountModel.php';
 require_once BASE_PATH . '/api/rtk_system/account_api.php'; // For updateRtkAccount

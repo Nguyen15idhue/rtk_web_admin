@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php'; 
 require_once BASE_PATH . '/classes/InvoiceModel.php';    // thêm
-Auth::ensureAuthorized('invoice_management');
+Auth::ensureAuthorized('invoice_review_edit');
 
 // only POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

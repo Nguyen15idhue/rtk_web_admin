@@ -7,7 +7,7 @@ $base_url = $bootstrap_data['base_url'] ?? '/';
 
 require_once __DIR__ . '/../../../private/classes/StationModel.php';
 require_once __DIR__ . '/../../../private/classes/ManagerModel.php';
-Auth::ensureAuthenticated();
+Auth::ensureAuthorized('station_management_view');
 
 // Page settings
 $page_title = "Quản lý Trạm";

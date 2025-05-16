@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 
-Auth::ensureAuthorized('permission_management');
+Auth::ensureAuthorized('permission_management_view');
 $db      = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc

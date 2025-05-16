@@ -5,7 +5,7 @@ header('Content-Type: application/json'); // Set response type
 
 // --- Permission check ---
 require_once __DIR__ . '/../../classes/Auth.php';
-Auth::ensureAuthorized('invoice_management'); 
+Auth::ensureAuthorized('invoice_management_edit'); 
 
 require_once __DIR__ . '/../../config/constants.php';
 require_once BASE_PATH . '/classes/Database.php';
