@@ -225,3 +225,19 @@
 [15-May-2025 16:14:29 UTC] [DEBUG] Search keyword: 
 [15-May-2025 16:14:59 UTC] [DEBUG] Search keyword: 
 [15-May-2025 16:22:08 UTC] [DEBUG] Search keyword: 
+[16-May-2025 08:48:04 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 08:48:04 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 08:48:04 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 08:48:04 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 08:48:13 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 08:48:13 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 08:48:13 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 08:48:13 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 08:48:38 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 08:48:38 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 08:48:38 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 08:48:38 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 08:48:47 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 08:48:47 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 08:48:47 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 08:48:47 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null

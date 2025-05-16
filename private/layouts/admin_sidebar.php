@@ -33,7 +33,7 @@ $admin_nav_items = [
         ['label' => 'Phê duyệt hóa đơn', 'icon' => 'fa-file-invoice', 'url' => '/public/pages/invoice/invoice_review.php', 'active_check' => 'invoice_review.php', 'permission' => 'invoice_review'],
     ]],
 
-    ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => '/public/pages/report/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports'],
+    ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => '/public/pages/report/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports_view'],
 
     ['type' => 'section', 'label' => 'Cài đặt'],
     ['label' => 'Thông tin tài khoản', 'icon' => 'fa-id-card', 'url' => '/public/pages/setting/profile.php', 'active_check' => 'profile.php', 'permission' => 'settings'],
@@ -152,8 +152,11 @@ $admin_user_role = isset($role_vietnamese[$role]) ? $role_vietnamese[$role] : uc
                         </li>
                     <?php else: ?>
                         <?php
-                            // Skip unauthorized items (except sections or logout)
-                            if (!isset($item['type']) && isset($item['permission']) && !in_array($item['permission'], $allowed_perms)) {
+                            if (!isset($item['type'])
+                                && isset($item['permission'])
+                                && !in_array($item['permission'], $allowed_perms)
+                                && !in_array($item['permission'], ['dashboard', 'settings'])
+                            ) {
                                 continue;
                             }
                             // Determine if the item is active

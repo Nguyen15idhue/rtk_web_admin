@@ -1,6 +1,12 @@
 (function(){
     const adminsData   = window.adminsData;
     const isAdmin = window.isAdmin;
+    const allDefinedPermissions = window.allDefinedPermissions || {};
+    const permissionGroupsConfig = window.permissionGroupsConfig || {};
+    let currentRolePermissions = window.currentRolePermissions || {};
+    const roleDisplayNames = window.roleDisplayNames || {};
+    let activeRoleKey = null;
+
     console.log('Debug isAdmin value:', window.isAdmin, typeof window.isAdmin, '=>', isAdmin);
 
     window.togglePermissionGroup = function(headerElement, contentId) {
@@ -10,67 +16,314 @@
             const isHidden = contentElement.style.display === 'none' || contentElement.style.display === '';
             contentElement.style.display = isHidden ? 'block' : 'none';
             if (icon) {
-                if (isHidden) {
-                    icon.classList.remove('fa-chevron-down');
-                    icon.classList.add('fa-chevron-up');
-                } else {
-                    icon.classList.remove('fa-chevron-up');
-                    icon.classList.add('fa-chevron-down');
-                }
+                icon.classList.toggle('fa-chevron-down', !isHidden);
+                icon.classList.toggle('fa-chevron-up', isHidden);
             }
         }
     };
 
-    // Load current permissions on page load
-    ['Admin','CustomerCare'].forEach(async role => {
-        try {
-            const result = await api.getJson(`${basePath}public/handlers/auth/index.php?action=fetch_permissions&role=${role.toLowerCase()}`);
-            if (!result.success) throw new Error(result.message || 'Không thể tải quyền.');
-            result.data.forEach(item => {
-                const sel = `input[type="checkbox"][data-role="${role}"][data-permission="${item.permission}"]`;
-                const cb = document.querySelector(sel);
-                if (cb) cb.checked = item.allowed=='1'||item.allowed===1;
+    const permissionPagesConfig = {};
+    (function buildPages(){
+        for(const group in permissionGroupsConfig){
+            const codes = permissionGroupsConfig[group];
+            const seen = new Set();
+            permissionPagesConfig[group] = [];
+            codes.forEach(code => {
+                const m = code.match(/(.+?)_(view|edit)$/);
+                const base = m ? m[1] : code;
+                if(seen.has(base)) return;
+                seen.add(base);
+                const viewCode = allDefinedPermissions[base + '_view'] ? base + '_view' : null;
+                const editCode = allDefinedPermissions[base + '_edit'] ? base + '_edit' : null;
+                const label = allDefinedPermissions[viewCode] || allDefinedPermissions[editCode] || allDefinedPermissions[base] || base;
+                permissionPagesConfig[group].push({ base, viewCode, editCode, label });
             });
-        } catch (err) {
-            console.error(err);
-            window.showToast(`Error fetching perms for ${role}: ${err.message}`, 'error');
         }
-    });
+    })();
 
-    async function savePermissions(role, event){
-        event.preventDefault();
-        if (!isAdmin) return window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
-        const permissions = {};
-        document.querySelectorAll(`input[type="checkbox"][data-role="${role}"]`)
-                .forEach(cb => permissions[cb.dataset.permission] = cb.checked);
+    const { closeModal: helperCloseModal, openModal: helperOpenModal } = window.helpers || {};
+
+    function renderPermissionsModal(roleKey) {
+        activeRoleKey = roleKey;
+        const modal = document.getElementById('permissionsConfigModal');
+        const modalBody = document.getElementById('permissionsModalBody');
+        const modalRoleName = document.getElementById('modalRoleName');
+        const saveBtn = document.getElementById('saveRolePermissionsBtn');
+
+        if (!modal || !modalBody || !modalRoleName || !currentRolePermissions[roleKey]) {
+            console.error('Modal elements or role permissions not found for', roleKey);
+            return;
+        }
+
+        modalRoleName.textContent = roleDisplayNames[roleKey] || roleKey;
+        modalBody.innerHTML = ''; // Clear previous content
+
+        let groupRenderIndex = 0; // Used for generating unique IDs
+
+        // Iterate over permissionGroupsConfig to maintain defined group order
+        for (const groupName in permissionGroupsConfig) {
+            const pages = permissionPagesConfig[groupName]; // Pages derived from this group
+            
+            // Only render a section if there are view/edit "pages" for this group
+            if (!pages || !pages.length) {
+                continue;
+            }
+            
+            groupRenderIndex++;
+            const groupEl = document.createElement('div');
+            groupEl.className = 'permission-group-modal mb-6 p-4 border border-gray-200 rounded-lg shadow-sm bg-white';
+            
+            const contentId = `modal-config-group-content-${roleKey}-${groupRenderIndex}`;
+
+            const headerElement = document.createElement('div');
+            headerElement.className = 'permission-group-header font-semibold text-gray-800 text-md mb-3 cursor-pointer flex justify-between items-center';
+            headerElement.onclick = function() { window.togglePermissionGroup(this, contentId); };
+            headerElement.innerHTML = `
+                <span>${groupName}</span>
+                <i class="fas fa-chevron-down text-gray-500"></i>
+            `;
+
+            const contentElement = document.createElement('div');
+            contentElement.id = contentId;
+            contentElement.className = 'permission-group-content';
+            contentElement.style.display = 'none'; // Start collapsed
+
+            const tableWrapper = document.createElement('div');
+            tableWrapper.className = 'overflow-x-auto rounded-lg border border-gray-300';
+            
+            const tableHtmlHeader = `
+                  <table class="min-w-full table-fixed">
+                    <colgroup>
+                        <col style="width: auto;">
+                        <col style="width: 112px;"> 
+                        <col style="width: 112px;">
+                        <col style="width: 112px;">
+                    </colgroup>
+                    <thead class="bg-gray-100">
+                      <tr>
+                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Quyền</th>
+                        <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Không</th>
+                        <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Chỉ xem</th>
+                        <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Được sửa</th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white">`;
+            const rowsHtml = pages.map(page => {
+                const { base, viewCode, editCode, label } = page;
+                const hasView = viewCode && currentRolePermissions[roleKey][viewCode]?.allowed;
+                const hasEdit = editCode && currentRolePermissions[roleKey][editCode]?.allowed;
+                const state = hasEdit ? 'edit' : (hasView ? 'view' : 'none');
+                const disabledAttr = !isAdmin ? 'disabled style="cursor:not-allowed;"' : '';
+
+                return `
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 text-sm text-gray-800 truncate">${label}</td>
+                    <td style="padding:0;">
+                      <div style="display:flex; justify-content:center; align-items:center; min-height:48px; min-width:112px;">
+                        <input type="radio" name="perm_${roleKey}_${base}" value="none" ${state==='none'?'checked':''} ${disabledAttr}
+                               class="form-radio h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
+                               onchange="PermissionPageEvents.handlePermissionModeChange('${roleKey}','${base}','none')">
+                      </div>
+                    </td>
+                    <td style="padding:0;">
+                      <div style="display:flex; justify-content:center; align-items:center; min-height:48px; min-width:112px;">
+                        <input type="radio" name="perm_${roleKey}_${base}" value="view" ${state==='view'?'checked':''} ${disabledAttr}
+                               class="form-radio h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
+                               onchange="PermissionPageEvents.handlePermissionModeChange('${roleKey}','${base}','view')">
+                      </div>
+                    </td>
+                    ${ editCode
+                      ? `<td style="padding:0;">
+                           <div style="display:flex; justify-content:center; align-items:center; min-height:48px; min-width:112px;">
+                             <input type="radio" name="perm_${roleKey}_${base}" value="edit" ${state==='edit'?'checked':''} ${disabledAttr}
+                                    class="form-radio h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
+                                    onchange="PermissionPageEvents.handlePermissionModeChange('${roleKey}','${base}','edit')">
+                           </div>
+                         </td>`
+                      : `<td></td>` }
+                  </tr>`;
+            }).join('');
+            const tableHtmlFooter = `
+                    </tbody>
+                  </table>`;
+            tableWrapper.innerHTML = tableHtmlHeader + rowsHtml + tableHtmlFooter;
+            contentElement.appendChild(tableWrapper);
+            
+            groupEl.appendChild(headerElement);
+            groupEl.appendChild(contentElement);
+            modalBody.appendChild(groupEl);
+        }
+
+        const ungroupedPermissionsContainer = document.createElement('div');
+        ungroupedPermissionsContainer.className = 'permission-group-modal mb-4 p-3 border border-gray-200 rounded-lg shadow-sm';
+        const ungroupedContentId = `modal-group-content-${roleKey}-ungrouped`;
+        let ungroupedPermissionsHTML = '';
+        let hasUngrouped = false;
+
+        const allGroupedPermissions = new Set();
+        Object.values(permissionGroupsConfig).forEach(group => group.forEach(p => allGroupedPermissions.add(p)));
+
+        for (const permCode in allDefinedPermissions) {
+            if (allDefinedPermissions.hasOwnProperty(permCode) && !allGroupedPermissions.has(permCode)) {
+                 if (currentRolePermissions[roleKey] && currentRolePermissions[roleKey].hasOwnProperty(permCode)) {
+                    hasUngrouped = true;
+                    const permDescription = allDefinedPermissions[permCode];
+                    const currentPermissionState = currentRolePermissions[roleKey][permCode].allowed;
+                     const isCoreAdminLocked = roleKey === 'admin' && (permCode === 'dashboard' || permCode.startsWith('permission_management'));
+
+                    ungroupedPermissionsHTML += `
+                        <div class="permission-item py-2 px-3 mb-2 bg-gray-50 rounded-md border border-gray-200 hover:bg-gray-100 transition-colors duration-150">
+                            <label class="flex items-center justify-between text-sm text-gray-700 cursor-pointer">
+                                <span>${permDescription}</span>
+                                <input type="checkbox" 
+                                       class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                       data-role="${roleKey}" 
+                                       data-permission="${permCode}"
+                                       ${currentPermissionState ? 'checked' : ''}
+                                       ${isCoreAdminLocked || !isAdmin ? 'disabled' : ''}
+                                       ${!isAdmin ? 'style="cursor:not-allowed;"' : ''}
+                                       onchange="PermissionPageEvents.handlePermissionChange(this, '${roleKey}', '${permCode}')">
+                            </label>
+                            ${!isAdmin && !isCoreAdminLocked ? '<p class="text-xs text-gray-500 mt-1">Chỉ Admin có thể thay đổi.</p>' : ''}
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        if (hasUngrouped) {
+            ungroupedPermissionsContainer.innerHTML = `
+                <h5 class="permission-group-header font-semibold text-gray-800 text-md mb-3 cursor-pointer flex justify-between items-center" 
+                    onclick="togglePermissionGroup(this, '${ungroupedContentId}')">
+                    <span>Quyền Khác</span>
+                    <i class="fas fa-chevron-down text-gray-500"></i>
+                </h5>
+                <div id="${ungroupedContentId}" class="permission-group-content space-y-2" style="display: none;"> 
+                    ${ungroupedPermissionsHTML}
+                </div>
+            `;
+            modalBody.appendChild(ungroupedPermissionsContainer);
+        }
+
+        helperOpenModal && helperOpenModal('permissionsConfigModal');
+
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.style.opacity = '0';
+            modalContent.style.transform = 'translate(-50%, -50%) scale(0.95)';
+
+            setTimeout(() => {
+                modalContent.style.opacity = '1';
+                modalContent.style.transform = 'translate(-50%, -50%) scale(1)';
+            }, 10);
+        }
+
+        saveBtn.disabled = !isAdmin;
+        if (!isAdmin) {
+            saveBtn.style.cursor = 'not-allowed';
+            saveBtn.title = 'Bạn không có quyền thực hiện hành động này.';
+        } else {
+            saveBtn.style.cursor = 'pointer';
+            saveBtn.title = '';
+        }
+    }
+
+    function closePermissionsModal() {
+        helperCloseModal && helperCloseModal('permissionsConfigModal');
+        activeRoleKey = null;
+    }
+
+    function handlePermissionChange(checkbox, roleKey, permCode) {
+        if (!isAdmin) return;
+        if (!currentRolePermissions[roleKey]) {
+            currentRolePermissions[roleKey] = {};
+        }
+        if (!currentRolePermissions[roleKey][permCode]) {
+            currentRolePermissions[roleKey][permCode] = { description: allDefinedPermissions[permCode] };
+        }
+        currentRolePermissions[roleKey][permCode].allowed = checkbox.checked;
+        console.log(`Permission changed for ${roleKey} - ${permCode}: ${checkbox.checked}`);
+    }
+
+    function handlePermissionModeChange(roleKey, base, mode) {
+        if(!isAdmin) return;
+        ['view','edit'].forEach(type => {
+            const code = base + '_' + type;
+            if(!currentRolePermissions[roleKey][code]) {
+                currentRolePermissions[roleKey][code] = { allowed: false, description: allDefinedPermissions[code]||code };
+            }
+            currentRolePermissions[roleKey][code].allowed = (mode === type) || (type==='view' && mode==='edit');
+        });
+    }
+
+    async function saveRolePermissions() {
+        if (!isAdmin || !activeRoleKey) {
+            window.showToast('Bạn không có quyền thực hiện hoặc không có vai trò nào được chọn.', 'error');
+            return;
+        }
+
+        const permissionsToSave = {};
+        if (currentRolePermissions[activeRoleKey]) {
+            for (const permCode in currentRolePermissions[activeRoleKey]) {
+                if (currentRolePermissions[activeRoleKey].hasOwnProperty(permCode)) {
+                    permissionsToSave[permCode] = currentRolePermissions[activeRoleKey][permCode].allowed;
+                }
+            }
+        }
+        
+        console.log('Saving permissions for role:', activeRoleKey, permissionsToSave);
+
         try {
             const data = await api.postJson(`${basePath}public/handlers/auth/index.php?action=process_permissions_update`, {
-                role: role==='Admin'?'admin':'customercare',
-                permissions
+                role: activeRoleKey,
+                permissions: permissionsToSave
             });
-            window.showToast(data.message || 'Cập nhật thành công!', data.success?'success':'error');
+            window.showToast(data.message || 'Cập nhật quyền thành công!', data.success ? 'success' : 'error');
+            if (data.success) {
+                closePermissionsModal();
+            }
         } catch (err) {
             console.error(err);
             window.showToast(`Lỗi cập nhật quyền: ${err.message}`, 'error');
         }
     }
 
-    // Disable perms if not super admin
-    if(!isAdmin){
-        document.querySelectorAll('#admin-permission-management input[type="checkbox"]:not([data-fixed-disabled])')
-            .forEach(cb=>{
-                cb.disabled = true;
-                cb.style.cursor = 'not-allowed';
-                const lbl = document.querySelector(`label[for="${cb.id}"]`);
-                if(lbl){ lbl.style.cursor='not-allowed'; lbl.style.color='#6b7280'; }
+    Object.keys(roleDisplayNames).forEach(async roleKey => {
+        if (!currentRolePermissions[roleKey]) {
+            currentRolePermissions[roleKey] = {};
+        }
+        try {
+            const result = await api.getJson(`${basePath}public/handlers/auth/index.php?action=fetch_permissions&role=${roleKey.toLowerCase()}`);
+            if (!result.success) throw new Error(result.message || 'Không thể tải quyền.');
+            
+            result.data.forEach(item => {
+                if (!currentRolePermissions[roleKey][item.permission]) {
+                     currentRolePermissions[roleKey][item.permission] = { 
+                        description: allDefinedPermissions[item.permission] || item.permission,
+                        allowed: item.allowed 
+                    };
+                } else {
+                    currentRolePermissions[roleKey][item.permission].allowed = item.allowed;
+                }
             });
+        } catch (err) {
+            console.error(err);
+        }
+    });
+
+    if(!isAdmin){
+        const createRoleBtn = document.querySelector('button[onclick*="openCreateCustomRoleModal"]');
+        if (createRoleBtn) {
+            createRoleBtn.disabled = true;
+            createRoleBtn.style.cursor = 'not-allowed';
+            createRoleBtn.title = "Bạn không có quyền thực hiện hành động này.";
+        }
     }
 
-    const { closeModal: helperCloseModal } = window.helpers;
-
     function openCreateRoleModal(){
-        document.getElementById('createRoleForm').reset();
-        document.getElementById('createRoleModal').style.display='flex';
+        const form = document.getElementById('createRoleForm');
+        if (form) form.reset();
+        helperOpenModal && helperOpenModal('createRoleModal');
     }
 
     function openEditAdminModal(id){
@@ -80,17 +333,18 @@
             const el = document.getElementById(`editAdmin${field}`);
             if(!el) return;
             if(field==='Id')       el.value = admin.id;
-            else if(field==='Name')     el.value = admin.name;
+            else if(field==='Name') el.value = admin.name;
             else if(field==='Username') el.value = admin.admin_username;
             else if(field==='Password') el.value = '';
-            else if(field==='Role')     el.value = admin.role;
+            else if(field==='Role') el.value = admin.role;
         });
-        document.getElementById('editAdminModal').style.display='flex';
+        helperOpenModal && helperOpenModal('editAdminModal');
     }
 
     function openDeleteAdminModal(id){
-        document.getElementById('confirmDeleteAdminBtn').onclick = ()=> handleDeleteAdmin(id);
-        document.getElementById('deleteAdminModal').style.display='flex';
+        const confirmBtn = document.getElementById('confirmDeleteAdminBtn');
+        if (confirmBtn) confirmBtn.onclick = ()=> handleDeleteAdmin(id);
+        helperOpenModal && helperOpenModal('deleteAdminModal');
     }
 
     async function handleDeleteAdmin(id){
@@ -101,28 +355,46 @@
                 body: JSON.stringify({id})
             });
             const result = await res.json();
-            alert(result.message || (result.success?'Đã xóa':'Lỗi'));
-            if(result.success) location.reload();
+            window.showToast(result.message || (result.success ? 'Đã xóa thành công.' : 'Lỗi khi xóa.'), result.success ? 'success' : 'error');
+            if(result.success) setTimeout(()=>location.reload(), 1500);
         }catch(err){
             console.error(err);
-            alert('Lỗi khi xóa admin.');
+            window.showToast('Lỗi kết nối khi xóa admin.', 'error');
         }
     }
 
     function openCreateCustomRoleModal() {
-        const modal = document.getElementById('createCustomRoleModal');
-        if (modal) {
-            modal.style.display = 'block';
-        }
+        helperOpenModal && helperOpenModal('createCustomRoleModal');
         const form = document.getElementById('createCustomRoleForm');
         if (form) {
-            form.reset(); // Reset form fields when opening
+            form.reset();
+            form.querySelectorAll('.permission-group-content').forEach(el => el.style.display = 'none');
+            form.querySelectorAll('.permission-group-header i.fas').forEach(icon => {
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            });
         }
     }
+    
+    function activateTab(selectedButton) {
+        document.querySelectorAll('.role-tab-button').forEach(button => {
+            button.classList.remove('text-blue-700', 'border-blue-600', 'font-semibold', 'btn-primary');
+            button.classList.add('text-gray-600', 'border-transparent', 'btn-secondary');
+        });
+        selectedButton.classList.add('text-blue-700', 'border-blue-600', 'font-semibold', 'btn-primary');
+        selectedButton.classList.remove('text-gray-600', 'border-transparent', 'btn-secondary');
+        
+        const roleKey = selectedButton.dataset.roleKey;
+        renderPermissionsModal(roleKey);
+    }
 
-    // Wire up forms on DOMContentLoaded
     window.addEventListener('DOMContentLoaded',()=>{
-        // create form
+        const roleTabButtons = document.querySelectorAll('.role-tab-button');
+        roleTabButtons.forEach(button => {
+            button.classList.add('btn', 'btn-secondary'); 
+            button.addEventListener('click', () => activateTab(button));
+        });
+
         const createForm = document.getElementById('createRoleForm');
         if(createForm){
             createForm.addEventListener('submit',e=>{
@@ -135,6 +407,11 @@
                     password: createForm.password.value,
                     role: createForm.role.value
                 };
+                if (!data.name || !data.username || !data.password || !data.role) {
+                    window.showToast('Vui lòng điền đầy đủ thông tin.', 'error');
+                    btn.disabled = false;
+                    return;
+                }
                 fetch(`${basePath}public/handlers/auth/index.php?action=process_admin_create`,{
                     method:'POST',
                     headers:{'Content-Type':'application/json'},
@@ -142,88 +419,126 @@
                 })
                 .then(r=>r.json())
                 .then(res=>{
-                    alert(res.success? res.message||'Tạo thành công!': 'Lỗi: '+(res.message||''));
-                    if(res.success){ helperCloseModal('createRoleModal'); location.reload(); }
+                    window.showToast(res.message || (res.success ? 'Tạo tài khoản thành công!' : 'Lỗi!'), res.success ? 'success' : 'error');
+                    if (res.success) {
+                        helperCloseModal && helperCloseModal('createRoleModal');
+                        setTimeout(()=>location.reload(), 1500);
+                    }
                 })
-                .catch(err=>{ console.error(err); alert('Đã xảy ra lỗi.'); })
+                .catch(err=>{
+                    console.error(err);
+                    window.showToast('Lỗi kết nối: Không thể tạo tài khoản.', 'error');
+                })
                 .finally(()=> btn.disabled=false);
             });
         }
-        // edit form
+
         const editForm = document.getElementById('editAdminForm');
         if(editForm){
             editForm.addEventListener('submit',async e=>{
                 e.preventDefault();
-                const payload = {
-                    id:       document.getElementById('editAdminId').value,
-                    name:     document.getElementById('editAdminName').value,
-                    password: document.getElementById('editAdminPassword').value,
-                    role:     document.getElementById('editAdminRole').value
+                const btn = editForm.querySelector('button[type="submit"]');
+                btn.disabled = true;
+                const data = {
+                    id: editForm.id.value,
+                    name: editForm.name.value.trim(),
+                    password: editForm.password.value,
+                    role: editForm.role.value
                 };
-                try{
-                    const res = await fetch(`${basePath}public/handlers/auth/index.php?action=process_admin_update`,{
-                        method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)
-                    });
-                    const txt = await res.text();
-                    let result;
-                    try{ result = JSON.parse(txt); }
-                    catch{ alert('Raw response:\n'+txt); return; }
-                    alert(result.message||JSON.stringify(result));
-                    if(result.success) location.reload();
-                }catch(err){
+                if (!data.name || !data.role) {
+                    window.showToast('Tên và Vai trò không được để trống.', 'error');
+                    btn.disabled = false;
+                    return;
+                }
+                try {
+                    const response = await api.postJson(`${basePath}public/handlers/auth/index.php?action=process_admin_update`, data);
+                    window.showToast(response.message || 'Cập nhật thành công!', response.success ? 'success' : 'error');
+                    if (response.success) {
+                        helperCloseModal && helperCloseModal('editAdminModal');
+                        setTimeout(()=>location.reload(), 1500);
+                    }
+                } catch (err) {
                     console.error(err);
-                    alert('Fetch error: '+err.message);
+                    window.showToast('Lỗi kết nối: ' + err.message, 'error');
+                } finally {
+                    btn.disabled = false;
                 }
             });
         }
-        // Add event listener for the new custom role form
+
         const createCustomRoleForm = document.getElementById('createCustomRoleForm');
         if (createCustomRoleForm) {
             createCustomRoleForm.addEventListener('submit', async function(event) {
                 event.preventDefault();
-                const formData = new FormData(createCustomRoleForm);
-                const roleKey = formData.get('role_key');
-                const roleName = formData.get('role_name');
-                const permissions = formData.getAll('permissions[]');
-
-                if (!roleKey || !/^[a-z0-9_]+$/.test(roleKey)) {
-                    alert('Khóa Vai trò không hợp lệ. Chỉ cho phép chữ thường, số và dấu gạch dưới (_).');
+                if (!isAdmin) {
+                    window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
                     return;
                 }
-                if (!roleName) {
-                    alert('Tên Vai trò không được để trống.');
-                    return;
-                }
+                const btn = createCustomRoleForm.querySelector('button[type="submit"]');
+                btn.disabled = true;
 
-                console.log('Submitting new role:', { roleKey, roleName, permissions });
-                try {
-                    const response = await fetch(`${basePath}public/handlers/auth/index.php?action=process_role_create`, {
-                        method: 'POST',
-                        body: JSON.stringify({ role_key: roleKey, role_name: roleName, permissions: permissions }),
-                        headers: { 'Content-Type': 'application/json' }
-                    });
-                    const result = await response.json();
-                    if (result.success) {
-                        alert(result.message || 'Tạo vai trò mới thành công!');
-                        helperCloseModal('createCustomRoleModal');
-                        window.location.reload(); // Or update UI dynamically
-                    } else {
-                        alert('Lỗi: ' + (result.message || 'Không thể tạo vai trò.'));
+                const roleName = createCustomRoleForm.role_name.value.trim();
+                const roleKey = createCustomRoleForm.role_key.value.trim().toLowerCase().replace(/\s+/g, '_');
+                
+                const selectedPermissions = [];
+                createCustomRoleForm.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
+                    if (radio.value !== 'none') {
+                        selectedPermissions.push(radio.getAttribute('data-permission'));
                     }
-                } catch (error) {
-                    console.error('Error creating custom role:', error);
-                    alert('Đã xảy ra lỗi khi tạo vai trò.');
+                });
+
+                if (!roleName || !roleKey) {
+                    window.showToast('Tên vai trò và Khóa vai trò không được để trống.', 'error');
+                    btn.disabled = false;
+                    return;
+                }
+                if (!/^[a-z0-9_]+$/.test(roleKey)) {
+                    window.showToast('Khóa vai trò chỉ được chứa chữ thường, số và dấu gạch dưới (_).', 'error');
+                    btn.disabled = false;
+                    return;
+                }
+                 if (selectedPermissions.length === 0) {
+                    window.showToast('Vui lòng chọn ít nhất một quyền cho vai trò mới.', 'error');
+                    btn.disabled = false;
+                    return;
+                }
+
+                try {
+                    const response = await api.postJson(`${basePath}public/handlers/auth/index.php?action=process_role_create`, {
+                        role_name: roleName,
+                        role_key: roleKey,
+                        permissions: selectedPermissions
+                    });
+                    window.showToast(response.message || 'Tạo vai trò thành công!', response.success ? 'success' : 'error');
+                    if (response.success) {
+                        helperCloseModal && helperCloseModal('createCustomRoleModal');
+                        setTimeout(()=>location.reload(), 1500);
+                    }
+                } catch (err) {
+                    console.error('Error creating custom role:', err);
+                    window.showToast(`Lỗi tạo vai trò: ${err.message}`, 'error');
+                } finally {
+                    btn.disabled = false;
                 }
             });
         }
-        // expose globals for inline onclick attributes
+
         window.PermissionPageEvents = {
             openCreateRoleModal,
             openEditAdminModal,
             openDeleteAdminModal,
             openCreateCustomRoleModal,
-            closeModal: helperCloseModal,  // dùng chung
-            savePermissions
+            closeModal: (modalId) => helperCloseModal && helperCloseModal(modalId),
+            saveRolePermissions,
+            closePermissionsModal,
+            handlePermissionChange,
+            handlePermissionModeChange
         };
+
+        // Attach click handler to the Save Permissions button
+        const saveBtn = document.getElementById('saveRolePermissionsBtn');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', window.PermissionPageEvents.saveRolePermissions);
+        }
     });
 })();
