@@ -28,9 +28,9 @@ $admin_nav_items = [
 
     ['type' => 'section', 'label' => 'Quản lý Tài chính'],
     ['label' => 'Giao dịch & Doanh thu', 'icon' => 'fa-file-invoice-dollar', 'children' => [
-        ['label' => 'QL giao dịch', 'icon' => 'fa-file-invoice-dollar', 'url' => '/public/pages/purchase/invoice_management.php', 'active_check' => 'invoice_management.php', 'permission' => 'invoice_management'],
-        ['label' => 'QL doanh thu', 'icon' => 'fa-dollar-sign', 'url' => '/public/pages/purchase/revenue_management.php', 'active_check' => 'revenue_management.php', 'permission' => 'revenue_management'],
-        ['label' => 'Phê duyệt hóa đơn', 'icon' => 'fa-file-invoice', 'url' => '/public/pages/invoice/invoice_review.php', 'active_check' => 'invoice_review.php', 'permission' => 'invoice_review'],
+        ['label' => 'QL giao dịch', 'icon' => 'fa-file-invoice-dollar', 'url' => '/public/pages/purchase/invoice_management.php', 'active_check' => 'invoice_management.php', 'permission' => 'invoice_management_view'],
+        ['label' => 'QL doanh thu', 'icon' => 'fa-dollar-sign', 'url' => '/public/pages/purchase/revenue_management.php', 'active_check' => 'revenue_management.php', 'permission' => 'revenue_management_view'],
+        ['label' => 'Phê duyệt hóa đơn', 'icon' => 'fa-file-invoice', 'url' => '/public/pages/invoice/invoice_review.php', 'active_check' => 'invoice_review.php', 'permission' => 'invoice_review_view'],
     ]],
 
     ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => '/public/pages/report/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports_view'],

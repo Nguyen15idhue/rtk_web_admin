@@ -1,54 +1,57 @@
-[15-May-2025 15:57:19 UTC] Uncaught exception: SQLSTATE[01000]: Warning: 1265 Data truncated for column 'role' at row 1 in E:\Application\laragon\www\rtk_web_admin\private\classes\AdminModel.php on line 46
-[15-May-2025 15:57:46 UTC] Uncaught exception: SQLSTATE[01000]: Warning: 1265 Data truncated for column 'role' at row 1 in E:\Application\laragon\www\rtk_web_admin\private\classes\AdminModel.php on line 46
-[15-May-2025 16:02:21 UTC] [DEBUG] Search keyword: 
-[15-May-2025 16:10:51 UTC] [PTA] activate survey_account executed, affectedRows=0
-[15-May-2025 16:10:51 UTC] Warning: No survey accounts found or enabled for approved registration ID: 222
-[15-May-2025 16:10:51 UTC] [PTA] province_code=CMA, lastUser=, nextSeq=1, username=CMA001, password=0999999223
-[15-May-2025 16:10:51 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":222,"username_acc":"CMA001","password_acc":"0999999223","user_email":"zkz96960@toaik.com","location_id":12,"package_id":2,"start_time":"2025-05-15 23:10:51","end_time":"2025-08-15 23:10:51","enabled":1,"concurrent_user":1,"account_count":1}
-[15-May-2025 16:10:52 UTC] [PTA] create_account timed out (could be pending), transaction 216
-[15-May-2025 16:10:52 UTC] [CA] Start create_account request
-[15-May-2025 16:10:52 UTC] [CA] Raw input: {"registration_id":222,"username_acc":"CMA001","password_acc":"0999999223","user_email":"zkz96960@toaik.com","location_id":12,"package_id":2,"start_time":"2025-05-15 23:10:51","end_time":"2025-08-15 23:10:51","enabled":1,"concurrent_user":1,"account_count":1}
-[15-May-2025 16:10:52 UTC] [CA] registration_id=222, username_acc=CMA001, password_len=10
-[15-May-2025 16:10:52 UTC] [CA] location_input=12
-[15-May-2025 16:10:52 UTC] [CA] computed start_time_db=2025-05-15 23:10:51, end_time_db=2025-08-15 23:10:51
-[15-May-2025 16:10:52 UTC] [CA] Validating user_email: zkz96960@toaik.com
-[15-May-2025 16:10:52 UTC] [CA] Retrieved userId=100
-[15-May-2025 16:10:52 UTC] [CA] Price=270000.00 => normal flow
-[15-May-2025 16:10:52 UTC] Debug: Non-trial account creation path for registration_id=222
-[15-May-2025 16:10:52 UTC] Using default mount points for location ID: 12 - [42]
-[15-May-2025 16:10:52 UTC] [CA] RTK API payload for CMA001: {"name":"CMA001","userPwd":"0999999223","startTime":1747325451000,"endTime":1755274251000,"enabled":1,"numOnline":1,"customerName":"zkz9696@toaik.com","customerPhone":"0999999223","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
-[15-May-2025 16:10:52 UTC] [CA] RTK API response for CMA001: {"success":true,"data":{"id":2246,"name":"CMA001","userPwd":"0999999223","startTime":1747325451000,"endTime":1755274251000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"zkz9696@toaik.com","customerPhone":"0999999223","customerCompany":""},"error":null}
-[15-May-2025 16:10:52 UTC] [PTA] activate survey_account executed, affectedRows=0
-[15-May-2025 16:10:52 UTC] Warning: No survey accounts found or enabled for approved registration ID: 221
-[15-May-2025 16:10:52 UTC] [PTA] province_code=CMA, lastUser=CMA001, nextSeq=2, username=CMA002, password=0999999443
-[15-May-2025 16:10:52 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":221,"username_acc":"CMA002","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-15 23:10:52","end_time":"2025-09-15 23:10:52","enabled":1,"concurrent_user":1,"account_count":1}
-[15-May-2025 16:10:53 UTC] [PTA] create_account timed out (could be pending), transaction 215
-[15-May-2025 16:10:53 UTC] [CA] Start create_account request
-[15-May-2025 16:10:53 UTC] [CA] Raw input: {"registration_id":221,"username_acc":"CMA002","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":12,"package_id":2,"start_time":"2025-05-15 23:10:52","end_time":"2025-09-15 23:10:52","enabled":1,"concurrent_user":1,"account_count":1}
-[15-May-2025 16:10:53 UTC] [CA] registration_id=221, username_acc=CMA002, password_len=10
-[15-May-2025 16:10:53 UTC] [CA] location_input=12
-[15-May-2025 16:10:53 UTC] [CA] computed start_time_db=2025-05-15 23:10:52, end_time_db=2025-09-15 23:10:52
-[15-May-2025 16:10:53 UTC] [CA] Validating user_email: tranhailong2407@gmail.com
-[15-May-2025 16:10:53 UTC] [CA] Retrieved userId=90
-[15-May-2025 16:10:53 UTC] [CA] Price=270000.00 => normal flow
-[15-May-2025 16:10:53 UTC] Debug: Non-trial account creation path for registration_id=221
-[15-May-2025 16:10:53 UTC] Using default mount points for location ID: 12 - [42]
-[15-May-2025 16:10:53 UTC] [CA] RTK API payload for CMA002: {"name":"CMA002","userPwd":"0999999443","startTime":1747325452000,"endTime":1757952652000,"enabled":1,"numOnline":1,"customerName":"Long2002","customerPhone":"0999999443","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
-[15-May-2025 16:10:53 UTC] [CA] RTK API response for CMA002: {"success":true,"data":{"id":2247,"name":"CMA002","userPwd":"0999999443","startTime":1747325452000,"endTime":1757952652000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2002","customerPhone":"0999999443","customerCompany":""},"error":null}
-[15-May-2025 16:11:43 UTC] Using default mount points for location ID: 12 - [42]
-[15-May-2025 16:11:43 UTC] [manual_renew_account] RTK API Payload: Array
+[16-May-2025 14:31:28 UTC] Invoice file will be stored at: E:\Application\laragon\www\rtk_web_admin\private/../public/uploads/invoice/1747405888_hoa_don_ban_le.pdf
+[16-May-2025 14:40:28 UTC] Using default mount points for location ID: 12 - [42]
+[16-May-2025 14:40:28 UTC] RTK API Payload: {"id":"2248","name":"CMA001","userPwd":"09999993232","startTime":1747427875000,"endTime":1755376675000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[16-May-2025 14:40:28 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[16-May-2025 14:40:40 UTC] Using default mount points for location ID: 12 - [42]
+[16-May-2025 14:40:40 UTC] RTK API Payload: {"id":"2248","name":"CMA001","userPwd":"09999993232","startTime":1747427875000,"endTime":1755376675000,"enabled":1,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[16-May-2025 14:40:40 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[16-May-2025 14:40:55 UTC] [PTA] activate survey_account executed, affectedRows=0
+[16-May-2025 14:40:55 UTC] Warning: No survey accounts found or enabled for approved registration ID: 226
+[16-May-2025 14:40:55 UTC] [PTA] Updated registration_id to 226 for accounts: 2248
+[16-May-2025 14:40:55 UTC] [PTA] Accounts slated for renewal: 2248
+[16-May-2025 14:40:55 UTC] [PTA] renewing account 2248 with cookie PHPSESSID=rftksimiarmf5epopbe71bv4r9
+[16-May-2025 14:40:55 UTC] [update_account] raw input: {"id":"2248","username_acc":"CMA001","password_acc":"09999993232","status":"active","activation_date":"2025-05-16","expiry_date":"2025-11-16"}
+[16-May-2025 14:40:55 UTC] [update_account] decoded input: Array
 (
-    [id] => 2247
-    [name] => CMA002
-    [userPwd] => 0999999443
-    [startTime] => 1747267200000
-    [endTime] => 1765843199000
+    [id] => 2248
+    [username_acc] => CMA001
+    [password_acc] => 09999993232
+    [status] => active
+    [activation_date] => 2025-05-16
+    [expiry_date] => 2025-11-16
+)
+
+[16-May-2025 14:40:55 UTC] [update_account] input customer_phone: <none>
+[16-May-2025 14:40:55 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => CMA001
+    [password_acc] => 09999993232
+    [status] => active
+    [activation_date] => 2025-05-16
+    [expiry_date] => 2025-11-16
+)
+
+[16-May-2025 14:40:56 UTC] [PTA][2248] HTTP=0 errno=28 resp=
+[16-May-2025 14:40:56 UTC] [PTA] Renewal update cURL FAILED for account 2248. HTTP 0. cURL Errno: 28. Response: 
+[16-May-2025 14:40:56 UTC] [PTA] Renewal completed for accounts: 
+[16-May-2025 14:40:56 UTC] [PTA] Renewal failed for accounts: 2248
+[16-May-2025 14:40:56 UTC] Using default mount points for location ID: 12 - [42]
+[16-May-2025 14:40:56 UTC] [update_account] final sanitized customer_phone: 
+[16-May-2025 14:40:56 UTC] [update_account] final customer_name: 
+[16-May-2025 14:40:56 UTC] Using default mount points for location ID: 12 - [42]
+[16-May-2025 14:40:56 UTC] [update_account] RTK API payload via model: Array
+(
+    [id] => 2248
+    [name] => CMA001
+    [userPwd] => 09999993232
+    [startTime] => 1747353600000
+    [endTime] => 1763337599000
     [enabled] => 1
     [numOnline] => 1
     [customerBizType] => 1
-    [userId] => 90
-    [customerName] => Long2002
-    [customerPhone] => 0999999443
+    [userId] => 105
+    [customerName] => Long99999
+    [customerPhone] => 09999993232
     [customerCompany] => 
     [casterIds] => Array
         (
@@ -65,179 +68,21 @@
 
 )
 
-[15-May-2025 16:11:43 UTC] [manual_renew_account] RTK API Result: Array
+[16-May-2025 14:40:56 UTC] [update_account] RTK API result: Array
 (
     [success] => 1
     [data] => 1
     [error] => 
 )
 
-[15-May-2025 16:11:51 UTC] Using default mount points for location ID: 12 - [42]
-[15-May-2025 16:11:51 UTC] RTK API Payload: {"id":"2247","name":"CMA002","userPwd":"0999999443","startTime":1747267200000,"endTime":1765843199000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[15-May-2025 16:11:51 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[15-May-2025 16:12:00 UTC] Using default mount points for location ID: 12 - [42]
-[15-May-2025 16:12:00 UTC] RTK API Payload: {"id":"2247","name":"CMA002","userPwd":"0999999443","startTime":1747267200000,"endTime":1765843199000,"enabled":1,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[15-May-2025 16:12:00 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[15-May-2025 16:12:00 UTC] Using default mount points for location ID: 12 - [42]
-[15-May-2025 16:12:00 UTC] RTK API Payload: {"id":"2246","name":"CMA001","userPwd":"0999999223","startTime":1747350651000,"endTime":1755299451000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[15-May-2025 16:12:00 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[15-May-2025 16:12:15 UTC] [update_account] raw input: 
-[15-May-2025 16:12:15 UTC] [update_account] decoded input: Array
-(
-    [id] => 2247
-    [username_acc] => CMA002
-    [password_acc] => 
-    [user_email] => tranhailong2407@gmail.com
-    [location_id] => 12
-    [package_id] => 2
-    [activation_date] => 2025-05-15
-    [expiry_date] => 2025-12-15
-    [status] => suspended
-)
-
-[15-May-2025 16:12:15 UTC] [update_account] input customer_phone: <none>
-[15-May-2025 16:12:15 UTC] [update_account] updateData initial: Array
-(
-    [username_acc] => CMA002
-    [password_acc] => 
-    [user_email] => tranhailong2407@gmail.com
-    [location_id] => 12
-    [package_id] => 2
-    [activation_date] => 2025-05-15
-    [expiry_date] => 2025-12-15
-    [status] => suspended
-)
-
-[15-May-2025 16:12:15 UTC] Using default mount points for location ID: 12 - [42]
-[15-May-2025 16:12:15 UTC] [update_account] final sanitized customer_phone: 0999999443
-[15-May-2025 16:12:15 UTC] [update_account] final customer_name: Long2002
-[15-May-2025 16:12:15 UTC] Using default mount points for location ID: 12 - [42]
-[15-May-2025 16:12:15 UTC] [update_account] RTK API payload via model: Array
-(
-    [id] => 2247
-    [name] => CMA002
-    [userPwd] => 0999999443
-    [startTime] => 1747267200000
-    [endTime] => 1765843199000
-    [enabled] => 0
-    [numOnline] => 1
-    [customerBizType] => 1
-    [userId] => 90
-    [customerName] => Long2002
-    [customerPhone] => 0999999443
-    [customerCompany] => 
-    [casterIds] => Array
-        (
-        )
-
-    [regionIds] => Array
-        (
-        )
-
-    [mountIds] => Array
-        (
-            [0] => 42
-        )
-
-)
-
-[15-May-2025 16:12:15 UTC] [update_account] RTK API result: Array
-(
-    [success] => 1
-    [data] => 1
-    [error] => 
-)
-
-[15-May-2025 16:12:15 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully","account":{"id":"2247","username_acc":"CMA002","enabled":0,"created_at":"2025-05-15 23:10:53","password_acc":"0999999443","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"activation_date":"2025-05-15 00:00:00","expiry_date":"2025-12-15 23:59:59","registration_id":221,"registration_status":"active","num_account":1,"user_id":90,"user_email":"tranhailong2407@gmail.com","user_username":"Long2002","user_phone":"0999999443","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"suspended"}}
-[15-May-2025 16:12:26 UTC] [update_account] raw input: 
-[15-May-2025 16:12:26 UTC] [update_account] decoded input: Array
-(
-    [id] => 2247
-    [username_acc] => CMA002
-    [password_acc] => 1234
-    [user_email] => tranhailong2407@gmail.com
-    [location_id] => 12
-    [package_id] => 2
-    [activation_date] => 2025-05-15
-    [expiry_date] => 2025-12-15
-    [status] => suspended
-)
-
-[15-May-2025 16:12:26 UTC] [update_account] input customer_phone: <none>
-[15-May-2025 16:12:26 UTC] [update_account] updateData initial: Array
-(
-    [username_acc] => CMA002
-    [password_acc] => 1234
-    [user_email] => tranhailong2407@gmail.com
-    [location_id] => 12
-    [package_id] => 2
-    [activation_date] => 2025-05-15
-    [expiry_date] => 2025-12-15
-    [status] => suspended
-)
-
-[15-May-2025 16:12:26 UTC] Using default mount points for location ID: 12 - [42]
-[15-May-2025 16:12:26 UTC] [update_account] final sanitized customer_phone: 0999999443
-[15-May-2025 16:12:26 UTC] [update_account] final customer_name: Long2002
-[15-May-2025 16:12:26 UTC] Using default mount points for location ID: 12 - [42]
-[15-May-2025 16:12:26 UTC] [update_account] RTK API payload via model: Array
-(
-    [id] => 2247
-    [name] => CMA002
-    [userPwd] => 1234
-    [startTime] => 1747267200000
-    [endTime] => 1765843199000
-    [enabled] => 0
-    [numOnline] => 1
-    [customerBizType] => 1
-    [userId] => 90
-    [customerName] => Long2002
-    [customerPhone] => 0999999443
-    [customerCompany] => 
-    [casterIds] => Array
-        (
-        )
-
-    [regionIds] => Array
-        (
-        )
-
-    [mountIds] => Array
-        (
-            [0] => 42
-        )
-
-)
-
-[15-May-2025 16:12:26 UTC] [update_account] RTK API result: Array
-(
-    [success] => 1
-    [data] => 1
-    [error] => 
-)
-
-[15-May-2025 16:12:26 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully","account":{"id":"2247","username_acc":"CMA002","enabled":0,"created_at":"2025-05-15 23:10:53","password_acc":"1234","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"activation_date":"2025-05-15 00:00:00","expiry_date":"2025-12-15 23:59:59","registration_id":221,"registration_status":"active","num_account":1,"user_id":90,"user_email":"tranhailong2407@gmail.com","user_username":"Long2002","user_phone":"0999999443","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"suspended"}}
-[15-May-2025 16:12:46 UTC] [Revert Transaction 216] Deleting RTK account 2246
-[15-May-2025 16:12:46 UTC] [Revert Transaction 216] RTK delete success for account 2246.
-[15-May-2025 16:12:46 UTC] [Revert Transaction 215] Deleting RTK account 2247
-[15-May-2025 16:12:46 UTC] [Revert Transaction 215] RTK delete success for account 2247.
-[15-May-2025 16:12:49 UTC] [DEBUG] Search keyword: 
-[15-May-2025 16:14:29 UTC] [DEBUG] Search keyword: 
-[15-May-2025 16:14:59 UTC] [DEBUG] Search keyword: 
-[15-May-2025 16:22:08 UTC] [DEBUG] Search keyword: 
-[16-May-2025 08:48:04 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
-[16-May-2025 08:48:04 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
-[16-May-2025 08:48:04 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
-[16-May-2025 08:48:04 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
-[16-May-2025 08:48:13 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
-[16-May-2025 08:48:13 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
-[16-May-2025 08:48:13 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
-[16-May-2025 08:48:13 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
-[16-May-2025 08:48:38 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
-[16-May-2025 08:48:38 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
-[16-May-2025 08:48:38 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
-[16-May-2025 08:48:38 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
-[16-May-2025 08:48:47 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
-[16-May-2025 08:48:47 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
-[16-May-2025 08:48:47 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
-[16-May-2025 08:48:47 UTC] fetch_permissions error: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'role' cannot be null
+[16-May-2025 14:40:56 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully","account":{"id":"2248","username_acc":"CMA001","enabled":1,"created_at":"2025-05-16 20:37:55","password_acc":"09999993232","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"activation_date":"2025-05-16 00:00:00","expiry_date":"2025-11-16 23:59:59","registration_id":226,"registration_status":"active","num_account":1,"user_id":105,"user_email":"osn14300@jioso.com","user_username":"Long99999","user_phone":"09999993232","package_id":2,"package_name":"G\u00f3i 3 Th\u00e1ng","package_identifier":"quarterly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"active"}}
+[16-May-2025 14:40:58 UTC] [DEBUG] Search keyword: 
+[16-May-2025 14:41:09 UTC] [DEBUG] Search keyword: 
+[16-May-2025 14:41:32 UTC] [DEBUG] Search keyword: 
+[16-May-2025 14:41:35 UTC] DEBUG isDuplicate SQL: SELECT id FROM user 
+                WHERE (email = :email OR (phone IS NOT NULL AND phone = :phone)) AND id != :ex | email=tranhailong2499@gmail.com | phone=123 | excludeId=106
+[16-May-2025 14:41:35 UTC] DEBUG isDuplicate result: false
+[16-May-2025 14:41:35 UTC] [DEBUG] Search keyword: 
+[16-May-2025 14:45:29 UTC] Using default mount points for location ID: 12 - [42]
+[16-May-2025 14:45:29 UTC] RTK API Payload: {"id":"2248","name":"CMA001","userPwd":"09999993232","startTime":1747353600000,"endTime":1763337599000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[16-May-2025 14:45:29 UTC] RTK API Response: {"success":true,"data":true,"error":null}
