@@ -1,6 +1,7 @@
 <?php
 // filepath: private/actions/referral/fetch_referrals.php
-
+require_once __DIR__ . '/../../classes/Auth.php';
+Auth::ensureAuthorized('referral_management_view'); 
 /**
  * Fetch paginated referrals
  * @param PDO $db

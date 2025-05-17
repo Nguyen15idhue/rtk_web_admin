@@ -3,7 +3,7 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../../utils/functions.php';  // add helper
 require_once __DIR__ . '/../../classes/Auth.php';
-Auth::ensureAuthorized('user_management'); 
+Auth::ensureAuthorized('user_management_view'); 
 if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
     api_forbidden('Forbidden: Direct access not allowed');
 }

@@ -13,7 +13,7 @@ register_shutdown_function(function() use (&$db) {
 header('Content-Type: application/json');
 
 // Use Auth class for authentication and authorization
-Auth::ensureAuthorized('account_management');
+Auth::ensureAuthorized('account_management_edit');
 
 require_once BASE_PATH . '/classes/AccountModel.php';
 require_once BASE_PATH . '/api/rtk_system/account_api.php';

@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
-Auth::ensureAuthorized('permission_management'); // Only admins can delete other admins
+Auth::ensureAuthorized('permission_management_edit'); // Only admins can delete other admins
 
 // Parse request
 $input = json_decode(file_get_contents('php://input'), true);

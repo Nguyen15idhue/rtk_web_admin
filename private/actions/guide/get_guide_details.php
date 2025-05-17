@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../core/page_bootstrap.php';
-Auth::ensureAuthenticated(); // Allow any authenticated user to get guide details
+Auth::ensureAuthorized('guide_management_view');
 
 header('Content-Type: application/json');
 

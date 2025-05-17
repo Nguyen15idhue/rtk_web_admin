@@ -3,7 +3,7 @@
 $config = require_once __DIR__ . '/../../core/page_bootstrap.php';
 
 // Use Auth class for authentication and authorization
-Auth::ensureAuthorized('account_management');
+Auth::ensureAuthorized('account_management_edit');
 
 $db     = $config['db'];
 $base   = $config['base_path'];

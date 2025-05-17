@@ -42,7 +42,7 @@
                 }).join('');
                 $('#tbl-support tbody').html(rows);
             })
-            .catch(err => alert(err.message));
+            .catch(err => window.showToast(err.message, 'error'));
     }
 
     function getSupportModalContentHTML(data) {
@@ -87,7 +87,7 @@
                 
                 helpers.openModal('genericModal');
             })
-            .catch(err => alert(err.message));
+            .catch(err => window.showToast(err.message, 'error'));
     }
 
     function saveSupportChanges() {
@@ -101,7 +101,7 @@
                 helpers.closeModal('genericModal');
                 loadRequests();
             })
-            .catch(err => alert(err.message));
+            .catch(err => window.showToast(err.message, 'error'));
     }
 
     $(function() {

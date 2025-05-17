@@ -2,8 +2,7 @@
 require_once __DIR__ . '/../../core/page_bootstrap.php';
 header('Content-Type: application/json');
 
-// Use Auth class for authentication
-Auth::ensureAuthenticated();
+Auth::ensureAuthorized('guide_management_edit');
 
 try {
     // handle file upload

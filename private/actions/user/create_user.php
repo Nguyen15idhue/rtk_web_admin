@@ -2,7 +2,7 @@
 
 
 $config = require_once __DIR__ . '/../../core/page_bootstrap.php';
-Auth::ensureAuthorized('user_create'); 
+Auth::ensureAuthorized('user_management_edit'); 
 $db     = $config['db'];
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

@@ -11,7 +11,7 @@ if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
 
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 
-Auth::ensureAuthorized('revenue_management');
+Auth::ensureAuthorized('revenue_management_view');
 if ($bootstrap === true) {
     $bootstrap = $GLOBALS['__PAGE_BOOTSTRAP_INSTANCE_DATA__'];
 }

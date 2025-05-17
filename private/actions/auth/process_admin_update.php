@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 
-Auth::ensureAuthorized('permission_management'); // Only admins can update other admins
+Auth::ensureAuthorized('permission_management_edit'); 
 $db        = $bootstrap['db'];
 
 // Ensure PDO is closed when the script ends
@@ -20,7 +20,7 @@ $name     = trim($input['name'] ?? '');
 $password = $input['password'] ?? '';
 $role     = $input['role'] ?? '';
 
-if (!$id || !$name || !in_array($role, ['admin','customercare'])) {
+if (!$id || !$name) {
     api_error('Invalid data', 400);
 }
 

@@ -11,29 +11,29 @@ $admin_nav_items = [
     ['label' => 'Dashboard', 'icon' => 'fa-tachometer-alt', 'url' => '/public/pages/dashboard/dashboard.php', 'active_check' => 'dashboard.php', 'permission' => 'dashboard'],
 
     ['type' => 'section', 'label' => 'Quản lý Hệ thống'],
-    ['label' => 'QL Trạm', 'icon' => 'fa-broadcast-tower', 'url' => '/public/pages/station/station_management.php', 'active_check' => 'station_management.php', 'permission' => 'station_management'],
-    ['label' => 'QL Voucher', 'icon' => 'fa-ticket-alt', 'url' => '/public/pages/voucher/voucher_management.php', 'active_check' => 'voucher_management.php', 'permission' => 'voucher_management'],
-    ['label' => 'QL phân quyền', 'icon' => 'fa-user-lock', 'url' => '/public/pages/auth/permission_management.php', 'active_check' => 'permission_management.php', 'permission' => 'permission_management'],
+    ['label' => 'QL Trạm', 'icon' => 'fa-broadcast-tower', 'url' => '/public/pages/station/station_management.php', 'active_check' => 'station_management.php', 'permission' => 'station_management_view'],
+    ['label' => 'QL Voucher', 'icon' => 'fa-ticket-alt', 'url' => '/public/pages/voucher/voucher_management.php', 'active_check' => 'voucher_management.php', 'permission' => 'voucher_management_view'],
+    ['label' => 'QL phân quyền', 'icon' => 'fa-user-lock', 'url' => '/public/pages/auth/permission_management.php', 'active_check' => 'permission_management.php', 'permission' => 'permission_management_view'],
 
     ['type' => 'section', 'label' => 'Quản lý Người dùng & KH'],
     ['label' => 'Người dùng & Tài khoản', 'icon' => 'fa-users-cog', 'children' => [
-        ['label' => 'QL người dùng', 'icon' => 'fa-users', 'url' => '/public/pages/user/user_management.php', 'active_check' => 'user_management.php', 'permission' => 'user_management'],
-        ['label' => 'QL TK đo đạc', 'icon' => 'fa-ruler-combined', 'url' => '/public/pages/account/account_management.php', 'active_check' => 'account_management.php', 'permission' => 'account_management'],
+        ['label' => 'QL người dùng', 'icon' => 'fa-users', 'url' => '/public/pages/user/user_management.php', 'active_check' => 'user_management.php', 'permission' => 'user_management_view'],
+        ['label' => 'QL TK đo đạc', 'icon' => 'fa-ruler-combined', 'url' => '/public/pages/account/account_management.php', 'active_check' => 'account_management.php', 'permission' => 'account_management_view'],
     ]],
     ['label' => 'Khách hàng & Hỗ trợ', 'icon' => 'fa-hands-helping', 'children' => [
-        ['label' => 'QL người giới thiệu', 'icon' => 'fa-network-wired', 'url' => '/public/pages/referral/referral_management.php', 'active_check' => 'referral_management.php', 'permission' => 'referral_management'],
-        ['label' => 'Chăm sóc khách hàng', 'icon' => 'fa-headset', 'url' => '/public/pages/support/support_management.php', 'active_check' => 'support_management.php', 'permission' => 'support_management'],
-        ['label' => 'QL Hướng dẫn', 'icon' => 'fa-book', 'url' => '/public/pages/guide/guide_management.php', 'active_check' => 'guide_management.php', 'permission' => 'guide_management'],
+        ['label' => 'QL người giới thiệu', 'icon' => 'fa-network-wired', 'url' => '/public/pages/referral/referral_management.php', 'active_check' => 'referral_management.php', 'permission' => 'referral_management_view'],
+        ['label' => 'Chăm sóc khách hàng', 'icon' => 'fa-headset', 'url' => '/public/pages/support/support_management.php', 'active_check' => 'support_management.php', 'permission' => 'support_management_view'],
+        ['label' => 'QL Hướng dẫn', 'icon' => 'fa-book', 'url' => '/public/pages/guide/guide_management.php', 'active_check' => 'guide_management.php', 'permission' => 'guide_management_view'],
     ]],
 
     ['type' => 'section', 'label' => 'Quản lý Tài chính'],
     ['label' => 'Giao dịch & Doanh thu', 'icon' => 'fa-file-invoice-dollar', 'children' => [
-        ['label' => 'QL giao dịch', 'icon' => 'fa-file-invoice-dollar', 'url' => '/public/pages/purchase/invoice_management.php', 'active_check' => 'invoice_management.php', 'permission' => 'invoice_management'],
-        ['label' => 'QL doanh thu', 'icon' => 'fa-dollar-sign', 'url' => '/public/pages/purchase/revenue_management.php', 'active_check' => 'revenue_management.php', 'permission' => 'revenue_management'],
-        ['label' => 'Phê duyệt hóa đơn', 'icon' => 'fa-file-invoice', 'url' => '/public/pages/invoice/invoice_review.php', 'active_check' => 'invoice_review.php', 'permission' => 'invoice_review'],
+        ['label' => 'QL giao dịch', 'icon' => 'fa-file-invoice-dollar', 'url' => '/public/pages/purchase/invoice_management.php', 'active_check' => 'invoice_management.php', 'permission' => 'invoice_management_view'],
+        ['label' => 'QL doanh thu', 'icon' => 'fa-dollar-sign', 'url' => '/public/pages/purchase/revenue_management.php', 'active_check' => 'revenue_management.php', 'permission' => 'revenue_management_view'],
+        ['label' => 'Phê duyệt hóa đơn', 'icon' => 'fa-file-invoice', 'url' => '/public/pages/invoice/invoice_review.php', 'active_check' => 'invoice_review.php', 'permission' => 'invoice_review_view'],
     ]],
 
-    ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => '/public/pages/report/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports'],
+    ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => '/public/pages/report/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports_view'],
 
     ['type' => 'section', 'label' => 'Cài đặt'],
     ['label' => 'Thông tin tài khoản', 'icon' => 'fa-id-card', 'url' => '/public/pages/setting/profile.php', 'active_check' => 'profile.php', 'permission' => 'settings'],
@@ -49,6 +49,7 @@ $pdo = $db->getConnection();
 $role = isset($_SESSION['admin_role']) ? strtolower($_SESSION['admin_role']) : '';
 $allowed_perms = [];
 $admin_db_name = 'Admin'; // Default name
+$db_custom_role_names = []; // Will hold names from custom_roles table
 
 if ($pdo && $role && isset($_SESSION['admin_username'])) {
     // Fetch allowed permissions
@@ -63,19 +64,25 @@ if ($pdo && $role && isset($_SESSION['admin_username'])) {
     if ($admin_name_result && isset($admin_name_result['name'])) {
         $admin_db_name = htmlspecialchars($admin_name_result['name']);
     }
-}
 
-// Vietnamese role mapping
-$role_vietnamese = [
-    'admin' => 'Quản trị viên',
-    'customercare' => 'Chăm sóc khách hàng',
-    // Add other roles here if needed
-];
+    // Fetch all custom role display names from DB
+    $stmt_custom_roles = $pdo->query("SELECT role_key, role_display_name FROM custom_roles");
+    if ($stmt_custom_roles) {
+        while ($row = $stmt_custom_roles->fetch(PDO::FETCH_ASSOC)) {
+            $db_custom_role_names[$row['role_key']] = $row['role_display_name'];
+        }
+    }
+}
 
 // Use the name fetched from DB
 $admin_user_name = $admin_db_name;
-// Use Vietnamese role name if available, otherwise fallback to capitalized English role
-$admin_user_role = isset($role_vietnamese[$role]) ? $role_vietnamese[$role] : ucfirst(htmlspecialchars($role));
+
+// Determine display role name: custom_roles from DB first, then default
+if (isset($db_custom_role_names[$role])) {
+    $admin_user_role = htmlspecialchars($db_custom_role_names[$role]);
+} else {
+    $admin_user_role = ucfirst(htmlspecialchars(str_replace('_', ' ', $role)));
+}
 ?>
 <!-- Hamburger button (Positioned fixed via CSS) -->
 <button id="hamburger-btn" class="hamburger-btn">
@@ -152,8 +159,11 @@ $admin_user_role = isset($role_vietnamese[$role]) ? $role_vietnamese[$role] : uc
                         </li>
                     <?php else: ?>
                         <?php
-                            // Skip unauthorized items (except sections or logout)
-                            if (!isset($item['type']) && isset($item['permission']) && !in_array($item['permission'], $allowed_perms)) {
+                            if (!isset($item['type'])
+                                && isset($item['permission'])
+                                && !in_array($item['permission'], $allowed_perms)
+                                && !in_array($item['permission'], ['dashboard', 'settings'])
+                            ) {
                                 continue;
                             }
                             // Determine if the item is active

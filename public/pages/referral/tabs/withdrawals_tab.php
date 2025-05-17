@@ -5,11 +5,11 @@
 <form method="GET">
     <input type="hidden" name="tab" value="withdrawals">
     <div class="filter-bar">
-        <input type="search" name="search" placeholder="Tìm tên người dùng" value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
+        <input type="search" name="search" placeholder="Tìm tên người dùng" value="<?php echo escape_html($_GET['search'] ?? ''); ?>">
         <select name="status">
             <option value="">Tất cả trạng thái</option>
             <?php foreach(['pending'=>'Chờ xử lý','completed'=>'Hoàn thành','rejected'=>'Từ chối'] as $k=>$v): ?>
-                <option value="<?php echo $k; ?>" <?php echo (($_GET['status']??'')==$k)?'selected':''; ?>><?php echo $v; ?></option>
+                <option value="<?php echo escape_html($k); ?>" <?php echo (($_GET['status']??'')==$k)?'selected':''; ?>><?php echo escape_html($v); ?></option>
             <?php endforeach; ?>
         </select>
         <button class="btn btn-primary" type="submit">Lọc</button>
@@ -22,10 +22,10 @@
     <input type="hidden" name="table_name" value="withdrawal_requests">
     <?php
     if (isset($_GET['search']) && $_GET['search'] !== '') {
-        echo '<input type="hidden" name="search" value="' . htmlspecialchars($_GET['search']) . '">';
+        echo '<input type="hidden" name="search" value="' . escape_html($_GET['search']) . '">';
     }
     if (isset($_GET['status']) && $_GET['status'] !== '') {
-        echo '<input type="hidden" name="status" value="' . htmlspecialchars($_GET['status']) . '">';
+        echo '<input type="hidden" name="status" value="' . escape_html($_GET['status']) . '">';
     }
     ?>
     <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px; justify-content: flex-end;">
@@ -53,13 +53,13 @@
                 <?php if (!empty($data['items'])): ?>
                     <?php foreach ($data['items'] as $item): ?>
                         <tr>
-                            <td><input type="checkbox" name="selected_ids[]" class="withdrawal-checkbox" value="<?php echo htmlspecialchars($item['id']); ?>"></td>
-                            <td><?php echo htmlspecialchars($item['id']); ?></td>
-                            <td><?php echo htmlspecialchars($item['username']); ?></td>
+                            <td><input type="checkbox" name="selected_ids[]" class="withdrawal-checkbox" value="<?php echo escape_html($item['id']); ?>"></td>
+                            <td><?php echo escape_html($item['id']); ?></td>
+                            <td><?php echo escape_html($item['username']); ?></td>
                             <td><?php echo format_currency($item['amount']); ?></td>
-                            <td><?php echo htmlspecialchars($item['bank_name']); ?></td>
-                            <td><?php echo htmlspecialchars($item['account_number']); ?></td>
-                            <td><?php echo htmlspecialchars($item['account_holder']); ?></td>
+                            <td><?php echo escape_html($item['bank_name']); ?></td>
+                            <td><?php echo escape_html($item['account_number']); ?></td>
+                            <td><?php echo escape_html($item['account_holder']); ?></td>
                             <td class="status text-center"><?php echo get_status_badge('withdrawal', $item['status']); ?></td>
                             <td><?php echo format_datetime($item['created_at']); ?></td>
                             <td class="actions">

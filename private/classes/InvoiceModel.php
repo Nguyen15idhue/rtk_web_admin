@@ -118,4 +118,22 @@ class InvoiceModel {
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$fileName, $id]);
     }
+
+    /**
+     * Get the customer (user) ID associated with this invoice.
+     */
+    public function getCustomerId(int $invoiceId): ?int {
+        $sql = "
+            SELECT r.user_id
+            FROM invoice inv
+            JOIN transaction_history th ON inv.transaction_history_id = th.id
+            JOIN registration r ON th.registration_id = r.id
+            WHERE inv.id = ?
+            LIMIT 1
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$invoiceId]);
+        $userId = $stmt->fetchColumn();
+        return $userId !== false ? (int) $userId : null;
+    }
 }

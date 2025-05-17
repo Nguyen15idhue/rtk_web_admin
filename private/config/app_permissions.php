@@ -1,25 +1,40 @@
 <?php
 // private/config/app_permissions.php
 return [
-    'dashboard' => 'Truy cập Dashboard',
-    'user_management' => 'Quản lý User (Khách hàng)', 
-    'user_create' => 'Tạo User (Khách hàng)',
-    'account_management' => 'Quản lý Tài khoản Đo đạc',
-    'invoice_management' => 'Quản lý Giao dịch',
-    'invoice_review' => 'Xem lại Hóa đơn',
-    'referral_management' => 'Quản lý Giới thiệu',
-    'reports' => 'Xem Báo cáo',
-    'revenue_management' => 'Quản lý Doanh thu',
-    'permission_management' => 'Quản lý Phân quyền',
-    'permission_edit' => 'Chỉnh sửa Quyền cho vai trò khác',
-    'admin_user_create' => 'Thêm QTV/Vận hành',
-    'guide_management' => 'Quản lý Hướng dẫn',
-    'settings' => 'Cài đặt Hệ thống',
-    'station_management' => 'Quản lý Trạm',
-    'support_management' => 'Quản lý Hỗ trợ',
-    'voucher_management' => 'Quản lý Voucher',
-    // Khi có tab/tính năng mới, bạn chỉ cần thêm vào đây
-    // Ví dụ:
-    // 'new_feature_xyz' => 'Quản lý Tính năng XYZ',
+    'reports_view' => 'Xem Báo cáo',
+
+    // Người dùng (Khách hàng)
+    'user_management_view' => 'Quản lý Người dùng (Khách hàng)',
+    'user_management_edit' => 'Sửa Quản lý Người dùng (Khách hàng)',
+
+    // Tài khoản Đo đạc
+    'account_management_view' => 'Quản lý Tài khoản Đo đạc',
+    'account_management_edit' => 'Sửa Quản lý Tài khoản Đo đạc',
+
+    // Tài chính & Giao dịch
+    'invoice_management_view' => 'Quản lý Giao dịch',
+    'invoice_management_edit' => 'Sửa Quản lý Giao dịch',
+    'invoice_review_view' => 'Phê duyệt Hóa đơn',
+    'invoice_review_edit' => 'Sửa Phê duyệt Hóa đơn',
+    'revenue_management_view' => 'Quản lý Doanh thu',
+    'revenue_management_edit' => 'Sửa Quản lý Doanh thu',
+    'voucher_management_view' => 'Quản lý Voucher',
+    'voucher_management_edit' => 'Sửa Quản lý Voucher',
+
+    // Phân quyền & Quản trị viên
+    'permission_management_view' => 'Quản lý Phân quyền',
+    'permission_management_edit' => 'Sửa Quản lý Phân quyền',
+
+    // Nội dung & Trạm
+    'guide_management_view' => 'Quản lý Hướng dẫn',
+    'guide_management_edit' => 'Sửa Quản lý Hướng dẫn',
+    'station_management_view' => 'Quản lý Trạm',
+    'station_management_edit' => 'Sửa Quản lý Trạm',
+
+    // Hỗ trợ & Giới thiệu
+    'support_management_view' => 'Quản lý Hỗ trợ',
+    'support_management_edit' => 'Sửa Quản lý Hỗ trợ',
+    'referral_management_view' => 'Quản lý Giới thiệu',
+    'referral_management_edit' => 'Sửa Quản lý Giới thiệu',
 ];
 ?>

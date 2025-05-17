@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 
-Auth::ensureAuthorized('permission_management');
+Auth::ensureAuthorized('permission_management_view');
 $db      = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc
@@ -11,32 +11,28 @@ register_shutdown_function(function() use (&$db) {
     $db = null;
 });
 
-$role = $_GET['role'] ?? '';
-$validRoles = ['admin','customercare'];
-if (!in_array($role, $validRoles)) {
-    api_error('Invalid role', 400);
-    exit;
-}
-
 try {
-    // Fetch permissions
+    // 1. Read and validate role parameter
+    $role = $_GET['role'] ?? '';
+    if (empty($role)) {
+        api_error('Role parameter is required', 400);
+    }
+
+    // Fetch permissions for this role
     $stmt = $db->prepare('SELECT permission, allowed FROM role_permissions WHERE role = :role');
-    $stmt->bindParam(':role', $role);
-    $stmt->execute();
+    $stmt->execute([':role' => $role]);
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     // If no entries, initialize defaults
     if (empty($rows)) {
         // Define default permissions
         $default = ['dashboard'=>1, 'user_management'=>0, 'user_create'=>0, 'settings'=>0];
         $insert = $db->prepare('INSERT INTO role_permissions (role, permission, allowed) VALUES (:role, :perm, :allowed)');
         foreach ($default as $perm => $allow) {
-            $insert->bindParam(':role', $role);
-            $insert->bindParam(':perm', $perm);
-            $insert->bindParam(':allowed', $allow, PDO::PARAM_INT);
-            $insert->execute();
+            $insert->execute([':role' => $role, ':perm' => $perm, ':allowed' => $allow]);
         }
         // re-fetch
-        $stmt->execute();
+        $stmt->execute([':role' => $role]);
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     api_success($rows);

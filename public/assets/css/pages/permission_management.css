@@ -1,0 +1,22 @@
+/* Styles for permission management page */
+
+/* Style for the role tab buttons */
+.role-tab {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.role-tab.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+.role-tab:hover {
+    background-color: #e9ecef;
+}

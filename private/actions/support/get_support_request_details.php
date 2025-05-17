@@ -1,7 +1,7 @@
 <?php
 // filepath: private/actions/support/get_support_request_details.php
 require_once __DIR__ . '/../../core/page_bootstrap.php';
-Auth::ensureAuthorized('support_management');
+Auth::ensureAuthorized('support_management_view');
 header('Content-Type: application/json');
 
 require_once __DIR__ . '/../../classes/SupportRequestModel.php';

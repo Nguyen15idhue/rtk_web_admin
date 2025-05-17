@@ -14,7 +14,7 @@ register_shutdown_function(function() use (&$db) {
 header('Content-Type: application/json');
 
 // Use Auth class for authentication and authorization
-Auth::ensureAuthorized('account_management');
+Auth::ensureAuthorized('account_management_edit');
 
 // Get input data
 $rawInput = file_get_contents('php://input');

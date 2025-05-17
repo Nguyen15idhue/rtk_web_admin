@@ -3,7 +3,7 @@
 
 $config = require __DIR__ . '/../../core/page_bootstrap.php';
 
-Auth::ensureAuthorized('dashboard'); // Changed to string permission
+Auth::ensureAuthenticated();
 $pdo = $config['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc
@@ -66,9 +66,21 @@ function fetch_dashboard_data(): array
         $dashboard_data['total_commission_paid'] = (float)$pdo->query(
             "SELECT IFNULL(SUM(commission_amount),0) FROM referral_commission WHERE status='approved'"
         )->fetchColumn();
-        // Hoạt động gần đây
+        // Hoạt động gần đây (chỉ các action do khách hàng tạo)
         $dashboard_data['recent_activities'] = $pdo->query(
-            "SELECT * FROM activity_logs ORDER BY created_at DESC LIMIT 10"
+            "SELECT al.*, u.username AS actor_name
+             FROM activity_logs al
+             LEFT JOIN `user` u ON al.user_id = u.id
+             WHERE al.user_id IS NOT NULL
+               AND al.action IN (
+                 'purchase',
+                 'create_support_request',
+                 'request_invoice',
+                 'renewal_request',
+                 'withdrawal_request'
+               )
+             ORDER BY al.created_at DESC
+             LIMIT 10"
         )->fetchAll(PDO::FETCH_ASSOC);
         // Biểu đồ ĐK mới 7 ngày
         $stmt = $pdo->prepare(

@@ -1,7 +1,7 @@
 <?php
 $config = require_once __DIR__ . '/../../core/page_bootstrap.php';
 
-Auth::ensureAuthorized('user_management'); 
+Auth::ensureAuthorized('user_management_edit'); 
 $db = $config['db'];
 header('Content-Type: application/json');
 

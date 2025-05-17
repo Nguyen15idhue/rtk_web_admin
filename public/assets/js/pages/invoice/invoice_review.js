@@ -17,12 +17,13 @@
                             title="Hoàn tác">
                         <i class="fas fa-undo"></i>
                     </button>`;
+                window.showToast(data.message || 'Thao tác thành công!', 'success');
             } else {
-                errorHandler.showError('Lỗi: ' + (data.message || 'Không thể từ chối.'));
+                window.showToast(data.message || 'Đã có lỗi xảy ra', 'error');
             }
         })
         .catch(err => {
-            errorHandler.showError('Lỗi khi gửi yêu cầu từ chối: ' + err.message);
+            window.showToast('Lỗi khi gửi yêu cầu từ chối: ' + err.message, 'error');
         });
     }
     // expose for inline onclick
@@ -37,11 +38,18 @@
         })
         .then(data => {
             if (data.success) {
-                location.reload();
+                window.showToast(data.message || 'Thao tác thành công!', 'success');
+                // Optionally, redirect or update UI further
+                if (data.redirect_url) {
+                    setTimeout(() => { window.location.href = data.redirect_url; }, 2000);
+                } else {
+                    // Fallback if no redirect URL is provided but action was successful
+                    setTimeout(() => { window.location.reload(); }, 2000);
+                }
             } else {
-                alert(data.message || 'Đã có lỗi xảy ra');
+                window.showToast(data.message || 'Đã có lỗi xảy ra', 'error');
             }
         })
-        .catch(() => alert('Không thể kết nối tới server'));
+        .catch(() => window.showToast('Không thể kết nối tới server', 'error'));
     };
 })(window);

@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 // Use Auth class for authentication and authorization
 
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
-Auth::ensureAuthorized('permission_edit');
+Auth::ensureAuthorized('permission_management_edit');
 $db      = $bootstrap['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc
@@ -19,10 +19,6 @@ if (!is_array($data) || empty($data['role']) || !is_array($data['permissions']))
     api_error('Invalid input', 400);
 }
 $role = $data['role'];
-$validRoles = ['admin','customercare'];
-if (!in_array($role, $validRoles)) {
-    api_error('Invalid role', 400);
-}
 $permissions = $data['permissions'];
 try {
     $stmt = $db->prepare('UPDATE role_permissions SET allowed = :allowed WHERE role = :role AND permission = :perm');
