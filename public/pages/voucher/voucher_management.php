@@ -38,7 +38,7 @@ $current_page = $data['current_page'];
 
 // --- Build Pagination URL ---
 $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
-
+$isEditVoucherAllowed = Auth::can('voucher_management_edit');
 // --- Page Setup for Header/Sidebar ---
 $page_title = 'Quản lý Voucher';
 include $private_layouts_path . 'admin_header.php';
@@ -52,7 +52,7 @@ include $private_layouts_path . 'admin_sidebar.php';
     <div id="voucher-management" class="content-section">
         <div class="header-actions">
             <h3>Quản lý Voucher</h3>
-            <?php if ($admin_role === 'admin'): ?>
+            <?php if ($isEditVoucherAllowed): ?>
             <button class="btn btn-primary" onclick="VoucherPage.openCreateModal()"><i class="fas fa-plus"></i> Thêm Voucher</button>
             <?php endif; ?>
         </div>
@@ -130,7 +130,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                                 <td><?php echo get_status_badge('voucher', $v['is_active'] ? 'active' : 'inactive'); ?></td>
                                 <td>
                                     <button type="button" class="btn-icon btn-view" onclick="VoucherPage.viewDetails(<?php echo $v['id']; ?>)"><i class="fas fa-eye"></i></button>
-                                    <?php if ($admin_role==='admin'): ?>
+                                    <?php if ($isEditVoucherAllowed): ?>
                                     <button type="button" class="btn-icon btn-edit" onclick="VoucherPage.openEditModal(<?php echo $v['id']; ?>)"><i class="fas fa-pencil-alt"></i></button>
                                     <button type="button" class="btn-icon" onclick="VoucherPage.toggleStatus(<?php echo $v['id']; ?>, '<?php echo $v['is_active']? 'disable':'enable'; ?>')"><i class="fas <?php echo $v['is_active']? 'fa-toggle-off':'fa-toggle-on'; ?>"></i></button>
                                     <button type="button" class="btn-icon btn-danger" onclick="VoucherPage.deleteVoucher(<?php echo $v['id']; ?>)"><i class="fas fa-trash-alt"></i></button>

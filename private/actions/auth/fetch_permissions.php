@@ -26,14 +26,21 @@ try {
     // If no entries, initialize defaults
     if (empty($rows)) {
         // Define default permissions
-        $default = ['dashboard'=>1, 'user_management'=>0, 'user_create'=>0, 'settings'=>0];
-        $insert = $db->prepare('INSERT INTO role_permissions (role, permission, allowed) VALUES (:role, :perm, :allowed)');
-        foreach ($default as $perm => $allow) {
-            $insert->execute([':role' => $role, ':perm' => $perm, ':allowed' => $allow]);
+        // Updated: Set to empty array as base permissions are removed by the new SQL.
+        // New roles will start with no permissions by default.
+        $default = [];
+        if (!empty($default)) { // Only proceed if there are defaults to insert
+            $insert = $db->prepare('INSERT INTO role_permissions (role, permission, allowed) VALUES (:role, :perm, :allowed)');
+            foreach ($default as $perm => $allow) {
+                $insert->execute([':role' => $role, ':perm' => $perm, ':allowed' => $allow]);
+            }
+            // re-fetch
+            $stmt->execute([':role' => $role]);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            // If $default is empty, $rows is already empty and correct.
+            // No need to re-fetch, $rows remains an empty array.
         }
-        // re-fetch
-        $stmt->execute([':role' => $role]);
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     api_success($rows);
 } catch (Exception $e) {

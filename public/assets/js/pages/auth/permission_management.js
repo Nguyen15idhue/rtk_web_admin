@@ -1,6 +1,7 @@
 (function(){
     const adminsData   = window.adminsData;
-    const isAdmin = window.isAdmin;
+    const isAdmin = window.isAdmin; // Keep isAdmin for specific admin-only logic if needed
+    const canEditPermissions = window.appConfig && window.appConfig.permissions && window.appConfig.permissions.permission_management_edit;
     const allDefinedPermissions = window.allDefinedPermissions || {};
     const permissionGroupsConfig = window.permissionGroupsConfig || {};
     let currentRolePermissions = window.currentRolePermissions || {};
@@ -113,7 +114,7 @@
                 const hasView = viewCode && currentRolePermissions[roleKey][viewCode]?.allowed;
                 const hasEdit = editCode && currentRolePermissions[roleKey][editCode]?.allowed;
                 const state = hasEdit ? 'edit' : (hasView ? 'view' : 'none');
-                const disabledAttr = !isAdmin ? 'disabled style="cursor:not-allowed;"' : '';
+                const disabledAttr = !canEditPermissions ? 'disabled style="cursor:not-allowed;"' : '';
 
                 return `
                   <tr class="hover:bg-gray-50">
@@ -180,11 +181,11 @@
                                        data-role="${roleKey}" 
                                        data-permission="${permCode}"
                                        ${currentPermissionState ? 'checked' : ''}
-                                       ${isCoreAdminLocked || !isAdmin ? 'disabled' : ''}
-                                       ${!isAdmin ? 'style="cursor:not-allowed;"' : ''}
+                                       ${isCoreAdminLocked || !canEditPermissions ? 'disabled' : ''}
+                                       ${!canEditPermissions ? 'style="cursor:not-allowed;"' : ''}
                                        onchange="PermissionPageEvents.handlePermissionChange(this, '${roleKey}', '${permCode}')">
                             </label>
-                            ${!isAdmin && !isCoreAdminLocked ? '<p class="text-xs text-gray-500 mt-1">Chỉ Admin có thể thay đổi.</p>' : ''}
+                            ${!canEditPermissions && !isCoreAdminLocked ? '<p class="text-xs text-gray-500 mt-1">Chỉ người có quyền mới có thể thay đổi.</p>' : ''}
                         </div>
                     `;
                 }
@@ -218,8 +219,8 @@
             }, 10);
         }
 
-        saveBtn.disabled = !isAdmin;
-        if (!isAdmin) {
+        saveBtn.disabled = !canEditPermissions;
+        if (!canEditPermissions) {
             saveBtn.style.cursor = 'not-allowed';
             saveBtn.title = 'Bạn không có quyền thực hiện hành động này.';
         } else {
@@ -234,7 +235,7 @@
     }
 
     function handlePermissionChange(checkbox, roleKey, permCode) {
-        if (!isAdmin) return;
+        if (!canEditPermissions) return;
         if (!currentRolePermissions[roleKey]) {
             currentRolePermissions[roleKey] = {};
         }
@@ -246,7 +247,7 @@
     }
 
     function handlePermissionModeChange(roleKey, base, mode) {
-        if(!isAdmin) return;
+        if(!canEditPermissions) return;
         ['view','edit'].forEach(type => {
             const code = base + '_' + type;
             if(!currentRolePermissions[roleKey][code]) {
@@ -257,7 +258,7 @@
     }
 
     async function saveRolePermissions() {
-        if (!isAdmin || !activeRoleKey) {
+        if (!canEditPermissions || !activeRoleKey) {
             window.showToast('Bạn không có quyền thực hiện hoặc không có vai trò nào được chọn.', 'error');
             return;
         }
@@ -311,22 +312,42 @@
         }
     });
 
-    if(!isAdmin){
-        const createRoleBtn = document.querySelector('button[onclick*="openCreateCustomRoleModal"]');
+    if(!canEditPermissions){
+        const createRoleBtn = document.querySelector('button[onclick*="openCreateCustomRoleModal()"]');
         if (createRoleBtn) {
             createRoleBtn.disabled = true;
             createRoleBtn.style.cursor = 'not-allowed';
             createRoleBtn.title = "Bạn không có quyền thực hiện hành động này.";
         }
+        const addAdminBtn = document.querySelector('button[onclick*="openCreateRoleModal()"]');
+        if (addAdminBtn) {
+            addAdminBtn.disabled = true;
+            addAdminBtn.style.cursor = 'not-allowed';
+            addAdminBtn.title = "Bạn không có quyền thực hiện hành động này.";
+        }
+        const adminActionButtons = document.querySelectorAll('#adminAccountsTable .actions button');
+        adminActionButtons.forEach(button => {
+            button.disabled = true;
+            button.style.cursor = 'not-allowed';
+            button.title = "Bạn không có quyền thực hiện hành động này.";
+        });
     }
 
     function openCreateRoleModal(){
+        if (!canEditPermissions) {
+            window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+            return;
+        }
         const form = document.getElementById('createRoleForm');
         if (form) form.reset();
         helperOpenModal && helperOpenModal('createRoleModal');
     }
 
     function openEditAdminModal(id){
+        if (!canEditPermissions) {
+            window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+            return;
+        }
         const admin = adminsData.find(a=>a.id==id);
         if(!admin) return;
         ['Id','Name','Username','Password','Role'].forEach(field=>{
@@ -342,12 +363,20 @@
     }
 
     function openDeleteAdminModal(id){
+        if (!canEditPermissions) {
+            window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+            return;
+        }
         const confirmBtn = document.getElementById('confirmDeleteAdminBtn');
         if (confirmBtn) confirmBtn.onclick = ()=> handleDeleteAdmin(id);
         helperOpenModal && helperOpenModal('deleteAdminModal');
     }
 
     async function handleDeleteAdmin(id){
+        if (!canEditPermissions) {
+            window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+            return;
+        }
         try{
             const res = await fetch(`${basePath}public/handlers/auth/index.php?action=process_admin_delete`, {
                 method:'POST',
@@ -364,6 +393,10 @@
     }
 
     function openCreateCustomRoleModal() {
+        if (!canEditPermissions) {
+            window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+            return;
+        }
         helperOpenModal && helperOpenModal('createCustomRoleModal');
         const form = document.getElementById('createCustomRoleForm');
         if (form) {
@@ -470,7 +503,7 @@
         if (createCustomRoleForm) {
             createCustomRoleForm.addEventListener('submit', async function(event) {
                 event.preventDefault();
-                if (!isAdmin) {
+                if (!canEditPermissions) {
                     window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
                     return;
                 }

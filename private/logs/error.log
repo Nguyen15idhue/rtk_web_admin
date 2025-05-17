@@ -45,3 +45,33 @@
     "Sign": "a8e5092d135ee0c84a347457db5a5d3d9922087e04d362694dd8cf43c9684413"
 }
 [17-May-2025 13:13:47 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[17-May-2025 13:28:00 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:28:44 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:29:53 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:32:11 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:32:56 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:33:15 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:33:20 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:38:46 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:38:48 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:38:51 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:40:07 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:40:28 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:40:48 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:41:00 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:41:04 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:41:13 UTC] [DEBUG] Search keyword: 
+[17-May-2025 13:43:27 UTC] [DEBUG] Search keyword: 
+[17-May-2025 14:31:14 UTC] [DEBUG] Search keyword: 
+[17-May-2025 14:32:54 UTC] [DEBUG] Search keyword: 
+[17-May-2025 14:53:35 UTC] [DEBUG] Search keyword: 
+[17-May-2025 15:02:49 UTC] [DEBUG] Search keyword: 
+[17-May-2025 15:05:30 UTC] [DEBUG] Search keyword: 
+[17-May-2025 15:12:39 UTC] PHP Fatal error:  Cannot declare class Auth, because the name is already in use in E:\Application\laragon\www\rtk_web_admin\private\classes\Auth.php on line 5
+[17-May-2025 15:12:39 UTC] Fatal error: Cannot declare class Auth, because the name is already in use in E:\Application\laragon\www\rtk_web_admin\private\classes\Auth.php on line 5
+[17-May-2025 15:13:04 UTC] PHP Fatal error:  Cannot declare class Auth, because the name is already in use in E:\Application\laragon\www\rtk_web_admin\private\classes\Auth.php on line 5
+[17-May-2025 15:13:04 UTC] Fatal error: Cannot declare class Auth, because the name is already in use in E:\Application\laragon\www\rtk_web_admin\private\classes\Auth.php on line 5
+[17-May-2025 15:16:22 UTC] PHP Fatal error:  Cannot declare class Auth, because the name is already in use in E:\Application\laragon\www\rtk_web_admin\private\classes\Auth.php on line 5
+[17-May-2025 15:16:22 UTC] Fatal error: Cannot declare class Auth, because the name is already in use in E:\Application\laragon\www\rtk_web_admin\private\classes\Auth.php on line 5
+[17-May-2025 15:16:23 UTC] PHP Fatal error:  Cannot declare class Auth, because the name is already in use in E:\Application\laragon\www\rtk_web_admin\private\classes\Auth.php on line 5
+[17-May-2025 15:16:23 UTC] Fatal error: Cannot declare class Auth, because the name is already in use in E:\Application\laragon\www\rtk_web_admin\private\classes\Auth.php on line 5

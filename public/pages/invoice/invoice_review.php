@@ -35,6 +35,8 @@ $status_options = [
 $page_title = 'Phê duyệt Hóa đơn';
 include $private_layouts_path . 'admin_header.php';
 include $private_layouts_path . 'admin_sidebar.php';
+
+$isEditInvoiceAllowed = Auth::can('invoice_review_edit');
 ?>
 
 <main class="content-wrapper">
@@ -93,7 +95,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                         </td>
                         <td><?php echo htmlspecialchars($inv['rejected_reason'] ?? ''); ?></td>
                         <td class="actions" style="text-align:center;">
-                            <?php if ($inv['status'] === 'pending'): ?>
+                            <?php if ($inv['status'] === 'pending' && $isEditInvoiceAllowed): ?>
                                 <a href="invoice_upload.php?invoice_id=<?php echo $inv['invoice_id']; ?>">
                                     <button type="button" class="btn-icon btn-approve" title="Upload & Approve">
                                         <i class="fas fa-upload"></i>
@@ -103,17 +105,17 @@ include $private_layouts_path . 'admin_sidebar.php';
                                     <i class="fas fa-times"></i>
                                 </button>
                             <?php elseif ($inv['status'] === 'approved'): ?>
-                                <button class="btn-icon btn-undo"
-                                        onclick="InvoiceReviewPageEvents.undoInvoice(<?php echo $inv['invoice_id']; ?>)"
-                                        title="Hoàn tác">
+                                <?php if ($isEditInvoiceAllowed): ?>
+                                <button class="btn-icon btn-undo" onclick="InvoiceReviewPageEvents.undoInvoice(<?php echo $inv['invoice_id']; ?>)" title="Hoàn tác">
                                     <i class="fas fa-undo"></i>
                                 </button>
+                                <?php endif; ?>
                             <?php else: // rejected ?>
-                                <button class="btn-icon btn-undo"
-                                        onclick="InvoiceReviewPageEvents.undoInvoice(<?php echo $inv['invoice_id']; ?>)"
-                                        title="Hoàn tác">
+                                <?php if ($isEditInvoiceAllowed): ?>
+                                <button class="btn-icon btn-undo" onclick="InvoiceReviewPageEvents.undoInvoice(<?php echo $inv['invoice_id']; ?>)" title="Hoàn tác">
                                     <i class="fas fa-undo"></i>
                                 </button>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -125,7 +127,12 @@ include $private_layouts_path . 'admin_sidebar.php';
     </div>
 </main>
 <script>
-    window.basePath = '<?php echo rtrim($base_url,'/'); ?>';
+    window.appConfig = {
+        baseUrl: '<?php echo rtrim($base_url,'/'); ?>',
+        permissions: {
+            invoice_review_edit: <?php echo json_encode($isEditInvoiceAllowed); ?>
+        }
+    };
 </script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/invoice/invoice_review.js"></script>
 <?php include $private_layouts_path . 'admin_footer.php'; ?>

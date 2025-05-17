@@ -15,6 +15,11 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
+// --- NEW: single unified permission ---
+$account_permissions = [
+    'account_management_edit' => Auth::can('account_management_edit'),
+];
+
 // --- Include Page-Specific Logic ---
 // Handles filtering, pagination, and data fetching for accounts
 $account_list_data = require $private_actions_path . 'account/handle_account_list.php';
@@ -57,7 +62,7 @@ include $private_layouts_path . 'admin_sidebar.php';
     <div id="admin-account-management" class="content-section">
         <div class="header-actions">
             <h3>Danh sách tài khoản đo đạc</h3>
-            <button class="btn btn-primary" onclick="openCreateMeasurementAccountModal()" data-permission="account_create">
+            <button class="btn btn-primary" onclick="openCreateMeasurementAccountModal()" data-permission="account_management_edit">
                 <i class="fas fa-plus"></i> Tạo TK thủ công
             </button>
         </div>
@@ -99,14 +104,14 @@ include $private_layouts_path . 'admin_sidebar.php';
                 <button type="submit" name="export_all" class="btn btn-success">
                     <i class="fas fa-file-excel"></i> Xuất tất cả
                 </button>
-                <button type="button" id="bulkToggleStatusBtn" onclick="AccountManagementPageEvents.bulkToggleStatus()" class="btn btn-warning">
+                <button type="button" id="bulkToggleStatusBtn" onclick="AccountManagementPageEvents.bulkToggleStatus()" class="btn btn-warning" data-permission="account_management_edit">
                     <i class="fas fa-sync-alt"></i> Đảo trạng thái
                 </button>
-                <button type="button" id="bulkDeleteBtn" onclick="AccountManagementPageEvents.bulkDeleteAccounts()" class="btn btn-danger">
+                <button type="button" id="bulkDeleteBtn" onclick="AccountManagementPageEvents.bulkDeleteAccounts()" class="btn btn-danger" data-permission="account_management_edit">
                     <i class="fas fa-trash"></i> Xóa mục đã chọn
                 </button>
                 <!-- Add bulk renew button -->
-                <button type="button" id="bulkRenewBtn" onclick="AccountManagementPageEvents.bulkRenewAccounts()" class="btn btn-info">
+                <button type="button" id="bulkRenewBtn" onclick="AccountManagementPageEvents.bulkRenewAccounts()" class="btn btn-info" data-permission="account_management_edit">
                     <i class="fas fa-history"></i> Gia hạn mục đã chọn
                 </button>
             </div>
@@ -141,13 +146,16 @@ include $private_layouts_path . 'admin_sidebar.php';
                                     <td class="actions">
                                         <div class="action-buttons">
                                             <?php 
-                                            // Original buttons from helper
-                                            echo get_account_action_buttons($account); 
-                                            // Add Renew button manually here or modify get_account_action_buttons helper
-                                            $canRenew = !in_array($account['derived_status'], ['pending', 'rejected']); // Example condition
-                                            if ($canRenew):
+                                                echo get_account_action_buttons($account); 
+                                                $canRenew = !in_array($account['derived_status'], ['pending','rejected']);
                                             ?>
-                                            <button type="button" title="Gia hạn TK" class="btn-icon btn-renew" onclick="AccountManagementPageEvents.openRenewAccountModal('<?php echo htmlspecialchars($account['id']); ?>')">
+                                            <?php if ($canRenew): ?>
+                                            <button
+                                                type="button"
+                                                class="btn-icon btn-renew"
+                                                data-permission="account_management_edit"
+                                                title="Gia hạn TK"
+                                                onclick="AccountManagementPageEvents.openRenewAccountModal('<?php echo htmlspecialchars($account['id']); ?>')">
                                                 <i class="fas fa-history"></i>
                                             </button>
                                             <?php endif; ?>
@@ -429,6 +437,14 @@ include $private_layouts_path . 'admin_sidebar.php';
 <script>
 window.packagesList     = <?php echo json_encode($packages,          JSON_UNESCAPED_UNICODE); ?>;
 window.packageDurations = <?php echo json_encode($packageDurations, JSON_UNESCAPED_UNICODE); ?>;
+</script>
+
+<!-- expose permissions -->
+<script>
+window.appConfig = {
+    baseUrl: '<?php echo rtrim($base_url, '/'); ?>',
+    permissions: <?php echo json_encode($account_permissions, JSON_UNESCAPED_UNICODE); ?>
+};
 </script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/account/account_management.js"></script>
 

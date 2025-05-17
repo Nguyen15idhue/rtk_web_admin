@@ -11,6 +11,9 @@ $user_display_name     = $bootstrap_data['user_display_name'];
 
 require_once $private_actions_path . 'invoice/fetch_transactions.php';
 
+// Check permissions
+$canEditInvoice = Auth::can('invoice_management_edit');
+
 // --- LẤY DỮ LIỆU CHO FILTERS MỚI ---
 $packages_stmt = $db->query("SELECT id, name FROM package WHERE is_active=1 ORDER BY display_order");
 $packages = $packages_stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -53,15 +56,17 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
             <!-- bulk actions -->
             <form id="bulkActionForm" onsubmit="return false;">
                 <div class="bulk-actions-bar" style="margin:10px 0; display:flex; gap:10px;">
-                    <button type="button" class="btn btn-primary" onclick="PurchaseManagementPageEvents.bulkApproveTransactions()" data-permission="transaction_approve">
+                    <?php if ($canEditInvoice): ?>
+                    <button type="button" class="btn btn-primary" onclick="PurchaseManagementPageEvents.bulkApproveTransactions()">
                         <i class="fas fa-check-circle"></i> Duyệt đã chọn
                     </button>
-                    <button type="button" class="btn btn-secondary" onclick="PurchaseManagementPageEvents.bulkRevertTransactions()" data-permission="transaction_revert">
+                    <button type="button" class="btn btn-secondary" onclick="PurchaseManagementPageEvents.bulkRevertTransactions()">
                         <i class="fas fa-undo-alt"></i> Hủy duyệt đã chọn
                     </button>
-                    <button type="button" class="btn btn-danger" onclick="PurchaseManagementPageEvents.bulkRejectTransactions()" data-permission="transaction_reject">
+                    <button type="button" class="btn btn-danger" onclick="PurchaseManagementPageEvents.bulkRejectTransactions()">
                         <i class="fas fa-times-circle"></i> Từ chối đã chọn
                     </button>
+                    <?php endif; ?>
                 </div>
             </form>
 
@@ -204,22 +209,24 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
                                     <td class="status"><span class="status-badge <?php echo $status_info['class']; ?>"><?php echo $status_info['text']; ?></span></td>
                                     <td class="actions">
                                         <div class="action-buttons">
-                                            <?php if ($is_pending): ?>
-                                                <button class="btn-icon btn-approve" title="Duyệt" onclick="PurchaseManagementPageEvents.approveTransaction('<?php echo $transaction_id; ?>', this)" data-permission="transaction_approve"><i class="fas fa-check-circle"></i></button>
-                                                <button class="btn-icon btn-reject" title="Từ chối" onclick="PurchaseManagementPageEvents.openRejectTransactionModal('<?php echo $transaction_id; ?>')" data-permission="transaction_reject"><i class="fas fa-times-circle"></i></button>
-                                                <button class="btn-icon btn-disabled" title="Chờ duyệt" disabled><i class="fas fa-undo-alt"></i></button>
-                                            <?php elseif ($is_approved): ?>
-                                                <button class="btn-icon btn-disabled" title="Đã duyệt" disabled><i class="fas fa-check-circle"></i></button>
-                                                <button class="btn-icon btn-reject" title="Từ chối" onclick="PurchaseManagementPageEvents.openRejectTransactionModal('<?php echo $transaction_id; ?>')" data-permission="transaction_reject"><i class="fas fa-times-circle"></i></button>
-                                                <button class="btn-icon btn-revert" title="Hủy duyệt (Về chờ duyệt)" onclick="PurchaseManagementPageEvents.revertTransaction('<?php echo $transaction_id; ?>', this)" data-permission="transaction_revert"><i class="fas fa-undo-alt"></i></button>
-                                            <?php elseif ($is_rejected): ?>
-                                                <button class="btn-icon btn-approve" title="Duyệt lại" onclick="PurchaseManagementPageEvents.approveTransaction('<?php echo $transaction_id; ?>', this)" data-permission="transaction_approve"><i class="fas fa-check-circle"></i></button>
-                                                <button class="btn-icon btn-disabled" title="Đã từ chối" disabled><i class="fas fa-times-circle"></i></button>
-                                                <button class="btn-icon btn-disabled" title="Đã từ chối" disabled><i class="fas fa-undo-alt"></i></button>
+                                            <?php if ($canEditInvoice): ?>
+                                                <?php if ($is_pending): ?>
+                                                    <button class="btn-icon btn-approve" title="Duyệt" onclick="PurchaseManagementPageEvents.approveTransaction('<?php echo $transaction_id; ?>', this)"><i class="fas fa-check-circle"></i></button>
+                                                    <button class="btn-icon btn-reject" title="Từ chối" onclick="PurchaseManagementPageEvents.openRejectTransactionModal('<?php echo $transaction_id; ?>')"><i class="fas fa-times-circle"></i></button>
+                                                    <button class="btn-icon btn-disabled" title="Chờ duyệt" disabled><i class="fas fa-undo-alt"></i></button>
+                                                <?php elseif ($is_approved): ?>
+                                                    <button class="btn-icon btn-disabled" title="Đã duyệt" disabled><i class="fas fa-check-circle"></i></button>
+                                                    <button class="btn-icon btn-reject" title="Từ chối" onclick="PurchaseManagementPageEvents.openRejectTransactionModal('<?php echo $transaction_id; ?>')"><i class="fas fa-times-circle"></i></button>
+                                                    <button class="btn-icon btn-revert" title="Hủy duyệt (Về chờ duyệt)" onclick="PurchaseManagementPageEvents.revertTransaction('<?php echo $transaction_id; ?>', this)"><i class="fas fa-undo-alt"></i></button>
+                                                <?php elseif ($is_rejected): ?>
+                                                    <button class="btn-icon btn-approve" title="Duyệt lại" onclick="PurchaseManagementPageEvents.approveTransaction('<?php echo $transaction_id; ?>', this)"><i class="fas fa-check-circle"></i></button>
+                                                    <button class="btn-icon btn-disabled" title="Đã từ chối" disabled><i class="fas fa-times-circle"></i></button>
+                                                    <button class="btn-icon btn-disabled" title="Đã từ chối" disabled><i class="fas fa-undo-alt"></i></button>
+                                                <?php else: ?>
+                                                    <span class="text-muted">Không có hành động</span>
+                                                <?php endif; ?>
                                             <?php else: ?>
-                                                <button class="btn-icon btn-disabled" title="Không xác định" disabled><i class="fas fa-check-circle"></i></button>
-                                                <button class="btn-icon btn-disabled" title="Không xác định" disabled><i class="fas fa-times-circle"></i></button>
-                                                <button class="btn-icon btn-disabled" title="Không xác định" disabled><i class="fas fa-undo-alt"></i></button>
+                                                <span class="text-muted">Không có quyền</span>
                                             <?php endif; ?>
                                         </div>
                                     </td>
@@ -316,7 +323,12 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
 
 <!-- cung cấp basePath cho JS -->
 <script>
-    window.appConfig = { basePath: '<?php echo $base_url; ?>' };
+    window.appConfig = {
+        basePath: '<?php echo $base_url; ?>',
+        permissions: {
+            invoice_management_edit: <?php echo json_encode($canEditInvoice); ?>
+        }
+    };
 </script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/purchase/invoice_management.js"></script>
 </body>
