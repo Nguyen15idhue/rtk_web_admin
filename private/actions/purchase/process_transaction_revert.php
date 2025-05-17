@@ -129,7 +129,7 @@ try {
             ':notify_content' => "Giao dịch #{$transaction_id} đã được hoàn lại về trạng thái chờ xử lý."
         ]
     );
-    api_success(null, 'Transaction #' . $transaction_id . ' reverted successfully. Accounts handled.');
+    api_success(null, 'Giao dịch #' . $transaction_id . ' đã được hủy duyệt.');
     exit;
 
 } catch (Exception $e) {

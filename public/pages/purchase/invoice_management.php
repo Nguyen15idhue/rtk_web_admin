@@ -31,9 +31,12 @@ $filters = [
 
 $transaction_data = fetch_admin_transactions($filters, $current_page, $items_per_page);
 $transactions = $transaction_data['transactions'];
-$total_items = $transaction_data['total_count'];
-$total_pages = $transaction_data['total_pages'];
+$total_items  = $transaction_data['total_count'];
+$total_pages  = $transaction_data['total_pages'];
 $current_page = $transaction_data['current_page'];
+
+// Load status badge mappings for transactions
+$status_badge_maps = require __DIR__ . '/../../../private/config/status_badge_maps.php';
 
 $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
 ?>
@@ -134,7 +137,10 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
                         <?php else: ?>
                             <?php foreach ($transactions as $transaction): ?>
                                 <?php
-                                    $status_info = get_admin_transaction_status_display($transaction['registration_status']);
+                                    $statusKey   = strtolower($transaction['registration_status'] ?? '');
+                                    $status_info = $status_badge_maps['transaction'][$statusKey]
+                                                       ?? ['class'=>'badge-gray','text'=>'Không xác định'];
+
                                     $transaction_id = $transaction['registration_id'];
                                     $proof_image_url = !empty($transaction['payment_image'])
                                         ? IMAGE_HOST_BASE_URL . 'public/uploads/payment_proofs/' . htmlspecialchars($transaction['payment_image'])

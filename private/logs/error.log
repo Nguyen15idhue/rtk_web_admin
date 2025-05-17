@@ -1,2 +1,47 @@
-[17-May-2025 09:09:45 UTC] [DEBUG] Search keyword: 
-[17-May-2025 10:00:49 UTC] Invoice file will be stored at: E:\Application\laragon\www\rtk_web_admin\private/../public/uploads/invoice/1747476049_test.pdf
+[17-May-2025 13:11:17 UTC] [PTA] activate survey_account executed, affectedRows=0
+[17-May-2025 13:11:17 UTC] Warning: No survey accounts found or enabled for approved registration ID: 224
+[17-May-2025 13:11:17 UTC] [PTA] province_code=CMA, lastUser=, nextSeq=1, username=CMA001, password=09999993232
+[17-May-2025 13:11:17 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":224,"username_acc":"CMA001","password_acc":"09999993232","user_email":"osn14300@jioso.com","location_id":12,"package_id":2,"start_time":"2025-05-17 20:11:17","end_time":"2025-08-17 20:11:17","enabled":1,"concurrent_user":1,"account_count":1}
+[17-May-2025 13:11:18 UTC] [PTA] create_account timed out (could be pending), transaction 217
+[17-May-2025 13:11:18 UTC] [CA] Start create_account request
+[17-May-2025 13:11:18 UTC] [CA] Raw input: {"registration_id":224,"username_acc":"CMA001","password_acc":"09999993232","user_email":"osn14300@jioso.com","location_id":12,"package_id":2,"start_time":"2025-05-17 20:11:17","end_time":"2025-08-17 20:11:17","enabled":1,"concurrent_user":1,"account_count":1}
+[17-May-2025 13:11:18 UTC] [CA] registration_id=224, username_acc=CMA001, password_len=11
+[17-May-2025 13:11:18 UTC] [CA] location_input=12
+[17-May-2025 13:11:18 UTC] [CA] computed start_time_db=2025-05-17 20:11:17, end_time_db=2025-08-17 20:11:17
+[17-May-2025 13:11:18 UTC] [CA] Validating user_email: osn14300@jioso.com
+[17-May-2025 13:11:18 UTC] [CA] Retrieved userId=105
+[17-May-2025 13:11:18 UTC] [CA] Price=270000.00 => normal flow
+[17-May-2025 13:11:18 UTC] Debug: Non-trial account creation path for registration_id=224
+[17-May-2025 13:11:18 UTC] Using default mount points for location ID: 12 - [42]
+[17-May-2025 13:11:18 UTC] [CA] RTK API payload for CMA001: {"name":"CMA001","userPwd":"09999993232","startTime":1747487477000,"endTime":1755436277000,"enabled":1,"numOnline":1,"customerName":"Long99999","customerPhone":"09999993232","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[17-May-2025 13:11:18 UTC] RTK API Request: POST /openapi/broadcast/users
+{
+    "X-Access-Key": "Zb5F6iKUuAISy4qY",
+    "X-Nonce": "47e0cd9719cfb08d07d2523c516e7ed4",
+    "X-Sign-Method": "HmacSHA256",
+    "X-Timestamp": "1747487478871",
+    "Sign": "3fae5b7954911af6b823d111b6dbcf09e90869f99a13b2bf0f878b73062e2a70"
+}
+[17-May-2025 13:11:18 UTC] [CA] RTK API response for CMA001: {"success":true,"data":{"id":2253,"name":"CMA001","userPwd":"09999993232","startTime":1747487477000,"endTime":1755436277000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long99999","customerPhone":"09999993232","customerCompany":""},"error":null}
+[17-May-2025 13:13:45 UTC] Using default mount points for location ID: 12 - [42]
+[17-May-2025 13:13:45 UTC] RTK API Payload: {"id":"2253","name":"CMA001","userPwd":"09999993232","startTime":1747512677000,"endTime":1755461477000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[17-May-2025 13:13:45 UTC] RTK API Request: PUT /openapi/broadcast/users/2253
+{
+    "X-Access-Key": "Zb5F6iKUuAISy4qY",
+    "X-Nonce": "10135a30bb3d34b2b506da976ca7e29c",
+    "X-Sign-Method": "HmacSHA256",
+    "X-Timestamp": "1747487625518",
+    "Sign": "bea4930e02ee12c73555c28762949ea6abdd60f89bd2366dbe5e5d43499d9d85"
+}
+[17-May-2025 13:13:45 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[17-May-2025 13:13:47 UTC] Using default mount points for location ID: 12 - [42]
+[17-May-2025 13:13:47 UTC] RTK API Payload: {"id":"2253","name":"CMA001","userPwd":"09999993232","startTime":1747512677000,"endTime":1755461477000,"enabled":1,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[17-May-2025 13:13:47 UTC] RTK API Request: PUT /openapi/broadcast/users/2253
+{
+    "X-Access-Key": "Zb5F6iKUuAISy4qY",
+    "X-Nonce": "8ba7916c43fbef5796b936367b4cd908",
+    "X-Sign-Method": "HmacSHA256",
+    "X-Timestamp": "1747487627449",
+    "Sign": "a8e5092d135ee0c84a347457db5a5d3d9922087e04d362694dd8cf43c9684413"
+}
+[17-May-2025 13:13:47 UTC] RTK API Response: {"success":true,"data":true,"error":null}

@@ -126,7 +126,7 @@ try {
     );
 
     $db->commit();
-    api_success(null, 'Transaction #' . $transaction_id . ' rejected successfully.');
+    api_success(null, 'Từ chối thành công giao dịch #' . $transaction_id . '.');
     exit;
 } catch (Exception $e) {
     $db->rollBack();
