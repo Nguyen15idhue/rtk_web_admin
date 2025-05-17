@@ -20,5 +20,6 @@
 @import url("core/_pagination.css");
 @import url("core/_responsive.css");
 @import url("components/stat-card.css");
+@import url("components/custom-tabs.css");
 
 /* All specific CSS rules have been moved to individual files in the core/ directory */

@@ -1,47 +1,23 @@
-/* Custom tabs navigation styles for Dashboard (based on referral_management) */
-.custom-tabs-nav {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0 0 1rem 0;
-    border-bottom: none;
+/* Dashboard Enhancements */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+.chart-container {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.custom-tabs-nav .nav-item {
-    margin-right: 1rem;
+.recent-activity {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-
-.custom-tabs-nav .nav-link {
-    display: block;
-    padding: 12px 20px;
-    text-decoration: none;
-    color: #495057;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid transparent;
-    border-radius: 0;
-    transition: color 0.2s ease, border-bottom-color 0.2s ease;
-    outline: none;
-}
-.custom-tabs-nav .nav-item:hover { /* Made selector more specific */
-    background-color: transparent; 
-    color: #fff; /* White text on hover */
-}
-.custom-tabs-nav .nav-link:hover,
-.custom-tabs-nav .nav-link:focus {
-    color: #007bff;
-    border-bottom-color: #007bff;
-    background: transparent;
-    outline: none;
-}
-
-.custom-tabs-nav .nav-link.active {
-    color: #007bff;
-    border-bottom-color: #007bff;
-    font-weight: 600;
-    background: transparent;
-}
-
-.tab-content {
-    padding-top: 20px;
+.activity-list {
+  max-height: 375px;
+  overflow-y: auto;
 }

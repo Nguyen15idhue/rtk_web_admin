@@ -1,0 +1,392 @@
+[17-May-2025 04:41:01 UTC] Uncaught exception: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'sa3.custom_roles' doesn't exist in E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php on line 69
+[17-May-2025 04:41:01 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'sa3.custom_roles' doesn't exist in E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php:69
+Stack trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php(69): PDO->query('SELECT role_key...')
+#1 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(7): include('E:\\Application\\...')
+#2 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(33): abort('Internal server...', 500)
+#4 [internal function]: {closure}(Object(PDOException))
+#5 {main}
+  thrown in E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php on line 69
+[17-May-2025 04:41:01 UTC] Fatal error: Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'sa3.custom_roles' doesn't exist in E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php:69
+Stack trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php(69): PDO->query('SELECT role_key...')
+#1 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(7): include('E:\\Application\\...')
+#2 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(33): abort('Internal server...', 500)
+#4 [internal function]: {closure}(Object(PDOException))
+#5 {main}
+  thrown in E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php on line 69
+[17-May-2025 04:41:01 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'sa3.custom_roles' doesn't exist in E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php:69
+Stack trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php(69): PDO->query('SELECT role_key...')
+#1 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(7): include('E:\\Application\\...')
+#2 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(41): abort('Internal server...', 500)
+#4 [internal function]: {closure}()
+#5 {main}
+  thrown in E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php on line 69
+[17-May-2025 05:56:17 UTC] [Database Connect] Connection Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+Host: 127.0.0.1, DB: sa3
+Trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(74): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(39): Database->connect()
+#2 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(48): Database->__construct()
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(54): Database::getInstance()
+#4 E:\Application\laragon\www\rtk_web_admin\public\index.php(3): require_once('E:\\Application\\...')
+#5 {main}
+[17-May-2025 05:56:17 UTC] Database Error (Bootstrap): Unable to connect to database 'sa3'
+[17-May-2025 05:56:19 UTC] [Database Connect] Connection Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+Host: 127.0.0.1, DB: sa3
+Trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(74): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(39): Database->connect()
+#2 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(48): Database->__construct()
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(54): Database::getInstance()
+#4 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#5 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#6 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#7 E:\Application\laragon\www\rtk_web_admin\public\index.php(3): require_once('E:\\Application\\...')
+#8 {main}
+[17-May-2025 05:56:19 UTC] Database Error (Bootstrap): Unable to connect to database 'sa3'
+[17-May-2025 05:56:21 UTC] [Database Connect] Connection Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+Host: 127.0.0.1, DB: sa3
+Trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(74): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(39): Database->connect()
+#2 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(48): Database->__construct()
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(54): Database::getInstance()
+#4 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#5 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#6 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#7 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#8 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#9 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#10 E:\Application\laragon\www\rtk_web_admin\public\index.php(3): require_once('E:\\Application\\...')
+#11 {main}
+[17-May-2025 05:56:21 UTC] Database Error (Bootstrap): Unable to connect to database 'sa3'
+[17-May-2025 05:56:23 UTC] [Database Connect] Connection Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+Host: 127.0.0.1, DB: sa3
+Trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(74): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(39): Database->connect()
+#2 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(48): Database->__construct()
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(54): Database::getInstance()
+#4 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#5 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#6 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#7 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#8 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#9 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#10 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#11 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#12 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#13 E:\Application\laragon\www\rtk_web_admin\public\index.php(3): require_once('E:\\Application\\...')
+#14 {main}
+[17-May-2025 05:56:23 UTC] Database Error (Bootstrap): Unable to connect to database 'sa3'
+[17-May-2025 05:56:25 UTC] [Database Connect] Connection Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+Host: 127.0.0.1, DB: sa3
+Trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(74): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(39): Database->connect()
+#2 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(48): Database->__construct()
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(54): Database::getInstance()
+#4 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#5 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#6 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#7 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#8 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#9 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#10 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#11 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#12 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#13 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#14 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#15 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#16 E:\Application\laragon\www\rtk_web_admin\public\index.php(3): require_once('E:\\Application\\...')
+#17 {main}
+[17-May-2025 05:56:25 UTC] Database Error (Bootstrap): Unable to connect to database 'sa3'
+[17-May-2025 05:56:27 UTC] [Database Connect] Connection Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+Host: 127.0.0.1, DB: sa3
+Trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(74): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(39): Database->connect()
+#2 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(48): Database->__construct()
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(54): Database::getInstance()
+#4 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#5 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#6 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#7 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#8 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#9 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#10 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#11 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#12 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#13 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#14 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#15 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#16 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#17 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#18 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#19 E:\Application\laragon\www\rtk_web_admin\public\index.php(3): require_once('E:\\Application\\...')
+#20 {main}
+[17-May-2025 05:56:27 UTC] Database Error (Bootstrap): Unable to connect to database 'sa3'
+[17-May-2025 05:56:29 UTC] [Database Connect] Connection Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+Host: 127.0.0.1, DB: sa3
+Trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(74): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(39): Database->connect()
+#2 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(48): Database->__construct()
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(54): Database::getInstance()
+#4 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#5 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#6 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#7 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#8 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#9 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#10 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#11 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#12 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#13 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#14 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#15 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#16 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#17 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#18 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#19 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#20 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#21 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#22 E:\Application\laragon\www\rtk_web_admin\public\index.php(3): require_once('E:\\Application\\...')
+#23 {main}
+[17-May-2025 05:56:29 UTC] Database Error (Bootstrap): Unable to connect to database 'sa3'
+[17-May-2025 05:56:32 UTC] [Database Connect] Connection Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+Host: 127.0.0.1, DB: sa3
+Trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(74): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(39): Database->connect()
+#2 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(48): Database->__construct()
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(54): Database::getInstance()
+#4 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#5 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#6 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#7 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#8 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#9 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#10 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#11 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#12 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#13 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#14 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#15 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#16 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#17 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#18 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#19 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#20 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#21 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#22 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#23 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#24 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#25 E:\Application\laragon\www\rtk_web_admin\public\index.php(3): require_once('E:\\Application\\...')
+#26 {main}
+[17-May-2025 05:56:32 UTC] Database Error (Bootstrap): Unable to connect to database 'sa3'
+[17-May-2025 05:56:34 UTC] [Database Connect] Connection Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+Host: 127.0.0.1, DB: sa3
+Trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(74): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(39): Database->connect()
+#2 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(48): Database->__construct()
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(54): Database::getInstance()
+#4 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#5 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#6 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#7 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#8 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#9 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#10 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#11 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#12 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#13 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#14 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#15 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#16 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#17 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#18 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#19 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#20 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#21 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#22 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#23 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#24 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#25 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#26 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#27 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#28 E:\Application\laragon\www\rtk_web_admin\public\index.php(3): require_once('E:\\Application\\...')
+#29 {main}
+[17-May-2025 05:56:34 UTC] Database Error (Bootstrap): Unable to connect to database 'sa3'
+[17-May-2025 05:56:36 UTC] [Database Connect] Connection Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+Host: 127.0.0.1, DB: sa3
+Trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(74): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(39): Database->connect()
+#2 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(48): Database->__construct()
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(54): Database::getInstance()
+#4 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#5 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#6 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#7 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#8 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#9 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#10 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#11 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#12 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#13 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#14 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#15 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#16 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#17 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#18 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#19 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#20 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#21 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#22 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#23 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#24 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#25 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#26 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#27 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#28 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#29 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#30 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#31 E:\Application\laragon\www\rtk_web_admin\public\index.php(3): require_once('E:\\Application\\...')
+#32 {main}
+[17-May-2025 05:56:36 UTC] Database Error (Bootstrap): Unable to connect to database 'sa3'
+[17-May-2025 05:56:38 UTC] [Database Connect] Connection Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+Host: 127.0.0.1, DB: sa3
+Trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(74): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(39): Database->connect()
+#2 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(48): Database->__construct()
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(54): Database::getInstance()
+#4 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#5 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#6 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#7 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#8 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#9 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#10 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#11 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#12 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#13 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#14 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#15 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#16 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#17 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#18 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#19 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#20 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#21 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#22 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#23 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#24 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#25 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#26 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#27 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#28 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#29 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#30 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#31 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#32 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#33 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#34 E:\Application\laragon\www\rtk_web_admin\public\index.php(3): require_once('E:\\Application\\...')
+#35 {main}
+[17-May-2025 05:56:38 UTC] Database Error (Bootstrap): Unable to connect to database 'sa3'
+[17-May-2025 05:56:40 UTC] [Database Connect] Connection Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+Host: 127.0.0.1, DB: sa3
+Trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(74): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(39): Database->connect()
+#2 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(48): Database->__construct()
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(54): Database::getInstance()
+#4 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#5 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#6 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#7 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#8 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#9 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#10 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#11 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#12 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#13 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#14 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#15 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#16 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#17 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#18 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#19 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#20 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#21 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#22 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#23 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#24 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#25 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#26 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#27 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#28 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#29 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#30 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#31 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#32 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#33 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#34 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#35 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#36 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#37 E:\Application\laragon\www\rtk_web_admin\public\index.php(3): require_once('E:\\Application\\...')
+#38 {main}
+[17-May-2025 05:56:40 UTC] Database Error (Bootstrap): Unable to connect to database 'sa3'
+[17-May-2025 05:56:42 UTC] [Database Connect] Connection Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+Host: 127.0.0.1, DB: sa3
+Trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(74): PDO->__construct('mysql:host=127....', 'root', Object(SensitiveParameterValue), Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(39): Database->connect()
+#2 E:\Application\laragon\www\rtk_web_admin\private\classes\Database.php(48): Database->__construct()
+#3 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(54): Database::getInstance()
+#4 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#5 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#6 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#7 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#8 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#9 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#10 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#11 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#12 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#13 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#14 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#15 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#16 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#17 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#18 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#19 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#20 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#21 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#22 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#23 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#24 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#25 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#26 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#27 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#28 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#29 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#30 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#31 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#32 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#33 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#34 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#35 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#36 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#37 E:\Application\laragon\www\rtk_web_admin\public\pages\error.php(2): require('E:\\Application\\...')
+#38 E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php(25): require('E:\\Application\\...')
+#39 E:\Application\laragon\www\rtk_web_admin\private\core\page_bootstrap.php(65): abort('H\xE1\xBB\x87 th\xE1\xBB\x91ng \xC4\x91...', 500)
+#40 E:\Application\laragon\www\rtk_web_admin\public\index.php(3): require_once('E:\\Application\\...')
+#41 {main}
+[17-May-2025 05:56:42 UTC] Database Error (Bootstrap): Unable to connect to database 'sa3'
