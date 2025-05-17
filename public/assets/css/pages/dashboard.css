@@ -18,6 +18,6 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 .activity-list {
-  max-height: 375px;
+  max-height: 370px;
   overflow-y: auto;
 }

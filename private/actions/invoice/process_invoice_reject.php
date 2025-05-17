@@ -52,7 +52,7 @@ try {
         ]
     );
 
-    api_success(null, 'Invoice rejected thành công.');
+    api_success(null, 'Từ chối yêu cầu xuất hóa đơn thành công.');
 } catch (PDOException $e) {
     error_log('Error in process_invoice_reject: ' . $e->getMessage());
     error_log("Trace: " . $e->getTraceAsString());

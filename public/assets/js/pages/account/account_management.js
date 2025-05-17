@@ -689,7 +689,8 @@ document.addEventListener('DOMContentLoaded', () => {
     async function bulkToggleStatus() {
         const ids = Array.from(document.querySelectorAll('.rowCheckbox:checked')).map(cb => cb.value);
         if (ids.length === 0) {
-            return alert('Vui lòng chọn ít nhất một tài khoản.');
+            window.showToast('Vui lòng chọn ít nhất một tài khoản.', 'warning');
+            return;
         }
         if (!confirm(`Bạn có chắc muốn đảo trạng thái cho ${ids.length} tài khoản?`)) return;
         try {
@@ -710,7 +711,8 @@ document.addEventListener('DOMContentLoaded', () => {
     async function bulkDeleteAccounts() {
         const ids = Array.from(document.querySelectorAll('.rowCheckbox:checked')).map(cb => cb.value);
         if (ids.length === 0) {
-            return alert('Vui lòng chọn ít nhất một tài khoản.');
+            window.showToast('Vui lòng chọn ít nhất một tài khoản.', 'warning');
+            return;
         }
         if (!confirm(`Bạn có chắc chắn muốn xóa ${ids.length} tài khoản? Hành động này không thể hoàn tác.`)) return;
         try {
@@ -747,7 +749,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // gather selected account IDs
         const ids = Array.from(document.querySelectorAll('.rowCheckbox:checked')).map(cb => cb.value);
         if (ids.length === 0) {
-            alert('Vui lòng chọn ít nhất một tài khoản để gia hạn.');
+            window.showToast('Vui lòng chọn ít nhất một tài khoản để gia hạn.', 'warning');
             form.querySelector('button[type="submit"]').disabled = false;
             return;
         }

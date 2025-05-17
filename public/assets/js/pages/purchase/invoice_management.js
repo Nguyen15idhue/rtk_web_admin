@@ -9,7 +9,7 @@
 
         // Functions to be exposed
         function viewProofModal(id, url){
-            if(!url){ alert("Không có hình ảnh minh chứng."); return; }
+            if(!url){ window.showToast("Không có hình ảnh minh chứng.", 'warning'); return; }
             proofModalTitle.textContent = `Minh chứng Giao dịch #${id}`;
             proofModalImage.src = url;
             proofModal.classList.add('active');
@@ -159,7 +159,7 @@
         async function openRejectTransactionModal(id){
             const reason = prompt(`Lý do từ chối #${id}:`);
             if(reason==null) return;
-            const text = reason.trim(); if(!text){ alert('Nhập lý do.'); return; }
+            const text = reason.trim(); if(!text){ window.showToast('Nhập lý do.', 'warning'); return; }
             const row = document.querySelector(`tr[data-transaction-id="${id}"]`);
             disableActionButtons(row);
             try {
@@ -202,7 +202,7 @@
         // bulk approve
         async function bulkApproveTransactions(){
             const ids = getSelectedTxIds();
-            if(!ids.length){ alert('Chọn ít nhất một giao dịch.'); return; }
+            if(!ids.length){ window.showToast('Chọn ít nhất một giao dịch.', 'warning'); return; }
             if(!confirm(`Duyệt ${ids.length} giao dịch đã chọn?`)) return;
             try {
                 for(const id of ids){
@@ -218,7 +218,7 @@
         // bulk revert
         async function bulkRevertTransactions(){
             const ids = getSelectedTxIds();
-            if(!ids.length){ alert('Chọn ít nhất một giao dịch.'); return; }
+            if(!ids.length){ window.showToast('Chọn ít nhất một giao dịch.', 'warning'); return; }
             if(!confirm(`Hủy duyệt ${ids.length} giao dịch đã chọn?`)) return;
             try {
                 for(const id of ids){
@@ -234,10 +234,10 @@
         // bulk reject
         async function bulkRejectTransactions(){
             const ids = getSelectedTxIds();
-            if(!ids.length){ alert('Chọn ít nhất một giao dịch.'); return; }
+            if(!ids.length){ window.showToast('Chọn ít nhất một giao dịch.', 'warning'); return; }
             const reason = prompt(`Lý do từ chối cho ${ids.length} giao dịch:`) || '';
             const txt = reason.trim();
-            if(!txt){ alert('Lý do không được để trống.'); return; }
+            if(!txt){ window.showToast('Lý do không được để trống.', 'warning'); return; }
             if(!confirm(`Xác nhận từ chối ${ids.length} giao dịch?`)) return;
             try {
                 for(const id of ids){

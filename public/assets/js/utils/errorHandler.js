@@ -12,7 +12,10 @@
     // Bắt tất cả lỗi Ajax của jQuery
     if (window.jQuery) {
         jQuery(document).ajaxError((_, jqxhr, settings, thrown) => {
-            const msg = thrown || jqxhr.statusText || 'Unknown AJAX error';
+            let msg = thrown || jqxhr.statusText || 'Unknown AJAX error';
+            if (jqxhr.status === 403) {
+                msg = 'Bạn không có quyền thực hiện hành động này.';
+            }
             window.showToast(`AJAX error: ${msg}`, 'error');
         });
     }

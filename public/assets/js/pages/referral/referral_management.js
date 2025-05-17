@@ -5,60 +5,35 @@
 
     function applyWithdrawalAction(id, action) {
         if (!id || !action) return;
-        // Confirm action
-        const confirmMsg = action === 'approve' ? 'Bạn có chắc muốn phê duyệt yêu cầu rút tiền này?' : 'Bạn có chắc muốn từ chối yêu cầu rút tiền này?';
+        const confirmMsg = action === 'approve'
+            ? 'Bạn có chắc muốn phê duyệt yêu cầu rút tiền này?'
+            : 'Bạn có chắc muốn từ chối yêu cầu rút tiền này?';
         if (!confirm(confirmMsg)) return;
+
         api.getJson(`${apiUrl}?id=${id}&status=${action}`)
             .then(res => {
-                if (!res.success) throw new Error(res.message);
-                alert('Cập nhật thành công');
-                // Refresh the page or row
-                location.reload();
+                if (res.success) {
+                    window.showToast('Cập nhật thành công', 'success');
+                    // Reload to reflect server‐rendered badge & action buttons
+                    location.reload();
+                } else {
+                    window.showToast(res.message || 'Có lỗi xảy ra', 'error');
+                }
             })
-            .catch(err => alert(err.message));
+            .catch(err => window.showToast(err.message, 'error'));
     }
 
     $(function() {
         // Attach handlers for withdrawal approve/reject buttons
-        $(document).on('click', '.btn-approve', function() {
+        $(document).on('click', '.btn-approve', function(event) {
+            event.preventDefault(); // Prevent form submission
             const id = $(this).data('id');
             applyWithdrawalAction(id, 'approve');
         });
-        $(document).on('click', '.btn-reject', function() {
+        $(document).on('click', '.btn-reject', function(event) {
+            event.preventDefault(); // Prevent form submission
             const id = $(this).data('id');
             applyWithdrawalAction(id, 'reject');
         });
-
-        // --- New code for "Select All" and "Export Selected" ---
-
-        function initializeExportCheckboxes(tabPrefix, selectAllCheckboxId, itemCheckboxClass, exportSelectedButtonId) {
-            const $selectAll = $('#' + selectAllCheckboxId);
-            const $itemCheckboxes = $('.' + itemCheckboxClass);
-            const $exportSelectedButton = $('#' + exportSelectedButtonId);
-
-            function updateExportButtonState() {
-                const anySelected = $itemCheckboxes.is(':checked');
-                $exportSelectedButton.prop('disabled', !anySelected);
-            }
-
-            $selectAll.on('change', function() {
-                $itemCheckboxes.prop('checked', $(this).prop('checked'));
-                updateExportButtonState();
-            });
-
-            $itemCheckboxes.on('change', function() {
-                if (!$itemCheckboxes.not(':checked').length) {
-                    $selectAll.prop('checked', true);
-                } else {
-                    $selectAll.prop('checked', false);
-                }
-                updateExportButtonState();
-            });
-
-            // Initial state
-            updateExportButtonState();
-        }
-
-        // Bulk select-all logic now centralized in utils/bulk_actions.js
     });
 })(jQuery);
