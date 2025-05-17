@@ -49,6 +49,7 @@ $pdo = $db->getConnection();
 $role = isset($_SESSION['admin_role']) ? strtolower($_SESSION['admin_role']) : '';
 $allowed_perms = [];
 $admin_db_name = 'Admin'; // Default name
+$db_custom_role_names = []; // Will hold names from custom_roles table
 
 if ($pdo && $role && isset($_SESSION['admin_username'])) {
     // Fetch allowed permissions
@@ -63,19 +64,25 @@ if ($pdo && $role && isset($_SESSION['admin_username'])) {
     if ($admin_name_result && isset($admin_name_result['name'])) {
         $admin_db_name = htmlspecialchars($admin_name_result['name']);
     }
-}
 
-// Vietnamese role mapping
-$role_vietnamese = [
-    'admin' => 'Quản trị viên',
-    'customercare' => 'Chăm sóc khách hàng',
-    // Add other roles here if needed
-];
+    // Fetch all custom role display names from DB
+    $stmt_custom_roles = $pdo->query("SELECT role_key, role_display_name FROM custom_roles");
+    if ($stmt_custom_roles) {
+        while ($row = $stmt_custom_roles->fetch(PDO::FETCH_ASSOC)) {
+            $db_custom_role_names[$row['role_key']] = $row['role_display_name'];
+        }
+    }
+}
 
 // Use the name fetched from DB
 $admin_user_name = $admin_db_name;
-// Use Vietnamese role name if available, otherwise fallback to capitalized English role
-$admin_user_role = isset($role_vietnamese[$role]) ? $role_vietnamese[$role] : ucfirst(htmlspecialchars($role));
+
+// Determine display role name: custom_roles from DB first, then default
+if (isset($db_custom_role_names[$role])) {
+    $admin_user_role = htmlspecialchars($db_custom_role_names[$role]);
+} else {
+    $admin_user_role = ucfirst(htmlspecialchars(str_replace('_', ' ', $role)));
+}
 ?>
 <!-- Hamburger button (Positioned fixed via CSS) -->
 <button id="hamburger-btn" class="hamburger-btn">

@@ -10,6 +10,17 @@ $is_admin = ($_SESSION['admin_role'] ?? '') === 'admin';
 $admins = $db ? $db->query("SELECT id,name,admin_username,role,created_at FROM admin")->fetchAll(PDO::FETCH_ASSOC) : [];
 $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php' => 'Đăng xuất'];
 
+// Initialize and populate custom_role_display_names
+$custom_role_display_names = [];
+if ($db) {
+    $stmt_custom_names = $db->query("SELECT role_key, role_display_name FROM custom_roles");
+    if ($stmt_custom_names) {
+        while ($row = $stmt_custom_names->fetch(PDO::FETCH_ASSOC)) {
+            $custom_role_display_names[$row['role_key']] = $row['role_display_name'];
+        }
+    }
+}
+
 // Load all defined permissions from config file
 $all_defined_permissions = require_once __DIR__ . '/../../../private/config/app_permissions.php';
 
@@ -120,9 +131,12 @@ foreach ($permission_groups_config as $groupTitle => $codes) {
 
 // Helper function to get a display name for a role key
 function getRoleDisplayName($role_key) {
-    if ($role_key === 'admin') return 'Quản trị viên';
-    if ($role_key === 'customercare') return 'Chăm sóc khách hàng';
-    return ucfirst(str_replace('_', ' ', $role_key)); // Default display name
+    global $custom_role_display_names; // This is already populated from custom_roles table earlier in the script
+    if (isset($custom_role_display_names[$role_key])) {
+        return $custom_role_display_names[$role_key];
+    }
+    // Fallback if not in custom_roles
+    return ucfirst(str_replace('_', ' ', $role_key));
 }
 ?>
 
@@ -196,7 +210,7 @@ function getRoleDisplayName($role_key) {
                         <td><?= htmlspecialchars($a['id']) ?></td>
                         <td><?= htmlspecialchars($a['name']) ?></td>
                         <td><?= htmlspecialchars($a['admin_username']) ?></td>
-                        <td><?= ($a['role'] === 'customercare' ? 'Chăm sóc khách hàng' : 'Quản trị viên') ?></td>
+                        <td><?= htmlspecialchars(getRoleDisplayName($a['role'])) ?></td>
                         <td><?= htmlspecialchars($a['created_at']) ?></td>
                         <td class="actions">
                             <button class="btn btn-secondary btn-sm" onclick="PermissionPageEvents.openEditAdminModal(<?= $a['id'] ?>)">Sửa</button>

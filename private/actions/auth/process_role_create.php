@@ -50,14 +50,20 @@ try {
 
     $db->beginTransaction();
 
-    $stmt_insert = $db->prepare("INSERT INTO role_permissions (role, permission, allowed) VALUES (:role, :permission, :allowed)");
+    // Insert into custom_roles table
+    $stmt_insert_custom_role = $db->prepare("INSERT INTO custom_roles (role_key, role_display_name) VALUES (:role_key, :role_display_name)");
+    $stmt_insert_custom_role->bindParam(':role_key', $role_key);
+    $stmt_insert_custom_role->bindParam(':role_display_name', $role_name);
+    $stmt_insert_custom_role->execute();
+
+    $stmt_insert_permissions = $db->prepare("INSERT INTO role_permissions (role, permission, allowed) VALUES (:role, :permission, :allowed)");
 
     foreach ($all_permission_codes as $perm_code) {
         $allowed = in_array($perm_code, $selected_permissions) ? 1 : 0;
-        $stmt_insert->bindParam(':role', $role_key);
-        $stmt_insert->bindParam(':permission', $perm_code);
-        $stmt_insert->bindParam(':allowed', $allowed, PDO::PARAM_INT);
-        $stmt_insert->execute();
+        $stmt_insert_permissions->bindParam(':role', $role_key);
+        $stmt_insert_permissions->bindParam(':permission', $perm_code);
+        $stmt_insert_permissions->bindParam(':allowed', $allowed, PDO::PARAM_INT);
+        $stmt_insert_permissions->execute();
     }
 
     $db->commit();

@@ -46,6 +46,7 @@ class RtkApiClient {
         }
         $sign = hash_hmac('sha256', rtrim($signStr, '&'), $this->secretKey);
         $headers['Sign'] = $sign;
+        error_log("RTK API Request: $method $uri\n" . json_encode($headers, JSON_PRETTY_PRINT));
         $headers['Content-Type'] = 'application/json';
 
         $url = $this->baseUrl . $uri;
