@@ -58,7 +58,7 @@ function get_payment_proof_status($registration_id) {
  * Formats an activity log entry into a user-friendly message and icon.
  *
  * @param array $log The activity log data array.
- * @return array An array containing the formatted 'icon', 'message', 'time', 'action_type', 'details_url', and 'required_permission'.
+ * @return array An array containing the formatted 'icon', 'message', 'time', 'action_type', 'details_url', 'required_permission', and 'customer_id'.
  */
 function format_activity_log($log) {
     $actor = htmlspecialchars($log['actor_name'] ?? 'System'); // Add null coalescing for safety
@@ -143,6 +143,54 @@ function format_activity_log($log) {
             }
             $required_permission = 'invoice_management_view';
             break;
+        case 'approve_transaction':
+            $details = [];
+            if (!empty($log['new_values'])) {
+                $decoded = json_decode($log['new_values'], true);
+                $details = is_array($decoded) ? $decoded : [];
+            }
+            $activated = null;
+            if (isset($details['activated_accounts'])) {
+                $activated = $details['activated_accounts'];
+            } elseif (isset($details['renewed_accounts'])) {
+                $activated = $details['renewed_accounts'];
+            } elseif (isset($details['created_accounts'])) {
+                $activated = $details['created_accounts'];
+            }
+            $message = "<strong class='font-medium'>{$actor}</strong> đã duyệt giao dịch #<strong class='font-medium'>{$entity_id}</strong>";
+            if ($activated !== null) {
+                $message .= " (<strong class='font-medium'>{$activated}</strong> tài khoản được kích hoạt)";
+            }
+            $message .= ".";
+            $icon = 'fas fa-check-circle text-green-500';
+            $action_type = 'navigate';
+            $details_url = BASE_URL . 'public/pages/purchase/invoice_management.php#transaction-' . $entity_id;
+            $required_permission = 'transaction_approve';
+            break;
+        case 'reject_transaction':
+            $details = [];
+            if (!empty($log['new_values'])) {
+                $decoded = json_decode($log['new_values'], true);
+                $details = is_array($decoded) ? $decoded : [];
+            }
+            $reason = isset($details['reason']) ? htmlspecialchars($details['reason']) : '';
+            $message = "<strong class='font-medium'>{$actor}</strong> đã từ chối giao dịch #<strong class='font-medium'>{$entity_id}</strong>";
+            if ($reason) {
+                $message .= " với lý do: <em>{$reason}</em>";
+            }
+            $message .= ".";
+            $icon = 'fas fa-times-circle text-red-500';
+            $action_type = 'navigate';
+            $details_url = BASE_URL . 'public/pages/purchase/invoice_management.php#transaction-' . $entity_id;
+            $required_permission = 'transaction_approve';
+            break;
+        case 'revert_transaction':
+            $message = "<strong class='font-medium'>{$actor}</strong> đã hoàn tác duyệt giao dịch #<strong class='font-medium'>{$entity_id}</strong>.";
+            $icon = 'fas fa-undo-alt text-yellow-500';
+            $action_type = 'navigate';
+            $details_url = BASE_URL . 'public/pages/purchase/invoice_management.php#transaction-' . $entity_id;
+            $required_permission = 'transaction_approve';
+            break;
         case 'withdrawal_request':
             $details = json_decode($log['new_values'] ?? '', true) ?: [];
             $amount  = isset($details['amount'])
@@ -170,6 +218,10 @@ function format_activity_log($log) {
             $message = "<strong class='font-medium'>{$actor}</strong> thực hiện: {$action} trên {$entity_type} <strong class='font-medium'>{$entity_id}</strong>.";
     }
 
+    // parse customer_id from new_values for use on client side
+    $decodedNew = json_decode($log['new_values'] ?? '', true);
+    $customer_id = is_array($decodedNew) && !empty($decodedNew['customer_id']) ? $decodedNew['customer_id'] : null;
+
     return [
         'icon' => $icon,
         'message' => $message,
@@ -177,6 +229,7 @@ function format_activity_log($log) {
         'action_type' => $action_type,
         'details_url' => $details_url,
         'required_permission' => $required_permission,
+        'customer_id' => $customer_id,
     ];
 }
 

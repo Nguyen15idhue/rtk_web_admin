@@ -14,6 +14,8 @@ require_once BASE_PATH . '/utils/functions.php';
 require_once BASE_PATH . '/services/TransactionHistoryService.php'; 
 require_once BASE_PATH . '/classes/TransactionModel.php';
 require_once BASE_PATH . '/classes/AccountModel.php'; 
+require_once BASE_PATH . '/classes/ActivityLogModel.php'; // Added for ActivityLogModel
+
 // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     api_error('Invalid request method.', 405);
@@ -113,7 +115,22 @@ try {
     
     // All good – now commit
     $db->commit();
+    
+    // Activity log: record revert action
+    ActivityLogModel::addLog(
+        $db,
+        [
+            ':user_id'     => $reg['user_id'], // Use customerId from registration
+            ':action'      => 'revert_transaction',
+            ':entity_type' => 'transaction',
+            ':entity_id'   => $transaction_id,
+            ':old_values'  => json_encode(['status' => 'active']), // Assuming previous status was active
+            ':new_values'  => json_encode(['status' => 'pending', 'customer_id' => $reg['user_id']]),
+            ':notify_content' => "Giao dịch #{$transaction_id} đã được hoàn lại về trạng thái chờ xử lý."
+        ]
+    );
     api_success(null, 'Transaction #' . $transaction_id . ' reverted successfully. Accounts handled.');
+    exit;
 
 } catch (Exception $e) {
     $db->rollBack();

@@ -13,6 +13,7 @@ require_once BASE_PATH . '/utils/functions.php';
 require_once BASE_PATH . '/services/TransactionHistoryService.php'; 
 require_once BASE_PATH . '/classes/TransactionModel.php';
 require_once BASE_PATH . '/classes/AccountModel.php'; 
+require_once BASE_PATH . '/classes/ActivityLogModel.php'; // Added for ActivityLogModel
 
 // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -110,8 +111,23 @@ try {
         $tm->updateHistoryStatus($transaction_id, 'failed');
     }
 
+    // Log activity
+    ActivityLogModel::addLog(
+        $db,
+        [
+            ':user_id'      => $reg['user_id'], // Use customerId from registration
+            ':action'       => 'reject_transaction',
+            ':entity_type'  => 'transaction',
+            ':entity_id'    => $transaction_id,
+            ':old_values'   => json_encode(['status' => $th['status']]),
+            ':new_values'   => json_encode(['status' => 'failed', 'reason' => $reason, 'registration_id' => $reg_id]),
+            ':notify_content'  => "Giao dịch #{$transaction_id} đã bị từ chối. Lý do: {$reason}"
+        ]
+    );
+
     $db->commit();
     api_success(null, 'Transaction #' . $transaction_id . ' rejected successfully.');
+    exit;
 } catch (Exception $e) {
     $db->rollBack();
     error_log("Error rejecting transaction ID $transaction_id: " . $e->getMessage());

@@ -8,10 +8,29 @@ $db        = $bootstrap['db'];
 
 Auth::ensureAuthorized('invoice_management_edit');
 
+// Capture logged-in admin ID
+$sessionAdminId = $_SESSION['admin_id'] ?? null;
+
+/**
+ * Returns a valid admin user ID if it exists in the 'user' table, or null.
+ */
+function getValidAdminId(PDO $db, $adminId): ?int {
+    if (is_numeric($adminId) && (int)$adminId > 0) {
+        $stmt = $db->prepare("SELECT id FROM user WHERE id = :id LIMIT 1");
+        $stmt->bindParam(':id', $adminId, PDO::PARAM_INT);
+        $stmt->execute();
+        if ($stmt->fetchColumn()) {
+            return (int)$adminId;
+        }
+    }
+    return null;
+}
+
 // Load any additional services you still need
 require_once BASE_PATH . '/services/TransactionHistoryService.php';
 require_once BASE_PATH . '/utils/functions.php';
 require_once BASE_PATH . '/classes/TransactionModel.php';
+require_once BASE_PATH . '/classes/ActivityLogModel.php'; // Added for ActivityLogModel
 
 // --- Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -152,7 +171,7 @@ if ($tx_type === 'renewal') {
 
         // build internal URL to our update_account API
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on') ? 'https' : 'http';
-        $host     = $_SERVER['SERVER_NAME'] . (isset($_SERVER['SERVER_PORT']) && !in_array($_SERVER['SERVER_PORT'],['80','443']) ? ':' . $_SERVER['SERVER_PORT'] : '');
+        $host     = $_SERVER['SERVER_NAME'] . (isset($_SERVER['SERVER_PORT']) && !in_array($_SERVER['SERVER_PORT'], ['80','443'], true) ? ':' . $_SERVER['SERVER_PORT'] : '');
         $basePath = dirname(dirname($_SERVER['SCRIPT_NAME']));
         $updateUrl = "{$protocol}://{$host}{$basePath}/account/index.php?action=update_account";
 
@@ -203,6 +222,13 @@ if ($tx_type === 'renewal') {
         }
     }
 
+    // NEW: restore session after cURL calls
+    if (session_status() === PHP_SESSION_NONE && $sessId !== '') {
+        session_id($sessId);
+        session_name($sessName);
+        session_start();
+    }
+
     // NEW: log summary of renewals
     error_log("[PTA] Renewal completed for accounts: " . implode(',', $renewed));
     if (count($renewed) < count($accIds)) {
@@ -219,6 +245,25 @@ if ($tx_type === 'renewal') {
     $stmt_hist->bindParam(':hid', $transaction_id, PDO::PARAM_INT);
     $stmt_hist->execute();
     $db->commit();
+
+    // Activity log: record approval for renewal flow
+    ActivityLogModel::addLog(
+        $db,
+        [
+            ':user_id'     => $reg['user_id'], // Use customerId from registration
+            ':action'      => 'approve_transaction',
+            ':entity_type' => 'transaction',
+            ':entity_id'   => $transaction_id,
+            ':old_values'  => json_encode(['status' => $th['status']]),
+            ':new_values'  => json_encode([
+                'status' => 'completed',
+                'scheduled_accounts' => $accIds,
+                'renewed_accounts' => $renewed,
+                'customer_id' => $reg['user_id'],
+            ]),
+            ':notify_content' => "Giao dịch #{$transaction_id} (Gia hạn) đã được duyệt. Tài khoản dự kiến: " . count($accIds) . ", Đã gia hạn: " . count($renewed)
+        ]
+    );
 
     api_success([
         'scheduled_accounts' => $accIds,
@@ -285,6 +330,24 @@ session_write_close();
 // --- Commit DB trước khi gọi external API ---
 TransactionHistoryService::updateStatusByRegistrationId($db, $registration_id, 'completed');
 $db->commit();
+
+// Activity log: record approval for account creation flow
+ActivityLogModel::addLog(
+    $db,
+    [
+        ':user_id'     => $reg['user_id'], // Use customerId from registration
+        ':action'      => 'approve_transaction',
+        ':entity_type' => 'transaction',
+        ':entity_id'   => $transaction_id,
+        ':old_values'  => json_encode(['status' => $th['status']]),
+        ':new_values'  => json_encode([
+            'status'           => 'completed',
+            'created_accounts' => $createdAccounts ?? [],
+            'customer_id'      => $reg['user_id'],
+        ]),
+        ':notify_content' => "Giao dịch #{$transaction_id} (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: " . ($payload['account_count'] ?? 0)
+    ]
+);
 
 // --- NEW: gọi cURL create_account AFTER commit ---
 $ch = curl_init($url);

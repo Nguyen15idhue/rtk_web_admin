@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php'; 
 require_once BASE_PATH . '/classes/InvoiceModel.php';    // thêm
+require_once BASE_PATH . '/classes/ActivityLogModel.php'; // Corrected path for ActivityLogModel
 Auth::ensureAuthorized('invoice_review_edit');
 
 // only POST
@@ -46,7 +47,30 @@ if (!move_uploaded_file($file['tmp_name'], $target)) {
 
 try {
     $model = new InvoiceModel();                           // thêm
+    $invoice = $model->getOne($invoiceId); // Get current invoice details
+
+    if (!$invoice) {
+        abort('Invoice not found.', 404);
+    }
+
+    $oldStatus = $invoice['status']; // Capture old status
+    $customerId = $model->getCustomerId($invoiceId); // Fetch customerId via model
+
     $model->attachFile($invoiceId, $fileName);             // thay cho prepare/execute trực tiếp
+
+    // Log activity
+    ActivityLogModel::addLog(
+        $db,
+        [
+            ':user_id'      => $customerId, // Use fetched customerId
+            ':action'       => 'invoice_sent',
+            ':entity_type'  => 'invoice',
+            ':entity_id'    => $invoiceId,
+            ':old_values'   => json_encode(['status' => $oldStatus]),
+            ':new_values'   => json_encode(['status' => 'approved', 'file' => $fileName, 'customer_id' => $customerId]), // Assuming 'approved' is the new status
+            ':notify_content'  => "Hóa đơn #{$invoiceId} đã được gửi." // Ensure description is passed
+        ]
+    );
 
     // redirect back to review page on success
     header('Location: ' . $bootstrap['base_url'] . 'public/pages/invoice/invoice_review.php');

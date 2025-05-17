@@ -4,6 +4,7 @@ header('Content-Type: application/json; charset=utf-8');
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 require_once __DIR__ . '/../../utils/functions.php';
 require_once BASE_PATH . '/classes/InvoiceModel.php';
+require_once __DIR__ . '/../../classes/ActivityLogModel.php'; // Added for ActivityLogModel
 Auth::ensureAuthorized('invoice_review_edit');
 
 $db        = $bootstrap['db'];
@@ -23,10 +24,33 @@ if ($invoiceId <= 0 || $reason === '') {
 
 try {
     $model = new InvoiceModel();
+    $invoice = $model->getOne($invoiceId); // Use getOne() instead of getById()
+    if (!$invoice) {
+        api_error('Invoice not found.', 404);
+        return;
+    }
+
+    // Get customer ID via model
+    $customerId = $model->getCustomerId($invoiceId);
+
     $model->update($invoiceId, [
         'status' => 'rejected',
         'rejected_reason' => $reason
     ]);
+
+    // Activity log using ActivityLogModel
+    ActivityLogModel::addLog(
+        $db,
+        [
+            ':user_id'     => $customerId, // Use fetched customerId
+            ':action'      => 'reject_invoice',
+            ':entity_type' => 'invoice',
+            ':entity_id'   => $invoiceId,
+            ':old_values'  => json_encode(['status' => $invoice['status']]),
+            ':new_values'  => json_encode(['status' => 'rejected', 'reason' => $reason, 'customer_id' => $customerId]),
+            ':notify_content' => "Yêu cầu xuất hoá đơn #{$invoiceId} đã bị từ chối. Lý do: {$reason}"
+        ]
+    );
 
     api_success(null, 'Invoice rejected thành công.');
 } catch (PDOException $e) {
