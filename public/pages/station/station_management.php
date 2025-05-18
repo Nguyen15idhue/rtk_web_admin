@@ -46,12 +46,13 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
                         <th>Tên Định danh</th>
                         <th>Người quản lý Hiện tại</th>
                         <th>Mountpoint Hiện tại</th>
+                        <th>Trạng thái</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($stations)): ?>
-                        <tr><td colspan="7">Không tìm thấy trạm nào.</td></tr>
+                        <tr><td colspan="8">Không tìm thấy trạm nào.</td></tr>
                     <?php else: foreach ($stations as $station): ?>
                         <tr>
                             <td><input type="checkbox" class="rowCheckbox" name="ids[]" value="<?php echo htmlspecialchars($station['id']); ?>"></td>
@@ -101,6 +102,11 @@ require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
+                                </td>
+                                <td>
+                                    <?php 
+                                        echo get_status_badge('station', $station['status'] ?? null);
+                                    ?>
                                 </td>
                                 <td>
                                     <?php if ($canEditStation): ?>

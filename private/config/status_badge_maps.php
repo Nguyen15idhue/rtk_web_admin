@@ -33,6 +33,13 @@ return [
         'pending'   => ['class' => 'badge-yellow', 'text' => 'Chờ duyệt'],
         'approved'  => ['class' => 'badge-green',  'text' => 'Đã duyệt'],
         'rejected'  => ['class' => 'badge-red',    'text' => 'Từ chối'],
+    ],
+    'station' => [
+        '0' => ['class' => 'badge-gray',   'text' => 'Stop'],
+        '1' => ['class' => 'badge-success', 'text' => 'Active'],
+        '2' => ['class' => 'badge-warning', 'text' => 'No Data'],
+        '3' => ['class' => 'badge-danger',  'text' => 'Offline'],
+        // Default or unknown status can be handled by render_status_badge
     ]
 ];
 ?>
