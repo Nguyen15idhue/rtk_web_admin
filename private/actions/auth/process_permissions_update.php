@@ -16,7 +16,7 @@ register_shutdown_function(function() use (&$db) {
 $raw = file_get_contents('php://input');
 $data = json_decode($raw, true);
 if (!is_array($data) || empty($data['role']) || !is_array($data['permissions'])) {
-    api_error('Invalid input', 400);
+    api_error('Dữ liệu đầu vào không hợp lệ', 400);
 }
 $role = $data['role'];
 $permissions = $data['permissions'];
@@ -29,8 +29,8 @@ try {
         $stmt->bindParam(':perm', $perm);
         $stmt->execute();
     }
-    api_success([], 'Permissions updated');
+    api_success([], 'Quyền đã được cập nhật');
 } catch (Exception $e) {
     error_log('process_permissions_update error: ' . $e->getMessage());
-    api_error('Error updating permissions', 500);
+    api_error('Lỗi cập nhật quyền', 500);
 }

@@ -175,7 +175,7 @@ function api_response($data = null, string $message = '', int $statusCode = 200,
  * @param int $statusCode The HTTP status code.
  * @param array $meta Additional metadata.
  */
-function api_success($data = null, string $message = 'OK', int $statusCode = 200, array $meta = []): void {
+function api_success($data = null, string $message = 'Cập nhật thành công', int $statusCode = 200, array $meta = []): void {
     api_response($data, $message, $statusCode, [], $meta);
 }
 

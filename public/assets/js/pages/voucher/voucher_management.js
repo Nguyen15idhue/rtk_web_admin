@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
             if(!confirm(`Bạn có chắc muốn ${action=='disable'?'vô hiệu hóa':'kích hoạt'} voucher ID ${id}?`)) return;
             postForm(`${apiBase}?action=toggle_voucher_status`, new URLSearchParams({id,action}))
             .then(res=>{
-                if(res.success) window.showToast('Thành công','success');
+                if(res.success) window.showToast(res.message,'success');
                 else window.showToast(res.message,'error');
                 setTimeout(()=> location.reload(),500);
             });
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
             postForm(`${apiBase}?action=delete_voucher`, new URLSearchParams({id}))
             .then(res => {
                 if (res.success) {
-                    window.showToast('Xóa thành công','success');
+                    window.showToast(res.message,'success');
                     setTimeout(() => location.reload(), 500);
                 } else {
                     window.showToast(res.message, 'error');
@@ -264,5 +264,18 @@ document.addEventListener('DOMContentLoaded', ()=> {
             }
         });
         initialVoucherTypeSelect.dispatchEvent(new Event('change'));
+    }
+
+    // Add expired status handling in client-side status filter if any
+    const statusFilter = document.getElementById('statusFilter');
+    if (statusFilter) {
+        statusFilter.addEventListener('change', e => {
+            const selectedStatus = e.target.value;
+            const rows = document.querySelectorAll('.voucher-row');
+            rows.forEach(row => {
+                const status = row.getAttribute('data-status');
+                row.style.display = (selectedStatus === 'all' || selectedStatus === status) ? '' : 'none';
+            });
+        });
     }
 });

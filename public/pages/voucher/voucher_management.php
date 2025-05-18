@@ -69,6 +69,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                     <option value="">Tất cả trạng thái</option>
                     <option value="active" <?php echo $filters['status']=='active'?'selected':''; ?>>Hoạt động</option>
                     <option value="inactive" <?php echo $filters['status']=='inactive'?'selected':''; ?>>Vô hiệu hóa</option>
+                    <option value="expired" <?php echo $filters['status']=='expired'?'selected':''; ?>>Hết hạn</option>
                 </select>
                 <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Tìm</button>
                 <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary"><i class="fas fa-times"></i> Xóa lọc</a>
@@ -127,7 +128,13 @@ include $private_layouts_path . 'admin_sidebar.php';
                                 <td><?php echo htmlspecialchars($v['quantity'] ?? '-'); ?></td>
                                 <td><?php echo htmlspecialchars($v['used_quantity']); ?></td>
                                 <td><?php echo format_date($v['start_date']); ?> - <?php echo format_date($v['end_date']); ?></td>
-                                <td><?php echo get_status_badge('voucher', $v['is_active'] ? 'active' : 'inactive'); ?></td>
+                                <td><?php 
+                                    if (strtotime($v['end_date']) < time()) {
+                                        echo get_status_badge('voucher', 'expired');
+                                    } else {
+                                        echo get_status_badge('voucher', $v['is_active'] ? 'active' : 'inactive');
+                                    }
+                                ?></td>
                                 <td>
                                     <button type="button" class="btn-icon btn-view" onclick="VoucherPage.viewDetails(<?php echo $v['id']; ?>)"><i class="fas fa-eye"></i></button>
                                     <?php if ($isEditVoucherAllowed): ?>

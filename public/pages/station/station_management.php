@@ -183,6 +183,11 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.classList.add('active');
         contents.forEach(c => c.style.display = (c.id === btn.dataset.tab ? '' : 'none'));
     }));
+
+    // Display toast messages from session
+    <?php if (isset($message) && isset($message_type)): ?>
+        window.showToast('<?php echo addslashes(htmlspecialchars($message)); ?>', '<?php echo htmlspecialchars($message_type); ?>');
+    <?php endif; ?>
 });
 </script>
 

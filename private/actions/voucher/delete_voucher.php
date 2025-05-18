@@ -13,15 +13,15 @@ require_once __DIR__ . '/../../classes/VoucherModel.php';
 $id = isset($_POST['id']) ? (int)
     $_POST['id'] : 0;
 if ($id <= 0) {
-    api_error('Invalid voucher ID', 400);
+    api_error('ID Voucher không hợp lệ', 400);
 }
 $model = new VoucherModel();
 try {
     $deleted = $model->delete($id);
     if (!$deleted) {
-        api_error('Failed to delete voucher', 500);
+        api_error('Lỗi khi xóa voucher', 500);
     }
-    api_success(null, 'Voucher deleted');
+    api_success(null, 'Xóa voucher thành công');
 } catch (Exception $e) {
     error_log('Error in delete_voucher: ' . $e->getMessage());
     api_error('Server error', 500);

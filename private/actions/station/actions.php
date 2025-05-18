@@ -9,7 +9,7 @@ Auth::ensureAuthorized('station_management_edit');
 
 // Ensure POST request
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    $_SESSION['message'] = 'Invalid request method.';
+    $_SESSION['message'] = 'Phương thức yêu cầu không hợp lệ.';
     $_SESSION['message_type'] = 'danger';
     header('Location: ' . $base_url . 'public/pages/station/station_management.php');
     exit;
@@ -28,7 +28,7 @@ if ($action === 'update_station') {
     $mountpoint_details_json = $_POST['mountpoint_details'] ?? null;
 
     if (empty($station_id)) {
-        $_SESSION['message'] = 'Station ID is missing.';
+        $_SESSION['message'] = 'Thiếu ID trạm.';
         $_SESSION['message_type'] = 'danger';
         header('Location: ' . $base_url . 'public/pages/station/station_management.php');
         exit;
@@ -38,7 +38,7 @@ if ($action === 'update_station') {
     if (!empty($manager_name_input)) {
         $manager_id = $managerModel->findManagerIdByName($manager_name_input);
         if (!$manager_id) {
-            $_SESSION['message'] = "Manager with name '{$manager_name_input}' not found. Please ensure the manager exists.";
+            $_SESSION['message'] = "Không tìm thấy người quản lý với tên '{$manager_name_input}'. Vui lòng đảm bảo người quản lý tồn tại.";
             $_SESSION['message_type'] = 'danger';
             header('Location: ' . $base_url . 'public/pages/station/station_management.php');
             exit;
@@ -52,7 +52,7 @@ if ($action === 'update_station') {
             $mountpoint_id_from_api = $mountpoint_data['id'];
         } else {
             if ($mountpoint_details_json !== '') {
-                $_SESSION['message'] = 'Invalid mountpoint data received.';
+                $_SESSION['message'] = 'Dữ liệu mountpoint nhận được không hợp lệ.';
                 $_SESSION['message_type'] = 'danger';
                 header('Location: ' . $base_url . 'public/pages/station/station_management.php');
                 exit;
@@ -67,14 +67,14 @@ if ($action === 'update_station') {
     );
 
     if ($success) {
-        $_SESSION['message'] = 'Station information updated successfully.';
+        $_SESSION['message'] = 'Thông tin trạm được cập nhật thành công.';
         $_SESSION['message_type'] = 'success';
     } else {
-        $_SESSION['message'] = 'Failed to update station information. Please check logs or try again.';
+        $_SESSION['message'] = 'Cập nhật thông tin trạm thất bại. Vui lòng kiểm tra logs hoặc thử lại.';
         $_SESSION['message_type'] = 'danger';
     }
 } else {
-    $_SESSION['message'] = 'Invalid action specified.';
+    $_SESSION['message'] = 'Hành động không hợp lệ.';
     $_SESSION['message_type'] = 'danger';
 }
 

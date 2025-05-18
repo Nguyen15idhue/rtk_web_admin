@@ -158,16 +158,15 @@ function getRoleDisplayName($role_key) {
                     <i class="fas fa-plus-circle mr-1"></i> Tạo Vai trò Mới
                 </button>
                 <button class="btn btn-primary self-start md:self-auto w-auto" onclick="PermissionPageEvents.openCreateRoleModal()" data-permission="admin_user_create">
-                    <i class="fas fa-user-plus mr-1"></i> Thêm QTV/Vận hành
+                    <i class="fas fa-user-plus mr-1"></i> Tạo Tài khoản Mới
                 </button>
             </div>
             <?php endif; ?>
         </div>
-        <p class="text-xs sm:text-sm text-gray-600 mb-6">Chọn một vai trò để xem và chỉnh sửa quyền hạn chi tiết. Các thay đổi chỉ có hiệu lực sau khi lưu.</p>
 
         <!-- Role Selection Area -->
         <div class="mb-6">
-            <h4 class="text-md font-semibold mb-3 text-gray-700">Chọn Vai Trò để Cấu Hình:</h4>
+            <h4 class="text-md font-semibold mb-3 text-gray-700">Chọn Vai Trò để xem và cấu hình:</h4>
             <div id="role-selection-tabs" class="flex flex-wrap space-x-1 sm:space-x-2 border-b border-gray-300 pb-2">
                 <?php
                 $role_display_names_for_js = [];
@@ -181,7 +180,7 @@ function getRoleDisplayName($role_key) {
                 <?php } ?>
             </div>
         </div>
-         <p class="text-xs text-red-600 mt-4 italic">*Lưu ý: Chỉ Quản trị viên (Admin) mới có quyền thay đổi các cài đặt phân quyền. Tài khoản mới tạo cần được yêu cầu đổi mật khẩu mặc định.</p>
+         <p class="text-xs text-red-600 mt-4 italic">*Lưu ý: Tài khoản mới tạo cần được yêu cầu đổi mật khẩu mặc định.</p>
     </div>
 
     <!-- Permissions Configuration Modal -->
@@ -255,7 +254,7 @@ function getRoleDisplayName($role_key) {
 <div id="createRoleModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h4>Thêm QTV/Vận hành</h4>
+            <h4>Tạo Tài khoản Mới</h4>
         </div>
         <form id="createRoleForm">
             <div class="modal-body">
@@ -334,7 +333,7 @@ function getRoleDisplayName($role_key) {
             <h4>Xác nhận xóa</h4>
         </div>
         <div class="modal-body">
-            <p>Bạn có chắc muốn xóa tài khoản này?</p>
+            <p>Bạn có chắc muốn xóa tài khoản <strong id="deleteAdminName"></strong>?</p>
         </div>
         <div class="modal-footer">
             <button class="btn btn-secondary" onclick="PermissionPageEvents.closeModal('deleteAdminModal')">Hủy</button>

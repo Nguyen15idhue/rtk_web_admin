@@ -22,6 +22,7 @@ return [
     'voucher'    => [
         'active'   => ['class' => 'badge-green', 'text' => 'Hoạt động'],
         'inactive' => ['class' => 'badge-red',   'text' => 'Vô hiệu hóa'],
+        'expired'  => ['class' => 'badge-red',   'text' => 'Hết hạn'],
     ],
     'transaction' => [
         'active'    => ['class' => 'badge-green',  'text' => 'Thành công'],

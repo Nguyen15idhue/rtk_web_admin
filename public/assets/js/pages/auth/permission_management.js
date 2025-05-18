@@ -367,6 +367,17 @@
             window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
             return;
         }
+        const admin = adminsData.find(a => a.id == id);
+        if (!admin) {
+            window.showToast('Không tìm thấy thông tin tài khoản admin.', 'error');
+            return;
+        }
+
+        const modalTextElement = document.getElementById('deleteAdminName');
+        if (modalTextElement) {
+            modalTextElement.textContent = admin.name || admin.admin_username;
+        }
+
         const confirmBtn = document.getElementById('confirmDeleteAdminBtn');
         if (confirmBtn) confirmBtn.onclick = ()=> handleDeleteAdmin(id);
         helperOpenModal && helperOpenModal('deleteAdminModal');

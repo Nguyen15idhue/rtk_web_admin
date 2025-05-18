@@ -1,8 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/constants.php';
 require_once BASE_PATH . '/classes/Database.php';
-// ALTER TABLE `admin`
-//   MODIFY COLUMN `role` TEXT NOT NULL;
+
 class AdminModel {
     private $db;
     private $conn;
