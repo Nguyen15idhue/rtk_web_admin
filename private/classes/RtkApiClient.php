@@ -30,6 +30,13 @@ class RtkApiClient {
      * @return array ['success'=>bool,'data'=>mixed,'error'=>string|null]
      */
     public function request(string $method, string $uri, array $body = null): array {
+        $url = $this->baseUrl . $uri;
+        // khi GET và có dữ liệu, append vào URL
+        if (strtoupper($method) === 'GET' && !empty($body)) {
+            $qs  = http_build_query($body);
+            $url .= (strpos($url, '?') === false ? '?' : '&') . $qs;
+        }
+
         $nonce = bin2hex(random_bytes(16));
         $timestamp = (string) round(microtime(true) * 1000);
         $headers = [
@@ -49,7 +56,6 @@ class RtkApiClient {
         error_log("RTK API Request: $method $uri\n" . json_encode($headers, JSON_PRETTY_PRINT));
         $headers['Content-Type'] = 'application/json';
 
-        $url = $this->baseUrl . $uri;
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->connectTimeout);

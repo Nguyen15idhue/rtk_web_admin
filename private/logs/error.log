@@ -1,145 +1,47 @@
-[17-May-2025 23:51:37 UTC] [DEBUG] Search keyword: 
-[17-May-2025 23:51:46 UTC] DEBUG isDuplicate SQL: SELECT id FROM user 
-                WHERE (email = :email OR (phone IS NOT NULL AND phone = :phone)) AND id != :ex | email=tranhailong2499@gmail.com | phone=123 | excludeId=106
-[17-May-2025 23:51:46 UTC] DEBUG isDuplicate result: false
-[17-May-2025 23:51:46 UTC] [DEBUG] Search keyword: 
-[17-May-2025 23:51:53 UTC] DEBUG isDuplicate SQL: SELECT id FROM user 
-                WHERE (email = :email OR (phone IS NOT NULL AND phone = :phone)) AND id != :ex | email=tranhailong2499@gmail.com | phone=123 | excludeId=106
-[17-May-2025 23:51:53 UTC] DEBUG isDuplicate result: false
-[17-May-2025 23:51:53 UTC] [DEBUG] Search keyword: 
-[17-May-2025 23:51:56 UTC] [DEBUG] Search keyword: 
-[17-May-2025 23:51:58 UTC] [DEBUG] Search keyword: 
-[17-May-2025 23:52:13 UTC] [DEBUG] Search keyword: 
-[17-May-2025 23:52:14 UTC] [DEBUG] Search keyword: 
-[17-May-2025 23:52:18 UTC] [DEBUG] Search keyword: Long
-[17-May-2025 23:52:20 UTC] [DEBUG] Search keyword: 
-[17-May-2025 23:53:02 UTC] Create user error: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'acook6962@gmail.com' for key 'user.uq_user_email'
-[17-May-2025 23:53:13 UTC] [DEBUG] Search keyword: 
-[18-May-2025 00:12:31 UTC] Invoice file will be stored at: E:\Application\laragon\www\rtk_web_admin\private/../public/uploads/invoice/1747527151_test.pdf
-[18-May-2025 00:17:44 UTC] [Revert Transaction 217] Deleting RTK account 2253
-[18-May-2025 00:17:44 UTC] RTK API Request: POST /openapi/broadcast/users/delete
+[18-May-2025 02:38:29 UTC] [PTA] activate survey_account executed, affectedRows=0
+[18-May-2025 02:38:29 UTC] Warning: No survey accounts found or enabled for approved registration ID: 224
+[18-May-2025 02:38:29 UTC] [PTA] province_code=CMA, lastUser=, nextSeq=1, username=CMA001, password=09999993232
+[18-May-2025 02:38:29 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":224,"username_acc":"CMA001","password_acc":"09999993232","user_email":"osn14300@jioso.com","location_id":12,"package_id":2,"start_time":"2025-05-18 09:38:29","end_time":"2025-11-19 09:38:28","enabled":1,"concurrent_user":1,"account_count":1}
+[18-May-2025 02:38:30 UTC] [PTA] create_account timed out (could be pending), transaction 217
+[18-May-2025 02:38:30 UTC] [CA] Start create_account request
+[18-May-2025 02:38:30 UTC] [CA] Raw input: {"registration_id":224,"username_acc":"CMA001","password_acc":"09999993232","user_email":"osn14300@jioso.com","location_id":12,"package_id":2,"start_time":"2025-05-18 09:38:29","end_time":"2025-11-19 09:38:28","enabled":1,"concurrent_user":1,"account_count":1}
+[18-May-2025 02:38:30 UTC] [CA] registration_id=224, username_acc=CMA001, password_len=11
+[18-May-2025 02:38:30 UTC] [CA] location_input=12
+[18-May-2025 02:38:30 UTC] [CA] computed start_time_db=2025-05-18 09:38:29, end_time_db=2025-11-19 09:38:28
+[18-May-2025 02:38:30 UTC] [CA] Validating user_email: osn14300@jioso.com
+[18-May-2025 02:38:30 UTC] [CA] Retrieved userId=105
+[18-May-2025 02:38:30 UTC] [CA] Price=270000.00 => normal flow
+[18-May-2025 02:38:30 UTC] Debug: Non-trial account creation path for registration_id=224
+[18-May-2025 02:38:30 UTC] Using default mount points for location ID: 12 - [42]
+[18-May-2025 02:38:30 UTC] [CA] RTK API payload for CMA001: {"name":"CMA001","userPwd":"09999993232","startTime":1747535909000,"endTime":1763519908000,"enabled":1,"numOnline":1,"customerName":"Long99999","customerPhone":"09999993232","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
+[18-May-2025 02:38:30 UTC] RTK API Request: POST /openapi/broadcast/users
 {
     "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "6df740399bac3204bc29156ae7cc9ab8",
+    "X-Nonce": "a445b8d2ae5889196ea7e29bf19ba3ca",
     "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527464882",
-    "Sign": "35e34f64d4ffaf448b81a59b5fe8e615536ff1478125f39866d33514d5c07fde"
+    "X-Timestamp": "1747535910571",
+    "Sign": "ee6fac135941fff750755e2576d4df2c8c8853a2b16d86df4951f422d4a04761"
 }
-[18-May-2025 00:17:44 UTC] [Revert Transaction 217] RTK delete success for account 2253.
-[18-May-2025 00:18:49 UTC] [PTA] activate survey_account executed, affectedRows=0
-[18-May-2025 00:18:49 UTC] Warning: No survey accounts found or enabled for approved registration ID: 225
-[18-May-2025 00:18:49 UTC] [PTA] province_code=CMA, lastUser=, nextSeq=1, username=CMA001, password=09999993232
-[18-May-2025 00:18:49 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":225,"username_acc":"CMA001","password_acc":"09999993232","user_email":"osn14300@jioso.com","location_id":12,"package_id":2,"start_time":"2025-05-18 07:18:49","end_time":"2025-08-18 07:18:49","enabled":1,"concurrent_user":1,"account_count":1}
-[18-May-2025 00:18:50 UTC] [PTA] create_account timed out (could be pending), transaction 218
-[18-May-2025 00:18:50 UTC] [CA] Start create_account request
-[18-May-2025 00:18:50 UTC] [CA] Raw input: {"registration_id":225,"username_acc":"CMA001","password_acc":"09999993232","user_email":"osn14300@jioso.com","location_id":12,"package_id":2,"start_time":"2025-05-18 07:18:49","end_time":"2025-08-18 07:18:49","enabled":1,"concurrent_user":1,"account_count":1}
-[18-May-2025 00:18:50 UTC] [CA] registration_id=225, username_acc=CMA001, password_len=11
-[18-May-2025 00:18:50 UTC] [CA] location_input=12
-[18-May-2025 00:18:50 UTC] [CA] computed start_time_db=2025-05-18 07:18:49, end_time_db=2025-08-18 07:18:49
-[18-May-2025 00:18:50 UTC] [CA] Validating user_email: osn14300@jioso.com
-[18-May-2025 00:18:50 UTC] [CA] Retrieved userId=105
-[18-May-2025 00:18:50 UTC] [CA] Price=270000.00 => normal flow
-[18-May-2025 00:18:50 UTC] Debug: Non-trial account creation path for registration_id=225
-[18-May-2025 00:18:50 UTC] Using default mount points for location ID: 12 - [42]
-[18-May-2025 00:18:50 UTC] [CA] RTK API payload for CMA001: {"name":"CMA001","userPwd":"09999993232","startTime":1747527529000,"endTime":1755476329000,"enabled":1,"numOnline":1,"customerName":"Long99999","customerPhone":"09999993232","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
-[18-May-2025 00:18:50 UTC] RTK API Request: POST /openapi/broadcast/users
+[18-May-2025 02:38:30 UTC] [CA] RTK API response for CMA001: {"success":true,"data":{"id":2258,"name":"CMA001","userPwd":"09999993232","startTime":1747535909000,"endTime":1763519908000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long99999","customerPhone":"09999993232","customerCompany":""},"error":null}
+[18-May-2025 02:38:57 UTC] Using default mount points for location ID: 12 - [42]
+[18-May-2025 02:38:57 UTC] RTK API Payload: {"id":"2258","name":"CMA001","userPwd":"09999993232","startTime":1747561109000,"endTime":1763545108000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[18-May-2025 02:38:57 UTC] RTK API Request: PUT /openapi/broadcast/users/2258
 {
     "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "91c8deaeb25ed03ea7816f6bf3013fd1",
+    "X-Nonce": "1598543dac56f5fa36f4e7d60edf7dd6",
     "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527530989",
-    "Sign": "fa64eec30878d99b02463db683d96c8ca94f9e3a7d085830c8815d0a1bc7c699"
+    "X-Timestamp": "1747535937521",
+    "Sign": "7cfe35e837ed61894565caad84e6fa564e3ca0866bb42861de0c4c130b70b2d3"
 }
-[18-May-2025 00:18:51 UTC] [CA] RTK API response for CMA001: {"success":true,"data":{"id":2254,"name":"CMA001","userPwd":"09999993232","startTime":1747527529000,"endTime":1755476329000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long99999","customerPhone":"09999993232","customerCompany":""},"error":null}
-[18-May-2025 00:18:51 UTC] [PTA] activate survey_account executed, affectedRows=0
-[18-May-2025 00:18:51 UTC] Warning: No survey accounts found or enabled for approved registration ID: 224
-[18-May-2025 00:18:51 UTC] [PTA] province_code=CMA, lastUser=CMA001, nextSeq=2, username=CMA002, password=09999993232
-[18-May-2025 00:18:51 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":224,"username_acc":"CMA002","password_acc":"09999993232","user_email":"osn14300@jioso.com","location_id":12,"package_id":2,"start_time":"2025-05-18 07:18:51","end_time":"2025-08-18 07:18:51","enabled":1,"concurrent_user":1,"account_count":1}
-[18-May-2025 00:18:52 UTC] [PTA] create_account timed out (could be pending), transaction 217
-[18-May-2025 00:18:52 UTC] [CA] Start create_account request
-[18-May-2025 00:18:52 UTC] [CA] Raw input: {"registration_id":224,"username_acc":"CMA002","password_acc":"09999993232","user_email":"osn14300@jioso.com","location_id":12,"package_id":2,"start_time":"2025-05-18 07:18:51","end_time":"2025-08-18 07:18:51","enabled":1,"concurrent_user":1,"account_count":1}
-[18-May-2025 00:18:52 UTC] [CA] registration_id=224, username_acc=CMA002, password_len=11
-[18-May-2025 00:18:52 UTC] [CA] location_input=12
-[18-May-2025 00:18:52 UTC] [CA] computed start_time_db=2025-05-18 07:18:51, end_time_db=2025-08-18 07:18:51
-[18-May-2025 00:18:52 UTC] [CA] Validating user_email: osn14300@jioso.com
-[18-May-2025 00:18:52 UTC] [CA] Retrieved userId=105
-[18-May-2025 00:18:52 UTC] [CA] Price=270000.00 => normal flow
-[18-May-2025 00:18:52 UTC] Debug: Non-trial account creation path for registration_id=224
-[18-May-2025 00:18:52 UTC] Using default mount points for location ID: 12 - [42]
-[18-May-2025 00:18:52 UTC] [CA] RTK API payload for CMA002: {"name":"CMA002","userPwd":"09999993232","startTime":1747527531000,"endTime":1755476331000,"enabled":1,"numOnline":1,"customerName":"Long99999","customerPhone":"09999993232","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
-[18-May-2025 00:18:52 UTC] RTK API Request: POST /openapi/broadcast/users
-{
-    "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "f03607c285a7ea0c263ec94932084395",
-    "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527532267",
-    "Sign": "4816c112f38d2ac589927d85419bb8c1ef7c7a0b8ca30363e54e8c12f3459307"
-}
-[18-May-2025 00:18:52 UTC] [CA] RTK API response for CMA002: {"success":true,"data":{"id":2255,"name":"CMA002","userPwd":"09999993232","startTime":1747527531000,"endTime":1755476331000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long99999","customerPhone":"09999993232","customerCompany":""},"error":null}
-[18-May-2025 00:19:23 UTC] Using default mount points for location ID: 12 - [42]
-[18-May-2025 00:19:23 UTC] RTK API Payload: {"id":"2255","name":"CMA002","userPwd":"09999993232","startTime":1747552731000,"endTime":1755501531000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[18-May-2025 00:19:23 UTC] RTK API Request: PUT /openapi/broadcast/users/2255
-{
-    "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "00795f2b1b9541fd3b0edc3f2e4dd4ad",
-    "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527563633",
-    "Sign": "c37f6afd34607fb69735072db160eaa35679629f869af5c2dba1e606294f7cc6"
-}
-[18-May-2025 00:19:23 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[18-May-2025 00:19:48 UTC] Using default mount points for location ID: 12 - [42]
-[18-May-2025 00:19:48 UTC] [manual_renew_account] RTK API Payload: Array
+[18-May-2025 02:38:57 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[18-May-2025 02:39:19 UTC] Using default mount points for location ID: 12 - [42]
+[18-May-2025 02:39:19 UTC] [manual_renew_account] RTK API Payload: Array
 (
-    [id] => 2255
-    [name] => CMA002
-    [userPwd] => 09999993232
-    [startTime] => 1747526400000
-    [endTime] => 1763510399000
-    [enabled] => 1
-    [numOnline] => 1
-    [customerBizType] => 1
-    [userId] => 105
-    [customerName] => Long99999
-    [customerPhone] => 09999993232
-    [customerCompany] => 
-    [casterIds] => Array
-        (
-        )
-
-    [regionIds] => Array
-        (
-        )
-
-    [mountIds] => Array
-        (
-            [0] => 42
-        )
-
-)
-
-[18-May-2025 00:19:48 UTC] RTK API Request: PUT /openapi/broadcast/users/2255
-{
-    "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "5f7f35bda0b3df76d1b42b5546cb960c",
-    "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527588153",
-    "Sign": "fde0b1caccd90bde5fc4bed4814acdcef96d364db6ce074a80259de70fb12894"
-}
-[18-May-2025 00:19:48 UTC] [manual_renew_account] RTK API Result: Array
-(
-    [success] => 1
-    [data] => 1
-    [error] => 
-)
-
-[18-May-2025 00:19:48 UTC] Using default mount points for location ID: 12 - [42]
-[18-May-2025 00:19:48 UTC] [manual_renew_account] RTK API Payload: Array
-(
-    [id] => 2254
+    [id] => 2258
     [name] => CMA001
     [userPwd] => 09999993232
     [startTime] => 1747526400000
-    [endTime] => 1763510399000
+    [endTime] => 1771545599000
     [enabled] => 1
     [numOnline] => 1
     [customerBizType] => 1
@@ -162,198 +64,85 @@
 
 )
 
-[18-May-2025 00:19:48 UTC] RTK API Request: PUT /openapi/broadcast/users/2254
+[18-May-2025 02:39:19 UTC] RTK API Request: PUT /openapi/broadcast/users/2258
 {
     "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "83bae893456968399038d6bf0ac8a047",
+    "X-Nonce": "c725797bb4ff5efddffc838590fa4d13",
     "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527588275",
-    "Sign": "0168ad642561c40d8b43d23f964036fe31dabd86332e27abd66bfc18d33b934c"
+    "X-Timestamp": "1747535959329",
+    "Sign": "e7f33ada912232930bd1346b5a9228a67300ebefd3b522a96e6ca33a688b0d44"
 }
-[18-May-2025 00:19:48 UTC] [manual_renew_account] RTK API Result: Array
+[18-May-2025 02:39:19 UTC] [manual_renew_account] RTK API Result: Array
 (
     [success] => 1
     [data] => 1
     [error] => 
 )
 
-[18-May-2025 00:20:32 UTC] [CA] Start create_account request
-[18-May-2025 00:20:32 UTC] [CA] Raw input: null
-[18-May-2025 00:20:32 UTC] Debug: Fallback to $_POST input: {"username_acc":"CMA003","password_acc":"123456","user_email":"tranhailong2407@gmail.com","location_id":"12","package_id":"1","start_time":"2025-05-18","end_time":"2025-06-18","status":"active","account_count":"2"}
-[18-May-2025 00:20:32 UTC] [CA] registration_id=, username_acc=CMA003, password_len=6
-[18-May-2025 00:20:32 UTC] [CA] location_input=12
-[18-May-2025 00:20:32 UTC] [CA] computed start_time_db=2025-05-18 00:00:00, end_time_db=2025-06-18 00:00:00
-[18-May-2025 00:20:32 UTC] [CA] Validating user_email: tranhailong2407@gmail.com
-[18-May-2025 00:20:32 UTC] [CA] Retrieved userId=90
-[18-May-2025 00:20:32 UTC] [CA] Inserting auto registration for user 90
-[18-May-2025 00:20:32 UTC] [CA] auto registration inserted, new regId=227
-[18-May-2025 00:20:32 UTC] [CA] Price=100000.00 => normal flow
-[18-May-2025 00:20:32 UTC] Debug: Non-trial account creation path for registration_id=227
-[18-May-2025 00:20:32 UTC] Using default mount points for location ID: 12 - [42]
-[18-May-2025 00:20:32 UTC] [CA] RTK API payload for CMA003: {"name":"CMA003","userPwd":"123456","startTime":1747501200000,"endTime":1750179600000,"enabled":1,"numOnline":1,"customerName":"Long2002","customerPhone":"0999999443","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
-[18-May-2025 00:20:32 UTC] RTK API Request: POST /openapi/broadcast/users
+[18-May-2025 02:39:56 UTC] [CA] Start create_account request
+[18-May-2025 02:39:56 UTC] [CA] Raw input: null
+[18-May-2025 02:39:56 UTC] Debug: Fallback to $_POST input: {"username_acc":"YBI300","password_acc":"123456","user_email":"tranhailong2407@gmail.com","location_id":"63","package_id":"1","start_time":"2025-05-18","end_time":"2025-06-18","status":"active","account_count":"2"}
+[18-May-2025 02:39:56 UTC] [CA] registration_id=, username_acc=YBI300, password_len=6
+[18-May-2025 02:39:56 UTC] [CA] location_input=63
+[18-May-2025 02:39:56 UTC] [CA] computed start_time_db=2025-05-18 00:00:00, end_time_db=2025-06-18 00:00:00
+[18-May-2025 02:39:56 UTC] [CA] Validating user_email: tranhailong2407@gmail.com
+[18-May-2025 02:39:56 UTC] [CA] Retrieved userId=90
+[18-May-2025 02:39:56 UTC] [CA] Inserting auto registration for user 90
+[18-May-2025 02:39:56 UTC] [CA] auto registration inserted, new regId=228
+[18-May-2025 02:39:56 UTC] [CA] Price=100000.00 => normal flow
+[18-May-2025 02:39:56 UTC] Debug: Non-trial account creation path for registration_id=228
+[18-May-2025 02:39:56 UTC] [CA] RTK API payload for YBI300: {"name":"YBI300","userPwd":"123456","startTime":1747501200000,"endTime":1750179600000,"enabled":1,"numOnline":1,"customerName":"Long2002","customerPhone":"0999999443","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[18-May-2025 02:39:56 UTC] RTK API Request: POST /openapi/broadcast/users
 {
     "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "e3bd4f2df9e7891ec4b0645b596f4e23",
+    "X-Nonce": "295cd5c50fcb571b1375e1c730cb9ab0",
     "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527632921",
-    "Sign": "5edaa82f0841a82b3d25d6e5a4de676bf975d94f856ced018e9dd1ab689f963c"
+    "X-Timestamp": "1747535996280",
+    "Sign": "dcc4ffd6c703ab817e5ec5e8f1bbfb1cc9ac200cccfd5b7a41dee92e6c04d77b"
 }
-[18-May-2025 00:20:32 UTC] [CA] RTK API response for CMA003: {"success":true,"data":{"id":2256,"name":"CMA003","userPwd":"123456","startTime":1747501200000,"endTime":1750179600000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2002","customerPhone":"0999999443","customerCompany":""},"error":null}
-[18-May-2025 00:20:32 UTC] Using default mount points for location ID: 12 - [42]
-[18-May-2025 00:20:32 UTC] [CA] RTK API payload for CMA004: {"name":"CMA004","userPwd":"123456","startTime":1747501200000,"endTime":1750179600000,"enabled":1,"numOnline":1,"customerName":"Long2002","customerPhone":"0999999443","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[42]}
-[18-May-2025 00:20:32 UTC] RTK API Request: POST /openapi/broadcast/users
+[18-May-2025 02:39:56 UTC] [CA] RTK API response for YBI300: {"success":true,"data":{"id":2259,"name":"YBI300","userPwd":"123456","startTime":1747501200000,"endTime":1750179600000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2002","customerPhone":"0999999443","customerCompany":""},"error":null}
+[18-May-2025 02:39:56 UTC] [CA] RTK API payload for YBI301: {"name":"YBI301","userPwd":"123456","startTime":1747501200000,"endTime":1750179600000,"enabled":1,"numOnline":1,"customerName":"Long2002","customerPhone":"0999999443","customerBizType":1,"customerCompany":"","casterIds":[],"regionIds":[],"mountIds":[44,45,46,47,48,49,60,64]}
+[18-May-2025 02:39:56 UTC] RTK API Request: POST /openapi/broadcast/users
 {
     "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "ad63ae6fa8560b8fd6df986ea45decad",
+    "X-Nonce": "2cf660376de248e7481ea437f1aecc41",
     "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527632967",
-    "Sign": "8b6d96e0cafe11a0e10c99cf07eb872b35c1c9313b0c43fca7b5b932401c38e2"
+    "X-Timestamp": "1747535996320",
+    "Sign": "57fc06b1a45ce81213790ef4f8fccccbfa1cb85f3f9a8723d056e18c6c17ba08"
 }
-[18-May-2025 00:20:32 UTC] [CA] RTK API response for CMA004: {"success":true,"data":{"id":2257,"name":"CMA004","userPwd":"123456","startTime":1747501200000,"endTime":1750179600000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[42],"mountNames":null,"customerBizType":1,"customerName":"Long2002","customerPhone":"0999999443","customerCompany":""},"error":null}
-[18-May-2025 00:20:44 UTC] Using default mount points for location ID: 12 - [42]
-[18-May-2025 00:20:44 UTC] RTK API Payload: {"id":"2257","name":"CMA004","userPwd":"123456","startTime":1747526400000,"endTime":1750204800000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[18-May-2025 00:20:44 UTC] RTK API Request: PUT /openapi/broadcast/users/2257
+[18-May-2025 02:39:56 UTC] [CA] RTK API response for YBI301: {"success":true,"data":{"id":2260,"name":"YBI301","userPwd":"123456","startTime":1747501200000,"endTime":1750179600000,"enabled":1,"numOnline":1,"casterIds":null,"regionIds":[],"casterNames":null,"mountIds":[44,45,46,47,48,49,60,64],"mountNames":null,"customerBizType":1,"customerName":"Long2002","customerPhone":"0999999443","customerCompany":""},"error":null}
+[18-May-2025 02:40:11 UTC] RTK API Payload: {"id":"2259","name":"YBI300","userPwd":"123456","startTime":1747526400000,"endTime":1750204800000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[18-May-2025 02:40:11 UTC] RTK API Request: PUT /openapi/broadcast/users/2259
 {
     "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "e28025c6a0ff5c825cd54644146c5eef",
+    "X-Nonce": "326ef39e15d99b93e9ed409a1727f0c2",
     "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527644477",
-    "Sign": "36b5736e66cca7323b7bd302139e80758505105b8cd14e28ad14ea6e7a45aa70"
+    "X-Timestamp": "1747536011746",
+    "Sign": "59ee722ff6feca823d51eb9ebbb8dca6e1503a5458c4c06c132702c3a5885870"
 }
-[18-May-2025 00:20:44 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[18-May-2025 00:20:46 UTC] Using default mount points for location ID: 12 - [42]
-[18-May-2025 00:20:46 UTC] RTK API Payload: {"id":"2256","name":"CMA003","userPwd":"123456","startTime":1747526400000,"endTime":1750204800000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[18-May-2025 00:20:46 UTC] RTK API Request: PUT /openapi/broadcast/users/2256
+[18-May-2025 02:40:11 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[18-May-2025 02:40:16 UTC] RTK API Request: POST /openapi/broadcast/users/delete
 {
     "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "9ba55389b2765c25e30576ba6ef7dece",
+    "X-Nonce": "555a1a98a5c00d04faab54fd833d1c7a",
     "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527646104",
-    "Sign": "dffa48e29ac14365e57213423deef9a194a39d771aee1acf96ab9f38ead69d2c"
+    "X-Timestamp": "1747536016800",
+    "Sign": "25d10576fbfc50de6567362fa6f80bcb0dcc50179a7a6da9d1e12b2b330fc33d"
 }
-[18-May-2025 00:20:46 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[18-May-2025 00:20:50 UTC] [update_account] raw input: 
-[18-May-2025 00:20:50 UTC] [update_account] decoded input: Array
-(
-    [id] => 2256
-    [username_acc] => CMA003
-    [password_acc] => 
-    [user_email] => tranhailong2407@gmail.com
-    [location_id] => 12
-    [package_id] => 1
-    [activation_date] => 2025-05-18
-    [expiry_date] => 2025-06-18
-    [status] => active
-)
-
-[18-May-2025 00:20:50 UTC] [update_account] input customer_phone: <none>
-[18-May-2025 00:20:50 UTC] [update_account] updateData initial: Array
-(
-    [username_acc] => CMA003
-    [password_acc] => 
-    [user_email] => tranhailong2407@gmail.com
-    [location_id] => 12
-    [package_id] => 1
-    [activation_date] => 2025-05-18
-    [expiry_date] => 2025-06-18
-    [status] => active
-)
-
-[18-May-2025 00:20:50 UTC] Using default mount points for location ID: 12 - [42]
-[18-May-2025 00:20:50 UTC] [update_account] final sanitized customer_phone: 0999999443
-[18-May-2025 00:20:50 UTC] [update_account] final customer_name: Long2002
-[18-May-2025 00:20:50 UTC] Using default mount points for location ID: 12 - [42]
-[18-May-2025 00:20:50 UTC] [update_account] RTK API payload via model: Array
-(
-    [id] => 2256
-    [name] => CMA003
-    [userPwd] => 123456
-    [startTime] => 1747526400000
-    [endTime] => 1750291199000
-    [enabled] => 1
-    [numOnline] => 1
-    [customerBizType] => 1
-    [userId] => 90
-    [customerName] => Long2002
-    [customerPhone] => 0999999443
-    [customerCompany] => 
-    [casterIds] => Array
-        (
-        )
-
-    [regionIds] => Array
-        (
-        )
-
-    [mountIds] => Array
-        (
-            [0] => 42
-        )
-
-)
-
-[18-May-2025 00:20:50 UTC] RTK API Request: PUT /openapi/broadcast/users/2256
+[18-May-2025 02:40:16 UTC] RTK API Request: POST /openapi/broadcast/users/delete
 {
     "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "55f428ec92b80740692c2fbc0935a51c",
+    "X-Nonce": "1957a5b463fc93d2281194c8fa4e9619",
     "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527650093",
-    "Sign": "f60b6d9d2f2ea108a3a87b6460d22963f67ad5a1330c675153bbb02efbd17468"
+    "X-Timestamp": "1747536016908",
+    "Sign": "fecd48dd212cfb65fdc1ae657a3fd93bfa1234ad719b21c4c6b5dcfab35c2490"
 }
-[18-May-2025 00:20:50 UTC] [update_account] RTK API result: Array
-(
-    [success] => 1
-    [data] => 1
-    [error] => 
-)
-
-[18-May-2025 00:20:50 UTC] [update_account] response payload: {"success":true,"message":"Account updated successfully","account":{"id":"2256","username_acc":"CMA003","enabled":1,"created_at":"2025-05-18 07:20:32","password_acc":"123456","concurrent_user":1,"caster":null,"user_type":null,"regionIds":null,"customerBizType":1,"area":null,"activation_date":"2025-05-18 00:00:00","expiry_date":"2025-06-18 23:59:59","registration_id":227,"registration_status":"active","num_account":2,"user_id":90,"user_email":"tranhailong2407@gmail.com","user_username":"Long2002","user_phone":"0999999443","package_id":1,"package_name":"G\u00f3i 1 Th\u00e1ng","package_identifier":"monthly","location_id":12,"location_name":"C\u00e0 Mau","derived_status":"active"}}
-[18-May-2025 00:20:56 UTC] RTK API Request: POST /openapi/broadcast/users/delete
+[18-May-2025 02:40:16 UTC] RTK API Request: POST /openapi/broadcast/users/delete
 {
     "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "c51c9afc34feb5ed9ddd8a342060b370",
+    "X-Nonce": "8e7570daa3f33098cf9d59762cdeb257",
     "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527656303",
-    "Sign": "d94dfe835378da7e5aa074f9d458a405af9ab24040f63dfc05429463126969a2"
+    "X-Timestamp": "1747536016992",
+    "Sign": "b5aaff77ef094454613a6861b397cf15e422836b5e0233779327b47ff034f00d"
 }
-[18-May-2025 00:20:58 UTC] Using default mount points for location ID: 12 - [42]
-[18-May-2025 00:20:58 UTC] RTK API Payload: {"id":"2256","name":"CMA003","userPwd":"123456","startTime":1747526400000,"endTime":1750291199000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
-[18-May-2025 00:20:58 UTC] RTK API Request: PUT /openapi/broadcast/users/2256
-{
-    "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "e07c0eb13b71cf6e30cb591a957ea012",
-    "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527658366",
-    "Sign": "464963b2704f9adecb6aae89db936cc7a985da7eb4fba6a05be5e612e6cfa280"
-}
-[18-May-2025 00:20:58 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[18-May-2025 00:21:01 UTC] RTK API Request: POST /openapi/broadcast/users/delete
-{
-    "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "a6714d4d306e6c4c10f418296a246cee",
-    "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527661021",
-    "Sign": "126ea7d41294bb676eb3459334593d8d78c51584dae77081226798db21d8df94"
-}
-[18-May-2025 00:21:11 UTC] [Revert Transaction 218] Deleting RTK account 2254
-[18-May-2025 00:21:11 UTC] RTK API Request: POST /openapi/broadcast/users/delete
-{
-    "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "865a75a9879e91f9bf09cdc41a0ef2b2",
-    "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527671411",
-    "Sign": "8c29986451d58e82f4ffca58b279b4dc03b47c19436020617045fdace30ffe39"
-}
-[18-May-2025 00:21:11 UTC] [Revert Transaction 218] RTK delete success for account 2254.
-[18-May-2025 00:21:11 UTC] [Revert Transaction 217] Deleting RTK account 2255
-[18-May-2025 00:21:11 UTC] RTK API Request: POST /openapi/broadcast/users/delete
-{
-    "X-Access-Key": "Zb5F6iKUuAISy4qY",
-    "X-Nonce": "ae8543d369d3b57f0f87dec585899ca5",
-    "X-Sign-Method": "HmacSHA256",
-    "X-Timestamp": "1747527671522",
-    "Sign": "a3c85c2b36c7b5a6a45e7997bda502da6cd09b81e1b94944c7dc8749953b7dee"
-}
-[18-May-2025 00:21:11 UTC] [Revert Transaction 217] RTK delete success for account 2255.
-[18-May-2025 00:21:41 UTC] [DEBUG] Search keyword: 
+[18-May-2025 02:40:21 UTC] [DEBUG] Search keyword: 

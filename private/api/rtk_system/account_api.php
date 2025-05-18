@@ -199,7 +199,11 @@ function deleteRtkAccount(array $ids): array {
  */
 function fetchAllStations(): array {
     $client = new RtkApiClient();
-    $resp = $client->request('GET', '/openapi/stream/stations?page=1&size=100&count=true');
+    // request first page of 100 without count flag
+    $resp = $client->request('GET', '/openapi/stream/stations', [
+        'page' => 1,
+        'size' => 100
+    ]);
     error_log("RTK API response: " . json_encode($resp));
     $records = $resp['data']['records'] ?? [];
     $out = [];
