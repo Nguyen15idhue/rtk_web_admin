@@ -37,7 +37,7 @@
                         `<td>${getStatusBadge(r.status)}</td>` +
                         `<td>${helpers.formatDateTime(r.created_at)}</td>` +
                         `<td>${r.updated_at ? helpers.formatDateTime(r.updated_at) : ''}</td>` +
-                        `<td class="actions text-center"><button type="button" class="btn-icon btn-view" data-id="${r.id}"><i class="fas fa-eye"></i></button></td>` +
+                        `<td class="actions text-center"><button type="button" class="btn-icon btn-edit" data-id="${r.id}" title="Sửa"><i class="fas fa-edit"></i></button></td>` +
                     `</tr>`;
                 }).join('');
                 $('#tbl-support tbody').html(rows);
@@ -107,7 +107,7 @@
     $(function() {
         loadRequests();
         $('#searchInput, #categoryFilter, #statusFilter').on('change input', loadRequests);
-        $(document).on('click', '.btn-view', function(event) {
+        $(document).on('click', '.btn-edit', function(event) {
             event.preventDefault();
             const id = $(this).data('id');
             openSupportModal(id);

@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const { getJson, postJson, postForm } = window.api;
     const { closeModal: helperCloseModal } = window.helpers;
 
+    const canManage = window.appConfig?.permissions?.account_management_edit || false;
+
     const accountsTableBody = document.getElementById('accountsTable')?.querySelector('tbody');
     const noResultsRow = document.getElementById('no-results-row');
 
@@ -824,5 +826,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('#accountsTable .action-buttons button').forEach(function(btn) {
         btn.setAttribute('type', 'button');
     });
+
+    if (!canManage) {
+        // hide header-create and any button tagged with the edit permission
+        document.querySelectorAll('button[data-permission="account_management_edit"]').forEach(btn => {
+            btn.style.display = 'none';
+        });
+        // hide bulk action buttons by ID
+        ['bulkToggleStatusBtn','bulkDeleteBtn','bulkRenewBtn'].forEach(id => {
+            const b = document.getElementById(id);
+            if (b) b.style.display = 'none';
+        });
+        // hide all row-level action buttons except the View button
+        document.querySelectorAll('#accountsTable .action-buttons button:not(.btn-view)').forEach(btn => {
+            btn.style.display = 'none';
+        });
+    }
 
 }); // End DOMContentLoaded

@@ -268,7 +268,7 @@ if ($tx_type === 'renewal') {
     api_success([
         'scheduled_accounts' => $accIds,
         'renewed_accounts'   => $renewed
-    ], "Transaction #{$transaction_id} approved.");
+    ], "Giao dịch #{$transaction_id} đã được duyệt.");
     exit;
 }
 
@@ -393,7 +393,7 @@ if ($curlErrno === CURLE_OPERATION_TIMEDOUT) {
 }
 
 // --- Prepare final response ---
-$responseMessage = 'Transaction #' . $transaction_id . ' approved.';
+$responseMessage = 'Giao dịch #' . $transaction_id . ' đã được duyệt.';
 if (!empty($createdAccounts)) {
     $count = count($createdAccounts);
     $responseMessage .= " {$count} account(s) created successfully.";

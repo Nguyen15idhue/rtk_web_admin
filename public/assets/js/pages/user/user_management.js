@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', ()=> {
-    const basePath = ('/' + (window.appConfig.basePath || ''))
+    const basePath = ('/' + (window.appConfig?.basePath || ''))
                        .replace(/\/+/g,'/')
                        .replace(/\/?$/,'/') ;
 
@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
     const { getJson, postJson, postForm } = window.api;
 
     const apiBasePath = `${basePath}public/handlers/user/index.php`;
+
+    const canEditUsers = window.appConfig?.permissions?.user_management_edit || false;
 
     // Generic Modal Elements
     const genericModalTitle = document.getElementById('genericModalTitle');
@@ -118,6 +120,12 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     function handleUserFormSubmit(e) {
         if (e) e.preventDefault();
+        if (!canEditUsers) {
+            window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+            genericModalPrimaryButton.disabled = false;
+            genericModalPrimaryButton.textContent = document.getElementById('userId') && !!document.getElementById('userId').value ? 'Lưu thay đổi' : 'Thêm người dùng';
+            return;
+        }
         const userForm = document.getElementById('userForm');
         const errorEl = document.getElementById('userFormError');
         if (!userForm || !errorEl) return;
@@ -190,6 +198,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
     };
 
     function openEditUserModal(userId) {
+        if (!canEditUsers) {
+            window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+            return;
+        }
         genericModalTitle.textContent = 'Chỉnh sửa Người dùng';
         genericModalBody.innerHTML = getEditUserFormHTML();
         genericModalPrimaryButton.textContent = 'Lưu thay đổi';
@@ -239,6 +251,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
     };
 
     function openCreateUserModal() {
+        if (!canEditUsers) {
+            window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+            return;
+        }
         genericModalTitle.textContent = 'Thêm người dùng mới';
         genericModalBody.innerHTML = getCreateUserFormHTML();
         genericModalPrimaryButton.textContent = 'Thêm người dùng';
@@ -260,6 +276,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
     };
 
     function toggleUserStatus(userId, action) {
+        if (!canEditUsers) {
+            window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+            return;
+        }
         const txt = action==='disable'?'vô hiệu hóa':'kích hoạt';
         if(!confirm(`Bạn có chắc muốn ${txt} người dùng ID ${userId}?`)) return;
         const body = new URLSearchParams({ user_id: userId, action });
@@ -278,6 +298,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
     };
 
     function bulkToggleUserStatus() {
+        if (!canEditUsers) {
+            window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+            return;
+        }
         const selectedCheckboxes = document.querySelectorAll('.rowCheckbox:checked');
         const userIds = Array.from(selectedCheckboxes).map(cb => cb.value);
 
@@ -321,4 +345,19 @@ document.addEventListener('DOMContentLoaded', ()=> {
         openCreateUserModal,
         bulkToggleUserStatus
     };
+
+    if (!canEditUsers) {
+        const editButtons = document.querySelectorAll('button[data-permission="user_edit"], button[data-permission="user_create"]');
+        editButtons.forEach(button => {
+            button.disabled = true;
+            button.style.cursor = 'not-allowed';
+            button.title = 'Bạn không có quyền thực hiện hành động này.';
+        });
+        const actionColumnButtons = document.querySelectorAll('.action-buttons button:not(.btn-view)');
+        actionColumnButtons.forEach(button => {
+            button.disabled = true;
+            button.style.cursor = 'not-allowed';
+            button.title = 'Bạn không có quyền thực hiện hành động này.';
+        });
+    }
 });

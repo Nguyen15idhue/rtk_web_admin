@@ -1,6 +1,8 @@
 (function(window){
     document.addEventListener('DOMContentLoaded', function(){
         const appBase = (window.appConfig && window.appConfig.basePath) ? window.appConfig.basePath : '';
+        const canEditInvoice = (window.appConfig && window.appConfig.permissions && window.appConfig.permissions.invoice_management_edit);
+
         // modal elements
         const proofModal = document.getElementById('proofModal');
         const proofModalImage = document.getElementById('proofModalImage');
@@ -118,24 +120,35 @@
             badge.textContent = text;
             const cell = row.querySelector('.actions .action-buttons');
             let html='';
-            if(newStat==='pending'){
-                html=`<button class="btn-icon btn-approve" onclick="PurchaseManagementPageEvents.approveTransaction('${id}',this)"><i class="fas fa-check-circle"></i></button>
-                      <button class="btn-icon btn-reject" onclick="PurchaseManagementPageEvents.openRejectTransactionModal('${id}')"><i class="fas fa-times-circle"></i></button>
-                      <button class="btn-icon btn-disabled" disabled><i class="fas fa-undo-alt"></i></button>`;
-            } else if(newStat==='active'){
-                html=`<button class="btn-icon btn-disabled" disabled><i class="fas fa-check-circle"></i></button>
-                      <button class="btn-icon btn-reject" onclick="PurchaseManagementPageEvents.openRejectTransactionModal('${id}')"><i class="fas fa-times-circle"></i></button>
-                      <button class="btn-icon btn-revert" onclick="PurchaseManagementPageEvents.revertTransaction('${id}',this)"><i class="fas fa-undo-alt"></i></button>`;
-            } else if(newStat==='rejected'){
-                html=`<button class="btn-icon btn-approve" onclick="PurchaseManagementPageEvents.approveTransaction('${id}',this)"><i class="fas fa-check-circle"></i></button>
-                      <button class="btn-icon btn-disabled" disabled><i class="fas fa-times-circle"></i></button>
-                      <button class="btn-icon btn-disabled" disabled><i class="fas fa-undo-alt"></i></button>`;
+
+            if (canEditInvoice) {
+                if(newStat==='pending'){
+                    html=`<button class="btn-icon btn-approve" onclick="PurchaseManagementPageEvents.approveTransaction('${id}',this)"><i class="fas fa-check-circle"></i></button>
+                          <button class="btn-icon btn-reject" onclick="PurchaseManagementPageEvents.openRejectTransactionModal('${id}')"><i class="fas fa-times-circle"></i></button>
+                          <button class="btn-icon btn-disabled" disabled><i class="fas fa-undo-alt"></i></button>`;
+                } else if(newStat==='active'){
+                    html=`<button class="btn-icon btn-disabled" disabled><i class="fas fa-check-circle"></i></button>
+                          <button class="btn-icon btn-reject" onclick="PurchaseManagementPageEvents.openRejectTransactionModal('${id}')"><i class="fas fa-times-circle"></i></button>
+                          <button class="btn-icon btn-revert" onclick="PurchaseManagementPageEvents.revertTransaction('${id}',this)"><i class="fas fa-undo-alt"></i></button>`;
+                } else if(newStat==='rejected'){
+                    html=`<button class="btn-icon btn-approve" onclick="PurchaseManagementPageEvents.approveTransaction('${id}',this)"><i class="fas fa-check-circle"></i></button>
+                          <button class="btn-icon btn-disabled" disabled><i class="fas fa-times-circle"></i></button>
+                          <button class="btn-icon btn-disabled" disabled><i class="fas fa-undo-alt"></i></button>`;
+                } else {
+                    html = '<span class="text-muted">Không có hành động</span>';
+                }
+            } else {
+                html = '<span class="text-muted">Không có quyền</span>';
             }
             cell.innerHTML = html;
         }
 
         // transaction actions
         async function approveTransaction(id,btn){
+            if (!canEditInvoice) {
+                window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+                return;
+            }
             if(!confirm(`Bạn có chắc muốn duyệt #${id}?`)) return;
             const row = document.querySelector(`tr[data-transaction-id="${id}"]`);
             try {
@@ -157,6 +170,10 @@
         };
 
         async function openRejectTransactionModal(id){
+            if (!canEditInvoice) {
+                window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+                return;
+            }
             const reason = prompt(`Lý do từ chối #${id}:`);
             if(reason==null) return;
             const text = reason.trim(); if(!text){ window.showToast('Nhập lý do.', 'warning'); return; }
@@ -173,6 +190,10 @@
         };
 
         async function revertTransaction(id,btn){
+            if (!canEditInvoice) {
+                window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+                return;
+            }
             if(!confirm(`Hủy duyệt #${id}?`)) return;
             const row = btn.closest('tr'); disableActionButtons(row);
             try {
@@ -201,6 +222,10 @@
 
         // bulk approve
         async function bulkApproveTransactions(){
+            if (!canEditInvoice) {
+                window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+                return;
+            }
             const ids = getSelectedTxIds();
             if(!ids.length){ window.showToast('Chọn ít nhất một giao dịch.', 'warning'); return; }
             if(!confirm(`Duyệt ${ids.length} giao dịch đã chọn?`)) return;
@@ -217,6 +242,10 @@
 
         // bulk revert
         async function bulkRevertTransactions(){
+            if (!canEditInvoice) {
+                window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+                return;
+            }
             const ids = getSelectedTxIds();
             if(!ids.length){ window.showToast('Chọn ít nhất một giao dịch.', 'warning'); return; }
             if(!confirm(`Hủy duyệt ${ids.length} giao dịch đã chọn?`)) return;
@@ -233,6 +262,10 @@
 
         // bulk reject
         async function bulkRejectTransactions(){
+            if (!canEditInvoice) {
+                window.showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+                return;
+            }
             const ids = getSelectedTxIds();
             if(!ids.length){ window.showToast('Chọn ít nhất một giao dịch.', 'warning'); return; }
             const reason = prompt(`Lý do từ chối cho ${ids.length} giao dịch:`) || '';

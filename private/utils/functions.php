@@ -8,26 +8,6 @@ function escape_html($string) {
 }
 
 /**
- * Get display properties for admin transaction status.
- * Maps database status ('pending', 'active', 'rejected') to UI display.
- *
- * @param string $status The transaction status from the database.
- * @return array An array containing 'class' and 'text' for the status badge.
- */
-function get_admin_transaction_status_display(string $status): array {
-    switch (strtolower($status)) {
-        case 'pending':
-            return ['class' => 'status-pending', 'text' => 'Chờ duyệt'];
-        case 'active': // DB 'active' maps to UI 'approved'
-            return ['class' => 'status-approved', 'text' => 'Đã duyệt']; // Changed class name for consistency
-        case 'rejected':
-            return ['class' => 'status-rejected', 'text' => 'Bị từ chối']; // Changed class name for consistency
-        default:
-            return ['class' => 'status-unknown', 'text' => 'Không xác định'];
-    }
-}
-
-/**
  * Formats a number as Vietnamese currency.
  *
  * @param float|int|string $amount The amount to format.
@@ -145,59 +125,8 @@ function get_voucher_type_display(string $type): string {
     }
 }
 
-/**
- * Generates HTML action buttons for an account based on its details.
- *
- * @param array $account Associative array containing account details, including 'id', 'enabled', and 'derived_status'.
- * @return string HTML div containing action buttons.
- */
-function get_account_action_buttons(array $account): string {
-    $id = htmlspecialchars($account['id'] ?? '');
-    if (empty($id)) return ''; // No ID, no buttons
-
-    $status = strtolower($account['derived_status'] ?? 'unknown');
-    $isEnabled = isset($account['enabled']) ? (bool)$account['enabled'] : false; // Get the actual enabled state
-    $buttons = '';
-
-    // View Button (Always available)
-    $buttons .= '<button class="btn-icon btn-view" title="Xem" onclick="viewAccountDetails(\'' . $id . '\')"><i class="fas fa-eye"></i></button>';
-
-    // Edit Button (Available unless rejected or maybe expired?)
-    // Allow editing active and suspended. Maybe pending? Not rejected.
-    if (in_array($status, ['active', 'suspended', 'pending', 'expired'])) {
-        $buttons .= '<button class="btn-icon btn-edit" title="Sửa" onclick="openEditAccountModal(\'' . $id . '\')" data-permission="account_edit"><i class="fas fa-pencil-alt"></i></button>';
-    }
-
-    if (!in_array($status, ['active'])) {
-        $buttons .= '<button class="btn-icon btn-danger" title="Xóa" onclick="deleteAccount(\'' . $id . '\', event)" data-permission="account_delete"><i class="fas fa-trash-alt"></i></button>';
-    }
-
-    // Status Toggle / Specific Actions based on derived status AND enabled flag
-    switch ($status) {
-        case 'active': // Is currently active (enabled=1, not expired, reg=active)
-            // Button to Suspend (Set enabled=0)
-            $buttons .= '<button class="btn-icon btn-reject" title="Đình chỉ (Disable)" onclick="toggleAccountStatus(\'' . $id . '\', \'suspend\', event)" data-permission="account_status_toggle"><i class="fas fa-ban"></i></button>';
-            break;
-        case 'suspended': // Is currently suspended (enabled=0, reg=active)
-            // Button to Reactivate (Set enabled=1)
-            $buttons .= '<button class="btn-icon btn-approve" title="Kích hoạt lại (Enable)" onclick="toggleAccountStatus(\'' . $id . '\', \'reactivate\', event)" data-permission="account_status_toggle"><i class="fas fa-play-circle"></i></button>';
-            break;
-        case 'expired':
-            break;
-        case 'rejected':
-            break;
-        case 'pending':
-             $buttons .= '<button class="btn-icon btn-approve" title="Kích hoạt lại (Enable)" onclick="toggleAccountStatus(\'' . $id . '\', \'reactivate\', event)" data-permission="account_status_toggle"><i class="fas fa-play-circle"></i></button>';
-             break;
-        case 'unknown':
-            // Log error, maybe show delete button?
-            error_log("Unknown derived_status ('$status') for account ID: " . $id . " in get_account_action_buttons");
-            $buttons .= '<button class="btn-icon btn-danger" title="Xóa (Trạng thái không xác định)" onclick="deleteAccount(\'' . $id . '\', event)" data-permission="account_delete"><i class="fas fa-trash-alt"></i></button>';
-            break;
-    }
-
-    return '<div class="action-buttons">' . $buttons . '</div>';
-}
+// Load account‐related helper functions
+require_once __DIR__ . '/account_helpers.php';
 
 /**
  * Sends a JSON response with an appropriate HTTP status code.
@@ -246,7 +175,7 @@ function api_response($data = null, string $message = '', int $statusCode = 200,
  * @param int $statusCode The HTTP status code.
  * @param array $meta Additional metadata.
  */
-function api_success($data = null, string $message = 'OK', int $statusCode = 200, array $meta = []): void {
+function api_success($data = null, string $message = 'Cập nhật thành công', int $statusCode = 200, array $meta = []): void {
     api_response($data, $message, $statusCode, [], $meta);
 }
 
@@ -258,7 +187,7 @@ function api_success($data = null, string $message = 'OK', int $statusCode = 200
  * @param array $errors Detailed errors if any.
  * @param array $meta Additional metadata.
  */
-function api_error(string $message = 'Error', int $statusCode = 400, array $errors = [], array $meta = []): void {
+function api_error(string $message = 'Lỗi', int $statusCode = 400, array $errors = [], array $meta = []): void {
     api_response(null, $message, $statusCode, $errors, $meta);
 }
 
@@ -268,7 +197,7 @@ function api_error(string $message = 'Error', int $statusCode = 400, array $erro
  * @param string $message The error message (default: 'Forbidden').
  * @param array  $errors  Detailed errors if any.
  */
-function api_forbidden(string $message = 'Forbidden', array $errors = []): void {
+function api_forbidden(string $message = 'Bạn không có quyền truy cập vào tài nguyên này', array $errors = []): void {
     api_response(null, $message, 403, $errors);
 }
 

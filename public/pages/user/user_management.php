@@ -12,6 +12,13 @@ $user_display_name = $bootstrap_data['user_display_name'];
 $private_layouts_path = $bootstrap_data['private_layouts_path'];
 $admin_role        = $bootstrap_data['admin_role'];
 
+// --- NEW: Pass permissions to JS ---
+$user_permissions = [
+    'user_management_edit' => Auth::can('user_management_edit'),
+    // Add other relevant permissions if needed for this page
+];
+// --- END NEW ---
+
 // --- Includes and Setup ---
 require_once BASE_PATH . '/utils/user_helpers.php'; // User-specific helpers
 require_once BASE_PATH . '/actions/user/fetch_users.php'; // User fetching logic
@@ -55,7 +62,7 @@ include $private_layouts_path . 'admin_sidebar.php';
     <div id="admin-user-management" class="content-section">
         <div class="header-actions">
              <h3>Quản lý người dùng (KH)</h3>
-            <?php if ($admin_role !== 'customercare'): ?>
+            <?php if (Auth::can('user_management_edit')): ?>
                 <button class="btn btn-primary" onclick="UserManagementPageEvents.openCreateUserModal()" data-permission="user_create">
                     <i class="fas fa-plus"></i> Thêm người dùng
                 </button>
@@ -79,10 +86,17 @@ include $private_layouts_path . 'admin_sidebar.php';
         <!-- Bulk Actions Form -->
         <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
             <input type="hidden" name="table_name" value="users">
-            <div class="bulk-actions-bar" style="margin-bottom: 15px; display: flex; gap: 10px;">
-                <button type="submit" name="export_selected" class="btn btn-info"><i class="fas fa-file-excel"></i> Xuất mục đã chọn</button>
+            <div class="table-actions-bar mb-3">
                 <button type="submit" name="export_all" class="btn btn-success"><i class="fas fa-file-excel"></i> Xuất tất cả</button>
-                <button type="button" id="bulkToggleStatusBtn" onclick="UserManagementPageEvents.bulkToggleUserStatus()" class="btn btn-warning"><i class="fas fa-sync-alt"></i> Đảo trạng thái</button>
+                <button type="submit" name="export_selected" value="excel" class="btn btn-info">
+                    <i class="fas fa-file-excel"></i> Xuất mục đã chọn
+                </button>
+                <input type="hidden" name="selected_ids" id="selectedUserIdsForExport">
+                <?php if (Auth::can('user_management_edit')): ?>
+                <button type="button" class="btn btn-warning" onclick="UserManagementPageEvents.bulkToggleUserStatus()" data-permission="user_edit" title="Đảo ngược trạng thái của các mục đã chọn">
+                    <i class="fas fa-exchange-alt"></i> Đảo trạng thái hàng loạt
+                </button>
+                <?php endif; ?>
             </div>
 
             <div class="table-wrapper">
@@ -119,18 +133,18 @@ include $private_layouts_path . 'admin_sidebar.php';
                                     <td class="actions">
                                         <div class="action-buttons">
                                             <button type="button" class="btn-icon btn-view" title="Xem chi tiết" onclick="UserManagementPageEvents.viewUserDetails('<?php echo htmlspecialchars($user['id']); ?>')"><i class="fas fa-eye"></i></button>
-                                            <?php if ($admin_role !== 'customercare'): ?>
-                                                <button type="button" class="btn-icon btn-edit" title="Sửa" onclick="UserManagementPageEvents.openEditUserModal('<?php echo htmlspecialchars($user['id']); ?>')" data-permission="user_edit"><i class="fas fa-pencil-alt"></i></button>
-                                                <?php
-                                                    $is_inactive = isset($user['deleted_at']) && $user['deleted_at'] !== null && $user['deleted_at'] !== '';
-                                                    $action = $is_inactive ? 'enable' : 'disable';
-                                                    $icon = $is_inactive ? 'fa-toggle-on' : 'fa-toggle-off';
-                                                    $title = $is_inactive ? 'Kích hoạt' : 'Vô hiệu hóa';
-                                                    $btn_class = $is_inactive ? 'btn-success' : 'btn-secondary';
-                                                ?>
-                                                <button class="btn-icon <?php echo $btn_class; ?>" onclick="UserManagementPageEvents.toggleUserStatus('<?php echo htmlspecialchars($user['id']); ?>', '<?php echo $action; ?>')" title="<?php echo $title; ?>">
-                                                    <i class="fas <?php echo $icon; ?>"></i>
-                                                </button>
+                                            <?php if (Auth::can('user_management_edit')): ?>
+                                            <button type="button" class="btn-icon btn-edit" title="Sửa" onclick="UserManagementPageEvents.openEditUserModal('<?php echo htmlspecialchars($user['id']); ?>')" data-permission="user_edit"><i class="fas fa-pencil-alt"></i></button>
+                                            <?php
+                                                $is_inactive = isset($user['deleted_at']) && $user['deleted_at'] !== null && $user['deleted_at'] !== '';
+                                                $action = $is_inactive ? 'enable' : 'disable';
+                                                $icon = $is_inactive ? 'fa-toggle-on' : 'fa-toggle-off';
+                                                $title = $is_inactive ? 'Kích hoạt' : 'Vô hiệu hóa';
+                                                $btn_class = $is_inactive ? 'btn-success' : 'btn-secondary';
+                                            ?>
+                                            <button class="btn-icon <?php echo $btn_class; ?>" onclick="UserManagementPageEvents.toggleUserStatus('<?php echo htmlspecialchars($user['id']); ?>', '<?php echo $action; ?>')" title="<?php echo $title; ?>" data-permission="user_edit">
+                                                <i class="fas <?php echo $icon; ?>"></i>
+                                            </button>
                                             <?php endif; ?>
                                         </div>
                                     </td>
@@ -156,7 +170,10 @@ include $private_layouts_path . 'admin_sidebar.php';
 <!-- pass baseUrl into JS -->
 <script>
     window.appConfig = {
-        baseUrl: '<?php echo rtrim($base_url, '/'); ?>'
+        baseUrl: '<?php echo rtrim($base_url, '/'); ?>',
+        // --- NEW: Add permissions to appConfig ---
+        permissions: <?php echo json_encode($user_permissions); ?>
+        // --- END NEW ---
     };
 </script>
 

@@ -23,5 +23,5 @@ try {
     }
 } catch (PDOException $e) {
     error_log('process_admin_delete error: ' . $e->getMessage());
-    api_error('Error deleting admin', 500);
+    api_error('Lỗi khi xóa quản trị', 500);
 }

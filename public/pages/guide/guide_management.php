@@ -10,6 +10,9 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
+// Check permissions
+$canEditGuide = Auth::can('guide_management_edit');
+
 $page_title = 'Quản lý hướng dẫn';
 
 include $private_layouts_path . 'admin_header.php';
@@ -21,9 +24,11 @@ include $private_layouts_path . 'admin_sidebar.php';
     <div class="content-section">
         <div class="header-actions">
             <h3>Danh sách Guide</h3>
+            <?php if ($canEditGuide): ?>
             <button class="btn btn-primary" onclick="window.location.href='edit_guide.php'">
                 <i class="fas fa-plus"></i> Thêm mới
             </button>
+            <?php endif; ?>
         </div>
         <form method="GET" class="filter-bar">
             <input type="search" name="search" placeholder="Tìm tiêu đề/topic" value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
@@ -48,6 +53,11 @@ include $private_layouts_path . 'admin_sidebar.php';
 
 <script>
     window.basePath = '<?php echo rtrim($base_url,'/'); ?>';
+    window.appConfig = {
+        permissions: {
+            guide_management_edit: <?php echo json_encode($canEditGuide); ?>
+        }
+    };
 </script>
 <script defer src="<?php echo $base_url; ?>public/assets/js/pages/guide/guide_management.js"></script>
 

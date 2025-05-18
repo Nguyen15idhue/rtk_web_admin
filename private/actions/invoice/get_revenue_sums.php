@@ -34,10 +34,10 @@ function get_revenue_sums(array $filters = []): array {
 
     // Helper to prepare and execute a sum query
     $executeSum = function(string $statusCondition = '') use ($db, $filters): float {
-        $sql = "SELECT SUM(r.total_price) FROM registration r WHERE r.deleted_at IS NULL "
+        $sql = "SELECT SUM(t.amount) FROM transaction_history t WHERE 1=1 "
              . $statusCondition
-             . (!empty($filters['date_from']) ? "AND DATE(r.created_at) >= :df " : '')
-             . (!empty($filters['date_to']) ? "AND DATE(r.created_at) <= :dt " : '');
+             . (!empty($filters['date_from']) ? "AND DATE(t.created_at) >= :df " : '')
+             . (!empty($filters['date_to'])   ? "AND DATE(t.created_at) <= :dt " : '');
         $stmt = $db->prepare($sql);
         if (!empty($filters['date_from'])) {
             $stmt->bindValue(':df', $filters['date_from']);
@@ -45,19 +45,19 @@ function get_revenue_sums(array $filters = []): array {
         if (!empty($filters['date_to'])) {
             $stmt->bindValue(':dt', $filters['date_to']);
         }
-        if (stripos($statusCondition, 'r.status') !== false) {
-            $stmt->bindValue(':status', 'active');
+        if (stripos($statusCondition, 't.status') !== false) {
+            $stmt->bindValue(':status', 'completed');
         }
         $stmt->execute();
         return (float) $stmt->fetchColumn();
     };
 
     try {
-        $total = $executeSum();
-        $success = $executeSum("AND LOWER(r.status) = :status ");
+        $total   = $executeSum();                               // tổng tất cả giao dịch
+        $success = $executeSum("AND t.status = :status ");      // chỉ giao dịch completed
     } catch (Exception $e) {
         error_log("Error in get_revenue_sums: " . $e->getMessage());
-        error_log("Trace: " . $e->getTraceAsString());      // <-- Added detailed stack trace
+        error_log("Trace: " . $e->getTraceAsString());
     }
 
     return [$total, $success];

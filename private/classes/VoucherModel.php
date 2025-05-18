@@ -26,9 +26,11 @@ class VoucherModel {
         }
         if (isset($filters['status'])) {
             if ($filters['status'] === 'active') {
-                $baseWhere .= " AND is_active = 1";
+                $baseWhere .= " AND is_active = 1 AND end_date >= NOW()";
             } elseif ($filters['status'] === 'inactive') {
-                $baseWhere .= " AND is_active = 0";
+                $baseWhere .= " AND is_active = 0 AND end_date >= NOW()";
+            } elseif ($filters['status'] === 'expired') {
+                $baseWhere .= " AND end_date < NOW()";
             }
         }
         // count total

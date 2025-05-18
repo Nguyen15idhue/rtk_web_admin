@@ -7,6 +7,10 @@ $base_url = $bootstrap['base_url'];
 $user_display_name = $bootstrap['user_display_name'];
 $private_layouts_path = $bootstrap['private_layouts_path'];
 $is_admin = ($_SESSION['admin_role'] ?? '') === 'admin';
+
+// --- NEW: Get permission status for editing permissions ---
+$canEditPermissions = Auth::can('permission_management_edit');
+
 $admins = $db ? $db->query("SELECT id,name,admin_username,role,created_at FROM admin")->fetchAll(PDO::FETCH_ASSOC) : [];
 $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php' => 'Đăng xuất'];
 
@@ -148,20 +152,21 @@ function getRoleDisplayName($role_key) {
     <div id="admin-permission-management" class="content-section">
         <div class="flex flex-row justify-between items-center mb-4 gap-3 md:gap-2">
             <h3 class="text-lg md:text-xl font-semibold text-gray-900">Quản lý phân quyền</h3>
+            <?php if ($canEditPermissions): ?>
             <div class="flex gap-2">
                 <button class="btn btn-success self-start md:self-auto w-auto" onclick="PermissionPageEvents.openCreateCustomRoleModal()" data-permission="permission_management">
                     <i class="fas fa-plus-circle mr-1"></i> Tạo Vai trò Mới
                 </button>
                 <button class="btn btn-primary self-start md:self-auto w-auto" onclick="PermissionPageEvents.openCreateRoleModal()" data-permission="admin_user_create">
-                    <i class="fas fa-user-plus mr-1"></i> Thêm QTV/Vận hành
+                    <i class="fas fa-user-plus mr-1"></i> Tạo Tài khoản Mới
                 </button>
             </div>
+            <?php endif; ?>
         </div>
-        <p class="text-xs sm:text-sm text-gray-600 mb-6">Chọn một vai trò để xem và chỉnh sửa quyền hạn chi tiết. Các thay đổi chỉ có hiệu lực sau khi lưu.</p>
 
         <!-- Role Selection Area -->
         <div class="mb-6">
-            <h4 class="text-md font-semibold mb-3 text-gray-700">Chọn Vai Trò để Cấu Hình:</h4>
+            <h4 class="text-md font-semibold mb-3 text-gray-700">Chọn Vai Trò để xem và cấu hình:</h4>
             <div id="role-selection-tabs" class="flex flex-wrap space-x-1 sm:space-x-2 border-b border-gray-300 pb-2">
                 <?php
                 $role_display_names_for_js = [];
@@ -175,7 +180,7 @@ function getRoleDisplayName($role_key) {
                 <?php } ?>
             </div>
         </div>
-         <p class="text-xs text-red-600 mt-4 italic">*Lưu ý: Chỉ Quản trị viên (Admin) mới có quyền thay đổi các cài đặt phân quyền. Tài khoản mới tạo cần được yêu cầu đổi mật khẩu mặc định.</p>
+         <p class="text-xs text-red-600 mt-4 italic">*Lưu ý: Tài khoản mới tạo cần được yêu cầu đổi mật khẩu mặc định.</p>
     </div>
 
     <!-- Permissions Configuration Modal -->
@@ -190,7 +195,7 @@ function getRoleDisplayName($role_key) {
             </div>
             <div class="modal-footer" style="display:flex; justify-content:flex-end;">
                 <button type="button" class="btn btn-secondary" onclick="PermissionPageEvents.closePermissionsModal()" style="margin-right:8px;">Hủy</button>
-                <button type="button" class="btn btn-primary" id="saveRolePermissionsBtn">Lưu thay đổi</button>
+                <button type="button" class="btn btn-primary" id="saveRolePermissionsBtn" <?php echo !$canEditPermissions ? 'disabled title="Bạn không có quyền thực hiện hành động này." style="cursor:not-allowed;"' : ''; ?>>Lưu thay đổi</button>
             </div>
         </div>
     </div>
@@ -213,8 +218,12 @@ function getRoleDisplayName($role_key) {
                         <td><?= htmlspecialchars(getRoleDisplayName($a['role'])) ?></td>
                         <td><?= htmlspecialchars($a['created_at']) ?></td>
                         <td class="actions">
+                            <?php if ($canEditPermissions): ?>
                             <button class="btn btn-secondary btn-sm" onclick="PermissionPageEvents.openEditAdminModal(<?= $a['id'] ?>)">Sửa</button>
                             <button class="btn btn-danger btn-sm" onclick="PermissionPageEvents.openDeleteAdminModal(<?= $a['id'] ?>)">Xóa</button>
+                            <?php else: ?>
+                            <span class="text-muted">Không có quyền</span>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -229,6 +238,11 @@ function getRoleDisplayName($role_key) {
     window.basePath        = '<?= $base_path ?>';
     window.adminsData      = <?= json_encode($admins) ?>;
     window.isAdmin         = <?= json_encode($is_admin) ?>;
+    window.appConfig = {
+        permissions: {
+            permission_management_edit: <?= json_encode($canEditPermissions) ?>
+        }
+    };
     window.allDefinedPermissions = <?= json_encode($all_defined_permissions) ?>;
     window.permissionGroupsConfig = <?= json_encode($permission_groups_config) ?>;
     window.currentRolePermissions = <?= json_encode($ui_permissions) ?>;
@@ -240,7 +254,7 @@ function getRoleDisplayName($role_key) {
 <div id="createRoleModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h4>Thêm QTV/Vận hành</h4>
+            <h4>Tạo Tài khoản Mới</h4>
         </div>
         <form id="createRoleForm">
             <div class="modal-body">
@@ -319,7 +333,7 @@ function getRoleDisplayName($role_key) {
             <h4>Xác nhận xóa</h4>
         </div>
         <div class="modal-body">
-            <p>Bạn có chắc muốn xóa tài khoản này?</p>
+            <p>Bạn có chắc muốn xóa tài khoản <strong id="deleteAdminName"></strong>?</p>
         </div>
         <div class="modal-footer">
             <button class="btn btn-secondary" onclick="PermissionPageEvents.closeModal('deleteAdminModal')">Hủy</button>

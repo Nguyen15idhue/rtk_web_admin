@@ -5,6 +5,7 @@
 
 // Use basePath defined in the PHP view (e.g., station_management.php)
 const managerHandlerUrl = basePath + '/public/handlers/station/manager_index.php';
+const canEditStation = window.appConfig && window.appConfig.permissions && window.appConfig.permissions.station_management_edit;
 
 function getManagerFormHTML(managerData = null) {
     const isEdit = managerData !== null;
@@ -44,6 +45,10 @@ function handleManagerFormSubmit() {
 }
 
 function openCreateManagerModal() {
+    if (!canEditStation) {
+        showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+        return;
+    }
     document.getElementById('genericModalTitle').textContent = 'Thêm Người quản lý';
     document.getElementById('genericModalBody').innerHTML = getManagerFormHTML();
     const primaryButton = document.getElementById('genericModalPrimaryButton');
@@ -53,6 +58,10 @@ function openCreateManagerModal() {
 }
 
 function openEditManagerModal(managerData) {
+    if (!canEditStation) {
+        showToast('Bạn không có quyền thực hiện hành động này.', 'error');
+        return;
+    }
     document.getElementById('genericModalTitle').textContent = 'Sửa Người quản lý';
     document.getElementById('genericModalBody').innerHTML = getManagerFormHTML(managerData);
     const primaryButton = document.getElementById('genericModalPrimaryButton');
@@ -75,6 +84,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.querySelectorAll('.rowCheckbox:checked')
             ).map(cb => cb.value);
             document.getElementById('selected_ids_for_export').value = selectedIds.join(',');
+        });
+    }
+
+    if (!canEditStation) {
+        // Disable "Thêm Người quản lý" button
+        const addManagerButton = document.querySelector('button[onclick="openCreateManagerModal()"]');
+        if (addManagerButton) {
+            addManagerButton.disabled = true;
+            addManagerButton.style.cursor = 'not-allowed';
+            addManagerButton.title = 'Bạn không có quyền thực hiện hành động này.';
+        }
+
+        // Disable edit/delete buttons in managers table
+        const managerActionButtons = document.querySelectorAll('#managersTable .actions button');
+        managerActionButtons.forEach(button => {
+            button.disabled = true;
+            button.style.cursor = 'not-allowed';
+            button.title = 'Bạn không có quyền thực hiện hành động này.';
+        });
+
+        // Disable select dropdowns and save buttons in stations table
+        const stationSelects = document.querySelectorAll('#stationsTable select');
+        stationSelects.forEach(select => {
+            select.disabled = true;
+        });
+        const stationSaveButtons = document.querySelectorAll('#stationsTable button[type="button"].btn-primary');
+        stationSaveButtons.forEach(button => {
+            button.style.display = 'none'; // Hide save buttons
         });
     }
 });
