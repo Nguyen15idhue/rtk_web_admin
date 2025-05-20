@@ -10,18 +10,18 @@ $model = new ManagerModel();
 switch ($action) {
     case 'create_manager':
         $ok = $model->createManager(trim($_POST['name'] ?? ''), trim($_POST['phone'] ?? ''), trim($_POST['address'] ?? ''));
-        $_SESSION['message'] = $ok ? 'Manager created.' : 'Failed to create manager.';
+        $_SESSION['message'] = $ok ? 'Đã tạo người quản lý.' : 'Tạo người quản lý thất bại.';
         break;
     case 'update_manager':
         $ok = $model->updateManager($_POST['manager_id'] ?? '', trim($_POST['name'] ?? ''), trim($_POST['phone'] ?? ''), trim($_POST['address'] ?? ''));
-        $_SESSION['message'] = $ok ? 'Manager updated.' : 'Failed to update manager.';
+        $_SESSION['message'] = $ok ? 'Đã cập nhật người quản lý.' : 'Cập nhật người quản lý thất bại.';
         break;
     case 'delete_manager':
         $ok = $model->deleteManager($_POST['manager_id'] ?? '');
-        $_SESSION['message'] = $ok ? 'Manager deleted.' : 'Failed to delete manager.';
+        $_SESSION['message'] = $ok ? 'Đã xóa người quản lý.' : 'Xóa người quản lý thất bại.';
         break;
     default:
-        $_SESSION['message'] = 'Unknown action.';
+        $_SESSION['message'] = 'Hành động không xác định.';
 }
 
 $_SESSION['message_type'] = isset($ok) && $ok ? 'success' : 'error';

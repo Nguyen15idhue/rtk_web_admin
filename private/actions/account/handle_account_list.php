@@ -15,9 +15,10 @@ register_shutdown_function(function() use (&$db) {
 
 // --- Filtering ---
 $filters = [
-    'search' => filter_input(INPUT_GET, 'search', FILTER_SANITIZE_SPECIAL_CHARS) ?: '',
-    'package' => filter_input(INPUT_GET, 'package', FILTER_SANITIZE_SPECIAL_CHARS) ?: '',
-    'status' => filter_input(INPUT_GET, 'status', FILTER_SANITIZE_SPECIAL_CHARS) ?: '',
+    'search' => isset($_GET['search']) ? trim((string)$_GET['search']) : '', // Use raw input
+    'package' => isset($_GET['package']) ? trim((string)$_GET['package']) : '', // Use raw input
+    'status' => isset($_GET['status']) ? trim((string)$_GET['status']) : '', // Use raw input
+    'location' => filter_input(INPUT_GET, 'location', FILTER_SANITIZE_SPECIAL_CHARS) ?: '', // Keep for location if it's a simple key
 ];
 
 // --- Pagination ---

@@ -18,7 +18,7 @@ function format_number_short($n) {
 
 // new: fetch voucher code via transaction_history → voucher
 function get_voucher_code_by_registration($registration_id) {
-    global $pdo; // or your DB connection
+    $pdo = Database::getInstance()->getConnection(); // or your DB connection
     $sql = "
         SELECT v.code 
         FROM transaction_history th
@@ -35,7 +35,7 @@ function get_voucher_code_by_registration($registration_id) {
 
 // thêm hàm kiểm tra tình trạng upload minh chứng
 function get_payment_proof_status($registration_id) {
-    global $pdo;
+    $pdo = Database::getInstance()->getConnection();
     $sql = "
         SELECT payment_image 
         FROM transaction_history 
@@ -76,7 +76,7 @@ function format_activity_log($log) {
 
     switch ($action) {
         case 'purchase':
-            // decode purchase details
+            // shortened purchase message
             $details      = json_decode($log['new_values'] ?? '', true) ?: [];
             $package      = htmlspecialchars($details['package'] ?? '');
             $accounts     = isset($details['selected_accounts']) && is_array($details['selected_accounts'])
@@ -86,17 +86,11 @@ function format_activity_log($log) {
                              ? get_voucher_code_by_registration($registration)
                              : '';
             $location     = htmlspecialchars($details['location'] ?? '');
-            // updated: bold accounts and show voucher code in ()
-            $message = "<strong class='font-medium'>{$actor}</strong> đã đăng ký gói "
-                     ."<strong class='font-medium'>{$package}</strong> với "
-                     ."<strong class='font-medium'>{$accounts}</strong> tài khoản "
-                     .($voucher ? "(<strong class='font-medium'>Voucher: {$voucher}</strong>)" : "")
-                     .($location ? " tại <strong class='font-medium'>{$location}</strong>." : ".");
+            $message = "<strong>{$actor}</strong> đăng ký <strong>{$package}</strong> x{$accounts} tài khoản"
+                     .($voucher ? " (<strong>Voucher: {$voucher}</strong>)" : "")
+                     .($location ? " tại <strong>{$location}</strong>" : "").".";
+            if ($registration) $message .= get_payment_proof_status($registration);
             $icon    = "fas fa-shopping-cart text-green-500";
-            // check payment proof upload status
-            if ($registration) {
-                $message .= get_payment_proof_status($registration);
-            }
             if (isset($registration)) {
                 $action_type = 'navigate';
                 $details_url = BASE_URL . 'public/pages/purchase/invoice_management.php#transaction-' . $registration;
@@ -104,22 +98,30 @@ function format_activity_log($log) {
             $required_permission = 'invoice_management_view';
             break;
         case 'create_support_request':
-            $message = "<strong class='font-medium'>{$actor}</strong> đã tạo yêu cầu hỗ trợ #<strong>{$entity_id}</strong>.";
+            // shortened support request message
+            $details  = json_decode($log['new_values'] ?? '', true) ?: [];
+            $subject  = htmlspecialchars($details['subject'] ?? '');
+            $category = htmlspecialchars($details['category'] ?? '');
+            $message = "<strong>{$actor}</strong> tạo yêu cầu hỗ trợ #{$entity_id}"
+                     .($category ? " [<strong>{$category}</strong>]" : "")
+                     .($subject  ? ": <strong>{$subject}</strong>" : "").".";
             $icon    = "fas fa-headset text-blue-500";
-            $action_type = 'navigate';
-            $details_url = BASE_URL . 'public/pages/support/support_management.php#support-' . $entity_id;
+            $action_type    = 'navigate';
+            $details_url    = BASE_URL . 'public/pages/support/support_management.php#support-' . $entity_id;
             $required_permission = 'support_management_view';
             break;
         case 'request_invoice':
+            // shortened invoice request
             $details = json_decode($log['new_values'] ?? '', true) ?: [];
             $transaction_id = htmlspecialchars($details['transaction_history_id'] ?? $entity_id); // Sử dụng transaction_history_id từ new_values, fallback về entity_id
-            $message = "<strong class='font-medium'>{$actor}</strong> đã yêu cầu xuất hóa đơn cho giao dịch #<strong class='font-medium'>{$transaction_id}</strong>.";
+            $message = "<strong>{$actor}</strong> yêu cầu hóa đơn #<strong>{$transaction_id}</strong>.";
             $icon    = "fas fa-file-invoice text-blue-500";
             $action_type = 'navigate';
             $details_url = BASE_URL . 'public/pages/invoice/invoice_review.php#invoice-' . $transaction_id;
             $required_permission = 'invoice_review_view';
             break;
         case 'renewal_request':
+            // shortened renewal message
             $details = json_decode($log['new_values'] ?? '', true) ?: [];
             $package = htmlspecialchars($details['package'] ?? '');
             $accounts = isset($details['selected_accounts']) && is_array($details['selected_accounts'])
@@ -127,71 +129,19 @@ function format_activity_log($log) {
             $registration = $details['registration_id'] ?? null;
             $voucher = $registration ? get_voucher_code_by_registration($registration) : '';
             $location = htmlspecialchars($details['location'] ?? '');
-            $message = "<strong class='font-medium'>{$actor}</strong> đã yêu cầu gia hạn gói "
-                     ."<strong class='font-medium'>{$package}</strong> với "
-                     ."<strong class='font-medium'>{$accounts}</strong> tài khoản "
-                     .($voucher ? "(<strong class='font-medium'>{$voucher}</strong>)" : "")
-                     .($location ? " tại <strong class='font-medium'>{$location}</strong>." : ".");
+            $message = "<strong>{$actor}</strong> gia hạn <strong>{$package}</strong> x{$accounts} tài khoản"
+                     .($voucher ? " (<strong>Voucher: {$voucher}</strong>)" : "")
+                     .($location ? " tại <strong>{$location}</strong>" : "").".";
+            if ($registration) $message .= get_payment_proof_status($registration);
             $icon = "fas fa-sync-alt text-purple-500";
-            // check payment proof upload status
-            if ($registration) {
-                $message .= get_payment_proof_status($registration);
-            }
             if (isset($registration)) {
                 $action_type = 'navigate';
                 $details_url = BASE_URL . 'public/pages/purchase/invoice_management.php#transaction-' . $registration;
             }
             $required_permission = 'invoice_management_view';
             break;
-        case 'approve_transaction':
-            $details = [];
-            if (!empty($log['new_values'])) {
-                $decoded = json_decode($log['new_values'], true);
-                $details = is_array($decoded) ? $decoded : [];
-            }
-            $activated = null;
-            if (isset($details['activated_accounts'])) {
-                $activated = $details['activated_accounts'];
-            } elseif (isset($details['renewed_accounts'])) {
-                $activated = $details['renewed_accounts'];
-            } elseif (isset($details['created_accounts'])) {
-                $activated = $details['created_accounts'];
-            }
-            $message = "<strong class='font-medium'>{$actor}</strong> đã duyệt giao dịch #<strong class='font-medium'>{$entity_id}</strong>";
-            if ($activated !== null) {
-                $message .= " (<strong class='font-medium'>{$activated}</strong> tài khoản được kích hoạt)";
-            }
-            $message .= ".";
-            $icon = 'fas fa-check-circle text-green-500';
-            $action_type = 'navigate';
-            $details_url = BASE_URL . 'public/pages/purchase/invoice_management.php#transaction-' . $entity_id;
-            $required_permission = 'transaction_approve';
-            break;
-        case 'reject_transaction':
-            $details = [];
-            if (!empty($log['new_values'])) {
-                $decoded = json_decode($log['new_values'], true);
-                $details = is_array($decoded) ? $decoded : [];
-            }
-            $reason = isset($details['reason']) ? htmlspecialchars($details['reason']) : '';
-            $message = "<strong class='font-medium'>{$actor}</strong> đã từ chối giao dịch #<strong class='font-medium'>{$entity_id}</strong>";
-            if ($reason) {
-                $message .= " với lý do: <em>{$reason}</em>";
-            }
-            $message .= ".";
-            $icon = 'fas fa-times-circle text-red-500';
-            $action_type = 'navigate';
-            $details_url = BASE_URL . 'public/pages/purchase/invoice_management.php#transaction-' . $entity_id;
-            $required_permission = 'transaction_approve';
-            break;
-        case 'revert_transaction':
-            $message = "<strong class='font-medium'>{$actor}</strong> đã hoàn tác duyệt giao dịch #<strong class='font-medium'>{$entity_id}</strong>.";
-            $icon = 'fas fa-undo-alt text-yellow-500';
-            $action_type = 'navigate';
-            $details_url = BASE_URL . 'public/pages/purchase/invoice_management.php#transaction-' . $entity_id;
-            $required_permission = 'transaction_approve';
-            break;
         case 'withdrawal_request':
+            // shortened withdrawal message
             $details = json_decode($log['new_values'] ?? '', true) ?: [];
             $amount  = isset($details['amount'])
                        ? number_format((float)$details['amount'],0,',','.')
@@ -199,16 +149,8 @@ function format_activity_log($log) {
             $bank    = htmlspecialchars($details['bank_name'] ?? '');
             $accNum  = htmlspecialchars($details['account_number'] ?? '');
             $holder  = htmlspecialchars($details['account_holder'] ?? '');
-            $message = "<strong class='font-medium'>{$actor}</strong> đã yêu cầu rút tiền: ";
-            if ($amount)  $message .= "<strong class='font-medium'>{$amount}</strong> VND ";
-            if ($bank)    $message .= "về ngân hàng <strong class='font-medium'>{$bank}</strong> ";
-            if ($accNum || $holder) {
-                $message .= "(";
-                if ($accNum) $message .= "<strong class='font-medium'>{$accNum}</strong>";
-                if ($holder) $message .= " - <strong class='font-medium'>{$holder}</strong>";
-                $message .= ")";
-            }
-            $message .= ".";
+            $message = "<strong>{$actor}</strong> rút <strong>{$amount} VND</strong> về <strong>{$bank}</strong>"
+                     .($accNum || $holder ? " (<strong>{$accNum}</strong>" .($holder ? " - <strong>{$holder}</strong>" : "").")" : "").".";
             $icon    = "fas fa-money-bill-wave text-yellow-500";
             $action_type = 'navigate';
             $details_url = BASE_URL . 'public/pages/referral/referral_management.php?tab=withdrawals#request-' . $entity_id;

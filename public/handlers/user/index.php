@@ -9,7 +9,8 @@ $allowed = [
     'get_user_details',
     'create_user',
     'update_user',
-    'toggle_user_status'
+    'toggle_user_status',
+    'update_password'
 ];
 if (!in_array($action, $allowed, true)) {
     api_error('Invalid action', 400);

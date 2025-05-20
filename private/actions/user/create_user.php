@@ -35,6 +35,7 @@ $phone = isset($input['phone']) ? trim($input['phone']) : null;
 $is_company = isset($input['is_company']) && $input['is_company'] == 1 ? 1 : 0;
 $company_name = ($is_company && isset($input['company_name'])) ? trim($input['company_name']) : null;
 $tax_code = ($is_company && isset($input['tax_code'])) ? trim($input['tax_code']) : null;
+$company_address = ($is_company && isset($input['company_address'])) ? trim($input['company_address']) : null;
 
 if ($is_company && (empty($company_name) || empty($tax_code))) {
     api_error('Tên công ty và mã số thuế là bắt buộc nếu chọn là công ty.', 400);
@@ -51,7 +52,8 @@ try {
         'phone'        => $phone,
         'is_company'   => $is_company,
         'company_name' => $company_name,
-        'tax_code'     => $tax_code
+        'tax_code'     => $tax_code,
+        'company_address' => $company_address
     ]);
     api_success(['id' => $userId], 'Thêm người dùng thành công.');
 } catch (Exception $e) {

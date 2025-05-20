@@ -111,6 +111,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                             <th>Loại TK</th>
                             <th>Tên công ty</th>
                             <th>Mã số thuế</th>
+                            <th>Địa chỉ công ty</th>
                             <th>Ngày tạo</th>
                             <th class="text-center">Trạng thái</th>
                             <th class="text-center">Hành động</th>
@@ -128,6 +129,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                                     <td><?php echo $user['is_company'] ? 'Công ty' : 'Cá nhân'; ?></td>
                                     <td><?php echo $user['is_company'] ? htmlspecialchars($user['company_name'] ?? '-') : '-'; ?></td>
                                     <td><?php echo htmlspecialchars($user['tax_code'] ?? '-'); ?></td>
+                                    <td><?php echo $user['is_company'] ? htmlspecialchars($user['company_address'] ?? '-') : '-'; ?></td>
                                     <td><?php echo format_date($user['created_at']); ?></td>
                                     <td class="text-center"><?php echo get_user_status_display($user); ?></td>
                                     <td class="actions">
@@ -145,6 +147,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                                             <button class="btn-icon <?php echo $btn_class; ?>" onclick="UserManagementPageEvents.toggleUserStatus('<?php echo htmlspecialchars($user['id']); ?>', '<?php echo $action; ?>')" title="<?php echo $title; ?>" data-permission="user_edit">
                                                 <i class="fas <?php echo $icon; ?>"></i>
                                             </button>
+                                            <button type="button" class="btn-icon btn-password" title="Đổi mật khẩu" onclick="UserManagementPageEvents.openChangePasswordModal('<?php echo htmlspecialchars($user['id']); ?>')" data-permission="user_edit"><i class="fas fa-key"></i></button>
                                             <?php endif; ?>
                                         </div>
                                     </td>
@@ -153,7 +156,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr id="no-results-row">
-                                <td colspan="11">Không tìm thấy người dùng phù hợp.</td>
+                                <td colspan="12">Không tìm thấy người dùng phù hợp.</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>

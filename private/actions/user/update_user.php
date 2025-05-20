@@ -18,17 +18,26 @@ try {
         abort('Invalid request.', 400);
     }
 
-    $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
-    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $company_name = filter_input(INPUT_POST, 'company_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $tax_code     = filter_input(INPUT_POST, 'tax_code',     FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    // Nếu cả hai rỗng thì không phải công ty
-    $is_company = (!empty($company_name) || !empty($tax_code)) ? 1 : 0;
-    if (empty($company_name) && empty($tax_code)) {
+    $user_id      = filter_input(INPUT_POST, 'user_id',      FILTER_VALIDATE_INT);
+    
+    $username     = isset($_POST['username']) ? trim((string)$_POST['username']) : ''; 
+    $email        = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $phone        = isset($_POST['phone']) ? trim((string)$_POST['phone']) : null; 
+
+    $is_company   = (isset($_POST['is_company']) && $_POST['is_company'] === '1') ? 1 : 0;
+
+    $company_name_input = isset($_POST['company_name']) ? trim((string)$_POST['company_name']) : '';
+    $tax_code_input     = isset($_POST['tax_code']) ? trim((string)$_POST['tax_code']) : '';
+    $company_address_input = isset($_POST['company_address']) ? trim((string)$_POST['company_address']) : '';
+
+    if ($is_company) {
+        $company_name = $company_name_input;
+        $tax_code     = $tax_code_input;
+        $company_address = $company_address_input;
+    } else {
         $company_name = null;
         $tax_code     = null;
+        $company_address = null;
     }
 
     if (!$user_id) {
@@ -40,6 +49,9 @@ try {
     if (!$email) {
         abort('Email không hợp lệ.', 400);
     }
+    if ($is_company && empty($company_name)) {
+        abort('Tên công ty không được để trống nếu chọn loại tài khoản là công ty.', 400);
+    }
 
     try {
         $userModel->updateWithDuplicateCheck($user_id, [
@@ -48,11 +60,12 @@ try {
             'phone'        => $phone,
             'is_company'   => $is_company,
             'company_name' => $company_name,
-            'tax_code'     => $tax_code
+            'tax_code'     => $tax_code,
+            'company_address' => $company_address
         ]);
         api_success(null, 'Cập nhật thông tin người dùng thành công.');
     } catch (Exception $e) {
-        error_log("DEBUG update_user Exception: user_id={$user_id} | username={$username} | email={$email} | phone={$phone} | is_company={$is_company} | company_name={$company_name} | tax_code={$tax_code} | msg=" . $e->getMessage());
+        error_log("DEBUG update_user Exception: user_id={$user_id} | username={$username} | email={$email} | phone={$phone} | is_company={$is_company} | company_name={$company_name} | tax_code={$tax_code} | company_address={$company_address} | msg=" . $e->getMessage());
         $msg = $e->getMessage();
         abort($msg, strpos($msg, 'tồn tại')!==false ? 409 : 500);
     }

@@ -63,6 +63,9 @@ $isEditInvoiceAllowed = Auth::can('invoice_review_edit');
                         <th>ID</th>
                         <th>GD#</th>
                         <th>Email</th>
+                        <th>Tên công ty</th>
+                        <th>Mã số thuế</th>
+                        <th>Địa chỉ công ty</th>
                         <th>Gói</th>
                         <th>Yêu cầu</th>
                         <th class="status">Trạng thái</th>
@@ -77,6 +80,9 @@ $isEditInvoiceAllowed = Auth::can('invoice_review_edit');
                         <td><?php echo $inv['invoice_id']; ?></td>
                         <td><?php echo $inv['transaction_history_id']; ?></td>
                         <td><?php echo htmlspecialchars($inv['user_email']); ?></td>
+                        <td><?php echo htmlspecialchars($inv['company_name'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($inv['tax_code'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($inv['company_address'] ?? ''); ?></td>
                         <td><?php echo htmlspecialchars($inv['package_name']); ?></td>
                         <td>
                             <?php 

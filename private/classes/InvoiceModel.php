@@ -22,6 +22,9 @@ class InvoiceModel {
                 inv.invoice_file,
                 inv.rejected_reason,
                 u.email AS user_email,
+                u.company_name,
+                u.tax_code,
+                u.company_address,
                 p.name AS package_name
             FROM invoice inv
             JOIN transaction_history th ON inv.transaction_history_id = th.id

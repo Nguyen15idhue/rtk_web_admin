@@ -15,7 +15,7 @@ $active_nav = 'station_management';
 
 // Filters
 $filters = [
-    'q' => filter_input(INPUT_GET, 'q', FILTER_SANITIZE_SPECIAL_CHARS) ?: '',
+    'q' => isset($_GET['q']) ? trim((string)$_GET['q']) : '', // Use raw input
 ];
 
 // Instantiate models and fetch data
