@@ -201,7 +201,7 @@ try {
             "mountIds"       => getMountPointsByLocationId($location_id)  // <- use helper
         ];
 
-        error_log("[CA] RTK API payload: " . json_encode($apiData));
+        //error_log("[CA] RTK API payload: " . json_encode($apiData));
         $res = createRtkAccount($apiData);
         error_log("[CA] RTK API response: " . json_encode($res));
         if (!$res['success']) {
@@ -311,7 +311,7 @@ try {
             "regionIds"      => $regionIds ? [$regionIds] : [],
             "mountIds"       => getMountPointsByLocationId($location_id)  // <- use helper
         ];
-        error_log("[CA] RTK API payload for {$curUsername}: " . json_encode($apiData));
+        //error_log("[CA] RTK API payload for {$curUsername}: " . json_encode($apiData));
         $apiRes = createRtkAccount($apiData);
         error_log("[CA] RTK API response for {$curUsername}: " . json_encode($apiRes));
         if (!$apiRes['success']) {

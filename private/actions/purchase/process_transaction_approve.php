@@ -143,6 +143,9 @@ if ($tx_type === 'renewal') {
     $sessId   = session_id();
     session_write_close();
 
+    // NEW: commit transaction to release DB locks before cURL calls for account renewals
+    $db->commit();
+
     foreach ($accIds as $aid) {
         // get old end_time
         $stmt_old = $db->prepare("SELECT end_time FROM survey_account WHERE id = :aid");
@@ -188,8 +191,8 @@ if ($tx_type === 'renewal') {
         curl_setopt($ch, CURLOPT_POST,            true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,  true);
         // apply timeout and SSL options
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT,  1); // tăng lên 3s
-        curl_setopt($ch, CURLOPT_TIMEOUT,         1); // tăng lên 3s
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT,  1); 
+        curl_setopt($ch, CURLOPT_TIMEOUT,         1); 
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,  false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,  0);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -237,6 +240,7 @@ if ($tx_type === 'renewal') {
     }
 
     // mark history completed
+    $db->beginTransaction();
     $stmt_hist = $db->prepare("
         UPDATE transaction_history
         SET status = 'completed', updated_at = NOW()

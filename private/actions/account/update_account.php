@@ -234,7 +234,7 @@ try {
         {
             // Xây payload qua AccountModel
             $apiPayload = $accountModel->buildRtkUpdatePayload($accountId, $input);
-            error_log("[update_account] RTK API payload via model: " . print_r($apiPayload, true));
+            //error_log("[update_account] RTK API payload via model: " . print_r($apiPayload, true));
         }
 
         // call external RTK update API (giữ nguyên)

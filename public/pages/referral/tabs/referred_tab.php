@@ -24,9 +24,9 @@
             <?php if (!empty($data['items'])): ?>
                 <?php foreach ($data['items'] as $item): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($item['id']); ?></td>
-                        <td><?php echo htmlspecialchars($item['referrer_name']); ?></td>
-                        <td><?php echo htmlspecialchars($item['referred_name']); ?></td>
+                        <td><?php echo htmlspecialchars($item['id'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($item['referrer_name'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($item['referred_name'] ?? ''); ?></td>
                         <td><?php echo format_datetime($item['created_at']); ?></td>
                     </tr>
                 <?php endforeach; ?>

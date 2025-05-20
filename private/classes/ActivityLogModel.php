@@ -59,7 +59,7 @@ class ActivityLogModel {
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data)); // Use http_build_query for proper encoding
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10); // Set a timeout
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5); // Set a timeout
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); // Set a connection timeout
 
         $response = curl_exec($ch);
