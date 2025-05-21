@@ -16,6 +16,7 @@ $public_assets_path = BASE_URL . 'public/assets/';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="<?php echo isset($page_description) ? htmlspecialchars($page_description) : 'Admin Dashboard for RTK System'; ?>">
     <!-- Title should be dynamic, passed from the including page -->
     <title><?php echo isset($page_title) ? htmlspecialchars($page_title) : 'Admin Dashboard'; ?></title>
 

@@ -1,0 +1,180 @@
+/* invoice_upload.css - Custom styles for invoice upload page */
+body { background: #f8f9fa; }
+.upload-card { 
+  width: 100%;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+  border: none; 
+  border-radius: .75rem; 
+}
+.upload-card .card-header {
+  background-color: #fff;
+  border-bottom: none;
+  border-top-left-radius: .75rem;
+  border-top-right-radius: .75rem;
+  padding-top: 2rem; 
+}
+.upload-card .card-body { padding: 2rem; }
+#invoiceDropzone {
+  border: 2px dashed #dee2e6 !important;
+  border-radius: .5rem;
+  background: #fff;
+  transition: border-color .3s, box-shadow .3s;
+}
+#invoiceDropzone:hover { border-color: #0d6efd; box-shadow: 0 0 .75rem rgba(13,110,253,.25); }
+#invoiceDropzone .dz-message { color: #6c757d; font-size: 1.1rem; }
+#startUpload { min-width: 140px; }
+.progress { height: 6px; border-radius: .5rem; }
+@media (max-width: 768px) {
+  .upload-card {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .upload-card .card-body {
+    padding: 1.5rem;
+  }
+  #invoiceDropzone .dz-message {
+    font-size: 1rem;
+  }
+  .d-flex.justify-content-between {
+    flex-direction: column;
+  }
+  .d-flex.justify-content-between > * {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .d-flex.justify-content-between > *:last-child {
+    margin-bottom: 0;
+  }
+}
+.dropzone .dz-preview,
+.dropzone .dz-file-preview {
+  display: flex;
+  align-items: center;
+  background: #f9fafc;
+  border: 1px solid #e6e9f0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  transition: all 0.25s ease;
+  position: relative;
+}
+.dropzone .dz-preview:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.07);
+}
+.dropzone .dz-preview.dz-success {
+  border-color: #28a745;
+  background: linear-gradient(to right, #f0fff5, #f9fafc);
+}
+.dropzone .dz-preview.dz-error {
+  border-color: #dc3545;
+  background: linear-gradient(to right, #fff5f5, #f9fafc);
+}
+.dropzone .dz-preview .dz-image { display: none !important; }
+.dropzone .dz-preview .dz-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+.dropzone .dz-preview .dz-filename {
+  margin-bottom: 4px;
+}
+.dropzone .dz-preview .dz-filename span {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+.dropzone .dz-preview .dz-size {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+}
+.dropzone .dz-preview .dz-size::before {
+  content: "\f019";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 12px;
+  margin-right: 6px;
+  opacity: 0.7;
+}
+.dropzone .dz-preview .dz-upload {
+  background: linear-gradient(90deg, #0d6efd 0%, #6ea8fe 100%);
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease-in-out;
+  position: relative;
+}
+.dropzone .dz-preview .dz-upload::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.dropzone .dz-remove {
+  background: none;
+  border: none;
+  color: #dc3545;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: 8px;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.dropzone .dz-remove:hover {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+.dropzone .dz-preview .dz-error-message {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+@media (max-width: 576px) {
+  .dropzone .dz-preview,
+  .dropzone .dz-file-preview {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+  }
+  .dropzone .dz-preview .dz-details {
+    width: 100%;
+    text-align: center;
+  }
+  .dropzone .dz-remove {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    margin: 0;
+    padding: 6px;
+    height: 32px;
+    width: 32px;
+  }
+}
