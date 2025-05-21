@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 18, 2025 at 03:37 AM
+-- Generation Time: May 21, 2025 at 11:38 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.16
 
@@ -58,7 +58,6 @@ CREATE TABLE `activity_logs` (
 --
 
 INSERT INTO `activity_logs` (`id`, `user_id`, `action`, `entity_type`, `entity_id`, `old_values`, `new_values`, `notify_content`, `has_read`, `ip_address`, `user_agent`, `created_at`) VALUES
-(254, 90, 'create_support_request', 'support_requests', '4', NULL, NULL, 'Tạo yêu cầu hỗ trợ mới #4', 0, NULL, NULL, '2025-05-16 18:11:53'),
 (255, 105, 'verification_email_sent', 'user', '105', NULL, '{\"email\":\"osn14300@jioso.com\",\"verification_token\":\"188d1b5c2a...\",\"timestamp\":\"2025-05-16 18:13:11\"}', 'Đã gửi email xác thực cho: osn14300@jioso.com', 0, '::1', NULL, '2025-05-16 18:13:11'),
 (256, 105, 'email_verified', 'user', '105', NULL, '{\"status\":\"verified\",\"email\":\"osn14300@jioso.com\",\"timestamp\":\"2025-05-16 18:15:16\"}', 'Xác thực email thành công cho: osn14300@jioso.com', 0, '::1', NULL, '2025-05-16 18:15:16'),
 (257, 105, 'purchase', 'registration', '224', NULL, '{\"registration_id\":\"224\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Yên Bái\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 18:16:43'),
@@ -116,7 +115,36 @@ INSERT INTO `activity_logs` (`id`, `user_id`, `action`, `entity_type`, `entity_i
 (325, 105, 'revert_transaction', 'transaction', '218', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Giao dịch #218 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 07:21:11'),
 (326, 105, 'revert_transaction', 'transaction', '217', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Giao dịch #217 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 07:21:11'),
 (327, 105, 'approve_transaction', 'transaction', '217', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":105}', 'Giao dịch #217 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 09:38:29'),
-(328, 105, 'revert_transaction', 'transaction', '217', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Giao dịch #217 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 09:40:33');
+(328, 105, 'revert_transaction', 'transaction', '217', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Giao dịch #217 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 09:40:33'),
+(351, 90, 'create_support_request', 'support_requests', '17', NULL, NULL, 'Tạo yêu cầu hỗ trợ mới #17', 0, NULL, NULL, '2025-05-19 20:54:24'),
+(352, 90, 'create_support_request', 'support_requests', '18', NULL, NULL, 'Tạo yêu cầu hỗ trợ mới #18', 0, NULL, NULL, '2025-05-19 20:57:24'),
+(353, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"rejected\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 21:10:55'),
+(354, 105, 'reject_invoice', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"rejected\",\"reason\":\"ch\\u01b0a th\\u1ea5y l\\u1ed7i \\u0111\\u00e2u\",\"customer_id\":105}', 'Yêu cầu xuất hoá đơn #9 đã bị từ chối. Lý do: chưa thấy lỗi đâu', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 21:11:03'),
+(355, 90, 'approve_transaction', 'transaction', '220', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":90}', 'Giao dịch #220 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 21:41:05'),
+(357, 90, 'account_updated_by_admin', 'account', '2278', NULL, NULL, 'Admin (ID: 6) updated account \'CMA001\' (Account ID: 2278).', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 21:46:04'),
+(360, 90, 'account_updated_by_admin', 'account', '2278', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'CMA001\' (ID Tài khoản: 2278).', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 21:55:17'),
+(361, 90, 'purchase', 'registration', '230', NULL, '{\"registration_id\":\"230\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 22:18:09'),
+(362, 90, 'apply_voucher', 'voucher', '3', NULL, '{\"voucher_code\":\"EXTRAMONTH\",\"discount_value\":0,\"new_amount\":291600,\"original_amount\":291600}', 'Áp dụng mã giảm giá: EXTRAMONTH cho đơn hàng. Giá trị giảm: 0', 0, NULL, NULL, '2025-05-19 22:18:29'),
+(364, 90, 'create_support_request', 'support_requests', '27', NULL, NULL, 'Tạo yêu cầu hỗ trợ mới #27', 0, NULL, NULL, '2025-05-20 07:36:40'),
+(366, 90, 'create_support_request', 'support_requests', '30', NULL, NULL, 'Tạo yêu cầu hỗ trợ mới #30', 0, NULL, NULL, '2025-05-20 07:52:05'),
+(367, 90, 'create_support_request', 'support_requests', '31', NULL, NULL, 'Tạo yêu cầu hỗ trợ mới #31', 0, NULL, NULL, '2025-05-20 09:08:51'),
+(368, 105, 'reject_transaction', 'transaction', '217', '{\"status\":\"pending\"}', '{\"status\":\"failed\",\"reason\":\"c\",\"registration_id\":224}', 'Giao dịch #217 đã bị từ chối. Lý do: c', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:20:38'),
+(369, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"rejected\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 15:17:00'),
+(370, 105, 'invoice_sent', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747815452_muclucKTMT.pdf\",\"customer_id\":105}', 'Hóa đơn #9 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 15:17:32'),
+(371, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 15:17:45'),
+(372, 105, 'invoice_sent', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747818212_test.pdf\",\"customer_id\":105}', 'Hóa đơn #9 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:03:32'),
+(373, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:03:37'),
+(374, 105, 'invoice_sent', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747818853_test.pdf\",\"customer_id\":105}', 'Hóa đơn #9 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:14:13'),
+(375, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:14:18'),
+(376, 105, 'invoice_sent', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747819976_test.pdf\",\"customer_id\":105}', 'Hóa đơn #9 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:32:56'),
+(377, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:33:02'),
+(378, 105, 'invoice_sent', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747821140_muclucKTMT.pdf\",\"customer_id\":105}', 'Hóa đơn #9 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:52:20'),
+(379, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:52:31'),
+(380, 105, 'invoice_sent', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747821501_test.pdf\",\"customer_id\":105}', 'Hóa đơn #9 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:58:21'),
+(381, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:59:04'),
+(382, 105, 'invoice_sent', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747822305_test.pdf\",\"customer_id\":105}', 'Hóa đơn #9 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 17:11:45'),
+(383, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 17:13:02'),
+(384, 90, 'invoice_reverted', 'invoice', '8', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Hóa đơn #8 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 17:14:24');
 
 -- --------------------------------------------------------
 
@@ -140,8 +168,7 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`id`, `name`, `admin_username`, `admin_password`, `role`, `created_at`, `updated_at`) VALUES
 (6, 'Nguyễn Văn B', 'ad', '$2y$10$e2k7mdTeR8KIMIge/3iCkOKNLBI3b3ENb6t4bvmtrhHhjMVLo.P06', 'admin', '2025-05-11 18:17:41', '2025-05-18 07:12:44'),
-(12, 'Tôi', '123', '$2y$10$TeVJyx6Nbaqkw0Opz4e0pOPXI5oS5k3jJdiknG2WeZIittssP/Ty.', 'operator', '2025-05-17 06:17:24', '2025-05-18 07:22:17'),
-(13, 'Trần Văn B', 'Test', '$2y$10$6d22CZ9JwSDtyGsRBgzCvev1rbokoI0JqZqJCgWlm7.oCbCOorkCi', 'operator', '2025-05-17 10:25:26', NULL);
+(12, 'Là ai', '123', '$2y$10$TeVJyx6Nbaqkw0Opz4e0pOPXI5oS5k3jJdiknG2WeZIittssP/Ty.', 'operator', '2025-05-17 06:17:24', '2025-05-21 18:06:51');
 
 -- --------------------------------------------------------
 
@@ -255,7 +282,7 @@ INSERT INTO `guide` (`id`, `title`, `slug`, `content`, `author_id`, `topic`, `st
 (14, 'Tesit', 'tesit', '', 6, '', 'draft', NULL, NULL, 0, '2025-05-12 13:49:52', '2025-05-15 20:59:17', NULL),
 (15, 'Nốt lần này', 'not-lan-nay', '', 6, '', 'draft', '', NULL, 0, '2025-05-12 21:11:20', '2025-05-15 22:24:31', NULL),
 (16, 'Dám khô cằn', 'dam-kho-can', '<p>Hello tất cả</p>', 6, '', 'draft', '', NULL, 0, '2025-05-15 20:59:28', '2025-05-18 07:00:47', NULL),
-(17, 'Thử phát nữa', 'thu-phat-nua', '<p>X&oacute;a <strong>s&aacute;ch tất</strong></p>', 6, '', 'draft', NULL, NULL, 0, '2025-05-18 07:01:17', NULL, NULL);
+(17, 'Thử phát nữa', 'thu-phat-nua', '<p>X&oacute;a <strong>s&aacute;ch tất</strong></p>', 6, 'Hướng dẫn', 'draft', '', NULL, 0, '2025-05-18 07:01:17', '2025-05-21 07:10:36', NULL);
 
 -- --------------------------------------------------------
 
@@ -277,8 +304,8 @@ CREATE TABLE `invoice` (
 --
 
 INSERT INTO `invoice` (`id`, `transaction_history_id`, `status`, `invoice_file`, `rejected_reason`, `created_at`) VALUES
-(8, 213, 'approved', '1747527151_test.pdf', NULL, '2025-05-12 21:08:48'),
-(9, 217, 'rejected', NULL, 'c', '2025-05-16 20:38:25');
+(8, 213, 'pending', NULL, NULL, '2025-05-12 21:08:48'),
+(9, 217, 'pending', NULL, NULL, '2025-05-16 20:38:25');
 
 -- --------------------------------------------------------
 
@@ -583,11 +610,13 @@ INSERT INTO `registration` (`id`, `user_id`, `package_id`, `location_id`, `colla
 (221, 90, 2, 12, NULL, 1, '2025-05-15 00:00:00', '2025-12-15 23:59:59', 270000.00, 0, 0.00, 270000.00, 'rejected', '2025-05-12 22:48:38', '2025-05-17 07:33:21', NULL, 'c'),
 (222, 100, 2, 12, NULL, 1, '2025-05-12 22:54:37', '2025-08-12 22:54:37', 270000.00, 0, 0.00, 270000.00, 'rejected', '2025-05-12 22:54:37', '2025-05-17 07:26:29', NULL, 'c'),
 (223, 88, 2, 12, NULL, 1, '2025-02-22 00:00:00', '2025-05-22 00:00:00', 0.00, 0, 0.00, 0.00, 'active', '2025-05-14 10:00:56', NULL, NULL, NULL),
-(224, 105, 2, 12, NULL, 1, '2025-05-18 00:00:00', '2026-02-19 23:59:59', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-16 18:16:43', '2025-05-18 09:40:33', NULL, 'khônh'),
+(224, 105, 2, 12, NULL, 1, '2025-05-18 00:00:00', '2026-02-19 23:59:59', 270000.00, 0, 0.00, 270000.00, 'rejected', '2025-05-16 18:16:43', '2025-05-21 09:20:38', NULL, 'c'),
 (225, 105, 2, 12, NULL, 1, '2025-05-18 00:00:00', '2025-11-18 23:59:59', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-16 20:48:11', '2025-05-18 07:21:11', NULL, NULL),
 (226, 105, 2, 12, NULL, 1, '2025-08-16 20:37:55', '2025-11-16 20:37:55', 270000.00, 0, 0.00, 270000.00, 'rejected', '2025-05-16 21:16:51', '2025-05-17 09:18:46', NULL, 'c'),
 (227, 90, 1, 12, NULL, 2, '2025-05-18 00:00:00', '2025-06-18 00:00:00', 0.00, 0, 0.00, 0.00, 'active', '2025-05-18 07:20:32', '2025-05-18 07:20:50', NULL, NULL),
-(228, 90, 1, 63, NULL, 2, '2025-05-18 00:00:00', '2025-06-18 00:00:00', 0.00, 0, 0.00, 0.00, 'active', '2025-05-18 09:39:56', NULL, NULL, NULL);
+(228, 90, 1, 63, NULL, 2, '2025-05-18 00:00:00', '2025-06-18 00:00:00', 0.00, 0, 0.00, 0.00, 'active', '2025-05-18 09:39:56', NULL, NULL, NULL),
+(229, 90, 1, 12, NULL, 1, '2025-05-19 16:12:51', '2025-09-19 16:12:51', 100000.00, 0, 0.00, 100000.00, 'active', '2025-05-19 16:12:51', '2025-05-19 22:17:06', NULL, NULL),
+(230, 90, 2, 12, NULL, 1, '2025-05-19 22:18:09', '2025-08-19 22:18:09', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-19 22:18:09', '2025-05-19 22:18:09', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -778,7 +807,22 @@ INSERT INTO `support_requests` (`id`, `user_id`, `subject`, `message`, `category
 (1, 93, 'Không thể kết nối tới vps', 'ff', 'technical', 'pending', NULL, '2025-05-10 23:28:10', NULL),
 (2, 93, 'test', 'aa', 'billing', 'resolved', 'test nốt lần này', '2025-05-11 18:07:40', '2025-05-15 21:10:44'),
 (3, 90, 'SOS', 'Cầu cứu', 'technical', 'in_progress', 'Hết nhé', '2025-05-16 18:00:53', '2025-05-18 06:56:36'),
-(4, 90, 'SOS', 'Test', 'technical', 'resolved', 'Ok em', '2025-05-16 18:11:53', '2025-05-17 09:39:43');
+(4, 90, 'SOS', 'Test', 'technical', 'resolved', 'Ok em', '2025-05-16 18:11:53', '2025-05-17 09:39:43'),
+(5, 90, 'SOS', 'Test', 'technical', 'pending', NULL, '2025-05-19 13:55:28', NULL),
+(6, 90, 'Đại đại đi', 'SOS', 'technical', 'pending', NULL, '2025-05-19 14:18:24', NULL),
+(7, 90, 'SOS', 'Cho hỏi', 'technical', 'pending', NULL, '2025-05-19 15:10:31', NULL),
+(8, 90, 'Nốt lần', 'Alo', 'technical', 'pending', NULL, '2025-05-19 15:19:24', NULL),
+(9, 90, 'Nốt', 'ótOK', 'technical', 'pending', NULL, '2025-05-19 15:29:55', NULL),
+(10, 90, 'SOS', '123', 'technical', 'pending', NULL, '2025-05-19 16:09:58', NULL),
+(11, 90, 'nốt', 'chir daanx', 'technical', 'pending', NULL, '2025-05-19 16:50:24', NULL),
+(24, 90, 'Đại đại đi', '123', 'technical', 'pending', NULL, '2025-05-20 07:21:56', NULL),
+(25, 90, 'Test3', 'OK', 'technical', 'pending', NULL, '2025-05-20 07:24:04', NULL),
+(26, 90, 'Test3', '123', 'technical', 'pending', NULL, '2025-05-20 07:33:45', NULL),
+(27, 90, 'SOS', '123', 'technical', 'pending', NULL, '2025-05-20 07:36:40', NULL),
+(28, 90, '333', 'Hello', 'technical', 'pending', NULL, '2025-05-20 07:37:37', NULL),
+(29, 90, '123', 'SOS', 'technical', 'pending', NULL, '2025-05-20 07:48:21', NULL),
+(30, 90, 'Test8', '123', 'technical', 'pending', NULL, '2025-05-20 07:52:05', NULL),
+(31, 90, 'Test3', '123', 'technical', 'pending', NULL, '2025-05-20 09:08:51', NULL);
 
 -- --------------------------------------------------------
 
@@ -839,9 +883,11 @@ INSERT INTO `transaction_history` (`id`, `registration_id`, `user_id`, `voucher_
 (214, 220, 90, 3, 'purchase', 291600.00, 'failed', NULL, 'reg_220_1747064639.jpg', 0, NULL, 0, NULL, NULL, '2025-05-12 22:43:12', '2025-05-17 07:35:29'),
 (215, 221, 90, 3, 'purchase', 291600.00, 'failed', NULL, 'reg_221_1747189086.jpg', 0, NULL, 0, NULL, NULL, '2025-05-12 22:48:38', '2025-05-17 07:33:21'),
 (216, 222, 100, NULL, 'purchase', 270000.00, 'failed', NULL, 'reg_222_1747065298.jpg', 0, NULL, 0, NULL, NULL, '2025-05-12 22:54:37', '2025-05-17 07:26:29'),
-(217, 224, 105, 4, 'purchase', 262440.00, 'pending', 'Chuyển khoản ngân hàng', 'reg_224_1747394258.jpg', 0, NULL, 0, NULL, NULL, '2025-05-16 18:16:43', '2025-05-18 09:40:33'),
+(217, 224, 105, 4, 'purchase', 262440.00, 'failed', 'Chuyển khoản ngân hàng', 'reg_224_1747394258.jpg', 0, NULL, 0, NULL, NULL, '2025-05-16 18:16:43', '2025-05-21 09:20:38'),
 (218, 225, 105, NULL, 'purchase', 270000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-16 20:48:11', '2025-05-18 07:21:11'),
-(219, 226, 105, NULL, 'renewal', 270000.00, 'failed', 'Chuyển khoản ngân hàng', 'reg_226_1747405020.jpg', 0, NULL, 0, NULL, NULL, '2025-05-16 21:16:51', '2025-05-17 09:18:46');
+(219, 226, 105, NULL, 'renewal', 270000.00, 'failed', 'Chuyển khoản ngân hàng', 'reg_226_1747405020.jpg', 0, NULL, 0, NULL, NULL, '2025-05-16 21:16:51', '2025-05-17 09:18:46'),
+(220, 229, 90, NULL, 'purchase', 100000.00, 'completed', 'Chuyển khoản ngân hàng', 'reg_229_1747645978.jpg', 0, NULL, 0, NULL, NULL, '2025-05-19 16:12:51', '2025-05-19 21:41:05'),
+(221, 230, 90, 3, 'purchase', 291600.00, 'pending', 'Chuyển khoản ngân hàng', 'reg_230_1747667917.png', 0, NULL, 0, NULL, NULL, '2025-05-19 22:18:09', '2025-05-19 22:18:37');
 
 --
 -- Triggers `transaction_history`
@@ -906,20 +952,20 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `username`, `email`, `password`, `phone`, `is_company`, `company_name`, `tax_code`, `company_address`, `tax_registered`, `created_at`, `updated_at`, `deleted_at`, `status`, `email_verified`, `email_verify_token`) VALUES
 (88, 'Long2004', 'tranhailong2408@gmail.com', '$2y$10$Ykj5ewmTa9z.EWdiVDPN6OKJ0lCXZU7L7ndZ7DDNd0LCXrHVraTOq', '0999999445', 1, 'as', '123', NULL, NULL, '2025-04-27 14:55:01', '2025-05-04 09:08:21', NULL, 1, 1, NULL),
 (89, 'Long2005', 'tranhailong2410@gmail.com', '$2y$10$4/NI4svx6977OTC0q13r5eRE5Uovn7nmR47Z.j3V9yy19n9XacQBa', '0900000005', 1, 'ad', '123', NULL, NULL, '2025-04-29 15:00:08', '2025-05-04 09:08:23', NULL, 1, 1, NULL),
-(90, 'Long2002', 'tranhailong2407@gmail.com', '$2y$10$nvnjzGHE/.YpMBQKXVKXIOhUcZNpUFmfslttldkvp7Po741BhdUPu', '0999999443', 1, 'ad', '1233333324', '123', NULL, '2025-05-04 09:08:01', '2025-05-16 18:00:37', NULL, 1, 1, NULL),
+(90, 'Long2002', 'tranhailong2407@gmail.com', '$2y$10$BX.l.Ty9P3ey6FRT135e1OSXM8zlhAB1AOApW.EBohGbZhU2X3sli', '0999999443', 1, 'ad', '1233333324', '123', NULL, '2025-05-04 09:08:01', '2025-05-19 21:19:24', NULL, 1, 1, NULL),
 (91, 'nguyendozxc15@gmail.com', 'nguyendozxc15@gmail.com', '$2y$10$y8rSLvI2J48XZjTCb9IIgOmEf5Tz42r0OVLOrrlovJHt8JjVrNRvq', '0981190564', 0, NULL, NULL, NULL, NULL, '2025-05-05 11:09:06', '2025-05-05 11:09:26', NULL, 1, 1, NULL),
 (92, 'dovannguyen2005bv@gmail.com', 'dovannguyen2005bv@gmail.com', '$2y$10$BUQc5aTNhk0h1mBfQhrlG.1kkVfb8t.9Hj6lnHZYr43CEQUqBlLpS', '0981190562', 0, 'Công ty cổ phần công nghệ Otek', '2222333332', NULL, NULL, '2025-05-05 14:33:57', '2025-05-13 14:47:04', '2025-05-13 07:47:04', 1, 1, NULL),
 (93, 'nguyendozxc20@gmail.com', 'nguyendozxc20@gmail.com', '$2y$10$1vCsFFE0crdwZYqv/K97reAlFpU1vuIOSs5/hs0lhnwypkzBj/nCm', '0981190522', 1, 'Công ty cổ phần công nghệ Otek', '2222233332', 'Ha Noi', NULL, '2025-05-07 22:39:46', '2025-05-10 21:14:34', NULL, 1, 1, NULL),
 (94, 'onf52053@toaik.com', 'onf52053@toaik.com', '$2y$10$b3Cyd8bwZ5cFc690DISmd.ZrAfzkvbvTsbbAEP/Vaiy/kmPNZcv1i', '0981130564', 0, NULL, NULL, NULL, NULL, '2025-05-10 21:00:57', '2025-05-12 13:44:47', NULL, 1, 1, 'bcf3432eb3e495acfab64b2cc82ecf505a4f729cacc343aca5b8a03b14d94853'),
 (95, 'kei65757@toaik.com', 'kei65757@toaik.com', '$2y$10$E0jVblq.5EoERWBOXd2lvObfw.r8nko6ySx8o7x/eLgzN/qmiub1W', '0281190564', 0, NULL, NULL, NULL, NULL, '2025-05-11 10:51:20', '2025-05-11 10:54:04', NULL, 1, 1, NULL),
-(96, 'adddd@gmail.com', 'addd@gmail.com', '$2y$10$W8VAJit.yg0ZqAIq0e5gz.yuncGYw5gGkEg8XEWb.4oFcAK01EGdC', '0982290564', 0, NULL, NULL, NULL, NULL, '2025-05-11 14:44:27', '2025-05-12 21:16:27', NULL, 1, 0, '95a07bd3451bba76c31096ae73277e55b6a6a660c9d46b8ab7ea10b38b06a502'),
+(96, 'adddd@gmail.com', 'addd@gmail.com', '$2y$10$W8VAJit.yg0ZqAIq0e5gz.yuncGYw5gGkEg8XEWb.4oFcAK01EGdC', '0982290564', 0, NULL, NULL, NULL, NULL, '2025-05-11 14:44:27', '2025-05-19 13:52:59', NULL, 1, 1, '95a07bd3451bba76c31096ae73277e55b6a6a660c9d46b8ab7ea10b38b06a502'),
 (99, 'Long2009', 'acook6962@gmail.com', '$2y$10$0oit33nfU.c0XQ1nRI5d.un3M7HoYmkT5dnvT3B3p5DkFhtlvEbMa', '0912345695', 0, NULL, NULL, NULL, NULL, '2025-05-12 21:18:06', '2025-05-15 22:45:17', '2025-05-15 15:45:17', 1, 0, NULL),
 (100, 'zkz9696@toaik.com', 'zkz96960@toaik.com', '$2y$10$48F2kmtApFftzTJx31ruyeSeaf3j4oYDhMKiCC1.fHN8aGPflU.mS', '0999999223', 0, NULL, NULL, NULL, NULL, '2025-05-12 22:46:48', '2025-05-15 22:45:17', '2025-05-15 15:45:17', 1, 1, NULL),
 (102, 'Long2001', 'acook6968@gmail.com', '$2y$10$xhPFgwaGPOuiJjc/b7E/T.f/Ho.TQyIF9At7AZzTGNGnmTSCxXWFK', '091234569', 1, '12', 'a', NULL, NULL, '2025-05-14 17:39:24', '2025-05-15 15:00:08', NULL, 1, 0, NULL),
 (104, 'Long1999', '123@gmail.com', '$2y$10$dL.AhqQ2Pd4CBZT.NC9XrOGQClR91MhpOEOvfKJs3zMdJLsf/IE0y', '12', 0, NULL, NULL, NULL, NULL, '2025-05-15 22:45:46', '2025-05-15 22:45:52', NULL, 1, 0, NULL),
 (105, 'Long99999', 'osn14300@jioso.com', '$2y$10$Ea5zvtkl1GTPskI0eJFMfuEeT4PSFCRSos6L5p8cUBNfM56U94s/G', '09999993232', 1, 'as', '1233333333', '123', NULL, '2025-05-16 18:13:06', '2025-05-17 20:41:03', '2025-05-17 13:41:03', 1, 1, NULL),
 (106, 'Long12323', 'tranhailong2499@gmail.com', '$2y$10$PxMSQCg81bG3ohJCZVixM.EkUePHyzjm.e4MElZAofgJLgTtICjLS', '123', 0, NULL, NULL, NULL, NULL, '2025-05-16 21:41:32', '2025-05-18 06:51:58', '2025-05-17 23:51:58', 1, 0, NULL),
-(108, 'adssds', 'acook6990@gmail.com', '$2y$10$MgwVUoriLsWTbyp27CgY..fLYyzVjLulYHeIgA3YN5Rejeaio2tPG', '0900000000', 0, NULL, NULL, NULL, NULL, '2025-05-18 06:53:13', NULL, NULL, 1, 0, NULL);
+(108, 'Một bốn', 'acook6990@gmail.com', '$2y$10$LFiie8I8OrqNc2EPC7yGje8SAn9bTiuaZwal4zes3cSBeCxMF40Ni', '0900000000', 1, 'Công Ty TNHH', '123', 'Thái cực', NULL, '2025-05-18 06:53:13', '2025-05-21 09:17:47', NULL, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -942,32 +988,46 @@ CREATE TABLE `user_sessions` (
 --
 
 INSERT INTO `user_sessions` (`session_id`, `user_id`, `ip_address`, `user_agent`, `created_at`, `last_activity`, `is_active`) VALUES
+('07puqp13og7h24oqkt6djq0udp', 15, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 17:51:07', '2025-05-21 18:00:17', 0),
 ('0a0n5lfc00kcufmp1s080bc6cp', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 06:17:05', '2025-05-17 06:17:27', 0),
 ('0cggrapjnbalmld0g9938t7e0o', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 18:47:23', '2025-05-17 20:26:16', 0),
+('0scecrfa9hp12g63dq2tojjkc6', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 17:33:12', '2025-05-21 17:33:42', 0),
 ('0u3gr4m6riq5m443aojja7h8nc', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-15 18:50:06', '2025-05-15 23:00:59', 0),
 ('19n7vjm1dbd8ploa0r2sljbccq', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 08:17:31', '2025-05-17 10:25:32', 0),
+('1k7e8p3rh88r9umnm6ebsvr7n0', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 07:59:37', '2025-05-21 09:09:36', 0),
+('1kblu115mleaaaso2d3s7kbsmc', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 18:01:12', '2025-05-21 18:01:23', 0),
 ('1nt8jiuaimlnqmhrupdpo6ucpv', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 13:16:38', '2025-05-12 13:28:31', 1),
 ('20gkmdpfo0iank62fnml1ql3r2', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-13 14:46:39', '2025-05-13 19:53:57', 1),
 ('22o8lf3k3sk5brvke3lkll2c0i', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 08:32:20', '2025-05-16 10:08:37', 0),
+('2nlfolrchlmr4mh1upd5uqbivp', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:09:44', '2025-05-21 09:12:03', 0),
 ('2vea0vfblfl0l7d1m40q0frem9', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 08:47:07', '2025-05-14 09:23:28', 1),
+('307bu0i6tbs6vvs9n2ctqnn1bs', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 18:01:28', '2025-05-21 18:01:32', 0),
 ('33glkapif1ub631e4iu2tgova1', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 18:31:45', '2025-05-12 20:36:45', 1),
 ('3hck9gk2759hf6l802lrb4dvmg', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 10:08:48', '2025-05-16 12:42:07', 1),
 ('48nbopk0pcafpoepvphvh82107', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 09:42:44', '2025-05-18 10:35:43', 1),
 ('4c2hesergl9j3q8h5m13g9agkf', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 15:55:56', '2025-05-17 17:20:16', 0),
 ('4ne9odh9lg5rc8mvvtgbeup4fj', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 16:24:24', '2025-05-14 17:57:16', 0),
 ('4sdaom0dfk79bu1fki4duhg8ts', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 09:46:29', '2025-05-14 11:41:12', 1),
+('50uk071h5e0qjoiugbrc0n0b0k', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 17:33:46', '2025-05-21 17:34:03', 0),
 ('5lnjnrg1b4eqte48cv6krcmpb5', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 15:54:56', '2025-05-12 16:44:12', 1),
 ('5n3oqmgtocmrr6orqqehr8btrt', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 06:26:34', '2025-05-16 07:49:09', 1),
+('6267jlhrk53dv2k5ad96hiumrt', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:16:05', '2025-05-21 09:16:24', 0),
+('705kv3i4q433sc0c498hv24d2t', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 13:55:50', '2025-05-19 15:29:31', 1),
 ('74i734hlmpul2r93is77if9kca', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-15 23:01:31', '2025-05-15 23:22:53', 1),
 ('7ae1m4kgqeijuavqfsq1h0838d', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-13 09:36:06', '2025-05-13 12:09:56', 1),
 ('7bqendcdlgquvkundhoe36ei38', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 20:40:56', '2025-05-17 20:41:06', 0),
+('7d02amrpfnb9d83ppnadrrkiov', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:21:57', '2025-05-21 09:22:05', 1),
 ('7is621tk8ie672s8rrc4h7gf5j', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-13 19:54:01', '2025-05-13 23:41:22', 1),
 ('802amtsejvub7ra0cg02rpanjb', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 11:03:43', '2025-05-17 11:45:14', 1),
 ('833eavssu8l3mnvn0h3rtju099', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 15:31:15', '2025-05-14 16:24:20', 0),
 ('83vbjis4lka52tneei52ism55d', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 07:17:29', '2025-05-18 07:21:20', 0),
+('86e9r4iv1e2q7ntafeffsadgce', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 19:06:21', '2025-05-19 23:34:34', 1),
 ('8ak58mef77r20tqliijnkga13d', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 07:21:24', '2025-05-18 07:22:19', 1),
+('8d9rsrdp9samil3il77j3peejs', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 17:34:07', '2025-05-21 17:51:03', 0),
+('8ei44jj0jguihnk75g22ln1d79', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 23:16:58', '2025-05-19 23:29:28', 1),
 ('a5k4nq4mjkp9rmr2kb167bv5mm', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 21:09:16', '2025-05-12 22:37:18', 1),
 ('as93r4gpjvhochg390igmp2vq2', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 13:40:11', '2025-05-14 15:29:31', 1),
+('bcigqr11e1kop9iofi6ma448d7', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 18:01:36', '2025-05-21 18:06:59', 0),
 ('bf3m2ous2uqkabch00smijl28u', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-11 22:30:49', '2025-05-11 22:39:04', 1),
 ('bikhcpe6viic9efqmngpop9772', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 07:49:44', '2025-05-14 08:01:55', 1),
 ('c4haeknqjojm63nij9bhb9hu9f', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 17:58:39', '2025-05-16 18:22:55', 1),
@@ -978,8 +1038,14 @@ INSERT INTO `user_sessions` (`session_id`, `user_id`, `ip_address`, `user_agent`
 ('dnqeee8lc6tp0k6q8l5qrgm0kh', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 15:05:56', '2025-05-16 16:41:24', 0),
 ('e1q3onvrn5sfi4qqnjjqm74l2e', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 20:40:24', '2025-05-17 20:40:34', 0),
 ('e3nh4o5ugpu3hugplckugk7h57', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 20:50:57', '2025-05-16 20:50:57', 1),
+('een5lmf382cnn93m4tid39thgm', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 18:00:20', '2025-05-21 18:00:47', 0),
 ('ekoghfktp7kp9d29npvdtn9bvd', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 16:41:54', '2025-05-16 16:51:42', 0),
 ('fqk1c2ik14ii4vjcs0irojq17q', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 06:17:37', '2025-05-17 06:25:16', 0),
+('gopni5l0c4nt2ov3mtnfkllk3r', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:21:39', '2025-05-21 09:21:49', 0),
+('gsjv50ksn9e10nbvs46d5m9ech', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 18:07:02', '2025-05-21 18:31:08', 1),
+('gtbo10s3i6p8em1tr1if53rbco', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 16:44:29', '2025-05-19 16:49:51', 1),
+('gvtdbhaelpo7s317pq9e6g3n7m', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 06:43:21', '2025-05-21 07:32:28', 0),
+('hukanq224h9ij6qk5pgb33l6qd', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:17:39', '2025-05-21 09:18:05', 0),
 ('i3uogru3gs240i822to4gg8lrs', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 06:39:28', '2025-05-14 07:45:27', 1),
 ('io2alhrcvr4j3opbp858irfr3j', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-15 12:17:42', '2025-05-15 15:40:54', 1),
 ('iqc1bl9ndmbh3op1pfu1l6v9kq', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 06:11:36', '2025-05-17 06:16:25', 0),
@@ -987,9 +1053,12 @@ INSERT INTO `user_sessions` (`session_id`, `user_id`, `ip_address`, `user_agent`
 ('j431kq1piqs913tgpjuej5cnn0', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 20:40:45', '2025-05-17 20:40:53', 0),
 ('jbrpnbjj7lq0s4ct79t2k6e7ua', 10, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-15 23:01:03', '2025-05-15 23:01:23', 0),
 ('jmj547av0fe6umhi1ekmqq23v3', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 20:36:52', '2025-05-12 21:05:21', 0),
+('jtk15dhtfqb12vaqtik84cn6o9', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:18:14', '2025-05-21 09:18:49', 0),
 ('ki3fbll4apinnf06pckln0kr0m', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 06:27:01', '2025-05-17 07:46:39', 1),
+('l3rehqtm17v18rs03tgc02r716', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 18:00:51', '2025-05-21 18:01:08', 0),
 ('lp0ec2on4as215e4qc6mv79d40', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-13 06:30:06', '2025-05-13 06:49:46', 1),
 ('lplplpna8jm08d3p9f88gkle0a', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 08:58:30', '2025-05-18 09:42:34', 0),
+('m85dv17c83o7393lnf7e8g5evj', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 07:37:03', '2025-05-21 07:37:09', 0),
 ('mpeuahoqb9blsqpjiik52fqh8k', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 10:25:35', '2025-05-17 11:03:40', 0),
 ('mrvao206ckuqpkto7030q398kj', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 16:52:07', '2025-05-16 17:36:41', 1),
 ('nnhmbedalo8snhg1uptq9k8doj', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-11 18:21:26', '2025-05-11 18:41:50', 1),
@@ -997,6 +1066,7 @@ INSERT INTO `user_sessions` (`session_id`, `user_id`, `ip_address`, `user_agent`
 ('ob6cho21421qrr73vd44o70lln', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-15 07:32:51', '2025-05-15 07:58:28', 1),
 ('oin3g13u5oi8ebrv6mih46e05h', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 06:25:42', '2025-05-17 06:26:53', 0),
 ('ott4a58m3fmccbhqint9mt1lkr', 8, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 18:15:41', '2025-05-14 18:16:02', 0),
+('peo9husvdmu2umb0m1pq0pi2o9', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 13:38:06', '2025-05-21 15:16:49', 1),
 ('pk57o11foot20911umd8qph900', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 06:25:21', '2025-05-17 06:25:25', 0),
 ('q18ngh7ns4ftcv7ange37agu66', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 22:56:18', '2025-05-12 23:33:04', 1),
 ('q377883ge9u7t8jj8l3u052npl', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 13:45:47', '2025-05-12 15:33:14', 1),
@@ -1004,19 +1074,23 @@ INSERT INTO `user_sessions` (`session_id`, `user_id`, `ip_address`, `user_agent`
 ('rftksimiarmf5epopbe71bv4r9', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 19:22:47', '2025-05-16 23:49:22', 1),
 ('rmg0gee55hvj46cnt6h11kh956', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 20:44:01', '2025-05-17 20:53:42', 0),
 ('rrm3jjoovn385ig72omv0cmidi', 11, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 16:51:49', '2025-05-16 16:51:59', 0),
+('rtc1iqtjgd5bkkvvh3qfk6a946', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:15:18', '2025-05-21 09:15:58', 0),
 ('sc61q8tndeidctff5m8aeigjok', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 18:03:48', '2025-05-16 18:05:08', 1),
 ('see9h077q2l30mvu8egp22kv00', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-13 06:53:21', '2025-05-13 09:36:02', 1),
+('si3ssb74q5ptrfdhhlq40tf2jm', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 15:16:53', '2025-05-21 17:33:08', 0),
 ('t57uarqkc4kd39rfmntu6uggao', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 12:56:47', '2025-05-17 13:56:45', 1),
 ('t5fki6ssr5mi5tia9dk3l47ase', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 21:05:25', '2025-05-12 21:07:19', 1),
 ('tku7old1u90dus7jj48k00rgmh', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 20:26:21', '2025-05-17 20:40:20', 0),
 ('tpagt41j4jeqlrl25fn843i8dh', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-13 12:46:17', '2025-05-13 13:59:45', 1),
+('ub6aublc15g1gh4kucim12pm99', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 13:06:01', '2025-05-19 13:53:46', 1),
 ('um5anedjherccd7ue14ri8v3ru', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 07:04:20', '2025-05-12 07:56:32', 1),
 ('unbmphj0kgnud841carmaspqss', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-11 23:40:02', '2025-05-11 23:40:04', 1),
 ('usrci1mtv27ogkuf7u7h3bm65i', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 06:16:41', '2025-05-17 06:16:52', 0),
 ('v4cerim3ds3eok82rv2qndjlub', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 20:41:10', '2025-05-17 20:43:57', 0),
 ('vaanvs08vojsp44rmcao9dkfgu', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 08:58:38', '2025-05-14 09:17:12', 1),
 ('vi8gk37c1t7fbde4g42cepedc6', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 06:06:27', '2025-05-18 07:17:23', 0),
-('vqoliptrjqcrs3lh5p71ha82vu', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 13:30:36', '2025-05-12 13:30:48', 1);
+('vqoliptrjqcrs3lh5p71ha82vu', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 13:30:36', '2025-05-12 13:30:48', 1),
+('vv30n889lt7dg2k6nk2fhfil7d', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:20:29', '2025-05-21 09:20:50', 0);
 
 -- --------------------------------------------------------
 
@@ -1082,7 +1156,8 @@ INSERT INTO `user_voucher_usage` (`id`, `user_id`, `voucher_id`, `transaction_id
 (19, 95, 1, NULL, '2025-05-11 18:05:02'),
 (20, 90, 3, 214, '2025-05-12 22:43:45'),
 (21, 90, 3, 215, '2025-05-12 22:48:52'),
-(22, 105, 4, 217, '2025-05-16 18:17:29');
+(22, 105, 4, 217, '2025-05-16 18:17:29'),
+(23, 90, 3, 221, '2025-05-19 22:18:29');
 
 -- --------------------------------------------------------
 
@@ -1115,7 +1190,7 @@ CREATE TABLE `voucher` (
 INSERT INTO `voucher` (`id`, `code`, `description`, `voucher_type`, `discount_value`, `max_discount`, `min_order_value`, `quantity`, `limit_usage`, `used_quantity`, `start_date`, `end_date`, `is_active`, `created_at`, `updated_at`) VALUES
 (1, 'FIXED100K', 'Giảm 100,000đ cho đơn hàng từ 500,000đ', 'fixed_discount', 100000.00, NULL, 500000.00, 100, NULL, 1, '2025-05-10 00:00:00', '2025-06-10 23:59:59', 1, '2025-05-10 09:34:47', '2025-05-11 18:05:02'),
 (2, 'PERCENT15', 'Giảm 15% tối đa 200,000đ cho đơn hàng từ 1 triệu đồng', 'percentage_discount', 15.00, 200000.00, 1000000.00, 50, NULL, 0, '2025-05-10 00:00:00', '2025-07-31 23:59:59', 1, '2025-05-10 09:34:47', '2025-05-11 14:58:44'),
-(3, 'EXTRAMONTH', 'Tặng thêm 1 tháng khi gia hạn gói dịch vụ', 'extend_duration', 1.00, NULL, NULL, 200, NULL, 3, '2025-05-10 00:00:00', '2025-12-31 23:59:59', 1, '2025-05-10 09:34:47', '2025-05-12 22:48:52'),
+(3, 'EXTRAMONTH', 'Tặng thêm 1 tháng khi gia hạn gói dịch vụ', 'extend_duration', 1.00, NULL, NULL, 200, NULL, 4, '2025-05-10 00:00:00', '2025-12-31 23:59:59', 1, '2025-05-10 09:34:47', '2025-05-19 22:18:29'),
 (4, 'PERCENT10', 'Giảm 10% tối đa 100.000đ cho đơn hàng từ 200.000đ', 'percentage_discount', 10.00, 100000.00, 200000.00, 120, NULL, 2, '2025-05-01 00:00:00', '2025-07-31 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-16 18:17:29'),
 (5, 'FIXED200K', 'Giảm 200.000đ cho đơn hàng từ 1.000.000đ', 'fixed_discount', 200000.00, NULL, 1000000.00, 30, NULL, 1, '2025-05-01 00:00:00', '2025-12-31 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 10:57:20'),
 (6, 'PERCENT20', 'Giảm 20% tối đa 300.000đ cho đơn hàng từ 800.000đ', 'percentage_discount', 20.00, 300000.00, 800000.00, 40, NULL, 0, '2025-05-01 00:00:00', '2025-08-31 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 10:20:40'),
@@ -1389,13 +1464,13 @@ ALTER TABLE `withdrawal_request`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=329;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=385;
 
 --
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `collaborator`
@@ -1467,19 +1542,19 @@ ALTER TABLE `referred_user`
 -- AUTO_INCREMENT for table `registration`
 --
 ALTER TABLE `registration`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=231;
 
 --
 -- AUTO_INCREMENT for table `support_requests`
 --
 ALTER TABLE `support_requests`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `transaction_history`
 --
 ALTER TABLE `transaction_history`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=220;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=222;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -1497,7 +1572,7 @@ ALTER TABLE `user_settings`
 -- AUTO_INCREMENT for table `user_voucher_usage`
 --
 ALTER TABLE `user_voucher_usage`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `voucher`
@@ -1634,6 +1709,15 @@ ALTER TABLE `user_voucher_usage`
 --
 ALTER TABLE `withdrawal_request`
   ADD CONSTRAINT `fk_withdrawal_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DELIMITER $$
+--
+-- Events
+--
+CREATE DEFINER=`root`@`localhost` EVENT `ev_delete_old_activity_logs` ON SCHEDULE EVERY 1 DAY STARTS '2025-05-20 07:50:21' ON COMPLETION NOT PRESERVE ENABLE COMMENT 'Xóa activity_logs cũ hơn 7 ngày' DO DELETE FROM `activity_logs`
+  WHERE `created_at` < NOW() - INTERVAL 7 DAY$$
+
+DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

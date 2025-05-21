@@ -6,6 +6,10 @@ require_once BASE_PATH . '/classes/InvoiceModel.php';    // thêm
 require_once BASE_PATH . '/classes/ActivityLogModel.php'; // Corrected path for ActivityLogModel
 Auth::ensureAuthorized('invoice_review_edit');
 
+// Detect AJAX (XHR) requests for JSON response
+$isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH'])
+    && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+
 // only POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     abort('Method Not Allowed.', 405);
@@ -72,7 +76,16 @@ try {
         ]
     );
 
-    // redirect back to review page on success
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true,
+            'message' => 'Upload thành công.',
+            'fileName' => $fileName
+        ]);
+        exit;
+    }
+
     header('Location: ' . $bootstrap['base_url'] . 'public/pages/invoice/invoice_review.php');
     exit;
 } catch (PDOException $e) {

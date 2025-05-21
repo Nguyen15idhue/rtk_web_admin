@@ -131,4 +131,15 @@ class GuideModel {
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$status, $id]);
     }
+
+    /**
+     * Lấy danh sách chủ đề hiện có từ bảng guide
+     * @return array Danh sách tên chủ đề
+     */
+    public function getDistinctTopics(): array {
+        $sql = "SELECT DISTINCT topic FROM guide WHERE topic IS NOT NULL AND topic <> ''";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'topic');
+    }
 }

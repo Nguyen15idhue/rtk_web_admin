@@ -22,10 +22,10 @@
     <input type="hidden" name="table_name" value="commissions">
     <?php
     if (isset($_GET['search']) && $_GET['search'] !== '') {
-        echo '<input type="hidden" name="search" value="' . htmlspecialchars($_GET['search']) . '">';
+        echo '<input type="hidden" name="search" value="' . htmlspecialchars($_GET['search'] ?? '') . '">';
     }
     if (isset($_GET['status']) && $_GET['status'] !== '') {
-        echo '<input type="hidden" name="status" value="' . htmlspecialchars($_GET['status']) . '">';
+        echo '<input type="hidden" name="status" value="' . htmlspecialchars($_GET['status'] ?? '') . '">';
     }
     ?>
     <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px; justify-content: flex-end;">
@@ -51,11 +51,11 @@
                 <?php if (!empty($data['items'])): ?>
                     <?php foreach ($data['items'] as $item): ?>
                         <tr>
-                            <td><input type="checkbox" name="selected_ids[]" class="commission-checkbox" value="<?php echo htmlspecialchars($item['id']); ?>"></td>
-                            <td><?php echo htmlspecialchars($item['id']); ?></td>
-                            <td><?php echo htmlspecialchars($item['referrer_name']); ?></td>
-                            <td><?php echo htmlspecialchars($item['referred_name']); ?></td>
-                            <td><?php echo htmlspecialchars($item['transaction_id']); ?></td>
+                            <td><input type="checkbox" name="selected_ids[]" class="commission-checkbox" value="<?php echo htmlspecialchars($item['id'] ?? ''); ?>"></td>
+                            <td><?php echo htmlspecialchars($item['id'] ?? ''); ?></td>
+                            <td><?php echo htmlspecialchars($item['referrer_name'] ?? ''); ?></td>
+                            <td><?php echo htmlspecialchars($item['referred_name'] ?? ''); ?></td>
+                            <td><?php echo htmlspecialchars($item['transaction_id'] ?? ''); ?></td>
                             <td><?php echo format_currency($item['commission_amount']); ?></td>
                             <td class="status text-center"><?php echo get_status_badge('commission', $item['status']); ?></td>
                             <td><?php echo format_datetime($item['created_at']); ?></td>

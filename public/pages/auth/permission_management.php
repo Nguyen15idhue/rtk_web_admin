@@ -11,6 +11,9 @@ $is_admin = ($_SESSION['admin_role'] ?? '') === 'admin';
 // --- NEW: Get permission status for editing permissions ---
 $canEditPermissions = Auth::can('permission_management_edit');
 
+// --- NEW: Include the PermissionService ---
+require_once __DIR__ . '/../../../private/services/PermissionService.php';
+
 $admins = $db ? $db->query("SELECT id,name,admin_username,role,created_at FROM admin")->fetchAll(PDO::FETCH_ASSOC) : [];
 $nav = ['pages/setting/profile.php' => 'Hồ sơ', 'pages/auth/admin_logout.php' => 'Đăng xuất'];
 
@@ -27,31 +30,6 @@ if ($db) {
 
 // Load all defined permissions from config file
 $all_defined_permissions = require_once __DIR__ . '/../../../private/config/app_permissions.php';
-
-if ($db) {
-    // Synchronize permissions:
-    // 1. Get all distinct roles from DB
-    $stmt_get_roles = $db->query("SELECT DISTINCT role FROM role_permissions");
-    $existing_roles_in_db = $stmt_get_roles ? $stmt_get_roles->fetchAll(PDO::FETCH_COLUMN) : [];
-
-    // 2. Ensure 'admin' and 'customercare' are in the list, then add any other roles from DB
-    $roles_to_process = array_unique(array_merge(['admin', 'customercare'], $existing_roles_in_db));
-
-    // 3. For each role, ensure all defined permissions exist, add if not (default to allowed=0)
-    $stmt_check_perm = $db->prepare("SELECT 1 FROM role_permissions WHERE role = :role AND permission = :permission");
-    $stmt_add_perm = $db->prepare("INSERT INTO role_permissions (role, permission, allowed) VALUES (:role, :permission, 0)");
-
-    foreach ($roles_to_process as $role_to_sync) {
-        if (empty($role_to_sync)) continue; // Skip if role name is empty
-        foreach ($all_defined_permissions as $perm_code => $perm_description) {
-            $stmt_check_perm->execute([':role' => $role_to_sync, ':permission' => $perm_code]);
-            if ($stmt_check_perm->fetchColumn() === false) {
-                // Permission does not exist for this role, add it with allowed = 0
-                $stmt_add_perm->execute([':role' => $role_to_sync, ':permission' => $perm_code]);
-            }
-        }
-    }
-}
 
 // Fetch current permissions from DB for all roles (potentially updated after sync)
 $role_permissions_from_db = [];
@@ -112,26 +90,9 @@ $permission_groups_config = [
     ],
 ];
 
-// Build pages-by-group for create-role modal
-$pagesByGroup = [];
-foreach ($permission_groups_config as $groupTitle => $codes) {
-    $seen = [];
-    foreach ($codes as $code) {
-        // Lấy base, viewCode, editCode
-        if (!isset($all_defined_permissions[$code])) continue;
-        if (preg_match('/(.+?)_(view|edit)$/', $code, $m)) {
-            $base = $m[1];
-        } else {
-            $base = $code;
-        }
-        if (in_array($base, $seen)) continue;
-        $seen[] = $base;
-        $viewCode = isset($all_defined_permissions[$base . '_view']) ? $base . '_view' : null;
-        $editCode = isset($all_defined_permissions[$base . '_edit']) ? $base . '_edit' : null;
-        $label = $all_defined_permissions[$viewCode] ?? $all_defined_permissions[$editCode] ?? $all_defined_permissions[$base] ?? $base;
-        $pagesByGroup[$groupTitle][] = compact('base','viewCode','editCode','label');
-    }
-}
+// --- MODIFIED: Use PermissionService to build pagesByGroup ---
+$pagesByGroup = PermissionService::buildPagesByGroupConfig($permission_groups_config, $all_defined_permissions);
+// --- END MODIFICATION ---
 
 // Helper function to get a display name for a role key
 function getRoleDisplayName($role_key) {
@@ -144,7 +105,7 @@ function getRoleDisplayName($role_key) {
 }
 ?>
 
-<?php include $private_layouts_path . 'admin_sidebar.php'; include $private_layouts_path . 'admin_header.php'; ?>
+<?php include $private_layouts_path . 'admin_header.php'; include $private_layouts_path . 'admin_sidebar.php'; ?>
 
 <main class="content-wrapper">
     <?php include $private_layouts_path . 'content_header.php'; ?>

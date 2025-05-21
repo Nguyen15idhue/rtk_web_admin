@@ -9,7 +9,8 @@ $allowed = [
     'toggle_guide_status',
     'get_guide_details',
     'create_guide',
-    'update_guide'
+    'update_guide',
+    'fetch_topics'
 ];
 
 if (!in_array($action, $allowed, true)) {

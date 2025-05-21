@@ -13,7 +13,7 @@ class RtkApiClient {
     private int $connectTimeout;
     private int $timeout;
 
-    public function __construct(int $connectTimeout = 5, int $timeout = 15) {
+    public function __construct(int $connectTimeout = 1, int $timeout = 1) {
         $this->baseUrl = API_BASE_URL;
         $this->accessKey = API_ACCESS_KEY;
         $this->secretKey = API_SECRET_KEY;
@@ -53,7 +53,7 @@ class RtkApiClient {
         }
         $sign = hash_hmac('sha256', rtrim($signStr, '&'), $this->secretKey);
         $headers['Sign'] = $sign;
-        error_log("RTK API Request: $method $uri\n" . json_encode($headers, JSON_PRETTY_PRINT));
+        //error_log("RTK API Request: $method $uri\n" . json_encode($headers, JSON_PRETTY_PRINT));
         $headers['Content-Type'] = 'application/json';
 
         $ch = curl_init($url);

@@ -27,7 +27,7 @@ $page_title = $id
                 <h2 class="mb-0"><?php echo $page_title; ?></h2>
             </div>
             <div class="card-body">
-                <form id="frm-guide" class="row g-3" enctype="multipart/form-data"
+                <form id="frm-guide" class="row g-3" enctype="multipart/form-data" autocomplete="off"
                       data-base-path="<?php echo rtrim($base_url, '/'); ?>">
                     <input type="hidden" name="id" value="<?php echo intval($_GET['id'] ?? 0); ?>">
                     <input type="hidden" name="existing_thumbnail" value="">
@@ -42,7 +42,8 @@ $page_title = $id
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Chủ đề</label>
-                        <input type="text" name="topic" class="form-control">
+                        <input type="text" name="topic" class="form-control" list="topicsList" placeholder="Chọn hoặc nhập chủ đề mới" autocomplete="off">
+                        <datalist id="topicsList"></datalist>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Trạng thái</label>

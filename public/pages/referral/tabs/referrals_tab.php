@@ -5,7 +5,7 @@
 <form method="GET">
     <input type="hidden" name="tab" value="referrals">
     <div class="filter-bar">
-        <input type="search" name="search" placeholder="Tìm mã hoặc tên" value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
+        <input type="search" name="search" placeholder="Tìm mã hoặc tên" value="<?php echo htmlspecialchars($_GET['search'] ?? null); ?>">
         <button class="btn btn-primary" type="submit">Lọc</button>
         <a class="btn btn-secondary" href="?tab=referrals">Xóa</a>
     </div>
@@ -24,9 +24,9 @@
             <?php if (!empty($data['items'])): ?>
                 <?php foreach ($data['items'] as $item): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($item['id']); ?></td>
-                        <td><?php echo htmlspecialchars($item['username']); ?></td>
-                        <td><?php echo htmlspecialchars($item['referral_code']); ?></td>
+                        <td><?php echo htmlspecialchars($item['id'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($item['username'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($item['referral_code'] ?? ''); ?></td>
                         <td><?php echo format_datetime($item['created_at']); ?></td>
                     </tr>
                 <?php endforeach; ?>

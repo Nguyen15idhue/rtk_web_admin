@@ -1,22 +1,14 @@
 <?php
 
-class ActivityLogModel {
+require_once __DIR__ . '/../config/telegram.php';
+require_once __DIR__ . '/../utils/dashboard_helpers.php';
 
+class ActivityLogModel {
     /**
-     * Adds a new log entry to the activity_logs table.
+     * Adds an activity log entry to the database.
      *
-     * @param PDO $db The database connection object.
-     * @param array $logData An associative array containing the log data.
-     * Expected keys:
-     *   ':user_id' (nullable) - The ID of the user performing the action (or null).
-     *   ':action' - A string describing the action (e.g., 'invoice_reverted').
-     *   ':entity_type' - The type of entity affected (e.g., 'invoice').
-     *   ':entity_id' (nullable) - The ID of the entity affected.
-     *   ':old_values' (nullable) - JSON string of old values.
-     *   ':new_values' (nullable) - JSON string of new values.
-     *   ':notify_content' (nullable) - A human-readable notify_content of the log (will be stored in 'notify_content' column).
-     *   ':ip_address' (nullable) - IP address of the user.
-     *   ':user_agent' (nullable) - User agent of the user.
+     * @param PDO $db The PDO database connection.
+     * @param array $logData The log data to insert.
      * @return bool True on success, false on failure.
      */
     public static function addLog(PDO $db, array $logData): bool {
@@ -44,5 +36,50 @@ class ActivityLogModel {
             error_log("Error adding activity log: " . $e->getMessage());
             return false;
         }
+    }
+
+    /**
+     * Sends a message to a Telegram chat via bot API.
+     *
+     * @param string $message The message text to send.
+     * @return bool True on success, false on failure.
+     */
+    public static function sendTelegram(string $message): bool {
+        if (!defined('TELEGRAM_BOT_TOKEN') || !defined('TELEGRAM_CHAT_ID') || TELEGRAM_BOT_TOKEN === 'YOUR_TELEGRAM_BOT_TOKEN' || TELEGRAM_CHAT_ID === 'YOUR_TELEGRAM_CHAT_ID') {
+            error_log("Telegram API Error: TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is not defined or not configured.");
+            return false;
+        }
+        $token = TELEGRAM_BOT_TOKEN;
+        $chat_id = TELEGRAM_CHAT_ID;
+        $url = "https://api.telegram.org/bot{$token}/sendMessage";
+        $data = ['chat_id' => $chat_id, 'text' => $message, 'parse_mode' => 'HTML']; // Added parse_mode HTML for better formatting
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data)); // Use http_build_query for proper encoding
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5); // Set a timeout
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); // Set a connection timeout
+
+        $response = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curl_errno = curl_errno($ch);
+        $curl_error = curl_error($ch);
+        curl_close($ch);
+
+        if ($curl_errno > 0) {
+            error_log("Telegram cURL Error ({$curl_errno}): {$curl_error}");
+            return false;
+        }
+
+        if ($http_code !== 200) {
+            error_log("Telegram API Error (HTTP {$http_code}): Response: " . $response);
+            return false;
+        }
+        
+        // Optionally log success, but can be noisy
+        // error_log("Telegram message sent successfully. Response: " . $response);
+        return true; // Assuming 200 means success, Telegram API usually returns more info in JSON
     }
 }

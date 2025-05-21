@@ -17,6 +17,7 @@ Auth::ensureAuthorized('account_management_edit');
 
 require_once BASE_PATH . '/classes/AccountModel.php';
 require_once BASE_PATH . '/api/rtk_system/account_api.php';
+require_once BASE_PATH . '/classes/ActivityLogModel.php';
 
 $response = ['success' => false, 'message' => 'Invalid request'];
 
@@ -233,7 +234,7 @@ try {
         {
             // Xây payload qua AccountModel
             $apiPayload = $accountModel->buildRtkUpdatePayload($accountId, $input);
-            error_log("[update_account] RTK API payload via model: " . print_r($apiPayload, true));
+            //error_log("[update_account] RTK API payload via model: " . print_r($apiPayload, true));
         }
 
         // call external RTK update API (giữ nguyên)
@@ -255,6 +256,26 @@ try {
         $response['success'] = true;
         $response['message'] = 'Account updated successfully'
                             . ($apiMsg ? '. RTK Info: ' . $apiMsg : '');
+
+        // Log activity
+        $adminId = $_SESSION['admin_id'] ?? null; // Get admin_id from session
+        if ($adminId) {
+            $logMessage = "Quản trị viên đã cập nhật tài khoản '{$input['username_acc']}' (ID Tài khoản: {$accountId})."; // Changed this line
+            if ($apiMsg) {
+                $logMessage .= " RTK Info: {$apiMsg}";
+            }
+            $logData = [
+                ':user_id' => $rtkUserId, // ID of the user whose account is being modified (null if not found/specified)
+                ':action' => 'account_updated_by_admin', // Specific action
+                ':entity_type' => 'account',
+                ':entity_id' => $accountId,
+                ':notify_content' => $logMessage
+            ];
+            ActivityLogModel::addLog($db, $logData); // Call static method addLog
+        } else {
+            // This should ideally not be reached if Auth::ensureAuthorized() is effective.
+            error_log("[update_account] Failed to log activity: Admin User ID not found in session. Auth issue?");
+        }
 
     } else {
         $response['message'] = 'Failed to update account. Check logs for details.';

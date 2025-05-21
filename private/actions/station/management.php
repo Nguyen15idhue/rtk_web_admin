@@ -1,8 +1,6 @@
 <?php
 // private/actions/station/management.php
 // Handles fetching data and business logic for station management page
-
-$bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $base_url = $bootstrap_data['base_url'] ?? '/';
 
 require_once __DIR__ . '/../../../private/classes/StationModel.php';
@@ -15,7 +13,7 @@ $active_nav = 'station_management';
 
 // Filters
 $filters = [
-    'q' => filter_input(INPUT_GET, 'q', FILTER_SANITIZE_SPECIAL_CHARS) ?: '',
+    'q' => isset($_GET['q']) ? trim((string)$_GET['q']) : '', // Use raw input
 ];
 
 // Instantiate models and fetch data

@@ -36,7 +36,7 @@ return [
     ],
     'station' => [
         '0' => ['class' => 'badge-gray',   'text' => 'Stop'],
-        '1' => ['class' => 'badge-success', 'text' => 'Active'],
+        '1' => ['class' => 'badge-success', 'text' => 'Online'],
         '2' => ['class' => 'badge-warning', 'text' => 'No Data'],
         '3' => ['class' => 'badge-danger',  'text' => 'Offline'],
         // Default or unknown status can be handled by render_status_badge

@@ -41,10 +41,10 @@
                 window.showToast(data.message || 'Thao tác thành công!', 'success');
                 // Optionally, redirect or update UI further
                 if (data.redirect_url) {
-                    setTimeout(() => { window.location.href = data.redirect_url; }, 2000);
+                    window.location.href = data.redirect_url;
                 } else {
                     // Fallback if no redirect URL is provided but action was successful
-                    setTimeout(() => { window.location.reload(); }, 2000);
+                    window.location.reload();
                 }
             } else {
                 window.showToast(data.message || 'Đã có lỗi xảy ra', 'error');
