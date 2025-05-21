@@ -11,6 +11,26 @@
 
         const id = parseInt(form.find('input[name=id]').val(), 10);
 
+        // Lấy danh sách chủ đề hiện có và đổ vào datalist
+        async function loadTopics() {
+            try {
+                const resp = await api.getJson(`${apiUrl}?action=fetch_topics`);
+                if (resp.success && Array.isArray(resp.data)) {
+                    const datalist = document.getElementById('topicsList');
+                    resp.data.forEach(topic => {
+                        const opt = document.createElement('option');
+                        opt.value = topic;
+                        datalist.appendChild(opt);
+                    });
+                } else {
+                    console.error('Lỗi khi lấy danh sách chủ đề:', resp.message);
+                }
+            } catch (err) {
+                console.error('Không thể kết nối API chủ đề:', err);
+            }
+        }
+        loadTopics();
+
         // Function to generate a URL-friendly slug
         function generateSlug(text) {
             if (!text) return '';

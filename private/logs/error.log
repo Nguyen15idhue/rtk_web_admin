@@ -1,0 +1,14 @@
+[21-May-2025 02:12:04 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php:193) in E:\Application\laragon\www\rtk_web_admin\private\core\auth_check.php on line 5
+[21-May-2025 02:13:49 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php:193) in E:\Application\laragon\www\rtk_web_admin\private\core\auth_check.php on line 5
+[21-May-2025 02:14:51 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php:193) in E:\Application\laragon\www\rtk_web_admin\private\core\auth_check.php on line 5
+[21-May-2025 02:15:21 UTC] Uncaught exception: Call to undefined method Database::query() in E:\Application\laragon\www\rtk_web_admin\public\pages\auth\permission_management.php on line 17
+[21-May-2025 02:15:21 UTC] PHP Warning:  http_response_code(): Cannot set response code - headers already sent (output started at E:\Application\laragon\www\rtk_web_admin\private\layouts\admin_sidebar.php:187) in E:\Application\laragon\www\rtk_web_admin\private\core\error_handler.php on line 19
+[21-May-2025 02:16:20 UTC] [DEBUG] Search keyword: 
+[21-May-2025 02:16:23 UTC] [DEBUG] Search keyword: 
+[21-May-2025 02:18:25 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\referral\tabs\referrals_tab.php on line 8
+[21-May-2025 02:18:37 UTC] Using default mount points for location ID: 12 - [42]
+[21-May-2025 02:18:37 UTC] RTK API Payload: {"id":"2278","name":"CMA001","userPwd":"fs","startTime":1747612800000,"endTime":1750377599000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[21-May-2025 02:18:37 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[21-May-2025 02:18:42 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\referral\tabs\referrals_tab.php on line 8
+[21-May-2025 02:21:51 UTC] PHP Warning:  Undefined array key "admin_id" in E:\Application\laragon\www\rtk_web_admin\public\pages\setting\profile.php on line 17
+[21-May-2025 02:22:03 UTC] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in E:\Application\laragon\www\rtk_web_admin\public\pages\referral\tabs\referrals_tab.php on line 8

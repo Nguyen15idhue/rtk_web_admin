@@ -1,12 +1,22 @@
 <?php
-$GLOBALS['required_permission'] = 'station_management'; // Added permission requirement
-require __DIR__ . '/../../../private/actions/station/management.php';
+// --- Bootstrap and Initialization ---
+$bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
+$base_url = $bootstrap_data['base_url'];
+$private_layouts_path = $bootstrap_data['private_layouts_path'];
 
-// --- NEW: Get permission status ---
+// --- Authorization Check via Header include ---
+require_once $private_layouts_path . 'admin_header.php';
+require_once $private_layouts_path . 'admin_sidebar.php';
+
+// --- Page Settings ---
+$GLOBALS['required_permission'] = 'station_management'; // Permission requirement
+$page_title = "Quản lý Trạm";
+
+// --- Data & Business Logic ---
+require_once __DIR__ . '/../../../private/actions/station/management.php';
+
+// --- Permissions for actions ---
 $canEditStation = Auth::can('station_management_edit');
-
-require_once PRIVATE_LAYOUTS_PATH . '/admin_header.php';
-require_once PRIVATE_LAYOUTS_PATH . '/admin_sidebar.php';
 ?>
 
 <main class="content-wrapper">

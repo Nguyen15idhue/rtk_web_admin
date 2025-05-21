@@ -4,13 +4,9 @@ $bootstrap_data        = require_once __DIR__ . '/../../../private/core/page_boo
 $private_layouts_path = $bootstrap_data['private_layouts_path'];
 $base_url              = $bootstrap_data['base_url'];
 $admin_role            = $bootstrap_data['admin_role'];
+$user_display_name     = $bootstrap_data['user_display_name'];
 
-// authorization check
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ' . htmlspecialchars($base_url, ENT_QUOTES, 'UTF-8') . 'public/pages/auth/admin_login.php');
-    exit;
-}
-
+// --- Page Specific Variables ---
 $invoiceId = (int)($_GET['invoice_id'] ?? 0); // Using null coalescing operator
 if ($invoiceId <= 0) {
     header('Location: invoice_review.php');

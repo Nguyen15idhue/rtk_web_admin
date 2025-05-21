@@ -1,4 +1,9 @@
 <?php
+// filepath: e:\Application\laragon\www\rtk_web_admin\private\layouts\admin_header.php
+
+// Perform authentication check at the very beginning of the header
+require_once __DIR__ . '/../core/auth_check.php';
+
 // Include base constants
 require_once __DIR__ . '/../config/constants.php';
 

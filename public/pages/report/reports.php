@@ -6,12 +6,9 @@ $db                      = $bootstrap_data['db'];
 $base_url                = $bootstrap_data['base_url'];
 $private_layouts_path   = $bootstrap_data['private_layouts_path'];
 $user_display_name       = $bootstrap_data['user_display_name'];
+$admin_role              = $bootstrap_data['admin_role'];
 
-// authorization check
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
-    exit;
-}
+// Authorization check is now handled by admin_header.php
 
 $pdo = $db;
 

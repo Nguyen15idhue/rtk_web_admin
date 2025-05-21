@@ -144,7 +144,7 @@ function getRoleDisplayName($role_key) {
 }
 ?>
 
-<?php include $private_layouts_path . 'admin_sidebar.php'; include $private_layouts_path . 'admin_header.php'; ?>
+<?php include $private_layouts_path . 'admin_header.php'; include $private_layouts_path . 'admin_sidebar.php'; ?>
 
 <main class="content-wrapper">
     <?php include $private_layouts_path . 'content_header.php'; ?>

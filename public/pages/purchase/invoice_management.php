@@ -9,6 +9,8 @@ $private_layouts_path = $bootstrap_data['private_layouts_path'];
 $private_actions_path = $bootstrap_data['private_actions_path'];
 $user_display_name     = $bootstrap_data['user_display_name'];
 
+include $private_layouts_path . 'admin_header.php';
+include $private_layouts_path . 'admin_sidebar.php';
 require_once $private_actions_path . 'invoice/fetch_transactions.php';
 
 // Check permissions
@@ -43,9 +45,6 @@ $status_badge_maps = require __DIR__ . '/../../../private/config/status_badge_ma
 
 $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
 ?>
-
-    <?php include $private_layouts_path . 'admin_header.php'; ?>
-    <?php include $private_layouts_path . 'admin_sidebar.php'; ?>
 
     <main class="content-wrapper">
         <?php include $private_layouts_path . 'content_header.php'; ?>

@@ -33,27 +33,6 @@ function get_voucher_code_by_registration($registration_id) {
     return $row ? htmlspecialchars($row['code']) : '';
 }
 
-// thêm hàm kiểm tra tình trạng upload minh chứng
-function get_payment_proof_status($registration_id) {
-    $pdo = Database::getInstance()->getConnection();
-    $sql = "
-        SELECT payment_image 
-        FROM transaction_history 
-        WHERE registration_id = ? 
-          AND payment_image IS NOT NULL 
-          AND payment_image <> '' 
-        ORDER BY created_at DESC 
-        LIMIT 1
-    ";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$registration_id]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row && !empty($row['payment_image'])) {
-        return " <span class='text-green-500'>(Đã upload minh chứng)</span>";
-    }
-    return " <span class='text-red-500'>(Chưa upload minh chứng)</span>";
-}
-
 /**
  * Formats an activity log entry into a user-friendly message and icon.
  *
@@ -89,7 +68,6 @@ function format_activity_log($log) {
             $message = "<strong>{$actor}</strong> đăng ký <strong>{$package}</strong> x{$accounts} tài khoản"
                      .($voucher ? " (<strong>Voucher: {$voucher}</strong>)" : "")
                      .($location ? " tại <strong>{$location}</strong>" : "").".";
-            if ($registration) $message .= get_payment_proof_status($registration);
             $icon    = "fas fa-shopping-cart text-green-500";
             if (isset($registration)) {
                 $action_type = 'navigate';
@@ -132,7 +110,6 @@ function format_activity_log($log) {
             $message = "<strong>{$actor}</strong> gia hạn <strong>{$package}</strong> x{$accounts} tài khoản"
                      .($voucher ? " (<strong>Voucher: {$voucher}</strong>)" : "")
                      .($location ? " tại <strong>{$location}</strong>" : "").".";
-            if ($registration) $message .= get_payment_proof_status($registration);
             $icon = "fas fa-sync-alt text-purple-500";
             if (isset($registration)) {
                 $action_type = 'navigate';

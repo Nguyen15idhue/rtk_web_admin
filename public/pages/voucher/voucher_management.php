@@ -11,10 +11,7 @@ $private_layouts_path = $bootstrap_data['private_layouts_path'];
 $admin_role        = $bootstrap_data['admin_role'];
 
 // authorization check
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
-    exit;
-}
+require_once __DIR__ . '/../../../private/core/auth_check.php';
 
 // --- Includes and Setup ---
 require_once BASE_PATH . '/utils/functions.php';

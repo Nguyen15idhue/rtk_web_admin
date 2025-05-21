@@ -9,6 +9,7 @@ $base_path = $bootstrap_data['base_path'];
 $base_url = $bootstrap_data['base_url'];
 $user_display_name = $bootstrap_data['user_display_name'];
 $private_layouts_path = $bootstrap_data['private_layouts_path'];
+$admin_role = $bootstrap_data['admin_role'];
 
 // --- Include Helpers ---
 require_once BASE_PATH . '/utils/dashboard_helpers.php';

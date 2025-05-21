@@ -4,13 +4,7 @@ $bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.
 $base_url = $bootstrap_data['base_url'];
 $user_display_name = $bootstrap_data['user_display_name'];
 $private_layouts_path = $bootstrap_data['private_layouts_path'];
-
-// Check if admin is logged in
-if (!isset($_SESSION['admin_id'])) {
-    // Use the calculated base_path for redirection
-    header('Location: ' . $base_url . 'public/pages/auth/admin_login.php');
-    exit;
-}
+$admin_role = $bootstrap_data['admin_role'];
 
 $page_title = 'Chăm sóc khách hàng';
 include $private_layouts_path . 'admin_header.php';

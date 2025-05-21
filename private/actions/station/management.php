@@ -1,8 +1,6 @@
 <?php
 // private/actions/station/management.php
 // Handles fetching data and business logic for station management page
-
-$bootstrap_data = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 $base_url = $bootstrap_data['base_url'] ?? '/';
 
 require_once __DIR__ . '/../../../private/classes/StationModel.php';

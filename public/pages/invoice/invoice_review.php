@@ -8,6 +8,11 @@ $base_url               = $bootstrap_data['base_url'];
 $private_layouts_path  = $bootstrap_data['private_layouts_path'];
 $user_display_name      = $bootstrap_data['user_display_name'];
 
+// --- add page bootstrap & title ---
+$page_title = 'Phê duyệt Hóa đơn';
+include $private_layouts_path . 'admin_header.php';
+include $private_layouts_path . 'admin_sidebar.php';
+
 require_once BASE_PATH . '/actions/invoice/fetch_invoices.php';
 define('PDF_BASE_URL', $base_url . 'public/uploads/invoice/');
 
@@ -30,11 +35,6 @@ $status_options = [
     'approved' => 'Đã duyệt',
     'rejected' => 'Từ chối'
 ];
-
-// --- add page bootstrap & title ---
-$page_title = 'Phê duyệt Hóa đơn';
-include $private_layouts_path . 'admin_header.php';
-include $private_layouts_path . 'admin_sidebar.php';
 
 $isEditInvoiceAllowed = Auth::can('invoice_review_edit');
 ?>

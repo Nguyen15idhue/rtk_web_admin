@@ -12,6 +12,15 @@ $user_display_name = $bootstrap_data['user_display_name'];
 $private_layouts_path = $bootstrap_data['private_layouts_path'];
 $admin_role        = $bootstrap_data['admin_role'];
 
+// --- Page Setup for Header/Sidebar ---
+$page_title = 'Quản lý Người dùng';
+include $private_layouts_path . 'admin_header.php';
+include $private_layouts_path . 'admin_sidebar.php';
+
+// --- Includes and Setup ---
+require_once BASE_PATH . '/utils/user_helpers.php'; // User-specific helpers
+require_once BASE_PATH . '/actions/user/fetch_users.php'; // User fetching logic
+
 // --- NEW: Pass permissions to JS ---
 $user_permissions = [
     'user_management_edit' => Auth::can('user_management_edit'),
@@ -19,17 +28,11 @@ $user_permissions = [
 ];
 // --- END NEW ---
 
-// --- Includes and Setup ---
-require_once BASE_PATH . '/utils/user_helpers.php'; // User-specific helpers
-require_once BASE_PATH . '/actions/user/fetch_users.php'; // User fetching logic
-
 // --- Get Filters ---
 $filters = [
     'q' => isset($_GET['q']) ? (string)$_GET['q'] : '', // Use raw input, UserModel will trim
     'status' => filter_input(INPUT_GET, 'status', FILTER_SANITIZE_SPECIAL_CHARS) ?: '',
 ];
-// Debug PHP error log
-error_log('[DEBUG] Search keyword: ' . $filters['q']);
 // Debug JavaScript console
 echo '<script>console.log("DEBUG Search keyword:", ' . json_encode($filters['q'], JSON_UNESCAPED_UNICODE) . ');</script>';
 
@@ -46,11 +49,6 @@ $current_page = $userData['current_page']; // Use the validated page number from
 
 // --- Build Pagination URL ---
 $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
-
-// --- Page Setup for Header/Sidebar ---
-$page_title = 'Quản lý Người dùng';
-include $private_layouts_path . 'admin_header.php';
-include $private_layouts_path . 'admin_sidebar.php';
 ?>
 
 <!-- Main Content Wrapper -->
