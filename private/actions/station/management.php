@@ -29,6 +29,18 @@ if ($filters['q'] !== '') {
     });
 }
 
+// Move stations with unknown status (-1) to bottom of the list
+usort($stations, function($a, $b) {
+    $sa = $a['status'] ?? null;
+    $sb = $b['status'] ?? null;
+    if ($sa === -1 && $sb !== -1) {
+        return 1;
+    } elseif ($sa !== -1 && $sb === -1) {
+        return -1;
+    }
+    return 0;
+});
+
 $allManagers = $managerModel->getAllManagers();
 $availableMountpoints = $stationModel->fetchMountpointsFromAPI();
 

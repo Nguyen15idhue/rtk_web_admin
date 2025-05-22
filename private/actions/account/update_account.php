@@ -230,7 +230,6 @@ try {
         $startMs = strtotime($activation . ' 00:00:00') * 1000;
         $endMs   = strtotime($expiry     . ' 23:59:59') * 1000;
 
-        // Thay thế toàn bộ logic manual build payload RTK bằng:
         {
             // Xây payload qua AccountModel
             $apiPayload = $accountModel->buildRtkUpdatePayload($accountId, $input);

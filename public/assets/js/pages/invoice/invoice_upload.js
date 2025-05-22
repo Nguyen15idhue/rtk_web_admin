@@ -8,6 +8,7 @@ var invoiceDropzone = new Dropzone("#invoiceDropzone", {
     acceptedFiles: 'application/pdf',
     maxFilesize: 5,
     maxFiles: 1,
+    createImageThumbnails: false, // Thêm dòng này để không tạo thumbnail
     init: function() {
         var dz = this;
         var progressBar = document.getElementById('uploadProgressBar');

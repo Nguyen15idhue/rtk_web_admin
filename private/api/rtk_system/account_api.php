@@ -98,7 +98,6 @@ function getMountPointsByLocationId(int $locationId): array {
             $stmt->execute();
             
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                // Tách phần số từ ID hoặc tạo một số thay thế
                 preg_match('/(\d+)/', $row['id'], $matches);
                 if (!empty($matches[1])) {
                     $mountIds[] = (int)$matches[1]; // Chuyển thành số nguyên

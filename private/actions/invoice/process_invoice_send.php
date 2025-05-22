@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php'; 
-require_once BASE_PATH . '/classes/InvoiceModel.php';    // thêm
+require_once BASE_PATH . '/classes/InvoiceModel.php';
 require_once BASE_PATH . '/classes/ActivityLogModel.php'; // Corrected path for ActivityLogModel
 Auth::ensureAuthorized('invoice_review_edit');
 
@@ -50,7 +50,7 @@ if (!move_uploaded_file($file['tmp_name'], $target)) {
 }
 
 try {
-    $model = new InvoiceModel();                           // thêm
+    $model = new InvoiceModel();
     $invoice = $model->getOne($invoiceId); // Get current invoice details
 
     if (!$invoice) {
@@ -60,7 +60,7 @@ try {
     $oldStatus = $invoice['status']; // Capture old status
     $customerId = $model->getCustomerId($invoiceId); // Fetch customerId via model
 
-    $model->attachFile($invoiceId, $fileName);             // thay cho prepare/execute trực tiếp
+    $model->attachFile($invoiceId, $fileName);
 
     // Log activity
     ActivityLogModel::addLog(
