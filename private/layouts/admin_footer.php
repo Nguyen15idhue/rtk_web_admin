@@ -13,7 +13,5 @@ Database::getInstance()->close();
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Tiếp các script nội bộ -->
-    <!-- <script src="<?php echo $public_assets_path; ?>js/vendor.bundle.js"></script> -->
-    <!-- <script src="<?php echo $public_assets_path; ?>js/app.bundle.js"></script> -->
 </body>
 </html>

@@ -180,14 +180,25 @@ class StationModel {
      * @return array An array of station data corresponding to the provided IDs.
      */
     public function getDataByIdsForExport(array $ids): array {
-        $results = [];
-        foreach ($ids as $id) {
-            $station = $this->getStationById($id);
-            if ($station !== null) {
-                $results[] = $station;
-            }
+        if (empty($ids)) {
+            return [];
         }
-        return $results;
+        // batch fetch stations by IDs
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $sql = "SELECT s.*, m.name as manager_name
+                FROM station s
+                LEFT JOIN manager m ON s.manager_id = m.id
+                WHERE s.id IN ($placeholders)
+                ORDER BY s.station_name ASC";
+        try {
+            $pdo = Database::getInstance()->getConnection();
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute($ids);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error in StationModel::getDataByIdsForExport: " . $e->getMessage());
+            return [];
+        }
     }
 }
 ?>

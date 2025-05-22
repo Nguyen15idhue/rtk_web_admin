@@ -10,6 +10,15 @@ register_shutdown_function(function() use (&$db) {
 });
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // CSRF protection: verify token
+    if (!isset($_POST['csrf_token'], $_SESSION['csrf_token_admin_login']) ||
+        !hash_equals($_SESSION['csrf_token_admin_login'], $_POST['csrf_token'])) {
+        // Invalid CSRF token
+        $_SESSION['admin_login_error'] = 'Yêu cầu không hợp lệ.';
+        header("Location: " . $base_url . "public/pages/auth/admin_login.php");
+        exit();
+    }
+
     $admin_username = trim($_POST['admin_username'] ?? '');
     $admin_password = $_POST['admin_password'] ?? '';
     $login_error = null;
@@ -51,6 +60,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Verify password
                 if (password_verify($admin_password, $admin['admin_password'])) {
                     // Login successful
+                    // Unset CSRF token to prevent reuse
+                    unset($_SESSION['csrf_token_admin_login']);
                     session_regenerate_id(true); // Security: regenerate session ID
 
                     // Store necessary admin info in session

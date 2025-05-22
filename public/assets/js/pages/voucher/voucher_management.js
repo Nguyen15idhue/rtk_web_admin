@@ -1,5 +1,3 @@
-// filepath: public/assets/js/pages/voucher/voucher_management.js
-
 // Thêm helper local để thay thế
 function getVoucherTypeText(type) {
     switch (type) {
@@ -101,8 +99,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
             voucherTypeSelect.dispatchEvent(new Event('change'));
         }
     }
-
-    function loadVouchers() { /* Optionally refresh table via AJAX */ }
 
     // VIEW DETAILS
     window.VoucherPage = {

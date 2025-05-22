@@ -280,9 +280,6 @@ try {
         $response['message'] = 'Failed to update account. Check logs for details.';
     }
 
-    // debug: log full response before sending
-    error_log("[update_account] response payload: " . json_encode($response));
-
 } catch (PDOException $e) {
     error_log("Database error updating account: " 
         . $e->getMessage() 

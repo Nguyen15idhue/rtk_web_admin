@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             editModal.style.display = 'block';
         } catch (error) {
-            console.error('Error fetching account details:', error);
+            console.error('Error fetching account details for edit:', { accountId, error });
             window.showToast(error.message || 'Không thể tải chi tiết tài khoản.', 'error');
         }
     }
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             renewModal.style.display = 'block';
         } catch (error) {
-            console.error('Error fetching account details for renewal:', error);
+            console.error('Error fetching account details for renewal:', { accountId, error });
             window.showToast(error.message || 'Không thể tải chi tiết tài khoản cho gia hạn.', 'error');
         }
     }
@@ -203,6 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     errorIndicator.innerHTML = `<p class="error">Lỗi khi tải chi tiết: ${error.message}</p>`;
                     errorIndicator.style.display = 'block';
                 } else if (viewDetailsContent) { // Fallback
+                     console.error('Error in viewAccountDetails:', { accountId, error }); // Keep console.error for this specific fallback
                      viewDetailsContent.innerHTML = `<p class="error">Lỗi: ${error.message}</p>`;
                 }
             });
@@ -227,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.showToast(result.message || 'Tạo tài khoản thất bại.', 'error');
             }
         } catch (error) {
-            console.error('Error creating account:', error);
+            console.error('Error creating account:', { formData: Object.fromEntries(new FormData(form)), error });
             if(createAccountError) createAccountError.textContent = 'Lỗi khi gửi yêu cầu tạo tài khoản.';
             window.showToast('Lỗi khi gửi yêu cầu tạo tài khoản.', 'error');
         } finally {
@@ -260,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.showToast(result.message || 'Cập nhật tài khoản thất bại.', 'error');
             }
         } catch (error) {
-            console.error('Error updating account:', error);
+            console.error('Error updating account:', { accountId, formData: Object.fromEntries(formData), error });
             if(editAccountError) editAccountError.textContent = 'Lỗi khi gửi yêu cầu cập nhật.';
             window.showToast('Lỗi khi gửi yêu cầu cập nhật.', 'error');
         } finally {
@@ -293,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.showToast(result.message || 'Gia hạn tài khoản thất bại.', 'error');
             }
         } catch (error) {
-            console.error('Error renewing account:', error);
+            console.error('Error renewing account:', { accountId, formData: Object.fromEntries(formData), error });
             if (renewAccountError) renewAccountError.textContent = 'Lỗi khi gửi yêu cầu gia hạn.';
             window.showToast('Lỗi khi gửi yêu cầu gia hạn.', 'error');
         } finally {
@@ -313,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const [year, month, day] = datePart.split('-');
                 return `${day}/${month}/${year}`;
             } catch (e) {
-                console.error("Error formatting date:", dateString, e);
+                console.error("Error formatting date in updateTableRow:", { dateString, error: e });
                 return dateString;
             }
         };
@@ -386,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.showToast(result.message || 'Xóa tài khoản thất bại.', 'error');
             }
         } catch (error) {
-            console.error('Error deleting account:', error);
+            console.error('Error deleting account:', { accountId, error });
             window.showToast('Lỗi khi gửi yêu cầu xóa.', 'error');
         }
     }
@@ -413,7 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.showToast(result.message || 'Cập nhật trạng thái thất bại.', 'error');
             }
         } catch (error) {
-            console.error('Error toggling account status:', error);
+            console.error('Error toggling account status:', { accountId, action, error });
             window.showToast('Lỗi khi gửi yêu cầu cập nhật trạng thái.', 'error');
         }
     }
@@ -458,7 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const date = new Date(activation);
             if (isNaN(date.getTime())) {
-                console.error("Invalid activation date provided:", activation);
+                console.error("Invalid activation date provided to calculateExpiryDate:", { activation, pkgId });
                 return '';
             }
             const dur = packageDurations[pkgId];
@@ -467,7 +468,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (dur.years)  date.setFullYear(date.getFullYear() + dur.years);
 
             if (isNaN(date.getTime())) {
-                console.error("Date calculation resulted in an invalid date. Input:", activation, "PkgID:", pkgId);
+                console.error("Date calculation resulted in an invalid date in calculateExpiryDate. Input:", { activation, pkgId });
                 return '';
             }
 
@@ -476,7 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const dd   = String(date.getDate()).padStart(2, '0');
             return `${yyyy}-${mm}-${dd}`;
         } catch (e) {
-            console.error("Error calculating expiry date:", e);
+            console.error("Error calculating expiry date in calculateExpiryDate:", { activation, pkgId, error: e });
             return '';
         }
     }
@@ -618,7 +619,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 infoElement.innerHTML = '';
             }
         } catch (error) {
-            console.error('Error fetching user info:', error);
+            console.error('Error fetching user info in fetchAndDisplayUserInfo:', { email, infoElementId, error });
             infoElement.innerHTML = '<p style="font-size: var(--font-size-xs); margin-top: 4px; color: var(--danger-500);">Lỗi tìm user</p>';
         }
     }
@@ -647,6 +648,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             searchTimer = setTimeout(async () => {
+                const query = inputElement.value.trim(); // Re-fetch query inside timeout
                 try {
                     const result = await getJson(`${basePath}public/handlers/account/index.php?action=search_users&email=${encodeURIComponent(query)}`);
                     const users = result.data?.users;
@@ -660,7 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         currentUsers = [];
                     }
                 } catch (error) {
-                    console.error('Error fetching user suggestions:', error);
+                    console.error('Error fetching user suggestions:', { query, error });
                     dataListElement.innerHTML = '';
                     currentUsers = [];
                 }
@@ -671,11 +673,12 @@ document.addEventListener('DOMContentLoaded', () => {
              clearTimeout(searchTimer);
              const selectedEmail = e.target.value;
              const matchedUser = currentUsers.find(user => user.email === selectedEmail);
+             const infoId = infoElement.id; // Get infoId for fetchAndDisplayUserInfo
 
              if (matchedUser) {
                  infoElement.innerHTML = `<p style="font-size: var(--font-size-xs); margin-top: 4px; color: var(--gray-600);">Người dùng: <strong>${matchedUser.username}</strong> — SĐT: ${matchedUser.phone || 'N/A'}</p>`;
              } else {
-                 if (selectedEmail && selectedEmail.layouts('@')) {
+                 if (selectedEmail && selectedEmail.includes('@')) { // Changed layouts to includes
                      fetchAndDisplayUserInfo(selectedEmail, infoId);
                  } else {
                      infoElement.innerHTML = '';
@@ -705,7 +708,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.showToast('Đã đảo trạng thái xong.', 'success');
             window.location.reload();
         } catch (e) {
-            console.error(e);
+            console.error('Error in bulkToggleStatus:', { ids, error: e });
             window.showToast('Lỗi khi đảo trạng thái.', 'error');
         }
     }
@@ -724,7 +727,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.showToast('Đã xóa các tài khoản được chọn.', 'success');
             window.location.reload();
         } catch (e) {
-            console.error(e);
+            console.error('Error in bulkDeleteAccounts:', { ids, error: e });
             window.showToast('Lỗi khi xóa.', 'error');
         }
     }
@@ -791,7 +794,7 @@ document.addEventListener('DOMContentLoaded', () => {
             closeModal('bulkRenewModal');
             window.location.reload();
         } catch (e) {
-            console.error('Bulk renew error:', e);
+            console.error('Error in handleBulkRenewSubmit:', { ids, packageId: form.querySelector('#bulk-renew-package').value, error: e });
             window.showToast('Lỗi khi gia hạn hàng loạt.', 'error');
         } finally {
             form.querySelector('button[type="submit"]').disabled = false;
