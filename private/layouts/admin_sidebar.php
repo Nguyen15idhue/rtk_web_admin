@@ -171,11 +171,6 @@ if (isset($db_custom_role_names[$role])) {
                             if (isset($item['active_check']) && $current_script === $item['active_check']) {
                                 $is_active = true;
                             }
-                            // Handle dashboard specifically if base path matches URL
-                            elseif (isset($item['active_check']) && $item['active_check'] === 'dashboard.php' && strpos($_SERVER['REQUEST_URI'], $item['url']) !== false) {
-                                // Basic check, might need refinement depending on URL structure
-                                // $is_active = true; // Uncomment if dashboard needs special check
-                            }
 
                             $item_class = isset($item['class']) ? $item['class'] : '';
                             if ($is_active) {

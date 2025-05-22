@@ -16,7 +16,15 @@ class AccountModel {
             u.id as user_id, u.email AS user_email, u.username AS user_username,
             u.phone AS user_phone,
             p.id as package_id, p.name AS package_name, p.package_id AS package_identifier,
-            l.id as location_id, l.province AS location_name
+            l.id as location_id, l.province AS location_name,
+            CASE
+                WHEN LOWER(r.status) = 'pending' THEN 'pending'
+                WHEN LOWER(r.status) = 'rejected' THEN 'rejected'
+                WHEN LOWER(r.status) = 'active' AND sa.enabled = 0 THEN 'suspended'
+                WHEN LOWER(r.status) = 'active' AND sa.end_time IS NOT NULL AND sa.end_time < NOW() THEN 'expired'
+                WHEN LOWER(r.status) = 'active' THEN 'active'
+                ELSE 'unknown'
+            END AS derived_status
         FROM survey_account sa
         JOIN registration r ON sa.registration_id = r.id
         JOIN user u ON r.user_id = u.id
@@ -31,33 +39,6 @@ class AccountModel {
      */
     public function __construct(PDO $db) {
         $this->db = $db;
-    }
-
-    /**
-     * Derive account status based on registration status, enabled flag, and expiry date.
-     *
-     * @param string $registrationStatus Status from the registration table.
-     * @param bool $enabled Enabled flag from the survey_account table.
-     * @param string|null $expiryDate Expiry date string.
-     * @return string Derived status ('active', 'pending', 'expired', 'suspended', 'rejected', 'unknown').
-     */
-    private function deriveAccountStatus(string $registrationStatus, bool $enabled, ?string $expiryDate): string {
-        $regStatusLower = strtolower($registrationStatus);
-
-        // Priority 1: Registration status overrides everything else
-        if ($regStatusLower === 'pending') return 'pending'; // Chờ KH
-        if ($regStatusLower === 'rejected') return 'rejected'; // Bị từ chối
-
-        // Priority 2: If registration is active, check enabled and expiry
-        if ($regStatusLower === 'active') {
-            if (!$enabled) return 'suspended'; // Đình chỉ (if explicitly disabled by admin)
-            if ($expiryDate && strtotime($expiryDate) < time()) return 'expired'; // Hết hạn
-            return 'active'; // Hoạt động (enabled and not expired)
-        }
-
-        // Fallback for any unexpected registration status
-        error_log("Unknown registration status encountered: " . $registrationStatus);
-        return 'unknown';
     }
 
     /**
@@ -163,19 +144,7 @@ class AccountModel {
             unset($val);
 
             $stmt->execute();
-            $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($accounts as &$account) {
-                $isEnabled = isset($account['enabled']) ? (bool)$account['enabled'] : false;
-                $account['derived_status'] = $this->deriveAccountStatus(
-                    $account['registration_status'] ?? 'unknown',
-                    $isEnabled,
-                    $account['expiry_date']
-                );
-            }
-            unset($account);
-
-            return $accounts;
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         } catch (PDOException $e) {
             error_log("Error fetching accounts: " . $e->getMessage() . "\nSQL: " . $sql . "\nParams: " . print_r($params, true));
@@ -195,17 +164,7 @@ class AccountModel {
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':id', $accountId, PDO::PARAM_STR);
             $stmt->execute();
-            $account = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($account) {
-                $account['derived_status'] = $this->deriveAccountStatus(
-                    $account['registration_status'],
-                    (bool)$account['enabled'],
-                    $account['expiry_date']
-                );
-            }
-
-            return $account ?: null;
+            return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
         } catch (PDOException $e) {
             error_log("Error fetching account by ID ($accountId): " . $e->getMessage());
             return null;
@@ -501,7 +460,8 @@ class AccountModel {
                            sa.start_time AS start_date, sa.end_time AS end_date,
                            r.status AS reg_status, p.name AS package_name,
                            DATEDIFF(sa.end_time, sa.start_time) AS duration_days,
-                           sa.username_acc AS username
+                           sa.username_acc AS username,
+                           r.location_id AS location_id
                     FROM survey_account sa
                     JOIN registration r ON sa.registration_id = r.id
                     LEFT JOIN package p ON r.package_id = p.id
@@ -513,38 +473,38 @@ class AccountModel {
             $stmt->execute();
             $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            foreach ($accounts as &$account) {
-                $account['stations'] = $this->getMountPointsForAccount($account['id']);
+            // Batch fetch mount points to avoid N+1 queries
+            if (!empty($accounts)) {
+                $locationIds = array_unique(array_column($accounts, 'location_id'));
+                $placeholders = implode(',', array_fill(0, count($locationIds), '?'));
+                $sqlMp = "SELECT id, ip, port, mountpoint, location_id FROM mount_point WHERE location_id IN ($placeholders)";
+                $stmtMp = $this->db->prepare($sqlMp);
+                $stmtMp->execute($locationIds);
+                $mountPoints = $stmtMp->fetchAll(PDO::FETCH_ASSOC);
+                $mountPointsByLocation = [];
+                foreach ($mountPoints as $mp) {
+                    $mountPointsByLocation[$mp['location_id']][] = [
+                        'id' => $mp['id'],
+                        'ip' => $mp['ip'],
+                        'port' => $mp['port'],
+                        'mountpoint' => $mp['mountpoint'],
+                    ];
+                }
+                unset($mp);
+                foreach ($accounts as &$account) {
+                    $account['stations'] = $mountPointsByLocation[$account['location_id']] ?? [];
+                }
+                unset($account);
+            } else {
+                foreach ($accounts as &$account) {
+                    $account['stations'] = [];
+                }
+                unset($account);
             }
-            unset($account);
 
             return $accounts;
         } catch (PDOException $e) {
             error_log("Error fetching RTK accounts by user ($userId): " . $e->getMessage());
-            return [];
-        }
-    }
-
-    /**
-     * Fetch mount point entries for a given account.
-     *
-     * @param string $accountId
-     * @return array
-     */
-    private function getMountPointsForAccount(string $accountId): array {
-        try {
-            $sql = "SELECT mp.id, mp.ip, mp.port, mp.mountpoint"
-                 . " FROM survey_account sa"
-                 . " JOIN registration r ON sa.registration_id = r.id"
-                 . " JOIN mount_point mp ON mp.location_id = r.location_id"
-                 . " WHERE sa.id = :account_id";
-
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':account_id', $accountId, PDO::PARAM_STR);
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            error_log('Error fetching mount points for account ' . $accountId . ': ' . $e->getMessage());
             return [];
         }
     }
@@ -635,17 +595,7 @@ class AccountModel {
         try {
             $stmt = $this->db->prepare($sql);
             $stmt->execute($ids);
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            // derive status
-            foreach ($rows as &$row) {
-                $row['derived_status'] = $this->deriveAccountStatus(
-                    $row['registration_status'] ?? 'unknown',
-                    isset($row['enabled']) ? (bool)$row['enabled'] : false,
-                    $row['expiry_date'] ?? null
-                );
-            }
-            unset($row);
-            return $rows;
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log("getDataByIdsForExport failed: " . $e->getMessage());
             return [];
@@ -661,17 +611,7 @@ class AccountModel {
         $sql = $this->baseSelectQuery . " ORDER BY sa.created_at DESC";
         try {
             $stmt = $this->db->query($sql);
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            // derive status
-            foreach ($rows as &$row) {
-                $row['derived_status'] = $this->deriveAccountStatus(
-                    $row['registration_status'] ?? 'unknown',
-                    isset($row['enabled']) ? (bool)$row['enabled'] : false,
-                    $row['expiry_date'] ?? null
-                );
-            }
-            unset($row);
-            return $rows;
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log("getAllDataForExport failed: " . $e->getMessage());
             return [];

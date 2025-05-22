@@ -1,4 +1,3 @@
-// filepath: public/assets/js/pages/support/support_management.js
 (function($) {
     const apiUrl = basePath + '/public/handlers/support/index.php';
 

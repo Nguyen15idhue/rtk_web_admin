@@ -1,14 +1,11 @@
 (function(){
     const adminsData   = window.adminsData;
-    const isAdmin = window.isAdmin; // Keep isAdmin for specific admin-only logic if needed
     const canEditPermissions = window.appConfig && window.appConfig.permissions && window.appConfig.permissions.permission_management_edit;
     const allDefinedPermissions = window.allDefinedPermissions || {};
     const permissionGroupsConfig = window.permissionGroupsConfig || {};
     let currentRolePermissions = window.currentRolePermissions || {};
     const roleDisplayNames = window.roleDisplayNames || {};
     let activeRoleKey = null;
-
-    console.log('Debug isAdmin value:', window.isAdmin, typeof window.isAdmin, '=>', isAdmin);
 
     window.togglePermissionGroup = function(headerElement, contentId) {
         const contentElement = document.getElementById(contentId);
@@ -52,7 +49,6 @@
         const saveBtn = document.getElementById('saveRolePermissionsBtn');
 
         if (!modal || !modalBody || !modalRoleName || !currentRolePermissions[roleKey]) {
-            console.error('Modal elements or role permissions not found for', roleKey);
             return;
         }
 
@@ -243,7 +239,6 @@
             currentRolePermissions[roleKey][permCode] = { description: allDefinedPermissions[permCode] };
         }
         currentRolePermissions[roleKey][permCode].allowed = checkbox.checked;
-        console.log(`Permission changed for ${roleKey} - ${permCode}: ${checkbox.checked}`);
     }
 
     function handlePermissionModeChange(roleKey, base, mode) {
@@ -271,8 +266,6 @@
                 }
             }
         }
-        
-        console.log('Saving permissions for role:', activeRoleKey, permissionsToSave);
 
         try {
             const data = await api.postJson(`${basePath}public/handlers/auth/index.php?action=process_permissions_update`, {
@@ -284,7 +277,6 @@
                 closePermissionsModal();
             }
         } catch (err) {
-            console.error(err);
             window.showToast(`Lỗi cập nhật quyền: ${err.message}`, 'error');
         }
     }
@@ -308,7 +300,10 @@
                 }
             });
         } catch (err) {
-            console.error(err);
+            console.error(`Lỗi khi tải quyền cho vai trò ${roleKey}:`, err);
+            if (window.showToast) {
+                window.showToast(`Không thể tải quyền cho vai trò "${roleDisplayNames[roleKey] || roleKey}". Lỗi: ${err.message}`, 'error');
+            }
         }
     });
 
@@ -398,7 +393,6 @@
             window.showToast(result.message || (result.success ? 'Đã xóa thành công.' : 'Lỗi khi xóa.'), result.success ? 'success' : 'error');
             if(result.success) setTimeout(()=>location.reload(), 1500);
         }catch(err){
-            console.error(err);
             window.showToast('Lỗi kết nối khi xóa admin.', 'error');
         }
     }
@@ -470,7 +464,6 @@
                     }
                 })
                 .catch(err=>{
-                    console.error(err);
                     window.showToast('Lỗi kết nối: Không thể tạo tài khoản.', 'error');
                 })
                 .finally(()=> btn.disabled=false);
@@ -502,7 +495,6 @@
                         setTimeout(()=>location.reload(), 1500);
                     }
                 } catch (err) {
-                    console.error(err);
                     window.showToast('Lỗi kết nối: ' + err.message, 'error');
                 } finally {
                     btn.disabled = false;

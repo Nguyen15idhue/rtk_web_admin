@@ -54,7 +54,7 @@ try {
     }
 
     try {
-        $userModel->updateWithDuplicateCheck($user_id, [
+        $updated = $userModel->update($user_id, [
             'username'     => $username,
             'email'        => $email,
             'phone'        => $phone,
@@ -63,9 +63,8 @@ try {
             'tax_code'     => $tax_code,
             'company_address' => $company_address
         ]);
-        api_success(null, 'Cập nhật thông tin người dùng thành công.');
-    } catch (Exception $e) {
-        error_log("DEBUG update_user Exception: user_id={$user_id} | username={$username} | email={$email} | phone={$phone} | is_company={$is_company} | company_name={$company_name} | tax_code={$tax_code} | company_address={$company_address} | msg=" . $e->getMessage());
+        api_success(['user' => $updated], 'User updated successfully.');
+    } catch (\InvalidArgumentException $e) {
         $msg = $e->getMessage();
         abort($msg, strpos($msg, 'tồn tại')!==false ? 409 : 500);
     }

@@ -1,0 +1,154 @@
+[22-May-2025 15:17:09 UTC] [PTA] activate survey_account executed, affectedRows=0
+[22-May-2025 15:17:09 UTC] Warning: No survey accounts found or enabled for approved registration ID: 220
+[22-May-2025 15:17:09 UTC] [PTA] province_code=YBI, lastUser=, nextSeq=1, username=YBI001, password=0999999443
+[22-May-2025 15:17:09 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":220,"username_acc":"YBI001","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-22 22:17:09","end_time":"2025-08-22 22:17:09","enabled":1,"concurrent_user":1,"account_count":1}
+[22-May-2025 15:17:10 UTC] [PTA] create_account timed out (could be pending), transaction 214
+[22-May-2025 15:17:31 UTC] [PTA] activate survey_account executed, affectedRows=0
+[22-May-2025 15:17:31 UTC] Warning: No survey accounts found or enabled for approved registration ID: 229
+[22-May-2025 15:17:31 UTC] [PTA] province_code=CMA, lastUser=, nextSeq=1, username=CMA001, password=0999999443
+[22-May-2025 15:17:31 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":229,"username_acc":"CMA001","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":12,"package_id":1,"start_time":"2025-05-22 22:17:31","end_time":"2025-09-22 22:17:31","enabled":1,"concurrent_user":1,"account_count":1}
+[22-May-2025 15:17:32 UTC] [PTA] create_account timed out (could be pending), transaction 220
+[22-May-2025 15:17:32 UTC] Using default mount points for location ID: 12 - [42]
+[22-May-2025 15:20:44 UTC] [PTA] activate survey_account executed, affectedRows=0
+[22-May-2025 15:20:44 UTC] Warning: No survey accounts found or enabled for approved registration ID: 220
+[22-May-2025 15:20:44 UTC] [PTA] province_code=YBI, lastUser=YBI400, nextSeq=401, username=YBI401, password=0999999443
+[22-May-2025 15:20:44 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":220,"username_acc":"YBI401","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":63,"package_id":2,"start_time":"2025-05-22 22:20:44","end_time":"2025-08-22 22:20:44","enabled":1,"concurrent_user":1,"account_count":1}
+[22-May-2025 15:20:45 UTC] [PTA] create_account timed out (could be pending), transaction 214
+[22-May-2025 15:31:45 UTC] [update_account] raw input: 
+[22-May-2025 15:31:45 UTC] [update_account] decoded input: Array
+(
+    [id] => 2381
+    [username_acc] => YBI400
+    [password_acc] => 
+    [user_email] => tranhailong2407@gmail.com
+    [location_id] => 63
+    [package_id] => 1
+    [activation_date] => 2025-05-22
+    [expiry_date] => 2025-09-22
+    [status] => active
+)
+
+[22-May-2025 15:31:45 UTC] [update_account] input customer_phone: <none>
+[22-May-2025 15:31:45 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => YBI400
+    [password_acc] => 
+    [user_email] => tranhailong2407@gmail.com
+    [location_id] => 63
+    [package_id] => 1
+    [activation_date] => 2025-05-22
+    [expiry_date] => 2025-09-22
+    [status] => active
+)
+
+[22-May-2025 15:31:45 UTC] Location changed for account 2381: old=12, new=63
+[22-May-2025 15:31:45 UTC] [update_account] final sanitized customer_phone: 0999999443
+[22-May-2025 15:31:45 UTC] [update_account] final customer_name: Long2002
+[22-May-2025 15:31:45 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[22-May-2025 15:41:39 UTC] [update_account] raw input: 
+[22-May-2025 15:41:39 UTC] [update_account] decoded input: Array
+(
+    [id] => 2381
+    [username_acc] => YBI400
+    [password_acc] => 
+    [user_email] => tranhailong2407@gmail.com
+    [location_id] => 12
+    [package_id] => 1
+    [activation_date] => 2025-05-22
+    [expiry_date] => 2025-09-22
+    [status] => active
+)
+
+[22-May-2025 15:41:39 UTC] [update_account] input customer_phone: <none>
+[22-May-2025 15:41:39 UTC] [update_account] updateData initial: Array
+(
+    [username_acc] => YBI400
+    [password_acc] => 
+    [user_email] => tranhailong2407@gmail.com
+    [location_id] => 12
+    [package_id] => 1
+    [activation_date] => 2025-05-22
+    [expiry_date] => 2025-09-22
+    [status] => active
+)
+
+[22-May-2025 15:41:39 UTC] Location changed for account 2381: old=63, new=12
+[22-May-2025 15:41:39 UTC] Using default mount points for location ID: 12 - [42]
+[22-May-2025 15:41:39 UTC] [update_account] final sanitized customer_phone: 0999999443
+[22-May-2025 15:41:39 UTC] [update_account] final customer_name: Long2002
+[22-May-2025 15:41:39 UTC] Using default mount points for location ID: 12 - [42]
+[22-May-2025 15:41:39 UTC] [update_account] RTK API result: Array
+(
+    [success] => 1
+    [data] => 1
+    [error] => 
+)
+
+[22-May-2025 15:48:50 UTC] RTK API Payload: {"id":"2382","name":"YBI401","userPwd":"0999999443","startTime":1747952444000,"endTime":1755901244000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[22-May-2025 15:48:50 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[22-May-2025 15:48:55 UTC] RTK API Payload: {"id":"2382","name":"YBI401","userPwd":"0999999443","startTime":1747952444000,"endTime":1755901244000,"enabled":1,"numOnline":1,"customerBizType":1,"mountIds":[44,45,46,47,48,49,60,64]}
+[22-May-2025 15:48:55 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[22-May-2025 15:49:00 UTC] Using default mount points for location ID: 12 - [42]
+[22-May-2025 15:49:00 UTC] RTK API Payload: {"id":"2381","name":"YBI400","userPwd":"0999999443","startTime":1747872000000,"endTime":1758585599000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[42]}
+[22-May-2025 15:49:00 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[22-May-2025 16:01:26 UTC] Error fetching support requests: SQLSTATE[HY093]: Invalid parameter number
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\SupportRequestModel.php(39): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\support\fetch_support_requests.php(15): SupportRequestModel->getAll(Array)
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\support\index.php(20): require_once('E:\\Application\\...')
+#3 {main}
+[22-May-2025 16:01:26 UTC] Error fetching support requests: SQLSTATE[HY093]: Invalid parameter number
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\SupportRequestModel.php(39): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\support\fetch_support_requests.php(15): SupportRequestModel->getAll(Array)
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\support\index.php(20): require_once('E:\\Application\\...')
+#3 {main}
+[22-May-2025 16:01:26 UTC] Error fetching support requests: SQLSTATE[HY093]: Invalid parameter number
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\SupportRequestModel.php(39): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\support\fetch_support_requests.php(15): SupportRequestModel->getAll(Array)
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\support\index.php(20): require_once('E:\\Application\\...')
+#3 {main}
+[22-May-2025 16:01:26 UTC] Error fetching support requests: SQLSTATE[HY093]: Invalid parameter number
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\SupportRequestModel.php(39): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\support\fetch_support_requests.php(15): SupportRequestModel->getAll(Array)
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\support\index.php(20): require_once('E:\\Application\\...')
+#3 {main}
+[22-May-2025 16:01:27 UTC] Error fetching support requests: SQLSTATE[HY093]: Invalid parameter number
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\SupportRequestModel.php(39): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\support\fetch_support_requests.php(15): SupportRequestModel->getAll(Array)
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\support\index.php(20): require_once('E:\\Application\\...')
+#3 {main}
+[22-May-2025 16:01:28 UTC] Error fetching support requests: SQLSTATE[HY093]: Invalid parameter number
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\SupportRequestModel.php(39): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\support\fetch_support_requests.php(15): SupportRequestModel->getAll(Array)
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\support\index.php(20): require_once('E:\\Application\\...')
+#3 {main}
+[22-May-2025 16:01:28 UTC] Error fetching support requests: SQLSTATE[HY093]: Invalid parameter number
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\SupportRequestModel.php(39): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\support\fetch_support_requests.php(15): SupportRequestModel->getAll(Array)
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\support\index.php(20): require_once('E:\\Application\\...')
+#3 {main}
+[22-May-2025 16:01:39 UTC] Error fetching support requests: SQLSTATE[HY093]: Invalid parameter number
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\SupportRequestModel.php(39): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\support\fetch_support_requests.php(15): SupportRequestModel->getAll(Array)
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\support\index.php(20): require_once('E:\\Application\\...')
+#3 {main}
+[22-May-2025 16:01:43 UTC] Error fetching support requests: SQLSTATE[HY093]: Invalid parameter number
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\SupportRequestModel.php(39): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\support\fetch_support_requests.php(15): SupportRequestModel->getAll(Array)
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\support\index.php(20): require_once('E:\\Application\\...')
+#3 {main}
+[22-May-2025 16:01:43 UTC] Error fetching support requests: SQLSTATE[HY093]: Invalid parameter number
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\SupportRequestModel.php(39): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\support\fetch_support_requests.php(15): SupportRequestModel->getAll(Array)
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\support\index.php(20): require_once('E:\\Application\\...')
+#3 {main}
+[22-May-2025 16:01:44 UTC] Error fetching support requests: SQLSTATE[HY093]: Invalid parameter number
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\SupportRequestModel.php(39): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\support\fetch_support_requests.php(15): SupportRequestModel->getAll(Array)
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\support\index.php(20): require_once('E:\\Application\\...')
+#3 {main}

@@ -1,4 +1,3 @@
-// filepath: e:\Application\laragon\www\rtk_web_admin\public\assets\js\pages\station\station_management.js
 // Select All logic is now handled by utils/bulk_actions.js
 
 // manager modal helper functions

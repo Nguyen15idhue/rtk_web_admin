@@ -12,6 +12,7 @@ require_once __DIR__ . '/../services/ExcelExportService.php';
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     error_log('Export Excel: Invalid request method.');
     api_error('Invalid request method. Only POST is accepted.', 405);
+    exit; // It's good practice to exit after sending an error response if api_error doesn't exit itself.
 }
 
 $tableName = $_POST['table_name'] ?? null;
@@ -34,6 +35,7 @@ if (isset($_POST['export_selected_excel'])) { // Check if 'Export Selected' butt
 if (empty($tableName)) {
     error_log('Export Excel: Table name not provided.');
     api_error('Table name is required.', 400);
+    exit; // Also here.
 }
 
 // START: Special handling for 'reports' table export
@@ -49,6 +51,7 @@ if ($tableName === 'reports') {
     if (!isset($db) || !$db instanceof PDO) {
         error_log("Export Excel (Reports): Database connection (\$db) not available or invalid.");
         api_error("Internal server error: Database connection not available for reports.", 500);
+        exit; // And here.
     }
     $pdo = $db; // Make $pdo available for process_reports_data.php
 

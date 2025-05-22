@@ -19,11 +19,9 @@ class SupportRequestModel {
         $where = [];
         $params = [];
         if (!empty($filters['search'])) {
-            $searchTerm = '%' . trim($filters['search']) . '%';
-            $where[] = "(sr.subject LIKE :search_subject OR sr.message LIKE :search_message OR u.email LIKE :search_email)";
-            $params[':search_subject'] = $searchTerm;
-            $params[':search_message'] = $searchTerm;
-            $params[':search_email'] = $searchTerm;
+            // search across subject, message, and user email using one placeholder
+            $where[] = "CONCAT_WS(' ', sr.subject, sr.message, u.email) LIKE :search";
+            $params[':search'] = '%' . trim($filters['search']) . '%';
         }
         if (!empty($filters['status'])) {
             $where[] = "sr.status = :status";
@@ -39,15 +37,7 @@ class SupportRequestModel {
         $sql .= ' ORDER BY sr.created_at DESC';
 
         $stmt = $this->db->prepare($sql);
-        // Bind each parameter explicitly
-        foreach ($params as $key => $value) {
-            if (stripos($key, ':search') === 0) {
-                $stmt->bindValue($key, $value, PDO::PARAM_STR);
-            } else {
-                $stmt->bindValue($key, $value);
-            }
-        }
-        $stmt->execute(); // Execute without parameters since they're already bound
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -94,11 +84,8 @@ class SupportRequestModel {
         $placeholders = implode(',', array_fill(0, count($ids), '?'));
         $sql = "SELECT sr.*, u.email AS user_email FROM support_requests sr JOIN user u ON sr.user_id = u.id WHERE sr.id IN ($placeholders) ORDER BY sr.created_at DESC";
         $stmt = $this->db->prepare($sql);
-        // Bind each ID value as integer
-        foreach ($ids as $index => $id) {
-            $stmt->bindValue($index + 1, (int) $id, PDO::PARAM_INT);
-        }
-        $stmt->execute();
+        // Execute with ID array
+        $stmt->execute($ids);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

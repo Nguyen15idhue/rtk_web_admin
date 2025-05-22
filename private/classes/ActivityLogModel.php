@@ -77,9 +77,7 @@ class ActivityLogModel {
             error_log("Telegram API Error (HTTP {$http_code}): Response: " . $response);
             return false;
         }
-        
-        // Optionally log success, but can be noisy
-        // error_log("Telegram message sent successfully. Response: " . $response);
-        return true; // Assuming 200 means success, Telegram API usually returns more info in JSON
+
+        return true;
     }
 }

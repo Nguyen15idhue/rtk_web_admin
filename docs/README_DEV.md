@@ -28,10 +28,10 @@
 
 3.  **Cấu Hình Cơ Sở Dữ Liệu:**
     *   Tạo một cơ sở dữ liệu mới trong MySQL/MariaDB (ví dụ: `sa3`).
-    *   Import dữ liệu từ file `sa3 (1).sql` vào cơ sở dữ liệu vừa tạo.
+    *   Import dữ liệu từ file `sql/sa3 (2).sql` vào cơ sở dữ liệu vừa tạo.
         ```bash
         # Ví dụ sử dụng mysql client, thay thế username và database_name cho phù hợp
-        mysql -u your_username -p your_database_name < "sa3 (1).sql"
+        mysql -u your_username -p your_database_name < sql/sa3 (2).sql
         ```
     *   Cấu hình thông tin kết nối cơ sở dữ liệu trong file `private/config/database.php`.
         Bạn có thể cần tạo các biến môi trường `DB_SERVER`, `DB_USERNAME`, `DB_PASSWORD`, `DB_NAME` hoặc sửa trực tiếp các giá trị mặc định trong file:
@@ -56,8 +56,10 @@ Trang mặc định sẽ là trang đăng nhập.
 
 ## Cấu Trúc Dự Án (Sơ Lược)
 
+*   `docs/`: Chứa các tài liệu của dự án (bao gồm file README này, hướng dẫn sử dụng).
 *   `private/`: Chứa toàn bộ mã nguồn backend của ứng dụng.
     *   `actions/`: Logic xử lý cho các yêu cầu cụ thể (thường là các file PHP được include/require bởi các trang trong `public/pages` hoặc `public/handlers`).
+    *   `api/`: Chứa mã nguồn liên quan đến API (ví dụ: kết nối đến hệ thống RTK khác).
     *   `classes/`: Các lớp đối tượng (Models ví dụ: `UserModel.php`, `InvoiceModel.php`) và lớp tiện ích (ví dụ: `Database.php`, `Auth.php`).
     *   `config/`: Các file cấu hình hệ thống (kết nối CSDL, hằng số, đường dẫn, session,...).
     *   `core/`: Các file khởi tạo và cốt lõi của ứng dụng (ví dụ: `page_bootstrap.php` để khởi tạo session, CSDL; `error_handler.php`).
@@ -71,10 +73,10 @@ Trang mặc định sẽ là trang đăng nhập.
     *   `pages/`: Các file PHP định nghĩa giao diện và logic hiển thị cho từng trang/module của ứng dụng.
     *   `handlers/`: (Nếu có) Các file PHP xử lý yêu cầu từ client (ví dụ: form submissions, AJAX requests), thường gọi tới `actions/` hoặc `services/`.
     *   `uploads/`: (Nếu có) Thư mục chứa các file được người dùng tải lên.
+*   `sql/`: Chứa các file dump cơ sở dữ liệu (ví dụ: `sa3 (2).sql`).
 *   `vendor/`: Thư mục chứa các thư viện được quản lý bởi Composer.
 *   `composer.json`: Định nghĩa các dependencies của dự án và các script Composer.
 *   `composer.lock`: Ghi lại phiên bản cụ thể của các thư viện đã cài đặt.
-*   `sa3 (1).sql`: File dump cơ sở dữ liệu ban đầu.
 
 ## Luồng Xử Lý Lỗi
 

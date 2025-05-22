@@ -1,5 +1,4 @@
 // filepath: public/assets/js/pages/referral_management.js
-// Handles actions on the Referral Management page
 (function($) {
     const apiUrl = basePath + '/public/handlers/referral/process_withdrawal.php';
 

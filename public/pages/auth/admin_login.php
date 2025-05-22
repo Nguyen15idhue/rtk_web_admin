@@ -5,6 +5,12 @@ require_once dirname(__DIR__, 3) . '/private/config/constants.php';
 $error_message = $_SESSION['admin_login_error'] ?? null;
 unset($_SESSION['admin_login_error']); // Clear error after displaying
 
+// Generate CSRF token for admin login if not exists
+if (!isset($_SESSION['csrf_token_admin_login'])) {
+    $_SESSION['csrf_token_admin_login'] = bin2hex(random_bytes(32));
+}
+$csrf_token = $_SESSION['csrf_token_admin_login'];
+
 // If admin is already logged in, redirect to admin dashboard
 if (isset($_SESSION['admin_id'])) {
     // chuyển đến đúng file dashboard trong pages
@@ -29,6 +35,7 @@ if (isset($_SESSION['admin_id'])) {
         <?php endif; ?>
 
         <form action="<?= BASE_URL ?>public/handlers/auth/index.php?action=process_admin_login" method="POST">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8') ?>">
             <div class="form-group">
                 <label for="admin_username">Tên đăng nhập Admin:</label>
                 <input type="text" id="admin_username" name="admin_username" required>
