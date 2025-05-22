@@ -83,7 +83,6 @@ try {
     $locationId = (int)$stmtLoc->fetchColumn();
     $mountIds = getMountPointsByLocationId($locationId); 
 
-    // Prepare payload for RTK API to sync status, thêm mountIds
     $apiPayload = [
         'id'              => $accountId,
         'name'            => $updatedAccount['username_acc'],

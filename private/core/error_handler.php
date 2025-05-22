@@ -3,7 +3,6 @@
 ini_set('log_errors', 1);
 ini_set('error_log', __DIR__ . '/../logs/error.log');
 
-// Thêm dòng này nếu chưa include functions.php để có api_error()
 require_once __DIR__ . '/../utils/functions.php';
 
 // Phát hiện API request (JSON) hay Web

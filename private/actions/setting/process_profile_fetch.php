@@ -1,10 +1,9 @@
 <?php
 require_once __DIR__ . '/../../config/constants.php';
-// require_once BASE_PATH . '/classes/Database.php'; // Removed, handled by AdminModel
-require_once BASE_PATH . '/utils/functions.php';    // thêm utils/functions
+require_once BASE_PATH . '/utils/functions.php';
 require_once __DIR__ . '/../../core/error_handler.php';
 require_once __DIR__ . '/../../classes/Auth.php';
-require_once BASE_PATH . '/classes/AdminModel.php'; // Add AdminModel
+require_once BASE_PATH . '/classes/AdminModel.php';
 require_once BASE_PATH . '/classes/Database.php';
 
 Auth::ensureAuthenticated();

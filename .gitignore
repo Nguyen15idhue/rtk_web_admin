@@ -1,0 +1,23 @@
+# Ignore sensitive configuration files
+/private/config/api.php
+/private/config/telegram.php
+
+# Ignore Composer dependencies
+/vendor/
+
+# Ignore log files
+/private/logs/*.log
+!/private/logs/.gitkeep
+
+# Ignore Composer lock file if you prefer to generate it on each environment
+# composer.lock
+
+# Ignore common OS-generated files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE/editor specific files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project

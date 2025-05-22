@@ -56,9 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // Store necessary admin info in session
                     $_SESSION['admin_id']       = $admin['id'];
                     $_SESSION['admin_username'] = $admin['admin_username'];
-                    $_SESSION['admin_role']     = $admin['role']; // Store role if needed for permissions
+                    $_SESSION['admin_role']     = $admin['role'];
 
-                    // thêm dòng này để lưu phiên mới
                     recordSession($admin['id']);
 
                     // Xóa bộ đếm khi login thành công
