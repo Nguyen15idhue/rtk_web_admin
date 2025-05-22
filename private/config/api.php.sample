@@ -1,0 +1,8 @@
+<?php
+// RTK API configuration
+
+define('API_ACCESS_KEY', 'YOUR_API_ACCESS_KEY_HERE');
+define('API_SECRET_KEY', 'YOUR_API_SECRET_KEY_HERE');
+
+define('API_BASE_URL', 'YOUR_API_BASE_URL_HERE'); // e.g., http://production-api-url.com
+define('API_SIGN_METHOD', 'HmacSHA256');
