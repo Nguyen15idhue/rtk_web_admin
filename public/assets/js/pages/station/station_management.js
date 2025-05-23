@@ -113,4 +113,18 @@ document.addEventListener('DOMContentLoaded', function() {
             button.style.display = 'none'; // Hide save buttons
         });
     }
+
+    // Tab switching
+    const tabs = document.querySelectorAll('.custom-tabs-nav .nav-link');
+    const contents = document.querySelectorAll('.tab-content');
+    tabs.forEach(btn => btn.addEventListener('click', () => {
+        tabs.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        contents.forEach(c => c.style.display = (c.id === btn.dataset.tab ? '' : 'none'));
+    }));
+
+    // Display toast if any
+    if (window.initialToast) {
+        showToast(window.initialToast.message, window.initialToast.type);
+    }
 });

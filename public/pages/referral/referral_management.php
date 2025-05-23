@@ -48,12 +48,6 @@ switch ($current_tab) {
 include $private_layouts_path . 'admin_header.php';
 include $private_layouts_path . 'admin_sidebar.php';
 ?>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Đăng Nhập</title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/assets/css/pages/referral_management.css">
-</head>
 <main class="content-wrapper">
     <?php include $private_layouts_path . 'content_header.php'; ?>
     <div class="content-section">

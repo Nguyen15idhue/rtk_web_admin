@@ -138,6 +138,24 @@ if ($tx_type === 'renewal') {
     // NEW: log which accounts will be renewed
     error_log("[PTA] Accounts slated for renewal: " . implode(',', $accIds));
 
+    // NEW: Fetch all account details in batch before the loop
+    $accountsDetailsMap = [];
+    if (!empty($accIds)) {
+        $placeholdersAccDetails = implode(',', array_fill(0, count($accIds), '?'));
+        $sqlAccDetails = "SELECT id, end_time, username_acc, password_acc FROM survey_account WHERE id IN ({$placeholdersAccDetails})";
+        $stmtAccDetails = $db->prepare($sqlAccDetails);
+        try {
+            $stmtAccDetails->execute(array_values($accIds)); // Ensure $accIds is numerically indexed
+            $allAccountDetails = $stmtAccDetails->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($allAccountDetails as $detail) {
+                $accountsDetailsMap[$detail['id']] = $detail;
+            }
+        } catch (PDOException $e) {
+            error_log("[PTA] Failed to fetch batch account details for renewal: " . $e->getMessage());
+            // Depending on policy, might throw an exception or allow proceeding with partial data / defaults
+        }
+    }
+
     // NEW: preserve session name & ID before releasing lock
     $sessName = session_name();
     $sessId   = session_id();
@@ -147,30 +165,25 @@ if ($tx_type === 'renewal') {
     $db->commit();
 
     foreach ($accIds as $aid) {
-        // get old end_time
-        $stmt_old = $db->prepare("SELECT end_time FROM survey_account WHERE id = :aid");
-        $stmt_old->bindParam(':aid', $aid);
-        $stmt_old->execute();
-        $oldEnd = $stmt_old->fetchColumn();
+        // Get account details from the pre-fetched map
+        $accountDetail = $accountsDetailsMap[$aid] ?? null;
+
+        if (!$accountDetail) {
+            error_log("[PTA] Renewal SKIPPED for account {$aid}: Details not found (possibly due to earlier fetch error or account deleted).");
+            continue; // Skip this account if details are missing
+        }
+
+        $oldEnd = $accountDetail['end_time'];
+        $usernameAcc = $accountDetail['username_acc'];
+        $passwordAcc = $accountDetail['password_acc'];
+
         $oldEndTs = strtotime($oldEnd);
         $nowTs    = time();
 
         // per-account new start/end
         $startTs  = max($nowTs, $oldEndTs);
-        $newStart = date('Y-m-d H:i:s', $nowTs);
+        $newStart = date('Y-m-d H:i:s', $startTs); 
         $newEnd   = date('Y-m-d H:i:s', $startTs + $durationSec);
-
-        // NEW: fetch account credentials to include in payload
-        $stmt_acc_info = $db->prepare("
-            SELECT username_acc, password_acc 
-            FROM survey_account 
-            WHERE id = :aid
-        ");
-        $stmt_acc_info->bindParam(':aid', $aid, PDO::PARAM_INT);
-        $stmt_acc_info->execute();
-        $accInfo = $stmt_acc_info->fetch(PDO::FETCH_ASSOC);
-        $usernameAcc = $accInfo['username_acc'];
-        $passwordAcc = $accInfo['password_acc'];
 
         // build internal URL to our update_account API
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']==='on') ? 'https' : 'http';
@@ -200,9 +213,7 @@ if ($tx_type === 'renewal') {
             'Content-Type: application/json; charset=utf-8',
             'User-Agent: PHP-cURL'
         ]);
-        // NEW: debug mỗi lần gọi
         error_log("[PTA] renewing account {$aid} with cookie {$sessName}={$sessId}");
-        // REPLACE cookie header:
         curl_setopt($ch, CURLOPT_COOKIE, "{$sessName}={$sessId}");
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
         $resp      = curl_exec($ch);
@@ -289,19 +300,12 @@ $script   = $_SERVER['SCRIPT_NAME'];
 $basePath = dirname(dirname($script));
 $url      = "{$protocol}://{$host}{$basePath}/account/index.php?action=create_account";
 
-// Generate username = province_code + next 3-digit sequence
-$stmt_province = $db->prepare("SELECT province_code FROM location WHERE id = :loc");
-$stmt_province->bindParam(':loc', $reg['location_id'], PDO::PARAM_INT);
-$stmt_province->execute();
-$province_code = $stmt_province->fetchColumn();
-$stmt_last = $db->prepare("SELECT username_acc FROM survey_account WHERE username_acc LIKE ? ORDER BY username_acc DESC LIMIT 1");
-$stmt_last->execute([$province_code . '%']);
-$lastUser = $stmt_last->fetchColumn();
-$nextSeq = 1;
-if ($lastUser && preg_match('/^' . preg_quote($province_code,'/') . '(\d{3})$/', $lastUser, $m)) {
-    $nextSeq = intval($m[1]) + 1;
-}
-$username = sprintf('%s%03d', $province_code, $nextSeq);
+// --- include helper for generating usernames ---
+require_once BASE_PATH . '/utils/account_helpers.php';
+
+// Generate username for survey account
+$username = generateSurveyAccountUsername($db, (int)$reg['location_id']);
+
 // Password is the user's phone
 $stmt_user = $db->prepare("SELECT phone FROM user WHERE id = :uid");
 $stmt_user->bindParam(':uid', $reg['user_id'], PDO::PARAM_INT);
@@ -322,7 +326,7 @@ $payload = [
     'account_count'   => (int)$reg['num_account'],
 ];
 
-error_log("[PTA] province_code={$province_code}, lastUser={$lastUser}, nextSeq={$nextSeq}, username={$username}, password={$password}");
+error_log("[PTA] Generated survey account username: {$username}");
 error_log("[PTA] cURL timeout set to 1s; calling public front-controller URL={$url} with payload=".json_encode($payload));
 
 // --- Release session lock before internal request ---

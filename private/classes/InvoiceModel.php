@@ -41,12 +41,12 @@ class InvoiceModel {
             $params[]       = $filters['status'];
         }
         if (!empty($filters['date_from'])) {
-            $where[]        = 'DATE(inv.created_at) >= ?';
-            $params[]       = $filters['date_from'];
+            $where[]        = 'inv.created_at >= ?';
+            $params[]       = $filters['date_from'] . ' 00:00:00';
         }
         if (!empty($filters['date_to'])) {
-            $where[]        = 'DATE(inv.created_at) <= ?';
-            $params[]       = $filters['date_to'];
+            $where[]        = 'inv.created_at <= ?';
+            $params[]       = $filters['date_to'] . ' 23:59:59';
         }
         if ($where) {
             $sql .= ' WHERE ' . implode(' AND ', $where);

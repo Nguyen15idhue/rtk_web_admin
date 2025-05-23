@@ -1,5 +1,5 @@
 <?php
-// filepath: e:\Application\laragon\www\rtk_web_admin\private\config\status_badge_maps.php
+// filepath: private\config\status_badge_maps.php
 return [
     'account'    => [
         'active'    => ['class' => 'badge-green',  'text' => 'Hoạt động'],
@@ -39,7 +39,12 @@ return [
         '1' => ['class' => 'badge-success', 'text' => 'Online'],
         '2' => ['class' => 'badge-warning', 'text' => 'No Data'],
         '3' => ['class' => 'badge-danger',  'text' => 'Offline'],
-        // Default or unknown status can be handled by render_status_badge
-    ]
+    ],
+    'support' => [
+        'pending'     => ['class' => 'badge-yellow',    'text' => 'Chờ xử lý'],
+        'in_progress' => ['class' => 'badge-info',      'text' => 'Đang xử lý'],
+        'resolved'    => ['class' => 'badge-green',     'text' => 'Đã giải quyết'],
+        'closed'      => ['class' => 'badge-secondary', 'text' => 'Đã đóng'],
+    ],
 ];
 ?>

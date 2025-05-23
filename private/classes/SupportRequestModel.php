@@ -42,6 +42,73 @@ class SupportRequestModel {
     }
 
     /**
+     * Get total count of support requests with optional filters.
+     * @param array $filters
+     * @return int
+     */
+    public function getCount(array $filters = []): int {
+        $sql = "SELECT COUNT(*) FROM support_requests sr JOIN user u ON sr.user_id = u.id";
+        $where = [];
+        $params = [];
+        if (!empty($filters['search'])) {
+            $where[] = "CONCAT_WS(' ', sr.subject, sr.message, u.email) LIKE :search";
+            $params[':search'] = '%' . trim($filters['search']) . '%';
+        }
+        if (!empty($filters['status'])) {
+            $where[] = "sr.status = :status";
+            $params[':status'] = $filters['status'];
+        }
+        if (!empty($filters['category'])) {
+            $where[] = "sr.category = :category";
+            $params[':category'] = $filters['category'];
+        }
+        if ($where) {
+            $sql .= ' WHERE ' . implode(' AND ', $where);
+        }
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn();
+    }
+
+    /**
+     * Get paginated support requests with optional filters.
+     * @param array $filters
+     * @param int $page
+     * @param int $perPage
+     * @return array
+     */
+    public function getPaginated(array $filters = [], int $page = 1, int $perPage = 10): array {
+        $offset = ($page - 1) * $perPage;
+        $sql = "SELECT sr.*, u.email AS user_email FROM support_requests sr JOIN user u ON sr.user_id = u.id";
+        $where = [];
+        $params = [];
+        if (!empty($filters['search'])) {
+            $where[] = "CONCAT_WS(' ', sr.subject, sr.message, u.email) LIKE :search";
+            $params[':search'] = '%' . trim($filters['search']) . '%';
+        }
+        if (!empty($filters['status'])) {
+            $where[] = "sr.status = :status";
+            $params[':status'] = $filters['status'];
+        }
+        if (!empty($filters['category'])) {
+            $where[] = "sr.category = :category";
+            $params[':category'] = $filters['category'];
+        }
+        if ($where) {
+            $sql .= ' WHERE ' . implode(' AND ', $where);
+        }
+        $sql .= ' ORDER BY sr.created_at DESC LIMIT :limit OFFSET :offset';
+        $stmt = $this->db->prepare($sql);
+        foreach ($params as $key => $val) {
+            $stmt->bindValue($key, $val);
+        }
+        $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Get a single support request by ID.
      * @param int $id
      * @return array|null

@@ -92,8 +92,20 @@ class Auth {
      */
     private static function hasPermission(string $role, string $permission): bool {
         try {
-            // Ensure Database class is loaded (handled by autoloader or require statements elsewhere)
-            // e.g., require_once __DIR__ . '/Database.php'; if not autoloaded.
+            self::ensureSessionStarted(); // Ensure session is started to access $_SESSION
+
+            // Check for permissions in session first
+            if (isset($_SESSION['admin_permissions']) && is_array($_SESSION['admin_permissions'])) {
+                return in_array($permission, $_SESSION['admin_permissions']);
+            }
+
+            // Fallback to database query if not in session (or if session permissions are empty)
+            // This might indicate an issue with login permission loading or an edge case.
+            // For robust security, if permissions are expected to be in session, 
+            // not finding them could be treated as a denial.
+            // However, to maintain original fallback logic (if any was intended), we query DB.
+            error_log("Permission '{$permission}' for role '{$role}' not found in session cache. Querying DB as fallback.");
+
             $db = Database::getInstance()->getConnection();
 
             $sql = "SELECT 1 FROM `role_permissions` WHERE `role` = :role AND `permission` = :permission AND `allowed` = 1";
@@ -144,7 +156,7 @@ class Auth {
         if (!isset($_SESSION['admin_role'])) {
             return false;
         }
-        // Access private hasPermission via self
+        // Access private hasPermission via self, passing the current user's role
         return self::hasPermission($_SESSION['admin_role'], $permission);
     }
 }

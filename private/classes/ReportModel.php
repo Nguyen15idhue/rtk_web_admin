@@ -4,9 +4,19 @@ class ReportModel {
     public function getComprehensiveReportData($pdo, $start_datetime, $end_datetime) {
         $data = [];
 
-        // Total registrations
-        $stmt = $pdo->query("SELECT COUNT(id) as count FROM user");
-        $data['total_registrations'] = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
+        // Replace user counts (total, active, locked) with one combined query
+        $stmt = $pdo->prepare("
+            SELECT
+                COUNT(id) as total_registrations,
+                SUM(CASE WHEN deleted_at IS NULL THEN 1 ELSE 0 END) as active_accounts,
+                SUM(CASE WHEN deleted_at IS NOT NULL THEN 1 ELSE 0 END) as locked_accounts
+            FROM user
+        ");
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $data['total_registrations'] = (int)($row['total_registrations'] ?? 0);
+        $data['active_accounts'] = (int)($row['active_accounts'] ?? 0);
+        $data['locked_accounts'] = (int)($row['locked_accounts'] ?? 0);
 
         // New registrations in period
         $stmt = $pdo->prepare("
@@ -18,52 +28,27 @@ class ReportModel {
         $stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
         $data['new_registrations'] = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
 
-        // Active accounts
-        $stmt = $pdo->query("SELECT COUNT(id) as count FROM user WHERE deleted_at IS NULL");
-        $data['active_accounts'] = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-
-        // Locked accounts (non-active)
-        $stmt = $pdo->query("SELECT COUNT(id) as count FROM user WHERE deleted_at IS NOT NULL");
-        $data['locked_accounts'] = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-
-        // Active survey accounts
-        $stmt = $pdo->query("SELECT COUNT(sa.id) as count FROM survey_account sa JOIN registration r ON sa.registration_id = r.id WHERE sa.enabled = 1 AND sa.deleted_at IS NULL AND r.deleted_at IS NULL");
-        $data['active_survey_accounts'] = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-
-        // New active survey accounts in period
+        // Combined survey-account statistics
         $stmt = $pdo->prepare("
-            SELECT COUNT(sa.id) as count
+            SELECT
+                SUM(CASE WHEN sa.enabled = 1 AND sa.deleted_at IS NULL AND r.deleted_at IS NULL THEN 1 ELSE 0 END) AS active_survey_accounts,
+                SUM(CASE WHEN sa.deleted_at IS NULL AND r.deleted_at IS NULL AND sa.created_at BETWEEN :start AND :end THEN 1 ELSE 0 END) AS new_active_survey_accounts,
+                SUM(CASE WHEN sa.end_time BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 30 DAY) AND sa.deleted_at IS NULL AND r.deleted_at IS NULL THEN 1 ELSE 0 END) AS expiring_accounts,
+                SUM(CASE WHEN sa.end_time BETWEEN :start2 AND :end2 AND sa.deleted_at IS NULL AND r.deleted_at IS NULL THEN 1 ELSE 0 END) AS expired_accounts
             FROM survey_account sa
             JOIN registration r ON sa.registration_id = r.id
-            WHERE sa.deleted_at IS NULL
-              AND r.deleted_at IS NULL
-              AND sa.created_at BETWEEN :start AND :end
         ");
-        $stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-        $data['new_active_survey_accounts'] = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-
-        // Accounts expiring in 30 days
-        $stmt = $pdo->query("
-            SELECT COUNT(sa.id) as count
-            FROM survey_account sa
-            JOIN registration r ON sa.registration_id = r.id
-            WHERE sa.end_time BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 30 DAY)
-              AND sa.deleted_at IS NULL
-              AND r.deleted_at IS NULL
-        ");
-        $data['expiring_accounts'] = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-
-        // Accounts expired in period
-        $stmt = $pdo->prepare("
-            SELECT COUNT(sa.id) as count
-            FROM survey_account sa
-            JOIN registration r ON sa.registration_id = r.id
-            WHERE sa.end_time BETWEEN :start AND :end
-              AND sa.deleted_at IS NULL
-              AND r.deleted_at IS NULL
-        ");
-        $stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-        $data['expired_accounts'] = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
+        $stmt->execute([
+            ':start'  => $start_datetime,
+            ':end'    => $end_datetime,
+            ':start2' => $start_datetime,
+            ':end2'   => $end_datetime,
+        ]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $data['active_survey_accounts']     = (int)$row['active_survey_accounts'];
+        $data['new_active_survey_accounts'] = (int)$row['new_active_survey_accounts'];
+        $data['expiring_accounts']          = (int)$row['expiring_accounts'];
+        $data['expired_accounts']           = (int)$row['expired_accounts'];
 
         // Transactions
         // Total sales in period
@@ -79,64 +64,49 @@ class ReportModel {
             $data['total_sales'] = 0;
         }
 
-        // Completed transactions
-        $stmt = $pdo->prepare("SELECT COUNT(id) as count FROM transaction_history WHERE status = 'completed' AND created_at BETWEEN :start AND :end");
-        $stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-        $data['completed_transactions'] = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-
-        // Pending transactions
-        $stmt = $pdo->prepare("SELECT COUNT(id) as count FROM transaction_history WHERE status = 'pending' AND created_at BETWEEN :start AND :end");
-        $stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-        $data['pending_transactions'] = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
-
-        // Failed transactions
-        $stmt = $pdo->prepare("SELECT COUNT(id) as count FROM transaction_history WHERE status = 'failed' AND created_at BETWEEN :start AND :end");
-        $stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-        $data['failed_transactions'] = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
+        // Combined transaction counts by status
+        $stmt = $pdo->prepare("
+            SELECT
+                COALESCE(SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END), 0) as completed_count,
+                COALESCE(SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END), 0) as pending_count,
+                COALESCE(SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END), 0) as failed_count
+            FROM transaction_history
+            WHERE created_at BETWEEN :start AND :end
+              AND status IN ('completed', 'pending', 'failed')
+        ");
+        $stmt->execute([':start' => $start_datetime, ':end' => $end_datetime]);
+        $transactionCountsByStatus = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        $data['completed_transactions'] = (int)$transactionCountsByStatus['completed_count'];
+        $data['pending_transactions']   = (int)$transactionCountsByStatus['pending_count'];
+        $data['failed_transactions']    = (int)$transactionCountsByStatus['failed_count'];
 
         // Referrals
         // New referrals in period
         $stmt = $pdo->prepare("SELECT COUNT(id) as count FROM registration WHERE collaborator_id IS NOT NULL AND deleted_at IS NULL AND created_at BETWEEN :start AND :end");
-        $stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-        $data['new_referrals'] = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['count'] : 0;
+        $stmt->execute([':start'=>$start_datetime, ':end'=>$end_datetime]);
+        $data['new_referrals'] = (int)($stmt->fetchColumn() ?: 0);
 
-        // Commission generated (sum of withdrawal_request)
+        // Combined commission statistics (generated, paid, pending)
         $stmt = $pdo->prepare("
-            SELECT SUM(amount) as total
+            SELECT
+                COALESCE(SUM(CASE WHEN created_at BETWEEN :cg_start AND :cg_end THEN amount ELSE 0 END),0) AS commission_generated,
+                COALESCE(SUM(CASE WHEN status = 'completed' AND updated_at BETWEEN :cp_start AND :cp_end THEN amount ELSE 0 END),0) AS commission_paid,
+                COALESCE(SUM(CASE WHEN status = 'pending' AND created_at BETWEEN :cpend_start AND :cpend_end THEN amount ELSE 0 END),0) AS commission_pending
             FROM withdrawal_request
-            WHERE created_at BETWEEN :start AND :end
         ");
-        $stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-        $data['commission_generated'] = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 0;
-        if ($data['commission_generated'] === null) {
-            $data['commission_generated'] = 0;
-        }
-
-        // Commission paid
-        $stmt = $pdo->prepare("
-            SELECT SUM(amount) as total
-            FROM withdrawal_request
-            WHERE status = 'completed'
-              AND updated_at BETWEEN :start AND :end
-        ");
-        $stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-        $data['commission_paid'] = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 0;
-        if ($data['commission_paid'] === null) {
-            $data['commission_paid'] = 0;
-        }
-
-        // Commission pending
-        $stmt = $pdo->prepare("
-            SELECT SUM(amount) as total
-            FROM withdrawal_request
-            WHERE status = 'pending'
-              AND created_at BETWEEN :start AND :end
-        ");
-        $stmt->execute([':start'=>$start_datetime,':end'=>$end_datetime]);
-        $data['commission_pending'] = ($row = $stmt->fetch(PDO::FETCH_ASSOC)) ? $row['total'] : 0;
-        if ($data['commission_pending'] === null) {
-            $data['commission_pending'] = 0;
-        }
+        $stmt->execute([
+            ':cg_start'    => $start_datetime,
+            ':cg_end'      => $end_datetime,
+            ':cp_start'    => $start_datetime,
+            ':cp_end'      => $end_datetime,
+            ':cpend_start' => $start_datetime,
+            ':cpend_end'   => $end_datetime,
+        ]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $data['commission_generated'] = (float)$row['commission_generated'];
+        $data['commission_paid']      = (float)$row['commission_paid'];
+        $data['commission_pending']   = (float)$row['commission_pending'];
 
         return $data;
     }

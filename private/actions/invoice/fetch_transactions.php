@@ -102,12 +102,12 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
         }
         // filter date_from/to
         if (!empty($filters['date_from'])) {
-            $where_clauses[] = "DATE(th.created_at) >= :date_from";
-            $params[':date_from'] = $filters['date_from'];
+            $where_clauses[] = "th.created_at >= :date_from";
+            $params[':date_from'] = $filters['date_from'] . ' 00:00:00';
         }
         if (!empty($filters['date_to'])) {
-            $where_clauses[] = "DATE(th.created_at) <= :date_to";
-            $params[':date_to'] = $filters['date_to'];
+            $where_clauses[] = "th.created_at <= :date_to";
+            $params[':date_to'] = $filters['date_to'] . ' 23:59:59';
         }
         // filter package
         if (!empty($filters['package_id'])) {

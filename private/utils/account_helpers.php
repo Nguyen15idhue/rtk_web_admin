@@ -47,3 +47,33 @@ function get_account_action_buttons(array $account): string {
 
     return '<div class="action-buttons">' . $buttons . '</div>';
 }
+
+/**
+ * Generate a new survey account username based on a location's province code and next sequence.
+ *
+ * @param PDO $db Database connection.
+ * @param int $locationId ID of the location to derive province_code.
+ * @param int $numDigits Number of digits for the sequence (default 3).
+ * @return string New survey account username.
+ */
+function generateSurveyAccountUsername(PDO $db, int $locationId, int $numDigits = 3): string {
+    $stmtProv = $db->prepare("SELECT province_code FROM location WHERE id = :loc");
+    $stmtProv->bindParam(':loc', $locationId, PDO::PARAM_INT);
+    $stmtProv->execute();
+    $provinceCode = (string)$stmtProv->fetchColumn();
+    if ($provinceCode === '') {
+        $provinceCode = 'X'; // Fallback prefix
+    }
+    $pattern = $provinceCode . '%';
+    $stmtLast = $db->prepare(
+        "SELECT username_acc FROM survey_account WHERE username_acc LIKE :pattern ORDER BY username_acc DESC LIMIT 1"
+    );
+    $stmtLast->bindParam(':pattern', $pattern, PDO::PARAM_STR);
+    $stmtLast->execute();
+    $lastUser = (string)$stmtLast->fetchColumn();
+    $seq = 1;
+    if (preg_match('/^' . preg_quote($provinceCode, '/') . '(\d{' . $numDigits . '})$/', $lastUser, $m)) {
+        $seq = intval($m[1]) + 1;
+    }
+    return sprintf('%s%0' . $numDigits . 'd', $provinceCode, $seq);
+}

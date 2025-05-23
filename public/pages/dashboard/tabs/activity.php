@@ -9,7 +9,8 @@
         <?php else: ?>
             <?php foreach ($recent_activities as $log): ?>
                 <?php 
-                    $activity = format_activity_log($log);
+                    // Pass the voucher_details_map to format_activity_log
+                    $activity = format_activity_log($log, $voucher_details_map); 
                     $message = $activity['message'];
                     $icon    = $activity['icon'];
                     $time    = $activity['time'];

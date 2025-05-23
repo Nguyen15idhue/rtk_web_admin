@@ -12,7 +12,7 @@ function fetch_paginated_withdrawals(PDO $db, array $params) {
     $search = trim($params['search'] ?? '');
     $status = trim($params['status'] ?? '');
     $page = max(1, (int)($params['page'] ?? 1));
-    $perPage = 15;
+    $perPage = DEFAULT_ITEMS_PER_PAGE;
     $offset = ($page-1)*$perPage;
 
     $where = '1';
