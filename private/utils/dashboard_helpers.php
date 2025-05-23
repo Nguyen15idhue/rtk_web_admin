@@ -37,9 +37,10 @@ function get_voucher_code_by_registration($registration_id) {
  * Formats an activity log entry into a user-friendly message and icon.
  *
  * @param array $log The activity log data array.
+ * @param array $voucher_details_map Optional. A map of registration_id => voucher_code to avoid N+1 queries.
  * @return array An array containing the formatted 'icon', 'message', 'time', 'action_type', 'details_url', 'required_permission', and 'customer_id'.
  */
-function format_activity_log($log) {
+function format_activity_log($log, $voucher_details_map = []) { // Added $voucher_details_map parameter
     $actor = htmlspecialchars($log['actor_name'] ?? 'System'); // Add null coalescing for safety
     $action = htmlspecialchars($log['action']);
     $entity_type = htmlspecialchars($log['entity_type']);
@@ -61,9 +62,13 @@ function format_activity_log($log) {
             $accounts     = isset($details['selected_accounts']) && is_array($details['selected_accounts'])
                              ? count($details['selected_accounts']) : 0;
             $registration = $details['registration_id'] ?? null;
-            $voucher      = $registration
-                             ? get_voucher_code_by_registration($registration)
-                             : '';
+            $voucher      = '';
+            if ($registration && isset($voucher_details_map[$registration])) {
+                $voucher = $voucher_details_map[$registration];
+            } else if ($registration) {
+                // Fallback if not pre-fetched, or if called without the map.
+                $voucher = get_voucher_code_by_registration($registration); 
+            }
             $location     = htmlspecialchars($details['location'] ?? '');
             $message = "<strong>{$actor}</strong> đăng ký <strong>{$package}</strong> x{$accounts} tài khoản"
                      .($voucher ? " (<strong>Voucher: {$voucher}</strong>)" : "")
@@ -105,7 +110,13 @@ function format_activity_log($log) {
             $accounts = isset($details['selected_accounts']) && is_array($details['selected_accounts'])
                         ? count($details['selected_accounts']) : 0;
             $registration = $details['registration_id'] ?? null;
-            $voucher = $registration ? get_voucher_code_by_registration($registration) : '';
+            $voucher = '';
+            if ($registration && isset($voucher_details_map[$registration])) {
+                $voucher = $voucher_details_map[$registration];
+            } else if ($registration) {
+                // Fallback if not pre-fetched, or if called without the map.
+                $voucher = get_voucher_code_by_registration($registration);
+            }
             $location = htmlspecialchars($details['location'] ?? '');
             $message = "<strong>{$actor}</strong> gia hạn <strong>{$package}</strong> x{$accounts} tài khoản"
                      .($voucher ? " (<strong>Voucher: {$voucher}</strong>)" : "")

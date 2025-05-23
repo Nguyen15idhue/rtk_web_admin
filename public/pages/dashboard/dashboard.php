@@ -21,9 +21,14 @@ $total_commission_paid = $data['total_commission_paid'] ?? 0;
 $recent_activities = $data['recent_activities'] ?? [];
 $new_registrations_chart_data = $data['new_registrations_chart_data'] ?? ['labels' => [], 'data' => []];
 $referral_chart_data = $data['referral_chart_data'] ?? ['labels' => [], 'data' => []];
+$voucher_details_map = $data['voucher_details_map'] ?? []; // Added this line
 
 $page_title = 'Admin Dashboard';
-
+?>
+<head>
+    <meta name="description" content="Bảng điều khiển quản trị để quản lý người dùng, hóa đơn, báo cáo và các cài đặt hệ thống khác.">
+</head>
+<?php
 include $private_layouts_path . 'admin_header.php';
 include $private_layouts_path . 'admin_sidebar.php';
 

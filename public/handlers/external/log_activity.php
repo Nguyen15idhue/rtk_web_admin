@@ -70,8 +70,27 @@ if (empty($activities)) {
 
 echo "Cron log_activity: Found " . count($activities) . " activities to process.\n";
 
-// Prepare statement to get username (reused in loop)
-$stmtUser = $db->prepare("SELECT username FROM `user` WHERE id = ?");
+// Collect all user_ids from activities
+$userIds = array_unique(array_filter(array_column($activities, 'user_id')));
+$userMap = [];
+
+if (!empty($userIds)) {
+    $placeholdersUser = implode(',', array_fill(0, count($userIds), '?'));
+    $sqlUser = "SELECT id, username FROM `user` WHERE id IN ({$placeholdersUser})";
+    $stmtUsers = $db->prepare($sqlUser);
+    try {
+        $stmtUsers->execute(array_values($userIds)); // Ensure $userIds is numerically indexed for execute
+        $users = $stmtUsers->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($users as $user) {
+            $userMap[$user['id']] = $user['username'];
+        }
+    } catch (PDOException $e) {
+        $errorMessage = "Cron log_activity: Database query failed while fetching users: " . $e->getMessage();
+        error_log($errorMessage);
+        echo $errorMessage . "\n";
+        // Continue processing, actor names will default to 'System' or 'System (DB Error)'
+    }
+}
 
 $notificationsSent = 0;
 $notificationsFailed = 0;
@@ -87,22 +106,13 @@ foreach ($activities as $activity) {
 
     // Get actor name
     $actor = 'System'; // Default actor name
-    try {
-        $stmtUser->execute([$activity['user_id']]);
-        $fetchedActor = $stmtUser->fetchColumn();
-        if ($fetchedActor) {
-            $actor = $fetchedActor;
-        } else {
-            // Log if user not found, but proceed with 'System' as actor
-            $logMessage = "Cron log_activity: User with ID {$activity['user_id']} not found. Using 'System' as actor name for Action: {$activity['action']}, Entity: {$activity['entity_type']}#{$activity['entity_id']}.";
-            error_log($logMessage);
-        }
-    } catch (PDOException $e) {
-        // Log DB error during user fetch, but proceed
-        $errorMessage = "Cron log_activity: Failed to fetch username for user_id {$activity['user_id']}: " . $e->getMessage();
-        error_log($errorMessage);
-        echo $errorMessage . "\n";
-        $actor = 'System (DB Error)'; // Use a distinguishable name if user fetch fails
+    if (isset($userMap[$activity['user_id']])) {
+        $actor = $userMap[$activity['user_id']];
+    } else {
+        // User ID was in activities but not found in the batch user fetch (e.g., user deleted, or DB error during batch)
+        // Log if user not found, but proceed with 'System' as actor
+        $logMessage = "Cron log_activity: User with ID {$activity['user_id']} not found in batch fetch or DB error occurred. Using 'System' as actor name for Action: {$activity['action']}, Entity: {$activity['entity_type']}#{$activity['entity_id']}.";
+        error_log($logMessage);
     }
 
     // Build log details for formatting
@@ -139,7 +149,7 @@ foreach ($activities as $activity) {
         echo $logMessage . "\n";
     }
     // Optional: Add a small delay if sending many notifications to avoid rate limiting by Telegram API
-    // if (count($activities) > 10 && ($notificationsSent + $notificationsFailed) < count($activities) -1 ) sleep(1);
+    if (count($activities) > 10 && ($notificationsSent + $notificationsFailed) < count($activities) -1 ) sleep(1);
 }
 
 echo "Cron log_activity: Finished. Notifications sent: {$notificationsSent}. Failed: {$notificationsFailed}.\n";

@@ -3,7 +3,10 @@
 
 $config = require __DIR__ . '/../../core/page_bootstrap.php';
 
-Auth::ensureAuthenticated();
+// Use redirect-based auth check to ensure page access and redirect to login if unauthenticated
+require_once __DIR__ . '/../../core/auth_check.php';
+
+
 $pdo = $config['db'];
 
 // Đảm bảo đóng PDO khi script kết thúc
@@ -28,6 +31,7 @@ function fetch_dashboard_data(): array
         'referred_registrations'       => 0,
         'total_commission_paid'        => 0,
         'recent_activities'            => [],
+        'voucher_details_map'          => [], // Added for pre-fetched voucher codes
         'new_registrations_chart_data' => ['labels'=>[], 'data'=>[]],
         'referral_chart_data'          => ['labels'=>[], 'data'=>[]],
     ];
@@ -44,15 +48,22 @@ function fetch_dashboard_data(): array
         $dashboard_data['active_survey_accounts'] = (int)$pdo->query(
             "SELECT COUNT(*) FROM survey_account WHERE enabled=1"
         )->fetchColumn();
-        // Doanh số tháng
+        
+        // Doanh số tháng - Optimized
+        $current_month_start = date('Y-m-01 00:00:00');
+        $current_month_end = date('Y-m-t 23:59:59'); // 't' gives the last day of the month
+
         $stmt = $pdo->prepare(
             "SELECT IFNULL(SUM(amount),0) FROM transaction_history
              WHERE status='completed' 
                AND transaction_type IN ('purchase','renewal')
-               AND MONTH(created_at)=MONTH(CURRENT_DATE())
-               AND YEAR(created_at)=YEAR(CURRENT_DATE())"
+               AND created_at >= :start_of_month
+               AND created_at <= :end_of_month"
         );
-        $stmt->execute();
+        $stmt->execute([
+            ':start_of_month' => $current_month_start,
+            ':end_of_month' => $current_month_end
+        ]);
         $dashboard_data['monthly_sales'] = (float)$stmt->fetchColumn();
         // Người giới thiệu
         $dashboard_data['total_referrers'] = (int)$pdo->query(
@@ -82,28 +93,62 @@ function fetch_dashboard_data(): array
              ORDER BY al.created_at DESC
              LIMIT 10"
         )->fetchAll(PDO::FETCH_ASSOC);
-        // Biểu đồ ĐK mới 7 ngày
+        
+        // Pre-fetch voucher codes for recent purchase/renewal activities
+        $registration_ids_for_vouchers = [];
+        foreach ($dashboard_data['recent_activities'] as $activity) {
+            if (in_array($activity['action'], ['purchase', 'renewal_request'])) {
+                $details = json_decode($activity['new_values'] ?? '', true);
+                if (!empty($details['registration_id'])) {
+                    $registration_ids_for_vouchers[] = $details['registration_id'];
+                }
+            }
+        }
+
+        if (!empty($registration_ids_for_vouchers)) {
+            $placeholders = implode(',', array_fill(0, count($registration_ids_for_vouchers), '?'));
+            $sql_vouchers = "
+                SELECT th.registration_id, v.code 
+                FROM transaction_history th
+                JOIN voucher v ON th.voucher_id = v.id
+                WHERE th.registration_id IN ({$placeholders})
+                  AND th.voucher_id IS NOT NULL
+            "; // We only care about transactions that actually have a voucher
+            $stmt_vouchers = $pdo->prepare($sql_vouchers);
+            $stmt_vouchers->execute($registration_ids_for_vouchers);
+            $voucher_rows = $stmt_vouchers->fetchAll(PDO::FETCH_ASSOC);
+            
+            foreach ($voucher_rows as $row) {
+                $dashboard_data['voucher_details_map'][$row['registration_id']] = htmlspecialchars($row['code']);
+            }
+        }
+        
+        // Calculate the date 6 days ago for chart queries
+        $six_days_ago_start = date('Y-m-d 00:00:00', strtotime('-6 days'));
+
+        // Biểu đồ ĐK mới 7 ngày - Optimized
         $stmt = $pdo->prepare(
             "SELECT DATE(created_at) AS d, COUNT(*) AS c 
              FROM registration 
-             WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+             WHERE created_at >= :six_days_ago
              GROUP BY d ORDER BY d"
         );
-        $stmt->execute();
+        $stmt->execute([':six_days_ago' => $six_days_ago_start]);
         $labels=[]; $data=[];
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
             $labels[] = $r['d'];
             $data[]   = (int)$r['c'];
         }
         $dashboard_data['new_registrations_chart_data'] = ['labels'=>$labels,'data'=>$data];
-        // Biểu đồ GT 7 ngày
+        
+        // Biểu đồ GT 7 ngày - Optimized
         $stmt = $pdo->prepare(
             "SELECT DATE(created_at) AS d, COUNT(*) AS c 
              FROM referral 
-             WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+             WHERE created_at >= :six_days_ago
              GROUP BY d ORDER BY d"
         );
-        $stmt->execute();
+        $stmt->execute([':six_days_ago' => $six_days_ago_start]);
         $labels=[]; $data=[];
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
             $labels[] = $r['d'];

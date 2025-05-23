@@ -473,33 +473,38 @@ class AccountModel {
             $stmt->execute();
             $accounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+            $mountPointsByLocation = []; // Initialize here
+
             // Batch fetch mount points to avoid N+1 queries
             if (!empty($accounts)) {
-                $locationIds = array_unique(array_column($accounts, 'location_id'));
-                $placeholders = implode(',', array_fill(0, count($locationIds), '?'));
-                $sqlMp = "SELECT id, ip, port, mountpoint, location_id FROM mount_point WHERE location_id IN ($placeholders)";
-                $stmtMp = $this->db->prepare($sqlMp);
-                $stmtMp->execute($locationIds);
-                $mountPoints = $stmtMp->fetchAll(PDO::FETCH_ASSOC);
-                $mountPointsByLocation = [];
-                foreach ($mountPoints as $mp) {
-                    $mountPointsByLocation[$mp['location_id']][] = [
-                        'id' => $mp['id'],
-                        'ip' => $mp['ip'],
-                        'port' => $mp['port'],
-                        'mountpoint' => $mp['mountpoint'],
-                    ];
+                // Filter out null location_ids before building the query
+                $validLocationIds = array_filter(array_unique(array_column($accounts, 'location_id')), function($id) {
+                    return $id !== null;
+                });
+
+                if (!empty($validLocationIds)) {
+                    $placeholders = implode(',', array_fill(0, count($validLocationIds), '?'));
+                    $sqlMp = "SELECT id, ip, port, mountpoint, location_id FROM mount_point WHERE location_id IN ($placeholders)";
+                    $stmtMp = $this->db->prepare($sqlMp);
+                    $stmtMp->execute(array_values($validLocationIds)); // Use array_values to re-index after filter
+                    $mountPoints = $stmtMp->fetchAll(PDO::FETCH_ASSOC);
+                    
+                    foreach ($mountPoints as $mp) {
+                        $mountPointsByLocation[$mp['location_id']][] = [
+                            'id' => $mp['id'],
+                            'ip' => $mp['ip'],
+                            'port' => $mp['port'],
+                            'mountpoint' => $mp['mountpoint'],
+                        ];
+                    }
                 }
-                unset($mp);
+                unset($mp); // Clean up loop variable
+
                 foreach ($accounts as &$account) {
+                    // Ensure 'stations' key exists even if no mount points for that location
                     $account['stations'] = $mountPointsByLocation[$account['location_id']] ?? [];
                 }
-                unset($account);
-            } else {
-                foreach ($accounts as &$account) {
-                    $account['stations'] = [];
-                }
-                unset($account);
+                unset($account); // Clean up loop variable
             }
 
             return $accounts;

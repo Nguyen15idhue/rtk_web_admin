@@ -190,21 +190,9 @@ $canEditStation = Auth::can('station_management_edit');
 </script>
 
 <script>
-// Tab switching logic
-document.addEventListener('DOMContentLoaded', function() {
-    const tabs = document.querySelectorAll('.custom-tabs-nav .nav-link');
-    const contents = document.querySelectorAll('.tab-content');
-    tabs.forEach(btn => btn.addEventListener('click', () => {
-        tabs.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        contents.forEach(c => c.style.display = (c.id === btn.dataset.tab ? '' : 'none'));
-    }));
-
-    // Display toast messages from session
-    <?php if (isset($message) && isset($message_type)): ?>
-        window.showToast('<?php echo addslashes(htmlspecialchars($message)); ?>', '<?php echo htmlspecialchars($message_type); ?>');
-    <?php endif; ?>
-});
+    window.initialToast = <?php echo (isset($message) && isset($message_type))
+        ? json_encode(['message'=>$message,'type'=>$message_type])
+        : 'null'; ?>;
 </script>
 
 <!-- external scripts -->

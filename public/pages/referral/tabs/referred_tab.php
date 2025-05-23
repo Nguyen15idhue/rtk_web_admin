@@ -37,17 +37,13 @@
     </table>
 </div>
 <?php if ($data['pages'] > 1): ?>
-<?php
-$filters_query = [];
-if (isset($_GET['search'])) $filters_query['search'] = $_GET['search'];
-// Ensure 'tab' is always part of the base for pagination links
-$filters_query['tab'] = 'referred';
-$pagination_base = '?' . http_build_query(array_filter($filters_query));
-$pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?'); // Added for pagination.php
-?>
-<?php 
-$total_pages = $data['pages'];
-$current_page = $data['current'];
-include PRIVATE_LAYOUTS_PATH . 'pagination.php'; 
-?>
+    <?php
+    // mirror voucher pagination setup
+    $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
+    $total_pages        = $data['pages'];
+    $current_page       = $data['current'];
+    $items_per_page     = DEFAULT_ITEMS_PER_PAGE;
+    $total_items        = $data['total'];
+    ?>
+    <?php include PRIVATE_LAYOUTS_PATH . 'pagination.php'; ?>
 <?php endif; ?>

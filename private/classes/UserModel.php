@@ -125,14 +125,12 @@ class UserModel {
         $sql = "SELECT id FROM user 
                 WHERE (email = :email OR (phone IS NOT NULL AND phone = :phone))";
         if ($excludeId) $sql .= " AND id != :ex";
-        error_log("DEBUG isDuplicate SQL: {$sql} | email={$email} | phone={$phone} | excludeId=" . ($excludeId ?? 'null'));
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':email',$email);
         $stmt->bindParam(':phone',$phone);
         if ($excludeId) $stmt->bindParam(':ex',$excludeId,PDO::PARAM_INT);
         $stmt->execute();
         $found = (bool)$stmt->fetch();
-        error_log("DEBUG isDuplicate result: " . ($found ? 'true' : 'false'));
         return $found;
     }
 

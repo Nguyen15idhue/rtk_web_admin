@@ -23,6 +23,7 @@ if (isset($_SESSION['admin_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang đăng nhập dành cho quản trị viên.">
     <title>Admin Đăng Nhập</title>
     <link rel="stylesheet" href="<?= BASE_URL ?>public/assets/css/pages/login.css">
 </head>

@@ -69,6 +69,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['admin_username'] = $admin['admin_username'];
                     $_SESSION['admin_role']     = $admin['role'];
 
+                    // Fetch and store permissions in session
+                    $_SESSION['admin_permissions'] = []; // Default to empty array
+                    if (!empty($admin['role'])) {
+                        try {
+                            $permissions_sql = "SELECT permission FROM `role_permissions` WHERE `role` = :role AND `allowed` = 1";
+                            $permissions_stmt = $db->prepare($permissions_sql);
+                            $permissions_stmt->bindParam(':role', $admin['role'], PDO::PARAM_STR);
+                            $permissions_stmt->execute();
+                            $user_permissions = $permissions_stmt->fetchAll(PDO::FETCH_COLUMN);
+                            if ($user_permissions) {
+                                $_SESSION['admin_permissions'] = $user_permissions;
+                            } else {
+                                // No permissions found for the role, or all are disallowed.
+                                // This might be a configuration issue or an intentional setup.
+                                // For now, proceed with empty permissions in session.
+                                // If specific roles *must* have permissions, this could be an error.
+                                error_log("No active permissions found for role {$admin['role']} during login. User will have no permissions via session.");
+                            }
+                        } catch (PDOException $e) {
+                            error_log("Critical: Error fetching permissions for role {$admin['role']} during login: " . $e->getMessage());
+                            // Prevent login if permissions cannot be loaded
+                            $login_error = "Không thể tải thông tin phân quyền. Vui lòng thử lại hoặc liên hệ quản trị viên.";
+                            // Clean up session variables set so far for this attempt
+                            unset($_SESSION['admin_id']);
+                            unset($_SESSION['admin_username']);
+                            unset($_SESSION['admin_role']);
+                            unset($_SESSION['admin_permissions']); // Ensure it's cleared
+                            // No session_regenerate_id() was called yet if we are here before successful permission load.
+                            // The CSRF token for login should remain for a retry.
+                        }
+                    }
+
+                    // If there was an error fetching permissions, redirect back to login
+                    if ($login_error !== null) {
+                        $_SESSION['admin_login_error'] = $login_error;
+                        header("Location: " . $base_url . "public/pages/auth/admin_login.php");
+                        exit();
+                    }
+
                     recordSession($admin['id']);
 
                     // Xóa bộ đếm khi login thành công
