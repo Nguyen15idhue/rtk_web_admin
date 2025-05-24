@@ -5,12 +5,8 @@ require_once __DIR__ . '/Database.php'; // Ensure Database class is loaded
 class Auth {
 
     private static function ensureSessionStarted() {
-        if (session_status() == PHP_SESSION_NONE) {
-            // Attempt to start session if not already started.
-            // This is crucial for accessing $_SESSION variables.
-            // Suppress errors if headers already sent, as session_start() would warn.
-            @session_start();
-        }
+        // Session should already be started in page_bootstrap.php
+        return;
     }
 
     /**

@@ -103,9 +103,7 @@ function getRoleDisplayName($role_key) {
     // Fallback if not in custom_roles
     return ucfirst(str_replace('_', ' ', $role_key));
 }
-?>
-
-<?php include $private_layouts_path . 'admin_header.php'; include $private_layouts_path . 'admin_sidebar.php'; ?>
+?><?php include $private_layouts_path . 'admin_header.php'; include $private_layouts_path . 'admin_sidebar.php'; ?>
 
 <main class="content-wrapper">
     <?php include $private_layouts_path . 'content_header.php'; ?>
@@ -209,7 +207,7 @@ function getRoleDisplayName($role_key) {
     window.currentRolePermissions = <?= json_encode($ui_permissions) ?>;
     window.roleDisplayNames = <?= json_encode($role_display_names_for_js ?? []) ?>;
 </script>
-<script defer src="<?= $base_url ?>public/assets/js/pages/auth/permission_management.js"></script>
+<script data-cfasync="false" defer src="<?= $base_url ?>public/assets/js/pages/auth/permission_management.js?v=<?= filemtime(__DIR__ . '/../../../public/assets/js/pages/auth/permission_management.js') ?>"></script>
 
 <!-- Create Admin/Operator Modal -->
 <div id="createRoleModal" class="modal">

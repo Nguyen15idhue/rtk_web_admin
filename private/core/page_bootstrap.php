@@ -1,11 +1,5 @@
 <?php
-require_once __DIR__ . '/../config/constants.php';
-require_once ERROR_HANDLER_PATH;
-
-// Autoload external libraries via Composer
-require_once BASE_PATH . '/../vendor/autoload.php';
-
-// filepath: private/core/page_bootstrap.php
+// --- Start session ---
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
     // Session fixation protection: regenerate ID on first use or every 5 minutes
@@ -16,6 +10,12 @@ if (session_status() === PHP_SESSION_NONE) {
         $_SESSION['created'] = time();
     }
 }
+
+require_once __DIR__ . '/../config/constants.php';
+require_once ERROR_HANDLER_PATH;
+
+// Autoload external libraries via Composer
+require_once BASE_PATH . '/../vendor/autoload.php';
 
 // --- Load config, DB and helpers for session validation ---
 require_once BASE_PATH . '/config/database.php';
