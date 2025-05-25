@@ -2,15 +2,7 @@
 // --- Start session ---
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
-    // Session fixation protection: regenerate ID on first use or every 5 minutes
-    if (!isset($_SESSION['created'])) {
-        $_SESSION['created'] = time();
-    } elseif (time() - $_SESSION['created'] > 300) {
-        session_regenerate_id(true);
-        $_SESSION['created'] = time();
-    }
 }
-
 require_once __DIR__ . '/../config/constants.php';
 require_once ERROR_HANDLER_PATH;
 

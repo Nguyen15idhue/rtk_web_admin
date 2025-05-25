@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../config/telegram.php';
+require_once __DIR__ . '/../config/paths.php';
 require_once __DIR__ . '/../utils/dashboard_helpers.php';
 
 class ActivityLogModel {
@@ -52,6 +53,10 @@ class ActivityLogModel {
         $token = TELEGRAM_BOT_TOKEN;
         $chat_id = TELEGRAM_CHAT_ID;
         $url = "https://api.telegram.org/bot{$token}/sendMessage";
+
+        // Append system link to message
+        $baseUrl = defined('BASE_URL') ? BASE_URL : ((isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/');
+        $message .= "\n\n<a href=\"{$baseUrl}\">Mở trang web</a>";
         $data = ['chat_id' => $chat_id, 'text' => $message, 'parse_mode' => 'HTML']; // Added parse_mode HTML for better formatting
 
         $ch = curl_init();

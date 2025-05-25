@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 
 try {
     $model = new GuideModel();
-    $list = $model->getAll($_GET['search'] ?? '');
+    $list = $model->getAll($_GET['search'] ?? '', $_GET['topic'] ?? '');
     api_success($list);
 } catch (\Throwable $e) {
     error_log(sprintf(

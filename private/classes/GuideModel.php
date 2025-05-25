@@ -8,15 +8,22 @@ class GuideModel {
     public function __construct() {
         $this->db = Database::getInstance()->getConnection();
     }
-    public function getAll($search = '') {
+    public function getAll($search = '', $topic = '') {
         $sql = "SELECT g.*, a.name AS author_name
                 FROM guide g
                 LEFT JOIN admin a ON g.author_id=a.id
-                WHERE g.title LIKE ? OR g.topic LIKE ?
-                ORDER BY g.created_at DESC";
-        $stmt = $this->db->prepare($sql);
+                WHERE (g.title LIKE ? OR g.topic LIKE ?)";
+        $params = [];
         $like = "%$search%";
-        $stmt->execute([$like, $like]);
+        $params[] = $like;
+        $params[] = $like;
+        if (!empty($topic)) {
+            $sql .= " AND g.topic = ?";
+            $params[] = $topic;
+        }
+        $sql .= " ORDER BY g.created_at DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     public function getOne($id) {

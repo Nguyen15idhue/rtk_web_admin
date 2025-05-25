@@ -2,8 +2,8 @@
     const apiUrl = basePath + '/public/handlers/guide/index.php';
     const canEditGuide = window.appConfig && window.appConfig.permissions && window.appConfig.permissions.guide_management_edit;
 
-    function loadData(q='') {
-        api.getJson(`${apiUrl}?action=fetch_guides&search=${encodeURIComponent(q)}`)
+    function loadData(q = '', topic = '') {
+        api.getJson(`${apiUrl}?action=fetch_guides&search=${encodeURIComponent(q)}&topic=${encodeURIComponent(topic)}`)
             .then(env => {
                 if (!env.success) throw new Error(env.message || 'Lỗi tải danh sách hướng dẫn');
                 const list = env.data;
@@ -11,8 +11,9 @@
                     <tr>
                         <td>${g.id}</td>
                         <td>${g.title}</td>
+                        <td>${g.topic || '<em>Chưa rõ</em>'}</td>
                         <td>${g.author_name || '<em>Chưa rõ</em>'}</td>
-                        <td class="status" style="text-align:center">
+                        <td class="status text-center">
                             ${g.status==='published'
                                 ? '<span class="status-badge badge-success">Đã xuất bản</span>'
                                 : '<span class="status-badge badge-secondary">Bản nháp</span>'}
@@ -39,8 +40,27 @@
 
     $(function(){
         const $search = $('input[name=search]');
-        loadData($search.val());
-        $search.on('input', ()=> loadData($search.val()));
+        const $topic = $('#filter-topic');
+        // Fetch topics for filter
+        api.getJson(`${apiUrl}?action=fetch_topics`)
+            .then(env => {
+                if (!env.success) throw new Error(env.message || 'Lỗi tải chủ đề');
+                const topics = env.data;
+                topics.forEach(t => {
+                    const opt = $('<option>').val(t).text(t);
+                    $topic.append(opt);
+                });
+                // Set initial topic
+                const initTopic = window.appConfig.searchTopic || '';
+                $topic.val(initTopic);
+                // Initial load with search and topic
+                loadData($search.val(), $topic.val());
+            })
+            .catch(err => window.showToast(err.message, 'error'));
+        // Reload on search input
+        $search.on('input', () => loadData($search.val(), $topic.val()));
+        // Reload on topic change
+        $topic.on('change', () => loadData($search.val(), $topic.val()));
 
         $(document).on('click', '.btn-edit', function(){
             if (!canEditGuide) return;
@@ -53,7 +73,7 @@
             api.postJson(`${apiUrl}?action=toggle_guide_status`, { id, status: st })
                 .then(env => {
                     if (!env.success) throw new Error(env.message || 'Toggle thất bại');
-                    loadData($search.val());
+                    loadData($search.val(), $topic.val());
                 })
                 .catch(err => window.showToast(err.message, 'error'));
         });
