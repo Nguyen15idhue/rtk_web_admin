@@ -139,7 +139,7 @@ if (isset($db_custom_role_names[$role])) {
                             if (!$any_allowed) continue;
                         ?>
                         <li class="nav-parent">
-                            <a href="javascript:void(0)" class="nav-item parent-toggle">
+                            <a href="javascript:void(0)" class="nav-item parent-toggle" data-menu-key="<?php echo htmlspecialchars($item['label']); ?>">
                                 <i class="icon fas <?php echo htmlspecialchars($item['icon']); ?>"></i>
                                 <span><?php echo htmlspecialchars($item['label']); ?></span>
                                 <i class="fas fa-chevron-down toggle-icon"></i>

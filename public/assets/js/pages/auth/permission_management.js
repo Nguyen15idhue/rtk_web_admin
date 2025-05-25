@@ -1,5 +1,10 @@
 (function(){
+    // const adminsData = window.adminsData; // Access via window.adminsData in initializePage
     let canEditPermissions; 
+    // const allDefinedPermissions = window.allDefinedPermissions || {}; // Access via window
+    // const permissionGroupsConfig = window.permissionGroupsConfig || {}; // Access via window
+    // let currentRolePermissions = window.currentRolePermissions || {}; // Access via window
+    // const roleDisplayNames = window.roleDisplayNames || {}; // Access via window
     let activeRoleKey = null;
 
     window.togglePermissionGroup = function(headerElement, contentId) {
@@ -42,6 +47,8 @@
         }
         console.log('buildPermissionPagesData: permissionPagesConfig populated:', permissionPagesConfig);
     }
+
+    // const { closeModal: helperCloseModal, openModal: helperOpenModal } = window.helpers || {}; // Access via window.helpers
 
     function renderPermissionsModal(roleKey) {
         activeRoleKey = roleKey;
