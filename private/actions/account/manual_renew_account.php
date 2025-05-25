@@ -50,33 +50,7 @@ try {
         throw new Exception('Không thể cập nhật thông tin survey_account.');
     }
 
-    // 2. Update registration table
-    $regId = $currentAccount['registration_id'];
-    $updateRegFields = [
-        'status = "active"',
-        'start_time = :start_time',
-        'end_time = :end_time',
-        'updated_at = NOW()'
-    ];
-    $regParams = [
-        ':start_time' => $newActivationDate . ' 00:00:00',
-        ':end_time'   => $newExpiryDate . ' 23:59:59',
-        ':reg_id'     => $regId
-    ];
-
-    if ($newPackageId && $newPackageId !== (int)$currentAccount['package_id']) {
-        $updateRegFields[] = 'package_id = :package_id';
-        $regParams[':package_id'] = $newPackageId;
-    }
-
-    $stmtReg = $db->prepare("UPDATE registration SET " . implode(', ', $updateRegFields) . " WHERE id = :reg_id");
-    $updateRegSuccess = $stmtReg->execute($regParams);
-
-    if (!$updateRegSuccess) {
-        throw new Exception('Không thể cập nhật thông tin registration.');
-    }
-    
-    // 3. Prepare data and call RTK API
+    // 2. Prepare data and call RTK API
     // The buildRtkUpdatePayload method needs all relevant current and new data.
     // We pass the $input from the form, which layouts new dates.
     // It will merge with existing data from DB where necessary.
