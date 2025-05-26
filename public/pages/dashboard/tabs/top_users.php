@@ -69,25 +69,6 @@
         </div>
     </div>
 </section>
-<style>
-.hidden { display: none; }
-.table-responsive { overflow-x: auto; }
-.table-sm th, .table-sm td { padding: 0.5rem; font-size: 0.875rem; }
-.thead-light th { background-color: #f8f9fa; border-bottom: 2px solid #dee2e6; }
-.table-hover tbody tr:hover { background-color: #f1f1f1; }
-.top-user-highlight td {
-    background-color: #e9f5ff;
-    font-weight: bold;
-}
-.top-user-highlight .badge {
-    font-size: 1em;
-}
-.medal-icon {
-    font-size: 1.2em;
-    vertical-align: middle;
-    margin-right: 2px;
-}
-</style>
 <?php if ($totalUsers > $maxUsers): ?>
 <script>
 document.getElementById('toggle-users').addEventListener('click', function() {

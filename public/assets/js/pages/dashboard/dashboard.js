@@ -1,8 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Đọc tab đã chọn gần nhất từ localStorage
     const savedTab = localStorage.getItem('dashboardActiveTab');
-    const tabs = document.querySelectorAll('.custom-tabs-nav .nav-link');
-    const contents = document.querySelectorAll('.tab-content');
+    // scope everything inside the dashboard wrapper only
+    const dashboardContainer = document.querySelector('main.content-wrapper');
+    const tabs = dashboardContainer.querySelectorAll('.custom-tabs-nav .nav-link');
+    // only target direct children panels of this dashboard
+    const contents = dashboardContainer.querySelectorAll(':scope > .tab-content');
+
     function activateTab(tabName) {
         tabs.forEach(b => b.classList.toggle('active', b.dataset.tab === tabName));
         contents.forEach(c => c.style.display = (c.id === tabName ? '' : 'none'));

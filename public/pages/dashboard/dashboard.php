@@ -88,19 +88,6 @@ include $private_layouts_path . 'admin_sidebar.php';
 </main>
 
 <script>
-// Tab switching logic
-document.addEventListener('DOMContentLoaded', function() {
-    const tabs = document.querySelectorAll('.custom-tabs-nav .nav-link');
-    const contents = document.querySelectorAll('.tab-content');
-    tabs.forEach(btn => btn.addEventListener('click', () => {
-        tabs.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        contents.forEach(c => c.style.display = (c.id === btn.dataset.tab ? '' : 'none'));
-    }));
-});
-</script>
-
-<script>
   window.dashboardData = {
     newRegistrations: <?php echo json_encode($new_registrations_chart_data); ?>,
     referral:         <?php echo json_encode($referral_chart_data); ?>,
@@ -110,62 +97,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <script src="<?php echo $base_path; ?>public/assets/js/pages/dashboard/dashboard.js"></script>
 <?php include $private_layouts_path . 'admin_footer.php'; ?>
-<style>
-@media (max-width: 600px) {
-    .custom-tabs-nav {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    .custom-tabs-nav .nav-link {
-        width: 100%;
-        text-align: left;
-        border-radius: 0.25rem;
-    }
-}
-.charts-section .card { /* Existing style for cards */
-    margin-bottom: 1rem;
-    box-shadow: none;
-    border-radius: 0.5rem;
-}
-.charts-section .card-header { /* Existing style for card headers */
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    background: #f8f9fa;
-    border-bottom: 1px solid #e5e5e5;
-}
-.charts-section .card-body { /* Existing style for card bodies */
-    padding: 1rem;
-    background: #f8f9fa;
-}
-@media (max-width: 600px) {
-    .charts-section .card-body {
-        padding: 0.5rem;
-    }
-}
-
-/* New styles for the 3-column chart row */
-.dashboard-charts-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* Three columns for desktop */
-    gap: 1rem;
-    margin-bottom: 1.5rem; /* Space before the top_users table */
-}
-@media (max-width: 992px) { /* Tablets: 2 columns */
-    .dashboard-charts-row {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-@media (max-width: 767px) { /* Mobile: 1 column */
-    .dashboard-charts-row {
-        grid-template-columns: 1fr;
-    }
-}
-.dashboard-charts-row .card .card-title { /* Ensure card titles in charts are consistent */
-    font-size: 0.9rem; /* Adjust as needed */
-    margin-bottom: 0;
-}
-.dashboard-charts-row .chart-container {
-    position: relative; /* Needed for chart.js responsiveness */
-    height: 240px; /* Uniform height for charts in this row */
-}
-</style>
