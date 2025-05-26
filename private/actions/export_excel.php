@@ -1,9 +1,4 @@
 <?php
-// Ensure session is started at the very beginning
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
 // Autoloading and common setup
 require_once __DIR__ . '/../core/page_bootstrap.php'; // This should include functions.php
 // Service for Excel generation

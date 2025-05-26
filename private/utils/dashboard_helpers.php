@@ -33,14 +33,28 @@ function get_voucher_code_by_registration($registration_id) {
     return $row ? htmlspecialchars($row['code']) : '';
 }
 
+// new: fetch num_account via registration table
+function get_num_account_by_registration($registration_id) {
+    if (empty($registration_id)) {
+        return 0; 
+    }
+    $pdo = Database::getInstance()->getConnection(); // or your DB connection
+    $sql = "SELECT num_account FROM registration WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$registration_id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row && $row['num_account'] !== null ? (int)$row['num_account'] : 0;
+}
+
 /**
  * Formats an activity log entry into a user-friendly message and icon.
  *
  * @param array $log The activity log data array.
  * @param array $voucher_details_map Optional. A map of registration_id => voucher_code to avoid N+1 queries.
+ * @param array $num_account_map Optional. A map of registration_id => num_account to avoid N+1 queries.
  * @return array An array containing the formatted 'icon', 'message', 'time', 'action_type', 'details_url', 'required_permission', and 'customer_id'.
  */
-function format_activity_log($log, $voucher_details_map = []) { // Added $voucher_details_map parameter
+function format_activity_log($log, $voucher_details_map = [], $num_account_map = []) { // Added $num_account_map parameter
     $actor = htmlspecialchars($log['actor_name'] ?? 'System'); // Add null coalescing for safety
     $action = htmlspecialchars($log['action']);
     $entity_type = htmlspecialchars($log['entity_type']);
@@ -59,9 +73,17 @@ function format_activity_log($log, $voucher_details_map = []) { // Added $vouche
             // shortened purchase message
             $details      = json_decode($log['new_values'] ?? '', true) ?: [];
             $package      = htmlspecialchars($details['package'] ?? '');
-            $accounts     = isset($details['selected_accounts']) && is_array($details['selected_accounts'])
-                             ? count($details['selected_accounts']) : 0;
             $registration = $details['registration_id'] ?? null;
+            
+            $num_actual_accounts = 0;
+            if ($registration) {
+                if (isset($num_account_map[$registration])) {
+                    $num_actual_accounts = (int)$num_account_map[$registration];
+                } else {
+                    $num_actual_accounts = get_num_account_by_registration($registration);
+                }
+            }
+
             $voucher      = '';
             if ($registration && isset($voucher_details_map[$registration])) {
                 $voucher = $voucher_details_map[$registration];
@@ -70,9 +92,10 @@ function format_activity_log($log, $voucher_details_map = []) { // Added $vouche
                 $voucher = get_voucher_code_by_registration($registration); 
             }
             $location     = htmlspecialchars($details['location'] ?? '');
-            $message = "<strong>{$actor}</strong> đăng ký <strong>{$package}</strong> x{$accounts} tài khoản"
-                     .($voucher ? " (<strong>Voucher: {$voucher}</strong>)" : "")
-                     .($location ? " tại <strong>{$location}</strong>" : "").".";
+            $message = "<strong>{$actor}</strong> đăng ký <strong>{$package}</strong>"
+                     . ($num_actual_accounts > 0 ? " x{$num_actual_accounts} tài khoản" : "")
+                     . ($voucher ? " (<strong>Voucher: {$voucher}</strong>)" : "")
+                     . ($location ? " tại <strong>{$location}</strong>" : "").".";
             $icon    = "fas fa-shopping-cart text-green-500";
             if (isset($registration)) {
                 $action_type = 'navigate';
@@ -107,9 +130,17 @@ function format_activity_log($log, $voucher_details_map = []) { // Added $vouche
             // shortened renewal message
             $details = json_decode($log['new_values'] ?? '', true) ?: [];
             $package = htmlspecialchars($details['package'] ?? '');
-            $accounts = isset($details['selected_accounts']) && is_array($details['selected_accounts'])
-                        ? count($details['selected_accounts']) : 0;
             $registration = $details['registration_id'] ?? null;
+
+            $num_actual_accounts = 0;
+            if ($registration) {
+                if (isset($num_account_map[$registration])) {
+                    $num_actual_accounts = (int)$num_account_map[$registration];
+                } else {
+                    $num_actual_accounts = get_num_account_by_registration($registration);
+                }
+            }
+
             $voucher = '';
             if ($registration && isset($voucher_details_map[$registration])) {
                 $voucher = $voucher_details_map[$registration];
@@ -118,9 +149,10 @@ function format_activity_log($log, $voucher_details_map = []) { // Added $vouche
                 $voucher = get_voucher_code_by_registration($registration);
             }
             $location = htmlspecialchars($details['location'] ?? '');
-            $message = "<strong>{$actor}</strong> gia hạn <strong>{$package}</strong> x{$accounts} tài khoản"
-                     .($voucher ? " (<strong>Voucher: {$voucher}</strong>)" : "")
-                     .($location ? " tại <strong>{$location}</strong>" : "").".";
+            $message = "<strong>{$actor}</strong> gia hạn <strong>{$package}</strong>"
+                     . ($num_actual_accounts > 0 ? " x{$num_actual_accounts} tài khoản" : "")
+                     . ($voucher ? " (<strong>Voucher: {$voucher}</strong>)" : "")
+                     . ($location ? " tại <strong>{$location}</strong>" : "").".";
             $icon = "fas fa-sync-alt text-purple-500";
             if (isset($registration)) {
                 $action_type = 'navigate';

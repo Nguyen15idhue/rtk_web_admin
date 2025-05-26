@@ -9,14 +9,14 @@
         .then(data => {
             if (data.success) {
                 const row = document.querySelector('tr[data-id="' + id + '"]');
-                row.querySelector('td:nth-child(6)').innerHTML = '<span class="status-badge status-rejected">Rejected</span>';
-                row.querySelector('td:nth-child(8)').innerHTML = `<span style="color: red;">${reason.trim()}</span>`;
-                row.querySelector('td:nth-child(9)').innerHTML = `
+                row.querySelector('td:nth-child(9)').innerHTML = '<span class="status-badge status-rejected">Rejected</span>'; // Status column
+                row.querySelector('td:nth-child(11)').innerHTML = `<span style="color: red;">${reason.trim()}</span>`; // Rejected reason column
+                row.querySelector('td:nth-child(12)').innerHTML = ` 
                     <button class="btn-icon btn-undo"
                             onclick="InvoiceReviewPageEvents.undoInvoice(${id})"
                             title="Hoàn tác">
                         <i class="fas fa-undo"></i>
-                    </button>`;
+                    </button>`; // Actions column
                 window.showToast(data.message || 'Thao tác thành công!', 'success');
             } else {
                 window.showToast(data.message || 'Đã có lỗi xảy ra', 'error');

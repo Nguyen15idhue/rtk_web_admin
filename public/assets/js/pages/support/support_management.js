@@ -46,29 +46,60 @@
 
     function getSupportModalContentHTML(data) {
         return `
-            <p><strong>ID:</strong> <span id="modalId">${data.id}</span></p>
-            <p><strong>Email:</strong> <span>${data.user_email}</span></p>
-            <p><strong>Tiêu đề:</strong> <span>${data.subject}</span></p>
-            <p><strong>Nội dung:</strong></p>
-            <p>${data.message}</p>
-            <p><strong>Thể loại:</strong> <span>${
-                data.category === 'technical' ? 'Kỹ thuật'
-                : data.category === 'billing' ? 'Thanh toán'
-                : data.category === 'account' ? 'Tài khoản'
-                : 'Khác'
-            }</span></p>
-            <p><strong>Trạng thái:</strong>
-                <select id="modalStatus" class="form-control">
-                    <option value="pending" ${data.status === 'pending' ? 'selected' : ''}>Chờ xử lý</option>
-                    <option value="in_progress" ${data.status === 'in_progress' ? 'selected' : ''}>Đang xử lý</option>
-                    <option value="resolved" ${data.status === 'resolved' ? 'selected' : ''}>Đã giải quyết</option>
-                    <option value="closed" ${data.status === 'closed' ? 'selected' : ''}>Đã đóng</option>
-                </select>
-            </p>
-            <p><strong>Phản hồi của Admin:</strong></p>
-            <textarea id="modalResponse" class="form-control" rows="4">${data.admin_response || ''}</textarea>
-            <p><strong>Ngày tạo:</strong> <span>${helpers.formatDateTime(data.created_at)}</span></p>
-            <p><strong>Ngày cập nhật:</strong> <span>${data.updated_at ? helpers.formatDateTime(data.updated_at) : ''}</span></p>
+            <div class="support-modal-details">
+                <div class="detail-row">
+                    <div class="detail-label">ID</div>
+                    <div class="detail-value" id="modalId">${data.id}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Email</div>
+                    <div class="detail-value">${data.user_email}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Tiêu đề</div>
+                    <div class="detail-value">${data.subject}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Nội dung</div>
+                    <div class="detail-value modal-message">${data.message}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Thể loại</div>
+                    <div class="detail-value">${
+                        data.category === 'technical' ? 'Kỹ thuật'
+                        : data.category === 'billing' ? 'Thanh toán'
+                        : data.category === 'account' ? 'Tài khoản'
+                        : 'Khác'
+                    }</div>
+                </div>
+                <div class="section-divider"></div>
+                <div class="detail-row">
+                    <div class="detail-label">Trạng thái</div>
+                    <div class="detail-value">
+                        <select id="modalStatus" class="form-control">
+                            <option value="pending" ${data.status === 'pending' ? 'selected' : ''}>Chờ xử lý</option>
+                            <option value="in_progress" ${data.status === 'in_progress' ? 'selected' : ''}>Đang xử lý</option>
+                            <option value="resolved" ${data.status === 'resolved' ? 'selected' : ''}>Đã giải quyết</option>
+                            <option value="closed" ${data.status === 'closed' ? 'selected' : ''}>Đã đóng</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Phản hồi Admin</div>
+                    <div class="detail-value">
+                        <textarea id="modalResponse" class="form-control" rows="4" placeholder="Nhập phản hồi của bạn...">${data.admin_response || ''}</textarea>
+                    </div>
+                </div>
+                <div class="section-divider"></div>
+                <div class="detail-row">
+                    <div class="detail-label">Ngày tạo</div>
+                    <div class="detail-value">${helpers.formatDateTime(data.created_at)}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Ngày cập nhật</div>
+                    <div class="detail-value">${data.updated_at ? helpers.formatDateTime(data.updated_at) : '—'}</div>
+                </div>
+            </div>
         `;
     }
 

@@ -25,7 +25,7 @@ $public_assets_path = BASE_URL . 'public/assets/';
 
     <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/base.css"> 
 
-    <script type="module" src="<?php echo $public_assets_path; ?>js/app.js" defer></script>
+    <script type="module" src="<?php echo $public_assets_path; ?>js/app.js" crossorigin="anonymous" defer></script>
 </head>
 <body>
 <div id="toast-container"></div> <!-- Container for toast notifications -->

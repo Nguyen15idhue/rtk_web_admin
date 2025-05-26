@@ -1,21 +1,13 @@
 <?php
+// --- Start session ---
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once __DIR__ . '/../config/constants.php';
 require_once ERROR_HANDLER_PATH;
 
 // Autoload external libraries via Composer
 require_once BASE_PATH . '/../vendor/autoload.php';
-
-// filepath: private/core/page_bootstrap.php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-    // Session fixation protection: regenerate ID on first use or every 5 minutes
-    if (!isset($_SESSION['created'])) {
-        $_SESSION['created'] = time();
-    } elseif (time() - $_SESSION['created'] > 300) {
-        session_regenerate_id(true);
-        $_SESSION['created'] = time();
-    }
-}
 
 // --- Load config, DB and helpers for session validation ---
 require_once BASE_PATH . '/config/database.php';

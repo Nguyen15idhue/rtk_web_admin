@@ -53,12 +53,22 @@
     // Expose for inline handlers
     window.toggleSidebar = toggleSidebar;
 
-    // Submenu toggle for parent items
+    // Submenu toggle with state persistence
     document.querySelectorAll('.parent-toggle').forEach(btn => {
+        const key = btn.getAttribute('data-menu-key');
+        const submenu = btn.parentElement.querySelector('.nav-submenu');
+        const toggleIcon = btn.querySelector('.toggle-icon');
+        // Restore saved submenu state
+        const saved = localStorage.getItem('sidebarSubmenu_' + key) === 'true';
+        if (saved) {
+            submenu.classList.add('open');
+            toggleIcon.classList.add('rotated');
+        }
+        // Toggle and save state on click
         btn.addEventListener('click', () => {
-            const submenu = btn.parentElement.querySelector('.nav-submenu');
-            submenu.classList.toggle('open');
-            btn.querySelector('.toggle-icon').classList.toggle('rotated');
+            const isOpen = submenu.classList.toggle('open');
+            toggleIcon.classList.toggle('rotated', isOpen);
+            localStorage.setItem('sidebarSubmenu_' + key, isOpen);
         });
     });
 

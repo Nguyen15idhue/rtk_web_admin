@@ -31,16 +31,24 @@ include $private_layouts_path . 'admin_sidebar.php';
             <?php endif; ?>
         </div>
         <form method="GET" class="filter-bar">
-            <input type="search" name="search" placeholder="Tìm tiêu đề/topic" value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
+            <input type="search" name="search" placeholder="Tìm tiêu đề" value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
+            <select name="topic" id="filter-topic">
+                <option value="">Tất cả chủ đề</option>
+            </select>
             <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
             <a href="<?php echo strtok($_SERVER['REQUEST_URI'],'?'); ?>" class="btn btn-secondary"><i class="fas fa-times"></i> Xóa</a>
         </form>
-
+        
         <div class="table-wrapper">
             <table class="table" id="tbl-guides">
                 <thead>
                     <tr>
-                        <th>ID</th><th>Tiêu đề</th><th>Tác giả</th><th class="status text-center">Trạng thái</th><th class="actions text-center">Hành động</th>
+                        <th>ID</th>
+                        <th>Tiêu đề</th>
+                        <th>Chủ đề</th>
+                        <th>Tác giả</th>
+                        <th class="status text-center">Trạng thái</th>
+                        <th class="actions text-center">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>

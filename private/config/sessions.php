@@ -1,5 +1,4 @@
 <?php
-// Secure session settings and session-related constants
 if (session_status() === PHP_SESSION_NONE) {
     ini_set('session.use_strict_mode', 1);
     ini_set('session.cookie_httponly', 1);

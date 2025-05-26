@@ -180,8 +180,8 @@ if ($tx_type === 'renewal') {
         $oldEndTs = strtotime($oldEnd);
         $nowTs    = time();
 
-        // per-account new start/end
-        $startTs  = max($nowTs, $oldEndTs);
+        // per-account new start/end: always start from now
+        $startTs  = $nowTs;
         $newStart = date('Y-m-d H:i:s', $startTs); 
         $newEnd   = date('Y-m-d H:i:s', $startTs + $durationSec);
 
