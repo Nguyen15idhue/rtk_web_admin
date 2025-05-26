@@ -17,5 +17,3 @@ define('LOGS_PATH', BASE_PATH . '/logs');
 
 // Uploads and image hosting
 define('UPLOADS_PATH', BASE_PATH . '/../public/uploads/');
-// Base URL for hosted images
-define('IMAGE_HOST_BASE_URL', 'http://localhost:8000/');

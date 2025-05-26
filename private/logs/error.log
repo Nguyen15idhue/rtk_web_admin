@@ -1,0 +1,1 @@
+[26-May-2025 00:58:00 UTC] Dashboard Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.full_name' in 'field list'

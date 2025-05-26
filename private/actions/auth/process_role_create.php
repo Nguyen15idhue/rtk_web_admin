@@ -65,7 +65,7 @@ try {
     }
 
     $db->commit();
-    api_success(['role_key' => $role_key], 'New role \'' . $role_name . ' (' . $role_key . ')\' created successfully.');
+    api_success(['role_key' => $role_key], 'Quyền mới \'' . $role_name . ' (' . $role_key . ')\' đã được tạo.');
 
 } catch (Exception $e) {
     if ($db->inTransaction()) {

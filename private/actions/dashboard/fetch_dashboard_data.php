@@ -34,6 +34,11 @@ function fetch_dashboard_data(): array
         'voucher_details_map'          => [], // Added for pre-fetched voucher codes
         'new_registrations_chart_data' => ['labels'=>[], 'data'=>[]],
         'referral_chart_data'          => ['labels'=>[], 'data'=>[]],
+        'total_vouchers'               => 0, // Added for voucher stats
+        'used_vouchers'                => 0, // Added for voucher stats
+        'pending_support_requests'     => 0, // Added default for support stats
+        'inactive_stations'            => 0, // Added default for station stats
+        'top_users'                    => [], // Added array placeholder for top users ranking
     ];
     try {
         // Tổng người dùng web
@@ -77,6 +82,18 @@ function fetch_dashboard_data(): array
         $dashboard_data['total_commission_paid'] = (float)$pdo->query(
             "SELECT IFNULL(SUM(commission_amount),0) FROM referral_commission WHERE status='approved'"
         )->fetchColumn();
+
+        // Thống kê Voucher
+        // Tổng số voucher đã tạo
+        $dashboard_data['total_vouchers'] = (int)$pdo->query(
+            "SELECT COUNT(*) FROM voucher"
+        )->fetchColumn();
+        
+        // Số voucher đã được sử dụng (đếm các voucher_id duy nhất trong transaction_history)
+        $dashboard_data['used_vouchers'] = (int)$pdo->query(
+            "SELECT COUNT(DISTINCT voucher_id) FROM transaction_history WHERE voucher_id IS NOT NULL"
+        )->fetchColumn();
+
         // Hoạt động gần đây (chỉ các action do khách hàng tạo)
         $dashboard_data['recent_activities'] = $pdo->query(
             "SELECT al.*, u.username AS actor_name
@@ -123,6 +140,36 @@ function fetch_dashboard_data(): array
             }
         }
         
+        // Hỗ trợ: số yêu cầu chờ xử lý
+        $dashboard_data['pending_support_requests'] = (int)$pdo->query(
+            "SELECT COUNT(*) FROM support_requests WHERE status IN ('pending','in_progress')"
+        )->fetchColumn();
+        // Trạm: số trạm không hoạt động
+        $dashboard_data['inactive_stations'] = (int)$pdo->query(
+            "SELECT COUNT(*) FROM station WHERE status IN (0,2,3)"
+        )->fetchColumn();
+
+        // Phân tích người dùng: phân bổ theo gói
+        $labels = [];
+        $counts = [];
+        $stmt_dist = $pdo->query(
+            "SELECT p.name AS package_name, COUNT(DISTINCT r.user_id) AS user_count
+             FROM package p
+             LEFT JOIN registration r ON p.id = r.package_id AND r.status = 'active'
+             GROUP BY p.id ORDER BY p.name"
+        );
+        foreach ($stmt_dist->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            $labels[] = htmlspecialchars($row['package_name']);
+            $counts[] = (int)$row['user_count'];
+        }
+        $dashboard_data['user_package_distribution'] = ['labels' => $labels, 'data' => $counts];
+
+        // Tỷ lệ người dùng có gói vs không có gói
+        $total_active = $dashboard_data['total_web_users'];
+        $with_pkg = $dashboard_data['users_with_package'];
+        $without_pkg = max(0, $total_active - $with_pkg);
+        $dashboard_data['user_package_ratio'] = ['with_package' => $with_pkg, 'without_package' => $without_pkg];
+
         // Calculate the date 6 days ago for chart queries
         $six_days_ago_start = date('Y-m-d 00:00:00', strtotime('-6 days'));
 
@@ -155,6 +202,27 @@ function fetch_dashboard_data(): array
             $data[]   = (int)$r['c'];
         }
         $dashboard_data['referral_chart_data'] = ['labels'=>$labels,'data'=>$data];
+
+        // Top users by total spending and commission
+        $stmt_top_users = $pdo->query(
+            "SELECT u.id, u.username AS full_name, u.email,
+                    COALESCE(SUM(th.amount), 0) AS total_spent,
+                    COALESCE(rc_sum.total_commission, 0) AS total_commission_earned,
+                    (COALESCE(SUM(th.amount), 0) + COALESCE(rc_sum.total_commission, 0)) AS total_score
+             FROM `user` u
+             LEFT JOIN transaction_history th ON u.id = th.user_id AND th.status = 'completed' AND th.transaction_type IN ('purchase','renewal')
+             LEFT JOIN (
+                 SELECT referrer_id, SUM(commission_amount) AS total_commission
+                 FROM referral_commission
+                 WHERE status = 'approved'
+                 GROUP BY referrer_id
+             ) rc_sum ON u.id = rc_sum.referrer_id
+             WHERE u.status = 1
+             GROUP BY u.id, u.username, u.email
+             ORDER BY total_score DESC
+             LIMIT 10"
+        );
+        $dashboard_data['top_users'] = $stmt_top_users->fetchAll(PDO::FETCH_ASSOC);
     } catch (\Exception $e) {
         error_log("Dashboard Error: " . $e->getMessage());
     }
