@@ -1,8 +1,0 @@
-[26-May-2025 00:58:00 UTC] Dashboard Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.full_name' in 'field list'
-[26-May-2025 04:20:09 UTC] [PTA] activate survey_account executed, affectedRows=0
-[26-May-2025 04:20:09 UTC] Warning: No survey accounts found or enabled for approved registration ID: 243
-[26-May-2025 04:20:09 UTC] [PTA] Generated survey account username: CMA001
-[26-May-2025 04:20:09 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://rtk_web_admin.test/public/handlers/account/index.php?action=create_account with payload={"registration_id":243,"username_acc":"CMA001","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":12,"package_id":3,"start_time":"2025-05-26 11:20:09","end_time":"2025-11-26 11:20:09","enabled":1,"concurrent_user":1,"account_count":2}
-[26-May-2025 04:20:09 UTC] Using default mount points for location ID: 12 - [42]
-[26-May-2025 04:20:09 UTC] Using default mount points for location ID: 12 - [42]
-[26-May-2025 04:20:09 UTC] [PTA] Warning: create_account returned no data. Resp={"success":true,"message":"Accounts created: 2","data":{"accounts":[{"username":"CMA001","id":2402},{"username":"CMA002","id":2403}]},"errors":[],"meta":{}}

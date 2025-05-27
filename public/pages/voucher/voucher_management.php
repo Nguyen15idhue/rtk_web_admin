@@ -97,6 +97,9 @@ include $private_layouts_path . 'admin_sidebar.php';
                             <th>Đơn hàng tối thiểu</th>
                             <th>Số lượng</th>
                             <th>Đã dùng</th>
+                            <th>SL TK Tối đa</th>
+                            <th>Tỉnh áp dụng</th>
+                            <th>Gói áp dụng</th>
                             <th>Thời gian</th>
                             <th>Trạng thái</th>
                             <th>Hành động</th>
@@ -124,6 +127,9 @@ include $private_layouts_path . 'admin_sidebar.php';
                                 <td><?php echo htmlspecialchars($v['min_order_value'] ? format_currency($v['min_order_value']) : '-'); ?></td>
                                 <td><?php echo htmlspecialchars($v['quantity'] ?? '-'); ?></td>
                                 <td><?php echo htmlspecialchars($v['used_quantity']); ?></td>
+                                <td><?php echo htmlspecialchars($v['max_sa'] ?? '-'); ?></td>
+                                <td><?php echo htmlspecialchars($v['location_name'] ?? 'Tất cả'); ?></td>
+                                <td><?php echo htmlspecialchars($v['package_name'] ?? 'Tất cả'); ?></td>
                                 <td><?php echo format_date($v['start_date']); ?> - <?php echo format_date($v['end_date']); ?></td>
                                 <td><?php 
                                     if (strtotime($v['end_date']) < time()) {
@@ -137,13 +143,14 @@ include $private_layouts_path . 'admin_sidebar.php';
                                     <?php if ($isEditVoucherAllowed): ?>
                                     <button type="button" class="btn-icon btn-edit" onclick="VoucherPage.openEditModal(<?php echo $v['id']; ?>)"><i class="fas fa-pencil-alt"></i></button>
                                     <button type="button" class="btn-icon" onclick="VoucherPage.toggleStatus(<?php echo $v['id']; ?>, '<?php echo $v['is_active']? 'disable':'enable'; ?>')"><i class="fas <?php echo $v['is_active']? 'fa-toggle-off':'fa-toggle-on'; ?>"></i></button>
+                                    <button type="button" class="btn-icon btn-link" title="Sao chép link đăng ký và tạo QR" onclick="VoucherPage.copyVoucherLinkAndShowQR('<?php echo IMAGE_HOST_BASE_URL . 'public/pages/auth/register.php?voucher=' . htmlspecialchars($v['code']); ?>', '<?php echo htmlspecialchars($v['code']); ?>')"><i class="fas fa-qrcode"></i></button>
                                     <button type="button" class="btn-icon btn-danger" onclick="VoucherPage.deleteVoucher(<?php echo $v['id']; ?>)"><i class="fas fa-trash-alt"></i></button>
                                     <?php endif; ?>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
-                            <tr><td colspan="13">Không có voucher phù hợp.</td></tr>
+                            <tr><td colspan="16">Không có voucher phù hợp.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -152,8 +159,10 @@ include $private_layouts_path . 'admin_sidebar.php';
 
         <?php include $private_layouts_path . 'pagination.php'; ?>
     </div> <!-- End #voucher-management -->
+
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
 <script>
     // Ensure appConfig is defined for JS
     window.appConfig = { basePath: '' };
