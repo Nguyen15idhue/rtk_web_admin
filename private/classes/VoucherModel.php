@@ -33,6 +33,14 @@ class VoucherModel {
                 $baseWhere .= " AND end_date < NOW()";
             }
         }
+        if (!empty($filters['location_id'])) {
+            $baseWhere .= " AND v.location_id = ?";
+            $params[] = $filters['location_id'];
+        }
+        if (!empty($filters['package_id'])) {
+            $baseWhere .= " AND v.package_id = ?";
+            $params[] = $filters['package_id'];
+        }
         // count total
         $countSql = "SELECT COUNT(*)" . $baseFrom . $baseWhere;
         $stmt = $this->db->prepare($countSql);
@@ -44,7 +52,7 @@ class VoucherModel {
         $offset = ($page - 1) * $perPage;
 
         // fetch data
-        $dataSql = $baseSelect . $baseFrom . $baseWhere . " ORDER BY created_at DESC LIMIT ? OFFSET ?";
+        $dataSql = $baseSelect . $baseFrom . $baseWhere . " ORDER BY v.created_at DESC LIMIT ? OFFSET ?";
         $dataParams = array_merge($params, [$perPage, $offset]);
         $stmt = $this->db->prepare($dataSql);
         $stmt->execute($dataParams);
@@ -69,6 +77,61 @@ class VoucherModel {
 
     // Create new voucher
     public function create(array $data) {
+        // Validate required fields
+        if (empty($data['code'])) {
+            throw new InvalidArgumentException('Mã voucher không được để trống');
+        }
+        if (empty($data['voucher_type'])) {
+            throw new InvalidArgumentException('Loại voucher không được để trống');
+        }
+        if (!isset($data['discount_value']) || !is_numeric($data['discount_value']) || $data['discount_value'] <= 0) {
+            throw new InvalidArgumentException('Giá trị giảm giá phải là số dương');
+        }
+        if (empty($data['start_date']) || empty($data['end_date'])) {
+            throw new InvalidArgumentException('Ngày bắt đầu và ngày kết thúc không được để trống');
+        }
+        
+        // Validate voucher type
+        $validTypes = ['fixed_discount', 'percentage_discount', 'extend_duration'];
+        if (!in_array($data['voucher_type'], $validTypes)) {
+            throw new InvalidArgumentException('Loại voucher không hợp lệ');
+        }
+        
+        // Validate dates
+        $startDate = strtotime($data['start_date']);
+        $endDate = strtotime($data['end_date']);
+        if ($startDate === false || $endDate === false) {
+            throw new InvalidArgumentException('Định dạng ngày không hợp lệ');
+        }
+        if ($endDate <= $startDate) {
+            throw new InvalidArgumentException('Ngày kết thúc phải sau ngày bắt đầu');
+        }
+        
+        // Validate numeric fields
+        if (isset($data['max_discount']) && $data['max_discount'] !== null && (!is_numeric($data['max_discount']) || $data['max_discount'] < 0)) {
+            throw new InvalidArgumentException('Giới hạn giảm tối đa phải là số không âm');
+        }
+        if (isset($data['min_order_value']) && $data['min_order_value'] !== null && (!is_numeric($data['min_order_value']) || $data['min_order_value'] < 0)) {
+            throw new InvalidArgumentException('Giá trị đơn hàng tối thiểu phải là số không âm');
+        }
+        if (isset($data['quantity']) && $data['quantity'] !== null && (!is_numeric($data['quantity']) || $data['quantity'] < 0)) {
+            throw new InvalidArgumentException('Số lượng phải là số không âm');
+        }
+        if (isset($data['limit_usage']) && $data['limit_usage'] !== null && (!is_numeric($data['limit_usage']) || $data['limit_usage'] < 0)) {
+            throw new InvalidArgumentException('Giới hạn sử dụng phải là số không âm');
+        }
+        if (isset($data['max_sa']) && $data['max_sa'] !== null && (!is_numeric($data['max_sa']) || $data['max_sa'] < 0)) {
+            throw new InvalidArgumentException('Số lượng tài khoản tối đa phải là số không âm');
+        }
+        
+        // Check if voucher code already exists
+        $checkSql = "SELECT COUNT(*) FROM voucher WHERE code = ?";
+        $checkStmt = $this->db->prepare($checkSql);
+        $checkStmt->execute([$data['code']]);
+        if ($checkStmt->fetchColumn() > 0) {
+            throw new InvalidArgumentException('Mã voucher đã tồn tại');
+        }
+        
         $sql = "INSERT INTO voucher (code, description, voucher_type, discount_value, max_discount, min_order_value, quantity, limit_usage, start_date, end_date, is_active, max_sa, location_id, package_id, created_at)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
         $stmt = $this->db->prepare($sql);
@@ -158,7 +221,7 @@ class VoucherModel {
             FROM voucher v
             LEFT JOIN location l ON v.location_id = l.id
             LEFT JOIN package p ON v.package_id = p.id
-            ORDER BY created_at DESC
+            ORDER BY v.created_at DESC
         ";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
@@ -195,8 +258,8 @@ class VoucherModel {
             FROM voucher v
             LEFT JOIN location l ON v.location_id = l.id
             LEFT JOIN package p ON v.package_id = p.id
-            WHERE id IN ({$placeholders})
-            ORDER BY created_at DESC
+            WHERE v.id IN ({$placeholders})
+            ORDER BY v.created_at DESC
         ";
         $stmt = $this->db->prepare($sql);
         $stmt->execute($ids);

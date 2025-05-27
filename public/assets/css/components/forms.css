@@ -109,3 +109,94 @@
     border-color: var(--primary-500);
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
+
+/* Form Validation Styles */
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+    border-color: var(--danger-500);
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+    background-color: rgba(239, 68, 68, 0.05);
+}
+
+.field-error-message {
+    color: var(--danger-600);
+    font-size: var(--font-size-xs);
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.form-group input.error:focus,
+.form-group select.error:focus,
+.form-group textarea.error:focus {
+    border-color: var(--danger-500);
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
+}
+
+/* Success state for validated fields */
+.form-group input.valid,
+.form-group select.valid,
+.form-group textarea.valid {
+    border-color: var(--success-500);
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+.form-group input.valid:focus,
+.form-group select.valid:focus,
+.form-group textarea.valid:focus {
+    border-color: var(--success-500);
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+}
+
+/* Input group styles for currency and unit inputs */
+.input-group {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.input-group input {
+    flex: 1;
+    border-radius: var(--rounded-md) 0 0 var(--rounded-md);
+    border-right: none;
+    margin: 0;
+}
+
+.input-unit {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 0.8rem;
+    background-color: var(--gray-100);
+    border: 1px solid var(--gray-300);
+    border-left: none;
+    border-radius: 0 var(--rounded-md) var(--rounded-md) 0;
+    font-size: var(--font-size-sm);
+    color: var(--gray-600);
+    font-weight: var(--font-medium);
+    white-space: nowrap;
+    min-width: fit-content;
+    height: auto;
+}
+
+.input-group input:focus + .input-unit {
+    border-color: var(--primary-500);
+}
+
+.input-group input.error + .input-unit {
+    border-color: var(--danger-500);
+}
+
+.input-group input.valid + .input-unit {
+    border-color: var(--success-500);
+}
+
+/* Override default styles for inputs inside input-group */
+.form-group .input-group input[type="number"] {
+    width: auto;
+    flex: 1;
+}
+
+/* Ensure proper alignment and spacing */
+.form-group .input-group {
+    width: 100%;
+}
