@@ -288,17 +288,46 @@ document.addEventListener('DOMContentLoaded', ()=> {
     function showFieldError(input, message) {
         clearFieldError(input);
         input.classList.add('error');
+        
         const errorDiv = document.createElement('div');
         errorDiv.className = 'field-error-message';
         errorDiv.textContent = message;
-        input.parentNode.appendChild(errorDiv);
+        
+        // Check if input is inside an input-group
+        const inputGroup = input.closest('.input-group');
+        if (inputGroup) {
+            // Add error class to input-group for styling
+            inputGroup.classList.add('has-error');
+            // Insert error message after the input-group
+            inputGroup.parentNode.insertBefore(errorDiv, inputGroup.nextSibling);
+        } else {
+            // Normal case: insert after the input
+            input.parentNode.appendChild(errorDiv);
+        }
     }
 
     function clearFieldError(input) {
         input.classList.remove('error');
-        const existingError = input.parentNode.querySelector('.field-error-message');
-        if (existingError) {
-            existingError.remove();
+        
+        // Check if input is inside an input-group
+        const inputGroup = input.closest('.input-group');
+        if (inputGroup) {
+            inputGroup.classList.remove('has-error');
+            // Find error message that comes after the input-group
+            let nextElement = inputGroup.nextSibling;
+            while (nextElement) {
+                if (nextElement.nodeType === 1 && nextElement.classList.contains('field-error-message')) {
+                    nextElement.remove();
+                    break;
+                }
+                nextElement = nextElement.nextSibling;
+            }
+        } else {
+            // Normal case: find error in same parent
+            const existingError = input.parentNode.querySelector('.field-error-message');
+            if (existingError) {
+                existingError.remove();
+            }
         }
     }
 
@@ -436,7 +465,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
             
             // Find the button and row elements
             const toggleButton = document.querySelector(`button[onclick*="toggleStatus(${id}"]`);
-            const statusCell = toggleButton ? toggleButton.closest('tr').querySelector('td:nth-child(15)') : null;
+            const row = toggleButton ? toggleButton.closest('tr') : null;
+            const statusCell = row ? row.querySelector('td:nth-child(7)') : null; // Status is the 7th column
             
             // Disable button during request
             if (toggleButton) {
@@ -447,45 +477,40 @@ document.addEventListener('DOMContentLoaded', ()=> {
             postForm(`${apiBase}?action=toggle_voucher_status`, new URLSearchParams({id,action}))
             .then(res=>{
                 if(res.success) {
-                    window.showToast(res.message,'success');
+                    window.showToast(res.message || 'Cập nhật trạng thái thành công!','success');
                     
-                    // Update UI elements instead of reloading
-                    if (toggleButton && statusCell) {
+                    // Update UI elements without page reload
+                    if (toggleButton && statusCell && row) {
                         const newIsActive = action === 'enable';
                         const newAction = newIsActive ? 'disable' : 'enable';
                         const newIcon = newIsActive ? 'fa-toggle-off' : 'fa-toggle-on';
                         const newTitle = newIsActive ? 'Vô hiệu hóa' : 'Kích hoạt';
                         
                         // Update toggle button
+                        const newOnclick = `VoucherPage.toggleStatus(${id},'${newAction}')`;
+                        toggleButton.setAttribute('onclick', newOnclick);
                         toggleButton.onclick = () => VoucherPage.toggleStatus(id, newAction);
                         toggleButton.innerHTML = `<i class="fas ${newIcon}"></i>`;
                         toggleButton.title = newTitle;
                         
-                        // Update status badge - we need to check if voucher is expired first
-                        const timeCell = toggleButton.closest('tr').querySelector('td:nth-child(14)');
-                        const endDateText = timeCell ? timeCell.textContent.split(' - ')[1] : '';
-                        const isExpired = endDateText && new Date(endDateText.split('/').reverse().join('-')) < new Date();
-                        
-                        if (isExpired) {
-                            statusCell.innerHTML = getVoucherStatusBadge('expired');
-                        } else {
-                            statusCell.innerHTML = getVoucherStatusBadge(newIsActive ? 'active' : 'inactive');
-                        }
+                        // Update status badge
+                        statusCell.innerHTML = getVoucherStatusBadge(newIsActive ? 'active' : 'inactive');
                     }
                 } else {
-                    window.showToast(res.message,'error');
+                    window.showToast(res.message || 'Lỗi khi cập nhật trạng thái','error');
                 }
             })
             .catch(err => {
+                console.error('Toggle status error:', err);
                 window.showToast('Lỗi: ' + err.message, 'error');
             })
             .finally(() => {
                 // Re-enable button
                 if (toggleButton) {
                     toggleButton.disabled = false;
-                    if (!toggleButton.innerHTML.includes('fa-toggle-')) {
-                        // If button content wasn't updated in success block, restore original icon
-                        const currentAction = toggleButton.onclick.toString().includes('disable') ? 'disable' : 'enable';
+                    // If the request failed, restore the original icon
+                    if (toggleButton.innerHTML.includes('fa-spinner')) {
+                        const currentAction = action; // Keep original action if failed
                         const icon = currentAction === 'disable' ? 'fa-toggle-off' : 'fa-toggle-on';
                         toggleButton.innerHTML = `<i class="fas ${icon}"></i>`;
                     }
@@ -581,6 +606,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
             let successCount = 0;
             let errorCount = 0;
             const errors = [];
+            const updatedRows = [];
 
             // Process each voucher
             Promise.all(voucherIds.map(async id => {
@@ -592,37 +618,25 @@ document.addEventListener('DOMContentLoaded', ()=> {
                         throw new Error(`Toggle button not found for voucher ${id}`);
                     }
 
-                    // Multiple methods to determine current action
+                    // Determine current action by checking onclick attribute
                     let currentAction = null;
-                    
-                    // Method 1: Check status badge text
-                    const statusCell = row.querySelector('td:nth-child(15)'); // Status column
-                    if (statusCell) {
-                        const statusText = statusCell.textContent.trim();
-                        if (statusText.includes('Hoạt động')) {
-                            currentAction = 'disable'; // Currently active, so we'll disable
-                        } else if (statusText.includes('Vô hiệu hóa')) {
-                            currentAction = 'enable'; // Currently inactive, so we'll enable
-                        }
+                    const onclickStr = toggleButton.getAttribute('onclick') || '';
+                    if (onclickStr.includes("'disable'")) {
+                        currentAction = 'disable';
+                    } else if (onclickStr.includes("'enable'")) {
+                        currentAction = 'enable';
                     }
                     
-                    // Method 2: Check button icon class as fallback
                     if (!currentAction) {
-                        const icon = toggleButton.querySelector('i');
-                        if (icon && icon.classList.contains('fa-toggle-off')) {
-                            currentAction = 'enable'; // Currently disabled (off), so enable
-                        } else if (icon && icon.classList.contains('fa-toggle-on')) {
-                            currentAction = 'disable'; // Currently enabled (on), so disable
-                        }
-                    }
-                    
-                    // Method 3: Parse onclick attribute as final fallback
-                    if (!currentAction) {
-                        const onclickStr = toggleButton.getAttribute('onclick') || '';
-                        if (onclickStr.includes("'disable'")) {
-                            currentAction = 'disable';
-                        } else if (onclickStr.includes("'enable'")) {
-                            currentAction = 'enable';
+                        // Fallback: check status badge text
+                        const statusCell = row.querySelector('td:nth-child(7)'); // Status column
+                        if (statusCell) {
+                            const statusText = statusCell.textContent.trim();
+                            if (statusText.includes('Hoạt động')) {
+                                currentAction = 'disable'; // Currently active, so disable
+                            } else if (statusText.includes('Vô hiệu hóa')) {
+                                currentAction = 'enable'; // Currently inactive, so enable
+                            }
                         }
                     }
                     
@@ -639,6 +653,14 @@ document.addEventListener('DOMContentLoaded', ()=> {
                     
                     if (res.success) {
                         successCount++;
+                        // Store row update info for UI update
+                        updatedRows.push({
+                            id: id,
+                            row: row,
+                            button: toggleButton,
+                            action: currentAction,
+                            newIsActive: currentAction === 'enable'
+                        });
                         return { success: true, id, action: currentAction };
                     } else {
                         throw new Error(res.message || 'Unknown error');
@@ -653,16 +675,40 @@ document.addEventListener('DOMContentLoaded', ()=> {
             .then((results) => {
                 console.log('Bulk toggle results:', results);
                 
+                // Update UI for successful toggles
+                updatedRows.forEach(({ id, row, button, action, newIsActive }) => {
+                    const statusCell = row.querySelector('td:nth-child(7)');
+                    
+                    if (button && statusCell) {
+                        const newAction = newIsActive ? 'disable' : 'enable';
+                        const newIcon = newIsActive ? 'fa-toggle-off' : 'fa-toggle-on';
+                        const newTitle = newIsActive ? 'Vô hiệu hóa' : 'Kích hoạt';
+                        
+                        // Update toggle button
+                        const newOnclick = `VoucherPage.toggleStatus(${id},'${newAction}')`;
+                        button.setAttribute('onclick', newOnclick);
+                        button.onclick = () => VoucherPage.toggleStatus(id, newAction);
+                        button.innerHTML = `<i class="fas ${newIcon}"></i>`;
+                        button.title = newTitle;
+                        
+                        // Update status badge
+                        statusCell.innerHTML = getVoucherStatusBadge(newIsActive ? 'active' : 'inactive');
+                    }
+                });
+                
+                // Show result message
                 if (successCount > 0 && errorCount === 0) {
                     window.showToast(`Đã đảo trạng thái thành công ${successCount} voucher.`, 'success');
                 } else if (successCount > 0 && errorCount > 0) {
-                    window.showToast(`Đã đảo trạng thái ${successCount} voucher. ${errorCount} voucher lỗi: ${errors.join(', ')}`, 'warning');
+                    window.showToast(`Đã đảo trạng thái ${successCount} voucher. ${errorCount} voucher lỗi.`, 'warning');
                 } else {
                     window.showToast(`Không thể đảo trạng thái voucher nào. Lỗi: ${errors.join(', ')}`, 'error');
                 }
                 
-                // Reload page to refresh the table
-                setTimeout(() => location.reload(), 1000);
+                // Clear selections
+                document.querySelectorAll('.rowCheckbox:checked').forEach(cb => cb.checked = false);
+                const selectAllCheckbox = document.getElementById('selectAll');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
             })
             .catch(error => {
                 console.error('Bulk toggle error:', error);
@@ -840,4 +886,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
             });
         });
     }
-});
+
+    // Add tooltip for truncated descriptions
+    document.querySelectorAll('#voucher-management td.description-col').forEach(td => {
+        td.title = td.textContent.trim();
+    });
+}); // end DOMContentLoaded

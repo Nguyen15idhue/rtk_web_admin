@@ -1,7 +1,7 @@
 <?php
 // filepath: private/actions/voucher/update_voucher.php
 declare(strict_types=1);
-require_once __DIR__ . '/../../utils/functions.php';
+
 require_once __DIR__ . '/../../classes/Auth.php';
 Auth::ensureAuthorized('voucher_management_edit');
 if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
@@ -48,11 +48,14 @@ $model = new VoucherModel();
 try {
     // Get old voucher data for logging
     $oldVoucher = $model->getOne($id);
+    if (!$oldVoucher) {
+        api_error('Voucher không tồn tại để cập nhật.', 404); // Not Found
+        return; // Stop execution if voucher not found
+    }
     
     $updated = $model->update($id, $data);
-    if (!$updated) {
-        api_error('Failed to update voucher', 500);
-    }
+    // The $model->update() method now returns bool and throws an exception on validation error or DB error.
+    // So, if we reach here, it means the update was successful in the DB.
     
     // Log voucher update activity
     $db = Database::getInstance()->getConnection();
@@ -95,7 +98,9 @@ try {
     );
     
     api_success(['updated' => true]);
+} catch (InvalidArgumentException $e) {
+    api_error($e->getMessage(), 400); // Bad Request for validation errors
 } catch (Exception $e) {
     error_log('Error in update_voucher: ' . $e->getMessage());
-    api_error('Server error', 500);
+    api_error('Lỗi máy chủ khi cập nhật voucher.', 500); // Internal Server Error for other exceptions
 }

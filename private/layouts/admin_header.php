@@ -18,12 +18,19 @@ $public_assets_path = BASE_URL . 'public/assets/';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="<?php echo isset($page_description) ? htmlspecialchars($page_description) : 'Admin Dashboard for RTK System'; ?>">
     <!-- Title should be dynamic, passed from the including page -->
-    <title><?php echo isset($page_title) ? htmlspecialchars($page_title) : 'Admin Dashboard'; ?></title>
-
-    <!-- Font Awesome -->
+    <title><?php echo isset($page_title) ? htmlspecialchars($page_title) : 'Admin Dashboard'; ?></title>    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- Updated Font Awesome -->
 
     <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/base.css"> 
+
+    <?php
+    // Include additional CSS files if defined
+    if (isset($additional_css) && is_array($additional_css)) {
+        foreach ($additional_css as $css_file) {
+            echo '<link rel="stylesheet" href="' . $public_assets_path . 'css/' . htmlspecialchars($css_file) . '">' . "\n    ";
+        }
+    }
+    ?>
 
     <script type="module" src="<?php echo $public_assets_path; ?>js/app.js" crossorigin="anonymous" defer></script>
 </head>

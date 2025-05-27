@@ -1,7 +1,6 @@
 <?php
 // filepath: private/actions/voucher/toggle_voucher_status.php
 declare(strict_types=1);
-require_once __DIR__ . '/../../utils/functions.php';
 require_once __DIR__ . '/../../classes/Auth.php';
 Auth::ensureAuthorized('voucher_management_edit');
 if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
@@ -25,6 +24,7 @@ try {
     $voucher = $model->getOne($id);
     if (!$voucher) {
         api_error('Voucher not found', 404);
+        return; // Ensure script stops if voucher not found
     }
     
     $ok = $model->toggleStatus($id, $disable);
@@ -49,14 +49,18 @@ try {
                 ':entity_id'      => $id,
                 ':old_values'     => json_encode(['status' => $old_status]),
                 ':new_values'     => json_encode(['status' => $new_status]),
-                ':notify_content' => "Voucher '{$voucher['code']}' status changed from {$old_status} to {$new_status}"
+                ':notify_content' => null // Disable notification
             ]
         );
     } catch (Exception $logError) {
         error_log('Failed to log voucher status change: ' . $logError->getMessage());
     }
     
-    api_success(['status' => $disable ? 'inactive' : 'active']);
+    api_success([
+        'status' => $disable ? 'inactive' : 'active',
+        'message' => $disable ? 'Đã vô hiệu hóa voucher thành công.' : 'Đã kích hoạt voucher thành công.',
+        'voucher_id' => $id
+    ]);
 } catch (Exception $e) {
     error_log('Error in toggle_voucher_status: ' . $e->getMessage());
     api_error('Server error', 500);

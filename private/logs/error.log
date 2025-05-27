@@ -1,0 +1,15 @@
+[27-May-2025 15:48:27 UTC] Database error in fetch_paginated_vouchers: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'is_active' in where clause is ambiguous
+[27-May-2025 15:48:46 UTC] Database error in fetch_paginated_vouchers: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'is_active' in where clause is ambiguous
+[27-May-2025 15:48:54 UTC] Database error in fetch_paginated_vouchers: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'is_active' in where clause is ambiguous
+[27-May-2025 15:50:14 UTC] Database error in fetch_paginated_vouchers: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'is_active' in where clause is ambiguous
+[27-May-2025 15:53:58 UTC] Database error in fetch_paginated_vouchers: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'is_active' in where clause is ambiguous
+[27-May-2025 15:54:01 UTC] Database error in fetch_paginated_vouchers: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'is_active' in where clause is ambiguous
+[27-May-2025 15:54:09 UTC] Database error in fetch_paginated_vouchers: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'is_active' in where clause is ambiguous
+[27-May-2025 15:56:12 UTC] Database error in fetch_paginated_vouchers: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'is_active' in where clause is ambiguous
+[27-May-2025 15:57:36 UTC] Database error in fetch_paginated_vouchers: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'is_active' in where clause is ambiguous
+[27-May-2025 15:57:41 UTC] Database error in fetch_paginated_vouchers: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'is_active' in where clause is ambiguous
+[27-May-2025 15:57:53 UTC] Database error in fetch_paginated_vouchers: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'is_active' in where clause is ambiguous
+[27-May-2025 15:59:46 UTC] Database error in fetch_paginated_vouchers: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'is_active' in where clause is ambiguous
+[27-May-2025 15:59:52 UTC] Database error in fetch_paginated_vouchers: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'is_active' in where clause is ambiguous
+[27-May-2025 16:03:20 UTC] Database error in fetch_paginated_vouchers: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'is_active' in where clause is ambiguous
+[27-May-2025 16:03:23 UTC] Database error in fetch_paginated_vouchers: SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'is_active' in where clause is ambiguous

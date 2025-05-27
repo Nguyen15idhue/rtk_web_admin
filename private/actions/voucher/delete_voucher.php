@@ -1,7 +1,7 @@
 <?php
 // filepath: private/actions/voucher/delete_voucher.php
 declare(strict_types=1);
-require_once __DIR__ . '/../../utils/functions.php';
+
 require_once __DIR__ . '/../../classes/Auth.php';
 Auth::ensureAuthorized('voucher_management_edit');
 if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
@@ -23,6 +23,7 @@ try {
     $voucher = $model->getOne($id);
     if (!$voucher) {
         api_error('Voucher not found', 404);
+        return; // Ensure script stops if voucher not found
     }
     
     $deleted = $model->delete($id);
@@ -53,7 +54,7 @@ try {
                     'package_id'      => $voucher['package_id']
                 ]),
                 ':new_values'     => null,
-                ':notify_content' => "Voucher '{$voucher['code']}' has been deleted"
+                ':notify_content' => null // Disable notification for voucher deletion
             ]
         );
     } catch (Exception $logError) {
