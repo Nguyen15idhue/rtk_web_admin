@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 21, 2025 at 11:38 AM
+-- Generation Time: May 27, 2025 at 07:25 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.16
 
@@ -58,93 +58,138 @@ CREATE TABLE `activity_logs` (
 --
 
 INSERT INTO `activity_logs` (`id`, `user_id`, `action`, `entity_type`, `entity_id`, `old_values`, `new_values`, `notify_content`, `has_read`, `ip_address`, `user_agent`, `created_at`) VALUES
-(255, 105, 'verification_email_sent', 'user', '105', NULL, '{\"email\":\"osn14300@jioso.com\",\"verification_token\":\"188d1b5c2a...\",\"timestamp\":\"2025-05-16 18:13:11\"}', 'Đã gửi email xác thực cho: osn14300@jioso.com', 0, '::1', NULL, '2025-05-16 18:13:11'),
-(256, 105, 'email_verified', 'user', '105', NULL, '{\"status\":\"verified\",\"email\":\"osn14300@jioso.com\",\"timestamp\":\"2025-05-16 18:15:16\"}', 'Xác thực email thành công cho: osn14300@jioso.com', 0, '::1', NULL, '2025-05-16 18:15:16'),
-(257, 105, 'purchase', 'registration', '224', NULL, '{\"registration_id\":\"224\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Yên Bái\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 18:16:43'),
-(258, 105, 'apply_voucher', 'voucher', '4', NULL, '{\"voucher_code\":\"PERCENT10\",\"discount_value\":29160,\"new_amount\":262440,\"original_amount\":291600}', 'Áp dụng mã giảm giá: PERCENT10 cho đơn hàng. Giá trị giảm: 29160', 0, NULL, NULL, '2025-05-16 18:17:29'),
-(259, 105, 'update_invoice_info', 'user', '105', NULL, NULL, 'Cập nhật thông tin xuất hóa đơn', 0, NULL, NULL, '2025-05-16 20:38:19'),
-(260, 105, 'request_invoice', 'invoice', '9', NULL, '{\"transaction_history_id\":217}', 'Yêu cầu xuất hóa đơn cho giao dịch #217', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 20:38:25'),
-(261, 105, 'purchase', 'registration', '225', NULL, '{\"registration_id\":\"225\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 20:48:11'),
-(262, 105, 'renewal_request', 'registration', '226', NULL, '{\"registration_id\":\"226\",\"selected_accounts\":[\"2248\"],\"total_price\":270000,\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Yêu cầu gia hạn gói dịch vụ cho đăng ký #226 - Gói: Gói 3 Tháng', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 21:16:51'),
-(263, 90, 'withdrawal_request', 'withdrawal_request', '12', NULL, '{\"amount\":\"100000\",\"bank_name\":\"MB\",\"account_number\":\"088888888\",\"account_holder\":\"TRAN HAI\"}', 'Yêu cầu rút tiền: 100.000 VND về ngân hàng MB (088888888)', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 21:33:43'),
-(278, NULL, 'approve_transaction', 'transaction', '218', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":105}', NULL, 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 08:27:46'),
-(279, NULL, 'approve_transaction', 'transaction', '219', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"scheduled_accounts\":[],\"renewed_accounts\":[],\"customer_id\":105}', NULL, 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 08:29:56'),
-(280, NULL, 'revert_transaction', 'transaction', '218', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":105}', NULL, 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 08:34:19'),
-(282, NULL, 'reject_invoice', 'invoice', '8', '{\"status\":\"pending\"}', '{\"status\":\"rejected\",\"reason\":\"c\",\"customer_id\":null}', NULL, 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 08:55:40'),
-(284, NULL, 'invoice_reverted', 'invoice', '8', '{\"status\":\"rejected\"}', '{\"status\":\"pending\",\"customer_id\":null}', 'Invoice #8 reverted to pending status.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 09:09:15'),
-(285, NULL, 'revert_transaction', 'transaction', '218', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Transaction #218 reverted to pending.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 09:16:22'),
-(286, NULL, 'approve_transaction', 'transaction', '218', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":105}', 'Giao dịch #218 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 09:18:28'),
-(287, NULL, 'reject_transaction', 'transaction', '219', '{\"status\":\"completed\"}', '{\"status\":\"failed\",\"reason\":\"c\",\"customer_id\":105}', 'Giao dịch #219 đã bị từ chối. Lý do: c', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 09:18:46'),
-(288, NULL, 'reject_invoice', 'invoice', '8', '{\"status\":\"pending\"}', '{\"status\":\"rejected\",\"reason\":\"c\",\"customer_id\":null}', 'Yêu cầu xuất hóa đơn #8 đã bị từ chối. Lý do: c', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 09:26:42'),
-(289, 105, 'revert_transaction', 'transaction', '218', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Giao dịch #218 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 09:28:21'),
-(290, 90, 'invoice_reverted', 'invoice', '8', '{\"status\":\"rejected\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Hóa đơn #8 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 09:31:44'),
-(291, 105, 'reject_invoice', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"rejected\",\"reason\":\"c\",\"customer_id\":105}', 'Yêu cầu xuất hoá đơn #9 đã bị từ chối. Lý do: c', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 09:31:55'),
-(292, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"rejected\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 09:34:34'),
-(293, 105, 'invoice_sent', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747449330_test.pdf\",\"customer_id\":105}', 'Hóa đơn #9 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 09:35:30'),
-(294, 90, 'support_request_updated', 'support_request', '4', '{\"status\":\"pending\",\"admin_response\":null}', '{\"status\":\"resolved\",\"admin_response\":\"Ok em\"}', 'Yêu cầu hỗ trợ #4 đã được cập nhật trạng thái thành resolved.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 09:39:43'),
-(295, 93, 'withdrawal_rejected', 'withdrawal_request', '6', '{\"status\":\"pending\"}', '{\"status\":\"rejected\"}', 'Yêu cầu rút tiền #6 đã bị từ chối.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 09:40:45'),
-(296, 93, 'withdrawal_rejected', 'withdrawal_request', '3', '{\"status\":\"pending\"}', '{\"status\":\"rejected\"}', 'Yêu cầu rút tiền #3 đã bị từ chối.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:29:01'),
-(297, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:29:33'),
-(298, 90, 'reject_invoice', 'invoice', '8', '{\"status\":\"pending\"}', '{\"status\":\"rejected\",\"reason\":\"c\",\"customer_id\":90}', 'Yêu cầu xuất hoá đơn #8 đã bị từ chối. Lý do: c', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:29:38'),
-(299, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:29:55'),
-(300, 92, 'withdrawal_rejected', 'withdrawal_request', '1', '{\"status\":\"pending\"}', '{\"status\":\"rejected\"}', 'Yêu cầu rút tiền #1 đã bị từ chối.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:37:03'),
-(301, 90, 'withdrawal_approved', 'withdrawal_request', '12', '{\"status\":\"pending\"}', '{\"status\":\"completed\"}', 'Yêu cầu rút tiền #12 đã được duyệt.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:37:12'),
-(302, 93, 'withdrawal_rejected', 'withdrawal_request', '10', '{\"status\":\"pending\"}', '{\"status\":\"rejected\"}', 'Yêu cầu rút tiền #10 đã bị từ chối.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:40:49'),
-(303, 93, 'withdrawal_rejected', 'withdrawal_request', '8', '{\"status\":\"pending\"}', '{\"status\":\"rejected\"}', 'Yêu cầu rút tiền #8 đã bị từ chối.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:46:18'),
-(304, 93, 'withdrawal_rejected', 'withdrawal_request', '7', '{\"status\":\"pending\"}', '{\"status\":\"rejected\"}', 'Yêu cầu rút tiền #7 đã bị từ chối.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:52:42'),
-(305, 93, 'withdrawal_approved', 'withdrawal_request', '5', '{\"status\":\"pending\"}', '{\"status\":\"completed\"}', 'Yêu cầu rút tiền #5 đã được duyệt.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:52:45'),
-(306, 90, 'invoice_reverted', 'invoice', '8', '{\"status\":\"rejected\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Hóa đơn #8 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:53:32'),
-(307, 90, 'invoice_reverted', 'invoice', '8', '{\"status\":\"pending\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Hóa đơn #8 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:53:35'),
-(308, 90, 'reject_invoice', 'invoice', '8', '{\"status\":\"pending\"}', '{\"status\":\"rejected\",\"reason\":\"c\",\"customer_id\":90}', 'Yêu cầu xuất hoá đơn #8 đã bị từ chối. Lý do: c', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:53:52'),
-(309, 90, 'reject_invoice', 'invoice', '8', '{\"status\":\"rejected\"}', '{\"status\":\"rejected\",\"reason\":\"c\",\"customer_id\":90}', 'Yêu cầu xuất hoá đơn #8 đã bị từ chối. Lý do: c', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:54:02'),
-(310, 90, 'invoice_reverted', 'invoice', '8', '{\"status\":\"rejected\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Hóa đơn #8 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:59:52'),
-(311, 90, 'reject_invoice', 'invoice', '8', '{\"status\":\"pending\"}', '{\"status\":\"rejected\",\"reason\":\"c\",\"customer_id\":90}', 'Yêu cầu xuất hoá đơn #8 đã bị từ chối. Lý do: c', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 16:59:59'),
-(312, 90, 'invoice_reverted', 'invoice', '8', '{\"status\":\"rejected\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Hóa đơn #8 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 17:00:41'),
-(313, 90, 'invoice_sent', 'invoice', '8', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747476049_test.pdf\",\"customer_id\":90}', 'Hóa đơn #8 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 17:00:49'),
-(314, 105, 'revert_transaction', 'transaction', '217', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Giao dịch #217 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 20:11:14'),
-(315, 105, 'approve_transaction', 'transaction', '217', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":105}', 'Giao dịch #217 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 20:11:17'),
-(316, 93, 'withdrawal_approved', 'withdrawal_request', '3', '{\"status\":\"pending\"}', '{\"status\":\"completed\"}', 'Yêu cầu rút tiền #3 đã được duyệt.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 06:53:58'),
-(317, 90, 'support_request_updated', 'support_request', '3', '{\"status\":\"pending\",\"admin_response\":null}', '{\"status\":\"closed\",\"admin_response\":\"H\\u1ebft nh\\u00e9\"}', 'Yêu cầu hỗ trợ #3 đã được cập nhật trạng thái thành closed.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 06:56:29'),
-(318, 90, 'support_request_updated', 'support_request', '3', '{\"status\":\"closed\",\"admin_response\":\"H\\u1ebft nh\\u00e9\"}', '{\"status\":\"in_progress\",\"admin_response\":\"H\\u1ebft nh\\u00e9\"}', 'Yêu cầu hỗ trợ #3 đã được cập nhật trạng thái thành in_progress.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 06:56:36'),
-(319, 90, 'invoice_reverted', 'invoice', '8', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Hóa đơn #8 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 07:12:11'),
-(320, 105, 'reject_invoice', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"rejected\",\"reason\":\"c\",\"customer_id\":105}', 'Yêu cầu xuất hoá đơn #9 đã bị từ chối. Lý do: c', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 07:12:17'),
-(321, 90, 'invoice_sent', 'invoice', '8', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747527151_test.pdf\",\"customer_id\":90}', 'Hóa đơn #8 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 07:12:31'),
-(322, 105, 'revert_transaction', 'transaction', '217', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Giao dịch #217 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 07:17:44'),
-(323, 105, 'approve_transaction', 'transaction', '218', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":105}', 'Giao dịch #218 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 07:18:49'),
-(324, 105, 'approve_transaction', 'transaction', '217', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":105}', 'Giao dịch #217 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 07:18:51'),
-(325, 105, 'revert_transaction', 'transaction', '218', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Giao dịch #218 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 07:21:11'),
-(326, 105, 'revert_transaction', 'transaction', '217', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Giao dịch #217 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 07:21:11'),
-(327, 105, 'approve_transaction', 'transaction', '217', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":105}', 'Giao dịch #217 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 09:38:29'),
-(328, 105, 'revert_transaction', 'transaction', '217', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Giao dịch #217 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 09:40:33'),
-(351, 90, 'create_support_request', 'support_requests', '17', NULL, NULL, 'Tạo yêu cầu hỗ trợ mới #17', 0, NULL, NULL, '2025-05-19 20:54:24'),
-(352, 90, 'create_support_request', 'support_requests', '18', NULL, NULL, 'Tạo yêu cầu hỗ trợ mới #18', 0, NULL, NULL, '2025-05-19 20:57:24'),
-(353, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"rejected\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 21:10:55'),
-(354, 105, 'reject_invoice', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"rejected\",\"reason\":\"ch\\u01b0a th\\u1ea5y l\\u1ed7i \\u0111\\u00e2u\",\"customer_id\":105}', 'Yêu cầu xuất hoá đơn #9 đã bị từ chối. Lý do: chưa thấy lỗi đâu', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 21:11:03'),
-(355, 90, 'approve_transaction', 'transaction', '220', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":90}', 'Giao dịch #220 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 21:41:05'),
-(357, 90, 'account_updated_by_admin', 'account', '2278', NULL, NULL, 'Admin (ID: 6) updated account \'CMA001\' (Account ID: 2278).', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 21:46:04'),
-(360, 90, 'account_updated_by_admin', 'account', '2278', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'CMA001\' (ID Tài khoản: 2278).', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 21:55:17'),
-(361, 90, 'purchase', 'registration', '230', NULL, '{\"registration_id\":\"230\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 22:18:09'),
-(362, 90, 'apply_voucher', 'voucher', '3', NULL, '{\"voucher_code\":\"EXTRAMONTH\",\"discount_value\":0,\"new_amount\":291600,\"original_amount\":291600}', 'Áp dụng mã giảm giá: EXTRAMONTH cho đơn hàng. Giá trị giảm: 0', 0, NULL, NULL, '2025-05-19 22:18:29'),
-(364, 90, 'create_support_request', 'support_requests', '27', NULL, NULL, 'Tạo yêu cầu hỗ trợ mới #27', 0, NULL, NULL, '2025-05-20 07:36:40'),
 (366, 90, 'create_support_request', 'support_requests', '30', NULL, NULL, 'Tạo yêu cầu hỗ trợ mới #30', 0, NULL, NULL, '2025-05-20 07:52:05'),
 (367, 90, 'create_support_request', 'support_requests', '31', NULL, NULL, 'Tạo yêu cầu hỗ trợ mới #31', 0, NULL, NULL, '2025-05-20 09:08:51'),
 (368, 105, 'reject_transaction', 'transaction', '217', '{\"status\":\"pending\"}', '{\"status\":\"failed\",\"reason\":\"c\",\"registration_id\":224}', 'Giao dịch #217 đã bị từ chối. Lý do: c', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:20:38'),
 (369, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"rejected\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 15:17:00'),
 (370, 105, 'invoice_sent', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747815452_muclucKTMT.pdf\",\"customer_id\":105}', 'Hóa đơn #9 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 15:17:32'),
-(371, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 15:17:45'),
-(372, 105, 'invoice_sent', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747818212_test.pdf\",\"customer_id\":105}', 'Hóa đơn #9 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:03:32'),
-(373, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:03:37'),
-(374, 105, 'invoice_sent', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747818853_test.pdf\",\"customer_id\":105}', 'Hóa đơn #9 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:14:13'),
-(375, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:14:18'),
-(376, 105, 'invoice_sent', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747819976_test.pdf\",\"customer_id\":105}', 'Hóa đơn #9 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:32:56'),
-(377, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:33:02'),
-(378, 105, 'invoice_sent', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747821140_muclucKTMT.pdf\",\"customer_id\":105}', 'Hóa đơn #9 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:52:20'),
-(379, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:52:31'),
-(380, 105, 'invoice_sent', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747821501_test.pdf\",\"customer_id\":105}', 'Hóa đơn #9 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:58:21'),
 (381, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 16:59:04'),
 (382, 105, 'invoice_sent', 'invoice', '9', '{\"status\":\"pending\"}', '{\"status\":\"approved\",\"file\":\"1747822305_test.pdf\",\"customer_id\":105}', 'Hóa đơn #9 đã được gửi.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 17:11:45'),
 (383, 105, 'invoice_reverted', 'invoice', '9', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Hóa đơn #9 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 17:13:02'),
-(384, 90, 'invoice_reverted', 'invoice', '8', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Hóa đơn #8 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 17:14:24');
+(384, 90, 'invoice_reverted', 'invoice', '8', '{\"status\":\"approved\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Hóa đơn #8 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 17:14:24'),
+(385, 90, 'revert_transaction', 'transaction', '220', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Giao dịch #220 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-22 10:42:53'),
+(391, 90, 'revert_transaction', 'transaction', '214', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Giao dịch #214 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-22 22:17:26'),
+(392, 90, 'approve_transaction', 'transaction', '220', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":90}', 'Giao dịch #220 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-22 22:17:31'),
+(393, 90, 'approve_transaction', 'transaction', '214', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":90}', 'Giao dịch #214 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-22 22:20:44'),
+(394, 90, 'account_updated_by_admin', 'account', '2381', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'YBI400\' (ID Tài khoản: 2381).', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-22 22:31:45'),
+(395, 90, 'account_updated_by_admin', 'account', '2381', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'YBI400\' (ID Tài khoản: 2381).', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-22 22:41:39'),
+(396, 90, 'support_request_updated', 'support_request', '25', '{\"status\":\"pending\",\"admin_response\":null}', '{\"status\":\"closed\",\"admin_response\":\"Ok nh\\u00e9\"}', 'Yêu cầu hỗ trợ #25 đã được cập nhật trạng thái thành closed.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-22 22:54:26'),
+(397, 90, 'revert_transaction', 'transaction', '214', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Giao dịch #214 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-22 23:31:54'),
+(398, 90, 'revert_transaction', 'transaction', '220', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Giao dịch #220 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 10:10:46'),
+(399, 90, 'approve_transaction', 'transaction', '220', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":90}', 'Giao dịch #220 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 10:19:10'),
+(400, 90, 'account_updated_by_admin', 'account', '2383', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'CMA001\' (ID Tài khoản: 2383).', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 10:19:45'),
+(401, 88, 'account_updated_by_admin', 'account', '2383', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'CMA001\' (ID Tài khoản: 2383).', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 10:20:00'),
+(402, 88, 'revert_transaction', 'transaction', '220', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":88}', 'Giao dịch #220 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 13:01:52'),
+(403, 105, 'approve_transaction', 'transaction', '218', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":105}', 'Giao dịch #218 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 13:02:09'),
+(404, 105, 'approve_transaction', 'transaction', '219', '{\"status\":\"failed\"}', '{\"status\":\"completed\",\"scheduled_accounts\":[],\"renewed_accounts\":[],\"customer_id\":105}', 'Giao dịch #219 (Gia hạn) đã được duyệt. Tài khoản dự kiến: 0, Đã gia hạn: 0', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 13:02:34'),
+(405, 105, 'renewal_request', 'registration', '231', NULL, '{\"registration_id\":\"231\",\"selected_accounts\":[\"2385\"],\"total_price\":270000,\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Yêu cầu gia hạn gói dịch vụ cho đăng ký #231 - Gói: Gói 3 Tháng', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 13:11:19'),
+(406, 105, 'approve_transaction', 'transaction', '222', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"scheduled_accounts\":[\"2385\"],\"renewed_accounts\":[],\"customer_id\":105}', 'Giao dịch #222 (Gia hạn) đã được duyệt. Tài khoản dự kiến: 1, Đã gia hạn: 0', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 13:11:50'),
+(407, NULL, 'account_updated_by_admin', 'account', '2385', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'CMA001\' (ID Tài khoản: 2385).', 0, '::1', 'PHP-cURL', '2025-05-23 13:11:50'),
+(408, 90, 'approve_transaction', 'transaction', '221', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":90}', 'Giao dịch #221 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 13:25:33'),
+(409, 105, 'revert_transaction', 'transaction', '222', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Giao dịch #222 đã được hoàn lại về trạng thái chờ xử lý.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 13:28:26'),
+(410, 90, 'purchase', 'registration', '232', NULL, '{\"registration_id\":\"232\",\"selected_accounts\":[1],\"total_price\":\"297000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Yên Bái\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 21:20:42'),
+(411, 90, 'purchase', 'registration', '233', NULL, '{\"registration_id\":\"233\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 21:25:42'),
+(412, 90, 'revert_transaction', 'transaction', '221', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Giao dịch #221 đã được hoàn lại về trạng thái chờ xử lý.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 21:27:16'),
+(413, 105, 'revert_transaction', 'transaction', '219', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Giao dịch #219 đã được hoàn lại về trạng thái chờ xử lý.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 21:27:20'),
+(414, 105, 'revert_transaction', 'transaction', '218', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":105}', 'Giao dịch #218 đã được hoàn lại về trạng thái chờ xử lý.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 21:27:22'),
+(415, 90, 'approve_transaction', 'transaction', '223', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":90}', 'Giao dịch #223 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 21:27:58'),
+(416, 90, 'request_invoice', 'invoice', '10', NULL, '{\"transaction_history_id\":223}', 'Yêu cầu xuất hóa đơn cho giao dịch #223', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 21:28:06'),
+(417, 90, 'approve_transaction', 'transaction', '224', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":90}', 'Giao dịch #224 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 21:28:57'),
+(418, 90, 'request_invoice', 'invoice', '11', NULL, '{\"transaction_history_id\":224}', 'Yêu cầu xuất hóa đơn cho giao dịch #224', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 21:29:26'),
+(419, 90, 'request_invoice', 'invoice', '12', NULL, '{\"transaction_history_id\":223}', 'Yêu cầu xuất hóa đơn cho giao dịch #223', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 21:44:38'),
+(420, 90, 'purchase', 'registration', '234', NULL, '{\"registration_id\":\"234\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 22:29:30'),
+(421, 90, 'purchase', 'registration', '235', NULL, '{\"registration_id\":\"235\",\"selected_accounts\":[1],\"total_price\":\"297000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 22:29:41'),
+(422, 90, 'reject_transaction', 'transaction', '226', '{\"status\":\"pending\"}', '{\"status\":\"failed\",\"reason\":\"c\",\"registration_id\":235}', 'Giao dịch #226 đã bị từ chối. Lý do: c', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 23:40:17'),
+(423, 90, 'revert_transaction', 'transaction', '224', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Giao dịch #224 đã được hoàn lại về trạng thái chờ xử lý.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 10:24:05'),
+(424, 90, 'revert_transaction', 'transaction', '223', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Giao dịch #223 đã được hoàn lại về trạng thái chờ xử lý.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 10:24:07'),
+(425, 90, 'support_request_updated', 'support_request', '31', '{\"status\":\"pending\",\"admin_response\":null}', '{\"status\":\"resolved\",\"admin_response\":\"\"}', 'Yêu cầu hỗ trợ #31 đã được cập nhật trạng thái thành resolved.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 12:46:33'),
+(426, 90, 'support_request_updated', 'support_request', '31', '{\"status\":\"resolved\",\"admin_response\":\"\"}', '{\"status\":\"in_progress\",\"admin_response\":\"\"}', 'Yêu cầu hỗ trợ #31 đã được cập nhật trạng thái thành in_progress.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 12:46:38'),
+(427, 90, 'support_request_updated', 'support_request', '31', '{\"status\":\"in_progress\",\"admin_response\":\"\"}', '{\"status\":\"pending\",\"admin_response\":\"\"}', 'Yêu cầu hỗ trợ #31 đã được cập nhật trạng thái thành pending.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 12:50:49'),
+(428, 90, 'support_request_updated', 'support_request', '31', '{\"status\":\"pending\",\"admin_response\":\"\"}', '{\"status\":\"pending\",\"admin_response\":\"Kh\\u00f4ng sao nh\\u00e9\"}', 'Yêu cầu hỗ trợ #31 đã được cập nhật trạng thái thành pending.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 12:50:59'),
+(429, 90, 'purchase', 'registration', '236', NULL, '{\"registration_id\":\"236\",\"selected_accounts\":[1],\"total_price\":\"100000\",\"package\":\"Gói 1 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 1 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 15:49:27'),
+(430, 90, 'approve_transaction', 'transaction', '227', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":90}', 'Giao dịch #227 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 1', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 15:49:57'),
+(431, 90, 'renewal_request', 'registration', '237', NULL, '{\"registration_id\":\"237\",\"selected_accounts\":[\"2394\"],\"total_price\":270000,\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Yêu cầu gia hạn gói dịch vụ cho đăng ký #237 - Gói: Gói 3 Tháng', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 16:08:20'),
+(432, 90, 'renewal_request', 'registration', '238', NULL, '{\"registration_id\":\"238\",\"selected_accounts\":[\"2394\"],\"total_price\":270000,\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Yêu cầu gia hạn gói dịch vụ cho đăng ký #238 - Gói: Gói 3 Tháng', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 16:11:04'),
+(433, 90, 'renewal_request', 'registration', '239', NULL, '{\"registration_id\":\"239\",\"selected_accounts\":[\"2394\"],\"total_price\":270000,\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Yêu cầu gia hạn gói dịch vụ cho đăng ký #239 - Gói: Gói 3 Tháng', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 16:11:39'),
+(434, 90, 'renewal_request', 'registration', '240', NULL, '{\"registration_id\":\"240\",\"selected_accounts\":[\"2394\"],\"total_price\":297000,\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Yêu cầu gia hạn gói dịch vụ cho đăng ký #240 - Gói: Gói 3 Tháng', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 16:24:52'),
+(435, NULL, 'account_updated_by_admin', 'account', '2394', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'CMA001\' (ID Tài khoản: 2394).', 0, '127.0.0.1', 'PHP-cURL', '2025-05-25 16:25:06'),
+(436, 90, 'approve_transaction', 'transaction', '231', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"scheduled_accounts\":[\"2394\"],\"renewed_accounts\":[\"2394\"],\"customer_id\":90}', 'Giao dịch #231 (Gia hạn) đã được duyệt. Tài khoản dự kiến: 1, Đã gia hạn: 1', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 16:25:06'),
+(437, 90, 'renewal_request', 'registration', '241', NULL, '{\"registration_id\":\"241\",\"selected_accounts\":[\"2394\"],\"total_price\":270000,\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Yêu cầu gia hạn gói dịch vụ cho đăng ký #241 - Gói: Gói 3 Tháng', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 16:26:53'),
+(438, NULL, 'account_updated_by_admin', 'account', '2394', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'CMA001\' (ID Tài khoản: 2394).', 0, '127.0.0.1', 'PHP-cURL', '2025-05-25 16:27:12'),
+(439, 90, 'approve_transaction', 'transaction', '232', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"scheduled_accounts\":[\"2394\"],\"renewed_accounts\":[\"2394\"],\"customer_id\":90}', 'Giao dịch #232 (Gia hạn) đã được duyệt. Tài khoản dự kiến: 1, Đã gia hạn: 1', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 16:27:12'),
+(440, 90, 'account_updated_by_admin', 'account', '2394', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'CMA001\' (ID Tài khoản: 2394).', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 16:30:01'),
+(441, 90, 'revert_transaction', 'transaction', '232', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Giao dịch #232 đã được hoàn lại về trạng thái chờ xử lý.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 16:36:07'),
+(442, NULL, 'account_updated_by_admin', 'account', '2394', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'CMA001\' (ID Tài khoản: 2394).', 0, '127.0.0.1', 'PHP-cURL', '2025-05-25 16:36:22'),
+(443, 90, 'approve_transaction', 'transaction', '232', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"scheduled_accounts\":[\"2394\"],\"renewed_accounts\":[\"2394\"],\"customer_id\":90}', 'Giao dịch #232 (Gia hạn) đã được duyệt. Tài khoản dự kiến: 1, Đã gia hạn: 1', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 16:36:22'),
+(444, 90, 'revert_transaction', 'transaction', '232', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Giao dịch #232 đã được hoàn lại về trạng thái chờ xử lý.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 16:45:33'),
+(445, NULL, 'account_updated_by_admin', 'account', '2394', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'CMA001\' (ID Tài khoản: 2394).', 0, '127.0.0.1', 'PHP-cURL', '2025-05-25 16:45:40'),
+(446, 90, 'approve_transaction', 'transaction', '232', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"scheduled_accounts\":[\"2394\"],\"renewed_accounts\":[\"2394\"],\"customer_id\":90}', 'Giao dịch #232 (Gia hạn) đã được duyệt. Tài khoản dự kiến: 1, Đã gia hạn: 1', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 16:45:40'),
+(447, 90, 'reject_transaction', 'transaction', '232', '{\"status\":\"completed\"}', '{\"status\":\"failed\",\"reason\":\"c\",\"registration_id\":241}', 'Giao dịch #232 đã bị từ chối. Lý do: c', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 16:45:44'),
+(448, NULL, 'account_updated_by_admin', 'account', '2394', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'CMA001\' (ID Tài khoản: 2394).', 0, '127.0.0.1', 'PHP-cURL', '2025-05-25 16:45:54'),
+(449, 90, 'approve_transaction', 'transaction', '232', '{\"status\":\"failed\"}', '{\"status\":\"completed\",\"scheduled_accounts\":[\"2394\"],\"renewed_accounts\":[\"2394\"],\"customer_id\":90}', 'Giao dịch #232 (Gia hạn) đã được duyệt. Tài khoản dự kiến: 1, Đã gia hạn: 1', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 16:45:54'),
+(450, 90, 'revert_transaction', 'transaction', '232', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Giao dịch #232 đã được hoàn lại về trạng thái chờ xử lý.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 17:05:22'),
+(451, NULL, 'account_updated_by_admin', 'account', '2394', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'CMA001\' (ID Tài khoản: 2394).', 0, '127.0.0.1', 'PHP-cURL', '2025-05-25 17:54:27'),
+(452, 90, 'approve_transaction', 'transaction', '232', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"scheduled_accounts\":[\"2394\"],\"renewed_accounts\":[\"2394\"],\"customer_id\":90}', 'Giao dịch #232 (Gia hạn) đã được duyệt. Tài khoản dự kiến: 1, Đã gia hạn: 1', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 17:54:27'),
+(453, 90, 'revert_transaction', 'transaction', '232', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Giao dịch #232 đã được hoàn lại về trạng thái chờ xử lý.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 18:01:40'),
+(454, NULL, 'account_updated_by_admin', 'account', '2394', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'CMA001\' (ID Tài khoản: 2394).', 0, '127.0.0.1', 'PHP-cURL', '2025-05-25 18:02:00'),
+(455, 90, 'approve_transaction', 'transaction', '232', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"scheduled_accounts\":[\"2394\"],\"renewed_accounts\":[\"2394\"],\"customer_id\":90}', 'Giao dịch #232 (Gia hạn) đã được duyệt. Tài khoản dự kiến: 1, Đã gia hạn: 1', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 18:02:00'),
+(456, 90, 'revert_transaction', 'transaction', '232', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Giao dịch #232 đã được hoàn lại về trạng thái chờ xử lý.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 18:07:19'),
+(457, NULL, 'account_updated_by_admin', 'account', '2394', NULL, NULL, 'Quản trị viên đã cập nhật tài khoản \'CMA001\' (ID Tài khoản: 2394).', 0, '127.0.0.1', 'PHP-cURL', '2025-05-25 18:10:36'),
+(458, 90, 'approve_transaction', 'transaction', '232', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"scheduled_accounts\":[\"2394\"],\"renewed_accounts\":[\"2394\"],\"customer_id\":90}', 'Giao dịch #232 (Gia hạn) đã được duyệt. Tài khoản dự kiến: 1, Đã gia hạn: 1', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 18:10:36'),
+(459, 90, 'revert_transaction', 'transaction', '232', '{\"status\":\"active\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Giao dịch #232 đã được hoàn lại về trạng thái chờ xử lý.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 18:11:07'),
+(460, 90, 'purchase', 'registration', '242', NULL, '{\"registration_id\":\"242\",\"selected_accounts\":[2],\"total_price\":\"1000000\",\"package\":\"Gói 6 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 6 Tháng - Số lượng: 2', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 10:54:36'),
+(461, 90, 'purchase', 'registration', '243', NULL, '{\"registration_id\":\"243\",\"selected_accounts\":[2],\"total_price\":\"1000000\",\"package\":\"Gói 6 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 6 Tháng - Số lượng: 2', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 11:03:26'),
+(462, 90, 'approve_transaction', 'transaction', '234', '{\"status\":\"pending\"}', '{\"status\":\"completed\",\"created_accounts\":[],\"customer_id\":90}', 'Giao dịch #234 (Tạo mới tài khoản) đã được duyệt. Số tài khoản sẽ tạo: 2', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 11:20:09'),
+(463, 90, 'request_invoice', 'invoice', '13', NULL, '{\"transaction_history_id\":234}', 'Yêu cầu xuất hóa đơn cho giao dịch #234', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 11:20:54'),
+(464, 90, 'reject_invoice', 'invoice', '13', '{\"status\":\"pending\"}', '{\"status\":\"rejected\",\"reason\":\"c\",\"customer_id\":90}', 'Yêu cầu xuất hoá đơn #13 đã bị từ chối. Lý do: c', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 11:21:01'),
+(465, 90, 'invoice_reverted', 'invoice', '13', '{\"status\":\"rejected\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Hóa đơn #13 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 11:22:23'),
+(466, 90, 'reject_invoice', 'invoice', '13', '{\"status\":\"pending\"}', '{\"status\":\"rejected\",\"reason\":\"c\",\"customer_id\":90}', 'Yêu cầu xuất hoá đơn #13 đã bị từ chối. Lý do: c', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 11:22:32'),
+(467, 90, 'invoice_reverted', 'invoice', '13', '{\"status\":\"rejected\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Hóa đơn #13 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 11:22:35'),
+(468, 90, 'reject_invoice', 'invoice', '13', '{\"status\":\"pending\"}', '{\"status\":\"rejected\",\"reason\":\"c\",\"customer_id\":90}', 'Yêu cầu xuất hoá đơn #13 đã bị từ chối. Lý do: c', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 11:23:29'),
+(469, 90, 'invoice_reverted', 'invoice', '13', '{\"status\":\"rejected\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Hóa đơn #13 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 11:23:34'),
+(470, 90, 'reject_invoice', 'invoice', '13', '{\"status\":\"pending\"}', '{\"status\":\"rejected\",\"reason\":\"c\",\"customer_id\":90}', 'Yêu cầu xuất hoá đơn #13 đã bị từ chối. Lý do: c', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 11:24:01'),
+(471, 90, 'invoice_reverted', 'invoice', '13', '{\"status\":\"rejected\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Hóa đơn #13 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 11:24:04'),
+(472, 90, 'reject_invoice', 'invoice', '13', '{\"status\":\"pending\"}', '{\"status\":\"rejected\",\"reason\":\"c\",\"customer_id\":90}', 'Yêu cầu xuất hoá đơn #13 đã bị từ chối. Lý do: c', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 11:24:11'),
+(473, 90, 'invoice_reverted', 'invoice', '13', '{\"status\":\"rejected\"}', '{\"status\":\"pending\",\"customer_id\":90}', 'Hóa đơn #13 đang gặp vấn đề và cần chỉnh sửa lại.', 0, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 11:24:13'),
+(474, 109, 'verification_email_sent', 'user', '109', NULL, '{\"email\":\"zzj07635@toaik.com\",\"verification_token\":\"02d9d0f737...\",\"timestamp\":\"2025-05-26 23:16:11\"}', 'Đã gửi email xác thực cho: zzj07635@toaik.com', 0, '::1', NULL, '2025-05-26 23:16:11'),
+(475, 109, 'email_verified', 'user', '109', NULL, '{\"status\":\"verified\",\"email\":\"zzj07635@toaik.com\",\"timestamp\":\"2025-05-26 23:19:21\"}', 'Xác thực email thành công cho: zzj07635@toaik.com', 0, '::1', NULL, '2025-05-26 23:19:21'),
+(476, 109, 'purchase', 'registration', '244', NULL, '{\"registration_id\":\"244\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 23:20:01'),
+(477, 110, 'verification_email_sent', 'user', '110', NULL, '{\"email\":\"mfc90967@toaik.com\",\"verification_token\":\"cd5dd27364...\",\"timestamp\":\"2025-05-26 23:26:44\"}', 'Đã gửi email xác thực cho: mfc90967@toaik.com', 0, '::1', NULL, '2025-05-26 23:26:44'),
+(478, 110, 'email_verified', 'user', '110', NULL, '{\"status\":\"verified\",\"email\":\"mfc90967@toaik.com\",\"timestamp\":\"2025-05-26 23:28:09\"}', 'Xác thực email thành công cho: mfc90967@toaik.com', 0, '::1', NULL, '2025-05-26 23:28:10'),
+(479, 110, 'purchase', 'registration', '245', NULL, '{\"registration_id\":\"245\",\"selected_accounts\":[3],\"total_price\":\"810000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 3', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 23:28:45'),
+(480, 111, 'verification_email_sent', 'user', '111', NULL, '{\"email\":\"whi18324@jioso.com\",\"verification_token\":\"58b0209495...\",\"timestamp\":\"2025-05-26 23:33:21\"}', 'Đã gửi email xác thực cho: whi18324@jioso.com', 0, '::1', NULL, '2025-05-26 23:33:21'),
+(481, 111, 'email_verified', 'user', '111', NULL, '{\"status\":\"verified\",\"email\":\"whi18324@jioso.com\",\"timestamp\":\"2025-05-26 23:34:32\"}', 'Xác thực email thành công cho: whi18324@jioso.com', 0, '::1', NULL, '2025-05-26 23:34:32'),
+(482, 111, 'purchase', 'registration', '246', NULL, '{\"registration_id\":\"246\",\"selected_accounts\":[3],\"total_price\":\"300000\",\"package\":\"Gói 1 Tháng\",\"location\":\"Yên Bái\"}', 'Mua gói dịch vụ: Gói 1 Tháng - Số lượng: 3', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 23:34:48'),
+(483, 111, 'purchase', 'registration', '247', NULL, '{\"registration_id\":\"247\",\"selected_accounts\":[3],\"total_price\":\"300000\",\"package\":\"Gói 1 Tháng\",\"location\":\"Yên Bái\"}', 'Mua gói dịch vụ: Gói 1 Tháng - Số lượng: 3', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 23:46:32'),
+(484, 111, 'purchase', 'registration', '248', NULL, '{\"registration_id\":\"248\",\"selected_accounts\":[2],\"total_price\":\"1000000\",\"package\":\"Gói 6 Tháng\",\"location\":\"Yên Bái\"}', 'Mua gói dịch vụ: Gói 6 Tháng - Số lượng: 2', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 23:46:57'),
+(485, 112, 'verification_email_sent', 'user', '112', NULL, '{\"email\":\"xes60082@toaik.com\",\"verification_token\":\"1cda836dd1...\",\"timestamp\":\"2025-05-27 07:07:38\"}', 'Đã gửi email xác thực cho: xes60082@toaik.com', 0, '::1', NULL, '2025-05-27 07:07:38'),
+(486, 112, 'email_verified', 'user', '112', NULL, '{\"status\":\"verified\",\"email\":\"xes60082@toaik.com\",\"timestamp\":\"2025-05-27 07:08:01\"}', 'Xác thực email thành công cho: xes60082@toaik.com', 0, '::1', NULL, '2025-05-27 07:08:01'),
+(487, 112, 'purchase', 'registration', '249', NULL, '{\"registration_id\":\"249\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Yên Bái\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 07:09:11'),
+(488, 112, 'purchase', 'registration', '250', NULL, '{\"registration_id\":\"250\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 07:09:24'),
+(489, 113, 'verification_email_sent', 'user', '113', NULL, '{\"email\":\"lgo61401@jioso.com\",\"verification_token\":\"fc5616c548...\",\"timestamp\":\"2025-05-27 07:22:02\"}', 'Đã gửi email xác thực cho: lgo61401@jioso.com', 0, '::1', NULL, '2025-05-27 07:22:02'),
+(490, 113, 'email_verified', 'user', '113', NULL, '{\"status\":\"verified\",\"email\":\"lgo61401@jioso.com\",\"timestamp\":\"2025-05-27 07:23:44\"}', 'Xác thực email thành công cho: lgo61401@jioso.com', 0, '::1', NULL, '2025-05-27 07:23:44'),
+(491, 113, 'purchase', 'registration', '251', NULL, '{\"registration_id\":\"251\",\"selected_accounts\":[2],\"total_price\":\"540000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 2', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 07:24:43'),
+(492, 114, 'verification_email_sent', 'user', '114', NULL, '{\"email\":\"gop25047@jioso.com\",\"verification_token\":\"aec96c6692...\",\"timestamp\":\"2025-05-27 07:40:45\"}', 'Đã gửi email xác thực cho: gop25047@jioso.com', 0, '::1', NULL, '2025-05-27 07:40:45'),
+(493, 114, 'email_verified', 'user', '114', NULL, '{\"status\":\"verified\",\"email\":\"gop25047@jioso.com\",\"timestamp\":\"2025-05-27 07:41:35\"}', 'Xác thực email thành công cho: gop25047@jioso.com', 0, '::1', NULL, '2025-05-27 07:41:35'),
+(494, 114, 'purchase', 'registration', '252', NULL, '{\"registration_id\":\"252\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Yên Bái\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 07:41:59'),
+(495, 114, 'purchase', 'registration', '253', NULL, '{\"registration_id\":\"253\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Yên Bái\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 07:53:12'),
+(496, 114, 'purchase', 'registration', '254', NULL, '{\"registration_id\":\"254\",\"selected_accounts\":[1],\"total_price\":\"297000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 07:53:31'),
+(497, 115, 'verification_email_sent', 'user', '115', NULL, '{\"email\":\"vxn91269@jioso.com\",\"verification_token\":\"7382b09057...\",\"timestamp\":\"2025-05-27 08:01:36\"}', 'Đã gửi email xác thực cho: vxn91269@jioso.com', 0, '::1', NULL, '2025-05-27 08:01:36'),
+(498, 115, 'email_verified', 'user', '115', NULL, '{\"status\":\"verified\",\"email\":\"vxn91269@jioso.com\",\"timestamp\":\"2025-05-27 08:02:02\"}', 'Xác thực email thành công cho: vxn91269@jioso.com', 0, '::1', NULL, '2025-05-27 08:02:02'),
+(499, 115, 'purchase', 'registration', '255', NULL, '{\"registration_id\":\"255\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 08:02:27'),
+(500, 115, 'purchase', 'registration', '256', NULL, '{\"registration_id\":\"256\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Yên Bái\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 08:04:36'),
+(501, 115, 'purchase', 'registration', '257', NULL, '{\"registration_id\":\"257\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Yên Bái\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 08:13:56'),
+(502, 116, 'verification_email_sent', 'user', '116', NULL, '{\"email\":\"nva79925@jioso.com\",\"verification_token\":\"16b73bac82...\",\"timestamp\":\"2025-05-27 08:14:48\"}', 'Đã gửi email xác thực cho: nva79925@jioso.com', 0, '::1', NULL, '2025-05-27 08:14:48'),
+(503, 116, 'email_verified', 'user', '116', NULL, '{\"status\":\"verified\",\"email\":\"nva79925@jioso.com\",\"timestamp\":\"2025-05-27 08:16:22\"}', 'Xác thực email thành công cho: nva79925@jioso.com', 0, '::1', NULL, '2025-05-27 08:16:22'),
+(504, 116, 'purchase', 'registration', '258', NULL, '{\"registration_id\":\"258\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Yên Bái\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 08:16:42'),
+(505, 117, 'verification_email_sent', 'user', '117', NULL, '{\"email\":\"pyn61579@toaik.com\",\"verification_token\":\"b0a533bac7...\",\"timestamp\":\"2025-05-27 08:18:05\"}', 'Đã gửi email xác thực cho: pyn61579@toaik.com', 0, '::1', NULL, '2025-05-27 08:18:05'),
+(506, 117, 'email_verified', 'user', '117', NULL, '{\"status\":\"verified\",\"email\":\"pyn61579@toaik.com\",\"timestamp\":\"2025-05-27 08:19:25\"}', 'Xác thực email thành công cho: pyn61579@toaik.com', 0, '::1', NULL, '2025-05-27 08:19:25'),
+(507, 117, 'purchase', 'registration', '259', NULL, '{\"registration_id\":\"259\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Yên Bái\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 08:19:49'),
+(508, 117, 'purchase', 'registration', '260', NULL, '{\"registration_id\":\"260\",\"selected_accounts\":[1],\"total_price\":\"270000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 1', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 08:20:45'),
+(509, 118, 'verification_email_sent', 'user', '118', NULL, '{\"email\":\"nci02654@toaik.com\",\"verification_token\":\"2961f55948...\",\"timestamp\":\"2025-05-27 08:41:12\"}', 'Đã gửi email xác thực cho: nci02654@toaik.com', 0, '::1', NULL, '2025-05-27 08:41:12'),
+(510, 118, 'email_verified', 'user', '118', NULL, '{\"status\":\"verified\",\"email\":\"nci02654@toaik.com\",\"timestamp\":\"2025-05-27 08:41:29\"}', 'Xác thực email thành công cho: nci02654@toaik.com', 0, '::1', NULL, '2025-05-27 08:41:29'),
+(511, 118, 'purchase', 'registration', '261', NULL, '{\"registration_id\":\"261\",\"selected_accounts\":[2],\"total_price\":\"594000\",\"package\":\"Gói 3 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 3 Tháng - Số lượng: 2', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 08:41:52'),
+(512, 118, 'purchase', 'registration', '262', NULL, '{\"registration_id\":\"262\",\"selected_accounts\":[2],\"total_price\":\"1000000\",\"package\":\"Gói 6 Tháng\",\"location\":\"Cà Mau\"}', 'Mua gói dịch vụ: Gói 6 Tháng - Số lượng: 2', 0, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 08:47:22');
 
 -- --------------------------------------------------------
 
@@ -167,8 +212,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `name`, `admin_username`, `admin_password`, `role`, `created_at`, `updated_at`) VALUES
-(6, 'Nguyễn Văn B', 'ad', '$2y$10$e2k7mdTeR8KIMIge/3iCkOKNLBI3b3ENb6t4bvmtrhHhjMVLo.P06', 'admin', '2025-05-11 18:17:41', '2025-05-18 07:12:44'),
-(12, 'Là ai', '123', '$2y$10$TeVJyx6Nbaqkw0Opz4e0pOPXI5oS5k3jJdiknG2WeZIittssP/Ty.', 'operator', '2025-05-17 06:17:24', '2025-05-21 18:06:51');
+(6, 'Nguyễn Văn Nam', 'ad', '$2y$10$e2k7mdTeR8KIMIge/3iCkOKNLBI3b3ENb6t4bvmtrhHhjMVLo.P06', 'admin', '2025-05-11 18:17:41', '2025-05-24 11:46:34'),
+(12, 'Là ai đó', '123', '$2y$10$TeVJyx6Nbaqkw0Opz4e0pOPXI5oS5k3jJdiknG2WeZIittssP/Ty.', 'customercare', '2025-05-17 06:17:24', '2025-05-23 21:21:04');
 
 -- --------------------------------------------------------
 
@@ -233,7 +278,7 @@ CREATE TABLE `custom_roles` (
 INSERT INTO `custom_roles` (`role_key`, `role_display_name`, `created_at`, `updated_at`) VALUES
 ('admin', 'Quản trị viên', '2025-05-17 04:41:38', '2025-05-17 04:41:38'),
 ('customercare', 'Chăm sóc khách hàng', '2025-05-17 04:41:38', '2025-05-17 04:41:38'),
-('newbie', 'Người mới', '2025-05-17 23:38:17', '2025-05-17 23:38:17'),
+('newbie', 'Người mới', '2025-05-24 04:49:58', '2025-05-24 04:49:58'),
 ('operator', 'Vận hành', '2025-05-17 04:41:38', '2025-05-17 04:41:38');
 
 -- --------------------------------------------------------
@@ -282,7 +327,7 @@ INSERT INTO `guide` (`id`, `title`, `slug`, `content`, `author_id`, `topic`, `st
 (14, 'Tesit', 'tesit', '', 6, '', 'draft', NULL, NULL, 0, '2025-05-12 13:49:52', '2025-05-15 20:59:17', NULL),
 (15, 'Nốt lần này', 'not-lan-nay', '', 6, '', 'draft', '', NULL, 0, '2025-05-12 21:11:20', '2025-05-15 22:24:31', NULL),
 (16, 'Dám khô cằn', 'dam-kho-can', '<p>Hello tất cả</p>', 6, '', 'draft', '', NULL, 0, '2025-05-15 20:59:28', '2025-05-18 07:00:47', NULL),
-(17, 'Thử phát nữa', 'thu-phat-nua', '<p>X&oacute;a <strong>s&aacute;ch tất</strong></p>', 6, 'Hướng dẫn', 'draft', '', NULL, 0, '2025-05-18 07:01:17', '2025-05-21 07:10:36', NULL);
+(17, 'Thử phát nữa', 'thu-phat-nua', '<p>X&oacute;a <strong>s&aacute;ch tất hi c</strong></p>', 6, 'Hướng dẫn', 'published', '', NULL, 0, '2025-05-18 07:01:17', '2025-05-25 12:57:02', NULL);
 
 -- --------------------------------------------------------
 
@@ -304,8 +349,8 @@ CREATE TABLE `invoice` (
 --
 
 INSERT INTO `invoice` (`id`, `transaction_history_id`, `status`, `invoice_file`, `rejected_reason`, `created_at`) VALUES
-(8, 213, 'pending', NULL, NULL, '2025-05-12 21:08:48'),
-(9, 217, 'pending', NULL, NULL, '2025-05-16 20:38:25');
+(12, 232, 'pending', NULL, NULL, '2025-05-24 21:44:38'),
+(13, 234, 'pending', NULL, NULL, '2025-05-26 11:20:54');
 
 -- --------------------------------------------------------
 
@@ -408,7 +453,7 @@ CREATE TABLE `manager` (
 --
 
 INSERT INTO `manager` (`id`, `name`, `phone`, `address`) VALUES
-(2, 'Trần Thị B', '0987654322', 'Hải Phòng');
+(2, 'Trần Thị NAM', '0987654123', 'Hải Phòng');
 
 -- --------------------------------------------------------
 
@@ -515,7 +560,10 @@ INSERT INTO `referral` (`id`, `user_id`, `referral_code`, `created_at`, `updated
 (2, 95, '7WCUHN71', '2025-05-11 06:51:25', '2025-05-11 06:51:25'),
 (3, 90, 'NICURPGO', '2025-05-12 06:58:21', '2025-05-12 06:58:21'),
 (4, 100, 'PI7V2C9X', '2025-05-12 15:49:45', '2025-05-12 15:49:45'),
-(5, 105, '7N6REZX3', '2025-05-16 11:16:06', '2025-05-16 11:16:06');
+(5, 105, '7N6REZX3', '2025-05-16 11:16:06', '2025-05-16 11:16:06'),
+(6, 112, '1B2NPN79', '2025-05-27 00:09:35', '2025-05-27 00:09:35'),
+(7, 117, 'Z5E2DL2W', '2025-05-27 01:20:38', '2025-05-27 01:20:38'),
+(8, 118, 'MPN70WZO', '2025-05-27 01:48:36', '2025-05-27 01:48:36');
 
 -- --------------------------------------------------------
 
@@ -533,16 +581,6 @@ CREATE TABLE `referral_commission` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `referral_commission`
---
-
-INSERT INTO `referral_commission` (`id`, `referrer_id`, `referred_user_id`, `transaction_id`, `commission_amount`, `status`, `created_at`, `updated_at`) VALUES
-(9, 90, 100, 216, 135000.00, 'approved', '2025-05-14 02:56:06', '2025-05-16 14:33:16'),
-(10, 90, 105, 217, 13122.00, 'approved', '2025-05-16 13:37:55', '2025-05-16 13:37:55'),
-(11, 90, 105, 219, 13500.00, 'approved', '2025-05-16 14:40:55', '2025-05-16 14:40:55'),
-(12, 90, 105, 218, 13500.00, 'approved', '2025-05-17 00:27:50', '2025-05-17 00:27:50');
 
 -- --------------------------------------------------------
 
@@ -564,7 +602,10 @@ CREATE TABLE `referred_user` (
 INSERT INTO `referred_user` (`id`, `referrer_id`, `referred_user_id`, `created_at`) VALUES
 (1, 93, 95, '2025-05-11 03:51:24'),
 (2, 90, 100, '2025-05-12 15:46:53'),
-(3, 90, 105, '2025-05-16 11:13:11');
+(3, 90, 105, '2025-05-16 11:13:11'),
+(4, 90, 110, '2025-05-26 16:26:44'),
+(5, 90, 112, '2025-05-27 00:07:38'),
+(6, 90, 113, '2025-05-27 00:22:02');
 
 -- --------------------------------------------------------
 
@@ -589,34 +630,77 @@ CREATE TABLE `registration` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` datetime DEFAULT NULL,
-  `rejection_reason` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+  `rejection_reason` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `purchase_type` enum('company','individual') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'individual' COMMENT 'Loại mua: company - cty, individual - cá nhân',
+  `invoice_allowed` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Cho phép xuất hóa đơn'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `registration`
 --
 
-INSERT INTO `registration` (`id`, `user_id`, `package_id`, `location_id`, `collaborator_id`, `num_account`, `start_time`, `end_time`, `base_price`, `vat_percent`, `vat_amount`, `total_price`, `status`, `created_at`, `updated_at`, `deleted_at`, `rejection_reason`) VALUES
-(211, 95, 1, 63, NULL, 444, '2025-05-11 11:57:10', '2025-06-11 11:57:10', 100000.00, 0, 0.00, 44400000.00, 'pending', '2025-05-11 11:57:10', '2025-05-11 11:57:10', NULL, NULL),
-(212, 95, 1, 18, NULL, 55, '2025-05-11 12:12:14', '2025-06-11 12:12:14', 100000.00, 0, 0.00, 5500000.00, 'pending', '2025-05-11 12:12:14', '2025-05-11 12:12:14', NULL, NULL),
-(213, 95, 1, 51, NULL, 34, '2025-05-11 12:25:42', '2025-06-11 12:25:42', 100000.00, 0, 0.00, 3400000.00, 'pending', '2025-05-11 12:25:42', '2025-05-11 12:25:42', NULL, NULL),
-(214, 93, 3, 63, NULL, 6, '2025-05-11 14:58:24', '2025-11-11 14:58:24', 500000.00, 0, 0.00, 3000000.00, 'pending', '2025-05-11 14:58:24', '2025-05-11 14:58:24', NULL, NULL),
-(215, 95, 4, 63, NULL, 10, '2025-05-11 18:04:41', '2026-05-11 18:04:41', 900000.00, 0, 0.00, 9000000.00, 'pending', '2025-05-11 18:04:41', '2025-05-11 18:04:41', NULL, NULL),
-(216, 95, 4, 63, NULL, 100, '2025-05-11 18:08:43', '2026-05-11 18:08:43', 900000.00, 0, 0.00, 90000000.00, 'pending', '2025-05-11 18:08:43', '2025-05-11 18:08:43', NULL, NULL),
-(217, 90, 1, 63, NULL, 2, '2025-11-12 00:00:00', '2026-05-12 23:59:59', 270000.00, 0, 0.00, 540000.00, 'rejected', '2025-05-12 13:45:13', '2025-05-17 07:11:13', NULL, 'c'),
-(218, 90, 2, 12, NULL, 1, '2025-05-12 00:00:00', '2025-08-12 00:00:00', 0.00, 0, 0.00, 0.00, 'active', '2025-05-12 22:29:45', NULL, NULL, NULL),
-(219, 90, 2, 12, NULL, 1, '2025-05-12 00:00:00', '2025-08-12 00:00:00', 0.00, 0, 0.00, 0.00, 'active', '2025-05-12 22:30:17', NULL, NULL, NULL),
-(220, 90, 2, 63, NULL, 1, '2025-05-12 22:43:12', '2025-08-12 22:43:12', 270000.00, 0, 0.00, 270000.00, 'rejected', '2025-05-12 22:43:12', '2025-05-17 07:35:29', NULL, 'c'),
-(221, 90, 2, 12, NULL, 1, '2025-05-15 00:00:00', '2025-12-15 23:59:59', 270000.00, 0, 0.00, 270000.00, 'rejected', '2025-05-12 22:48:38', '2025-05-17 07:33:21', NULL, 'c'),
-(222, 100, 2, 12, NULL, 1, '2025-05-12 22:54:37', '2025-08-12 22:54:37', 270000.00, 0, 0.00, 270000.00, 'rejected', '2025-05-12 22:54:37', '2025-05-17 07:26:29', NULL, 'c'),
-(223, 88, 2, 12, NULL, 1, '2025-02-22 00:00:00', '2025-05-22 00:00:00', 0.00, 0, 0.00, 0.00, 'active', '2025-05-14 10:00:56', NULL, NULL, NULL),
-(224, 105, 2, 12, NULL, 1, '2025-05-18 00:00:00', '2026-02-19 23:59:59', 270000.00, 0, 0.00, 270000.00, 'rejected', '2025-05-16 18:16:43', '2025-05-21 09:20:38', NULL, 'c'),
-(225, 105, 2, 12, NULL, 1, '2025-05-18 00:00:00', '2025-11-18 23:59:59', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-16 20:48:11', '2025-05-18 07:21:11', NULL, NULL),
-(226, 105, 2, 12, NULL, 1, '2025-08-16 20:37:55', '2025-11-16 20:37:55', 270000.00, 0, 0.00, 270000.00, 'rejected', '2025-05-16 21:16:51', '2025-05-17 09:18:46', NULL, 'c'),
-(227, 90, 1, 12, NULL, 2, '2025-05-18 00:00:00', '2025-06-18 00:00:00', 0.00, 0, 0.00, 0.00, 'active', '2025-05-18 07:20:32', '2025-05-18 07:20:50', NULL, NULL),
-(228, 90, 1, 63, NULL, 2, '2025-05-18 00:00:00', '2025-06-18 00:00:00', 0.00, 0, 0.00, 0.00, 'active', '2025-05-18 09:39:56', NULL, NULL, NULL),
-(229, 90, 1, 12, NULL, 1, '2025-05-19 16:12:51', '2025-09-19 16:12:51', 100000.00, 0, 0.00, 100000.00, 'active', '2025-05-19 16:12:51', '2025-05-19 22:17:06', NULL, NULL),
-(230, 90, 2, 12, NULL, 1, '2025-05-19 22:18:09', '2025-08-19 22:18:09', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-19 22:18:09', '2025-05-19 22:18:09', NULL, NULL);
+INSERT INTO `registration` (`id`, `user_id`, `package_id`, `location_id`, `collaborator_id`, `num_account`, `start_time`, `end_time`, `base_price`, `vat_percent`, `vat_amount`, `total_price`, `status`, `created_at`, `updated_at`, `deleted_at`, `rejection_reason`, `purchase_type`, `invoice_allowed`) VALUES
+(226, 105, 2, 12, NULL, 1, '2025-08-16 20:37:55', '2025-11-16 20:37:55', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-16 21:16:51', '2025-05-24 21:27:20', NULL, 'c', 'individual', 0),
+(227, 90, 1, 12, NULL, 2, '2025-05-18 00:00:00', '2025-06-18 00:00:00', 0.00, 0, 0.00, 0.00, 'active', '2025-05-18 07:20:32', '2025-05-18 07:20:50', NULL, NULL, 'individual', 0),
+(228, 90, 1, 63, NULL, 2, '2025-05-18 00:00:00', '2025-06-18 00:00:00', 0.00, 0, 0.00, 0.00, 'active', '2025-05-18 09:39:56', NULL, NULL, NULL, 'individual', 0),
+(229, 88, 1, 63, NULL, 1, '2025-05-19 16:12:51', '2025-09-19 16:12:51', 100000.00, 0, 0.00, 100000.00, 'pending', '2025-05-19 16:12:51', '2025-05-23 13:01:52', NULL, NULL, 'individual', 0),
+(230, 90, 2, 12, NULL, 1, '2025-05-19 22:18:09', '2025-08-19 22:18:09', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-19 22:18:09', '2025-05-24 21:27:16', NULL, NULL, 'individual', 0),
+(231, 105, 2, 12, NULL, 1, '2025-11-24 13:02:07', '2026-02-24 13:02:07', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-23 13:11:19', '2025-05-23 13:28:26', NULL, NULL, 'individual', 0),
+(242, 90, 3, 12, NULL, 2, '2025-05-26 10:54:36', '2025-11-26 10:54:36', 500000.00, 0, 0.00, 1000000.00, 'pending', '2025-05-26 10:54:36', '2025-05-26 10:54:36', NULL, NULL, 'individual', 0),
+(243, 90, 3, 12, NULL, 2, '2025-05-26 11:03:26', '2025-11-26 11:03:26', 500000.00, 10, 100000.00, 1100000.00, 'active', '2025-05-26 11:03:26', '2025-05-26 11:20:43', NULL, NULL, 'company', 1),
+(244, 109, 2, 12, NULL, 1, '2025-05-26 23:20:01', '2025-08-26 23:20:01', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-26 23:20:01', '2025-05-26 23:20:01', NULL, NULL, 'individual', 0),
+(245, 110, 2, 12, NULL, 3, '2025-05-26 23:28:45', '2025-08-26 23:28:45', 270000.00, 0, 0.00, 810000.00, 'pending', '2025-05-26 23:28:45', '2025-05-26 23:28:45', NULL, NULL, 'individual', 0),
+(246, 111, 1, 63, NULL, 3, '2025-05-26 23:34:48', '2025-06-26 23:34:48', 100000.00, 0, 0.00, 300000.00, 'pending', '2025-05-26 23:34:48', '2025-05-26 23:34:48', NULL, NULL, 'individual', 0),
+(247, 111, 1, 63, NULL, 3, '2025-05-26 23:46:32', '2025-06-26 23:46:32', 100000.00, 0, 0.00, 300000.00, 'pending', '2025-05-26 23:46:32', '2025-05-26 23:46:32', NULL, NULL, 'individual', 0),
+(248, 111, 3, 63, NULL, 2, '2025-05-26 23:46:57', '2025-11-26 23:46:57', 500000.00, 0, 0.00, 1000000.00, 'pending', '2025-05-26 23:46:57', '2025-05-26 23:46:57', NULL, NULL, 'individual', 0),
+(249, 112, 2, 63, NULL, 1, '2025-05-27 07:09:11', '2025-08-27 07:09:11', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-27 07:09:11', '2025-05-27 07:09:11', NULL, NULL, 'individual', 0),
+(250, 112, 2, 12, NULL, 1, '2025-05-27 07:09:24', '2025-08-27 07:09:24', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-27 07:09:24', '2025-05-27 07:09:24', NULL, NULL, 'individual', 0),
+(251, 113, 2, 12, NULL, 2, '2025-05-27 07:24:43', '2025-08-27 07:24:43', 270000.00, 0, 0.00, 540000.00, 'pending', '2025-05-27 07:24:43', '2025-05-27 07:24:43', NULL, NULL, 'individual', 0),
+(252, 114, 2, 63, NULL, 1, '2025-05-27 07:41:59', '2025-08-27 07:41:59', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-27 07:41:59', '2025-05-27 07:41:59', NULL, NULL, 'individual', 0),
+(253, 114, 2, 63, NULL, 1, '2025-05-27 07:53:12', '2025-08-27 07:53:12', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-27 07:53:12', '2025-05-27 07:53:12', NULL, NULL, 'individual', 0),
+(254, 114, 2, 12, NULL, 1, '2025-05-27 07:53:31', '2025-08-27 07:53:31', 270000.00, 10, 27000.00, 297000.00, 'pending', '2025-05-27 07:53:31', '2025-05-27 07:53:31', NULL, NULL, 'company', 1),
+(255, 115, 2, 12, NULL, 1, '2025-05-27 08:02:27', '2025-08-27 08:02:27', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-27 08:02:27', '2025-05-27 08:02:27', NULL, NULL, 'individual', 0),
+(256, 115, 2, 63, NULL, 1, '2025-05-27 08:04:36', '2025-08-27 08:04:36', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-27 08:04:36', '2025-05-27 08:04:36', NULL, NULL, 'individual', 0),
+(257, 115, 2, 63, NULL, 1, '2025-05-27 08:13:56', '2025-08-27 08:13:56', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-27 08:13:56', '2025-05-27 08:13:56', NULL, NULL, 'individual', 0),
+(258, 116, 2, 63, NULL, 1, '2025-05-27 08:16:42', '2025-08-27 08:16:42', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-27 08:16:42', '2025-05-27 08:16:42', NULL, NULL, 'individual', 0),
+(259, 117, 2, 63, NULL, 1, '2025-05-27 08:19:49', '2025-08-27 08:19:49', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-27 08:19:49', '2025-05-27 08:19:49', NULL, NULL, 'individual', 0),
+(260, 117, 2, 12, NULL, 1, '2025-05-27 08:20:45', '2025-08-27 08:20:45', 270000.00, 0, 0.00, 270000.00, 'pending', '2025-05-27 08:20:45', '2025-05-27 08:20:45', NULL, NULL, 'individual', 0),
+(261, 118, 2, 12, NULL, 2, '2025-05-27 08:41:51', '2025-08-27 08:41:51', 270000.00, 10, 54000.00, 594000.00, 'pending', '2025-05-27 08:41:52', '2025-05-27 08:41:52', NULL, NULL, 'company', 1),
+(262, 118, 3, 12, NULL, 2, '2025-05-27 08:47:22', '2025-11-27 08:47:22', 500000.00, 0, 0.00, 1000000.00, 'pending', '2025-05-27 08:47:22', '2025-05-27 08:47:22', NULL, NULL, 'individual', 0);
+
+--
+-- Triggers `registration`
+--
+DELIMITER $$
+CREATE TRIGGER `trg_set_registration_vat` BEFORE INSERT ON `registration` FOR EACH ROW BEGIN
+  IF NEW.`purchase_type` = 'company' THEN
+    SET NEW.`vat_percent` = 10;
+    SET NEW.`vat_amount` = ROUND((NEW.`base_price` * COALESCE(NEW.`num_account`,1)) * 0.1, 2);
+    SET NEW.`invoice_allowed` = 1;
+  ELSE
+    SET NEW.`vat_percent` = 0;
+    SET NEW.`vat_amount` = 0;
+    SET NEW.`invoice_allowed` = 0;
+  END IF;
+  SET NEW.`total_price` = ROUND((NEW.`base_price` * COALESCE(NEW.`num_account`,1)) + NEW.`vat_amount`, 2);
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `trg_update_registration_vat_update` BEFORE UPDATE ON `registration` FOR EACH ROW BEGIN
+  IF NEW.`purchase_type` = 'company' THEN
+    SET NEW.`vat_percent` = 10;
+    SET NEW.`vat_amount` = ROUND((NEW.`base_price` * COALESCE(NEW.`num_account`,1)) * 0.1, 2);
+    SET NEW.`invoice_allowed` = 1;
+  ELSE
+    SET NEW.`vat_percent` = 0;
+    SET NEW.`vat_amount` = 0;
+    SET NEW.`invoice_allowed` = 0;
+  END IF;
+  SET NEW.`total_price` = ROUND((NEW.`base_price` * COALESCE(NEW.`num_account`,1)) + NEW.`vat_amount`, 2);
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -648,7 +732,7 @@ INSERT INTO `role_permissions` (`role`, `permission`, `allowed`) VALUES
 ('admin', 'permission_management_view', 1),
 ('admin', 'referral_management_edit', 1),
 ('admin', 'referral_management_view', 1),
-('admin', 'reports_view', 0),
+('admin', 'reports_view', 1),
 ('admin', 'revenue_management_edit', 1),
 ('admin', 'revenue_management_view', 1),
 ('admin', 'station_management_edit', 1),
@@ -669,13 +753,13 @@ INSERT INTO `role_permissions` (`role`, `permission`, `allowed`) VALUES
 ('customercare', 'invoice_review_view', 0),
 ('customercare', 'permission_edit', 0),
 ('customercare', 'permission_management_edit', 0),
-('customercare', 'permission_management_view', 0),
+('customercare', 'permission_management_view', 1),
 ('customercare', 'referral_management_edit', 0),
 ('customercare', 'referral_management_view', 1),
 ('customercare', 'reports_view', 0),
 ('customercare', 'revenue_management_edit', 1),
 ('customercare', 'revenue_management_view', 1),
-('customercare', 'station_management_edit', 1),
+('customercare', 'station_management_edit', 0),
 ('customercare', 'station_management_view', 1),
 ('customercare', 'support_management_edit', 1),
 ('customercare', 'support_management_view', 1),
@@ -684,7 +768,7 @@ INSERT INTO `role_permissions` (`role`, `permission`, `allowed`) VALUES
 ('customercare', 'voucher_management_edit', 0),
 ('customercare', 'voucher_management_view', 1),
 ('newbie', 'account_management_edit', 0),
-('newbie', 'account_management_view', 0),
+('newbie', 'account_management_view', 1),
 ('newbie', 'guide_management_edit', 0),
 ('newbie', 'guide_management_view', 0),
 ('newbie', 'invoice_management_edit', 0),
@@ -692,10 +776,10 @@ INSERT INTO `role_permissions` (`role`, `permission`, `allowed`) VALUES
 ('newbie', 'invoice_review_edit', 0),
 ('newbie', 'invoice_review_view', 0),
 ('newbie', 'permission_management_edit', 0),
-('newbie', 'permission_management_view', 0),
+('newbie', 'permission_management_view', 1),
 ('newbie', 'referral_management_edit', 0),
 ('newbie', 'referral_management_view', 0),
-('newbie', 'reports_view', 1),
+('newbie', 'reports_view', 0),
 ('newbie', 'revenue_management_edit', 0),
 ('newbie', 'revenue_management_view', 0),
 ('newbie', 'station_management_edit', 0),
@@ -703,7 +787,7 @@ INSERT INTO `role_permissions` (`role`, `permission`, `allowed`) VALUES
 ('newbie', 'support_management_edit', 0),
 ('newbie', 'support_management_view', 0),
 ('newbie', 'user_management_edit', 0),
-('newbie', 'user_management_view', 0),
+('newbie', 'user_management_view', 1),
 ('newbie', 'voucher_management_edit', 0),
 ('newbie', 'voucher_management_view', 1),
 ('operator', 'account_management_edit', 0),
@@ -816,13 +900,13 @@ INSERT INTO `support_requests` (`id`, `user_id`, `subject`, `message`, `category
 (10, 90, 'SOS', '123', 'technical', 'pending', NULL, '2025-05-19 16:09:58', NULL),
 (11, 90, 'nốt', 'chir daanx', 'technical', 'pending', NULL, '2025-05-19 16:50:24', NULL),
 (24, 90, 'Đại đại đi', '123', 'technical', 'pending', NULL, '2025-05-20 07:21:56', NULL),
-(25, 90, 'Test3', 'OK', 'technical', 'pending', NULL, '2025-05-20 07:24:04', NULL),
+(25, 90, 'Test3', 'OK', 'technical', 'closed', 'Ok nhé', '2025-05-20 07:24:04', '2025-05-22 22:54:26'),
 (26, 90, 'Test3', '123', 'technical', 'pending', NULL, '2025-05-20 07:33:45', NULL),
 (27, 90, 'SOS', '123', 'technical', 'pending', NULL, '2025-05-20 07:36:40', NULL),
 (28, 90, '333', 'Hello', 'technical', 'pending', NULL, '2025-05-20 07:37:37', NULL),
 (29, 90, '123', 'SOS', 'technical', 'pending', NULL, '2025-05-20 07:48:21', NULL),
 (30, 90, 'Test8', '123', 'technical', 'pending', NULL, '2025-05-20 07:52:05', NULL),
-(31, 90, 'Test3', '123', 'technical', 'pending', NULL, '2025-05-20 09:08:51', NULL);
+(31, 90, 'Test3', '123', 'technical', 'pending', 'Không sao nhé', '2025-05-20 09:08:51', '2025-05-25 12:50:59');
 
 -- --------------------------------------------------------
 
@@ -848,6 +932,14 @@ CREATE TABLE `survey_account` (
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `survey_account`
+--
+
+INSERT INTO `survey_account` (`id`, `registration_id`, `start_time`, `end_time`, `username_acc`, `password_acc`, `concurrent_user`, `enabled`, `caster`, `user_type`, `regionIds`, `customerBizType`, `area`, `created_at`, `updated_at`, `deleted_at`) VALUES
+('2402', 243, '2025-05-26 11:20:09', '2025-11-26 11:20:09', 'CMA001', '0999999443', 1, 1, NULL, NULL, NULL, 1, NULL, '2025-05-26 11:20:09', NULL, NULL),
+('2403', 243, '2025-05-26 11:20:09', '2025-11-26 11:20:09', 'CMA002', '0999999443', 1, 1, NULL, NULL, NULL, 1, NULL, '2025-05-26 11:20:09', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -879,15 +971,37 @@ CREATE TABLE `transaction_history` (
 --
 
 INSERT INTO `transaction_history` (`id`, `registration_id`, `user_id`, `voucher_id`, `transaction_type`, `amount`, `status`, `payment_method`, `payment_image`, `export_invoice`, `invoice_info`, `payment_confirmed`, `payment_confirmed_at`, `payment_reference`, `created_at`, `updated_at`) VALUES
-(213, 217, 90, 2, 'purchase', 540000.00, 'failed', NULL, 'reg_217_1747032320.jpg', 0, NULL, 0, NULL, NULL, '2025-05-12 13:45:13', '2025-05-17 07:11:13'),
-(214, 220, 90, 3, 'purchase', 291600.00, 'failed', NULL, 'reg_220_1747064639.jpg', 0, NULL, 0, NULL, NULL, '2025-05-12 22:43:12', '2025-05-17 07:35:29'),
-(215, 221, 90, 3, 'purchase', 291600.00, 'failed', NULL, 'reg_221_1747189086.jpg', 0, NULL, 0, NULL, NULL, '2025-05-12 22:48:38', '2025-05-17 07:33:21'),
-(216, 222, 100, NULL, 'purchase', 270000.00, 'failed', NULL, 'reg_222_1747065298.jpg', 0, NULL, 0, NULL, NULL, '2025-05-12 22:54:37', '2025-05-17 07:26:29'),
-(217, 224, 105, 4, 'purchase', 262440.00, 'failed', 'Chuyển khoản ngân hàng', 'reg_224_1747394258.jpg', 0, NULL, 0, NULL, NULL, '2025-05-16 18:16:43', '2025-05-21 09:20:38'),
-(218, 225, 105, NULL, 'purchase', 270000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-16 20:48:11', '2025-05-18 07:21:11'),
-(219, 226, 105, NULL, 'renewal', 270000.00, 'failed', 'Chuyển khoản ngân hàng', 'reg_226_1747405020.jpg', 0, NULL, 0, NULL, NULL, '2025-05-16 21:16:51', '2025-05-17 09:18:46'),
-(220, 229, 90, NULL, 'purchase', 100000.00, 'completed', 'Chuyển khoản ngân hàng', 'reg_229_1747645978.jpg', 0, NULL, 0, NULL, NULL, '2025-05-19 16:12:51', '2025-05-19 21:41:05'),
-(221, 230, 90, 3, 'purchase', 291600.00, 'pending', 'Chuyển khoản ngân hàng', 'reg_230_1747667917.png', 0, NULL, 0, NULL, NULL, '2025-05-19 22:18:09', '2025-05-19 22:18:37');
+(223, NULL, 90, NULL, 'purchase', 297000.00, 'pending', 'Chuyển khoản ngân hàng', 'reg_232_1748096770.jpg', 0, NULL, 0, NULL, NULL, '2025-05-24 21:20:42', '2025-05-25 10:24:06'),
+(224, NULL, 90, NULL, 'purchase', 270000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-24 21:25:42', '2025-05-25 10:24:05'),
+(225, NULL, 90, NULL, 'purchase', 270000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-24 22:29:30', '2025-05-24 22:29:30'),
+(226, NULL, 90, NULL, 'purchase', 297000.00, 'failed', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-24 22:29:41', '2025-05-24 23:40:17'),
+(227, 227, 90, NULL, 'purchase', 100000.00, 'completed', 'Chuyển khoản ngân hàng', 'reg_236_1748162983.jpg', 0, NULL, 0, NULL, NULL, '2025-05-25 15:49:27', '2025-05-26 10:48:18'),
+(228, 228, 90, NULL, 'renewal', 270000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-25 16:08:20', '2025-05-26 10:48:21'),
+(229, NULL, 90, NULL, 'renewal', 270000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-25 16:11:04', '2025-05-25 16:11:04'),
+(230, NULL, 90, NULL, 'renewal', 270000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-25 16:11:39', '2025-05-25 16:11:39'),
+(231, NULL, 90, NULL, 'renewal', 297000.00, 'completed', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-25 16:24:52', '2025-05-25 16:25:06'),
+(232, NULL, 90, 4, 'renewal', 270000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-25 16:26:53', '2025-05-25 20:53:31'),
+(233, 242, 90, NULL, 'purchase', 1000000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-26 10:54:36', '2025-05-26 10:54:36'),
+(234, 243, 90, NULL, 'purchase', 1000000.00, 'completed', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-26 11:03:26', '2025-05-26 11:20:09'),
+(235, 244, 109, NULL, 'purchase', 270000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-26 23:20:01', '2025-05-26 23:20:01'),
+(236, 245, 110, NULL, 'purchase', 810000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-26 23:28:45', '2025-05-26 23:28:45'),
+(237, 246, 111, NULL, 'purchase', 240000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-26 23:34:48', '2025-05-26 23:44:40'),
+(238, 247, 111, NULL, 'purchase', 240000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-26 23:46:32', '2025-05-26 23:46:41'),
+(239, 248, 111, NULL, 'purchase', 240000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-26 23:46:57', '2025-05-26 23:46:57'),
+(240, 249, 112, NULL, 'purchase', 216000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-27 07:09:11', '2025-05-27 07:09:12'),
+(241, 250, 112, NULL, 'purchase', 216000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-27 07:09:24', '2025-05-27 07:09:24'),
+(242, 251, 113, NULL, 'purchase', 540000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-27 07:24:43', '2025-05-27 07:34:48'),
+(243, 252, 114, NULL, 'purchase', 270000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-27 07:41:59', '2025-05-27 07:41:59'),
+(244, 253, 114, NULL, 'purchase', 216000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-27 07:53:12', '2025-05-27 07:53:17'),
+(245, 254, 114, NULL, 'purchase', 216000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-27 07:53:31', '2025-05-27 07:59:02'),
+(246, 255, 115, NULL, 'purchase', 216000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-27 08:02:27', '2025-05-27 08:03:02'),
+(247, 256, 115, NULL, 'purchase', 216000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-27 08:04:36', '2025-05-27 08:13:39'),
+(248, 257, 115, 14, 'purchase', 270000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-27 08:13:56', '2025-05-27 08:13:56'),
+(249, 258, 116, NULL, 'purchase', 270000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-27 08:16:42', '2025-05-27 08:16:42'),
+(250, 259, 117, NULL, 'purchase', 216000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-27 08:19:49', '2025-05-27 08:20:13'),
+(251, 260, 117, 14, 'purchase', 270000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-27 08:20:45', '2025-05-27 08:20:45'),
+(252, 261, 118, NULL, 'purchase', 475200.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-27 08:41:52', '2025-05-27 08:41:52'),
+(253, 262, 118, 14, 'purchase', 1000000.00, 'pending', 'Chuyển khoản ngân hàng', NULL, 0, NULL, 0, NULL, NULL, '2025-05-27 08:47:22', '2025-05-27 08:47:22');
 
 --
 -- Triggers `transaction_history`
@@ -963,9 +1077,104 @@ INSERT INTO `user` (`id`, `username`, `email`, `password`, `phone`, `is_company`
 (100, 'zkz9696@toaik.com', 'zkz96960@toaik.com', '$2y$10$48F2kmtApFftzTJx31ruyeSeaf3j4oYDhMKiCC1.fHN8aGPflU.mS', '0999999223', 0, NULL, NULL, NULL, NULL, '2025-05-12 22:46:48', '2025-05-15 22:45:17', '2025-05-15 15:45:17', 1, 1, NULL),
 (102, 'Long2001', 'acook6968@gmail.com', '$2y$10$xhPFgwaGPOuiJjc/b7E/T.f/Ho.TQyIF9At7AZzTGNGnmTSCxXWFK', '091234569', 1, '12', 'a', NULL, NULL, '2025-05-14 17:39:24', '2025-05-15 15:00:08', NULL, 1, 0, NULL),
 (104, 'Long1999', '123@gmail.com', '$2y$10$dL.AhqQ2Pd4CBZT.NC9XrOGQClR91MhpOEOvfKJs3zMdJLsf/IE0y', '12', 0, NULL, NULL, NULL, NULL, '2025-05-15 22:45:46', '2025-05-15 22:45:52', NULL, 1, 0, NULL),
-(105, 'Long99999', 'osn14300@jioso.com', '$2y$10$Ea5zvtkl1GTPskI0eJFMfuEeT4PSFCRSos6L5p8cUBNfM56U94s/G', '09999993232', 1, 'as', '1233333333', '123', NULL, '2025-05-16 18:13:06', '2025-05-17 20:41:03', '2025-05-17 13:41:03', 1, 1, NULL),
+(105, 'Long99999', 'osn14300@jioso.com', '$2y$10$YmhPRiarvfNbAaemNOuMHeVykkJfrsMzKDGCvSHnDQGasS7oVTh2S', '09999993232', 1, 'as', '1233333333', '123', NULL, '2025-05-16 18:13:06', '2025-05-23 13:04:55', NULL, 1, 1, NULL),
 (106, 'Long12323', 'tranhailong2499@gmail.com', '$2y$10$PxMSQCg81bG3ohJCZVixM.EkUePHyzjm.e4MElZAofgJLgTtICjLS', '123', 0, NULL, NULL, NULL, NULL, '2025-05-16 21:41:32', '2025-05-18 06:51:58', '2025-05-17 23:51:58', 1, 0, NULL),
-(108, 'Một bốn', 'acook6990@gmail.com', '$2y$10$LFiie8I8OrqNc2EPC7yGje8SAn9bTiuaZwal4zes3cSBeCxMF40Ni', '0900000000', 1, 'Công Ty TNHH', '123', 'Thái cực', NULL, '2025-05-18 06:53:13', '2025-05-21 09:17:47', NULL, 1, 0, NULL);
+(108, 'Chào tất cả', 'acook6990@gmail.com', '$2y$10$LFiie8I8OrqNc2EPC7yGje8SAn9bTiuaZwal4zes3cSBeCxMF40Ni', '0900000001', 1, 'Công Ty TNHH', '123', 'Thái cực', NULL, '2025-05-18 06:53:13', '2025-05-22 22:40:04', NULL, 1, 0, NULL),
+(109, 'zzj07635@toaik.com', 'zzj07635@toaik.com', '$2y$10$RmjoBS8/bwxS3IJnpP6GpeMeR83XnFML3JxmXm1Xld3WVdMFJtgWW', '09123456923', 0, NULL, NULL, NULL, NULL, '2025-05-26 23:16:05', '2025-05-26 23:19:21', NULL, 1, 1, NULL),
+(110, 'b23dccn510trr1n13fa24', 'mfc90967@toaik.com', '$2y$10$me/BtbN.W.x5oSwCJWrse.e7RoDqTJQSXHDuur6twuemtpRnL93Oi', '0912345322', 0, NULL, NULL, NULL, NULL, '2025-05-26 23:26:39', '2025-05-26 23:28:09', NULL, 1, 1, NULL),
+(111, 'whi18324@jioso.com', 'whi18324@jioso.com', '$2y$10$jRs.io00qk1vGdgjDZPppu0dgWWoc4L/dlgu2mCeKn88.ovgKY1ei', '0912345699', 0, NULL, NULL, NULL, NULL, '2025-05-26 23:33:17', '2025-05-26 23:34:32', NULL, 1, 1, NULL),
+(112, 'xes60082@toaik.com', 'xes60082@toaik.com', '$2y$10$6ZuNU87ZXivHv.E98bgdEuofj1dslIifd/p1H833PNzQgXNJPUhzy', '0900000020', 0, NULL, NULL, NULL, NULL, '2025-05-27 07:07:32', '2025-05-27 07:08:01', NULL, 1, 1, NULL),
+(113, 'lgo61401', 'lgo61401@jioso.com', '$2y$10$p/XPMYM5ba/nbgTOoGRyg.7RLjdPDaIzM8WUccTnKDR1MYvNikjJW', '0999999442', 0, NULL, NULL, NULL, NULL, '2025-05-27 07:21:57', '2025-05-27 07:23:44', NULL, 1, 1, NULL),
+(114, 'gop25047@jioso.com', 'gop25047@jioso.com', '$2y$10$27QfS.Tbf2Vv/5j.8WADL.dN8MvxXssT9nlnMuR/6S4j3xuu7sNB.', '0999999432', 0, NULL, NULL, NULL, NULL, '2025-05-27 07:40:40', '2025-05-27 07:41:35', NULL, 1, 1, NULL),
+(115, 'vxn91269@jioso.com', 'vxn91269@jioso.com', '$2y$10$pgQ3362cJX8G9Shv0uGI5O7gcUYgIr7arNdQXFckQWWjoIATtKFoe', '0987999443', 0, NULL, NULL, NULL, NULL, '2025-05-27 08:01:30', '2025-05-27 08:02:02', NULL, 1, 1, NULL),
+(116, 'nva79925@jioso.com', 'nva79925@jioso.com', '$2y$10$LdPGh91Yu3RGPnu14XsuLeSPML049tDU03Tx1O.VMrDQPbR0uWXl6', '09232238233', 0, NULL, NULL, NULL, NULL, '2025-05-27 08:14:42', '2025-05-27 08:16:22', NULL, 1, 1, NULL),
+(117, 'pyn61579@toaik.com', 'pyn61579@toaik.com', '$2y$10$Krs8J1rgq2Dl0OrkImcLTedqijKaHIjdvoFlw0lN4nEhpy88PVkKi', '0912985695', 0, NULL, NULL, NULL, NULL, '2025-05-27 08:18:00', '2025-05-27 08:19:25', NULL, 1, 1, NULL),
+(118, 'nci02654@toaik.com', 'nci02654@toaik.com', '$2y$10$I1giAWlMD/tDzBBZZ2pYRuUGwYNcImxYVz3d3LbiuwtoJwc3FB5tW', '0932838322', 0, NULL, NULL, NULL, NULL, '2025-05-27 08:41:06', '2025-05-27 08:41:29', NULL, 1, 1, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_devices`
+--
+
+CREATE TABLE `user_devices` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `device_fingerprint` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_agent` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_login_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `login_count` int DEFAULT '1',
+  `voucher_code` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `voucher_used` tinyint(1) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `user_devices`
+--
+
+INSERT INTO `user_devices` (`id`, `user_id`, `device_fingerprint`, `ip_address`, `user_agent`, `created_at`, `last_login_at`, `login_count`, `voucher_code`, `voucher_used`) VALUES
+(12, 118, 'bfbefb14', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 01:41:12', '2025-05-27 01:47:22', 2, 'VIP20', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_ranking`
+--
+
+CREATE TABLE `user_ranking` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `referral_count` int NOT NULL DEFAULT '0',
+  `monthly_commission` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `total_commission` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `user_ranking`
+--
+
+INSERT INTO `user_ranking` (`id`, `user_id`, `referral_count`, `monthly_commission`, `total_commission`, `created_at`, `updated_at`) VALUES
+(1, 88, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(2, 89, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(3, 90, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(4, 91, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(5, 92, 5, 3260000.00, 3260000.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(6, 93, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(7, 94, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(8, 95, 1, 10580.00, 10580.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(9, 96, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(10, 97, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(11, 98, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(12, 99, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(13, 101, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(14, 105, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(15, 110, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(16, 111, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(17, 112, 5, 1620000.00, 1620000.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(18, 113, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(19, 114, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(20, 115, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(21, 116, 0, 0.00, 0.00, '2025-05-20 15:27:20', '2025-05-23 11:00:19'),
+(43, 117, 0, 0.00, 0.00, '2025-05-21 04:41:02', '2025-05-23 11:00:19'),
+(44, 118, 0, 0.00, 0.00, '2025-05-21 04:41:02', '2025-05-23 11:00:19'),
+(45, 119, 0, 0.00, 0.00, '2025-05-21 04:41:02', '2025-05-23 11:00:19'),
+(46, 120, 0, 0.00, 0.00, '2025-05-21 04:41:02', '2025-05-23 11:00:19'),
+(247, 121, 0, 0.00, 0.00, '2025-05-21 04:54:25', '2025-05-23 11:00:19'),
+(378, 122, 0, 0.00, 0.00, '2025-05-21 05:42:08', '2025-05-23 11:00:19'),
+(433, 123, 0, 0.00, 0.00, '2025-05-21 14:29:34', '2025-05-23 11:00:19'),
+(462, 124, 0, 0.00, 0.00, '2025-05-21 14:32:08', '2025-05-23 11:00:19'),
+(492, 125, 0, 0.00, 0.00, '2025-05-21 16:47:17', '2025-05-23 11:00:19'),
+(523, 126, 0, 0.00, 0.00, '2025-05-23 04:50:38', '2025-05-23 11:00:19'),
+(524, 128, 0, 0.00, 0.00, '2025-05-23 04:50:38', '2025-05-23 11:00:19'),
+(525, 129, 0, 0.00, 0.00, '2025-05-23 04:50:38', '2025-05-23 11:00:19'),
+(526, 130, 0, 0.00, 0.00, '2025-05-23 04:50:38', '2025-05-23 11:00:19'),
+(561, 131, 0, 0.00, 0.00, '2025-05-23 10:44:50', '2025-05-23 11:00:19'),
+(562, 132, 0, 0.00, 0.00, '2025-05-23 10:44:50', '2025-05-23 11:00:19'),
+(599, 133, 0, 0.00, 0.00, '2025-05-23 10:56:14', '2025-05-23 11:00:19');
 
 -- --------------------------------------------------------
 
@@ -988,105 +1197,138 @@ CREATE TABLE `user_sessions` (
 --
 
 INSERT INTO `user_sessions` (`session_id`, `user_id`, `ip_address`, `user_agent`, `created_at`, `last_activity`, `is_active`) VALUES
-('07puqp13og7h24oqkt6djq0udp', 15, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 17:51:07', '2025-05-21 18:00:17', 0),
-('0a0n5lfc00kcufmp1s080bc6cp', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 06:17:05', '2025-05-17 06:17:27', 0),
-('0cggrapjnbalmld0g9938t7e0o', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 18:47:23', '2025-05-17 20:26:16', 0),
-('0scecrfa9hp12g63dq2tojjkc6', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 17:33:12', '2025-05-21 17:33:42', 0),
-('0u3gr4m6riq5m443aojja7h8nc', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-15 18:50:06', '2025-05-15 23:00:59', 0),
-('19n7vjm1dbd8ploa0r2sljbccq', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 08:17:31', '2025-05-17 10:25:32', 0),
-('1k7e8p3rh88r9umnm6ebsvr7n0', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 07:59:37', '2025-05-21 09:09:36', 0),
-('1kblu115mleaaaso2d3s7kbsmc', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 18:01:12', '2025-05-21 18:01:23', 0),
-('1nt8jiuaimlnqmhrupdpo6ucpv', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 13:16:38', '2025-05-12 13:28:31', 1),
-('20gkmdpfo0iank62fnml1ql3r2', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-13 14:46:39', '2025-05-13 19:53:57', 1),
-('22o8lf3k3sk5brvke3lkll2c0i', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 08:32:20', '2025-05-16 10:08:37', 0),
-('2nlfolrchlmr4mh1upd5uqbivp', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:09:44', '2025-05-21 09:12:03', 0),
-('2vea0vfblfl0l7d1m40q0frem9', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 08:47:07', '2025-05-14 09:23:28', 1),
-('307bu0i6tbs6vvs9n2ctqnn1bs', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 18:01:28', '2025-05-21 18:01:32', 0),
-('33glkapif1ub631e4iu2tgova1', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 18:31:45', '2025-05-12 20:36:45', 1),
-('3hck9gk2759hf6l802lrb4dvmg', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 10:08:48', '2025-05-16 12:42:07', 1),
+('33l9ojgsk5jp6en8s0ahs9rv8t', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 08:54:14', '2025-05-27 14:23:30', 1),
+('42mhvstjh560lq15hvgjn59gav', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 15:52:51', '2025-05-23 15:52:55', 0),
+('43dkpv8s2foo8o8c7ppo9ojp5e', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 15:01:00', '2025-05-23 15:17:18', 0),
 ('48nbopk0pcafpoepvphvh82107', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 09:42:44', '2025-05-18 10:35:43', 1),
+('48pu7b1p7m5lktb9b8d6jhfsbk', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 10:23:52', '2025-05-25 12:44:52', 1),
 ('4c2hesergl9j3q8h5m13g9agkf', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 15:55:56', '2025-05-17 17:20:16', 0),
 ('4ne9odh9lg5rc8mvvtgbeup4fj', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 16:24:24', '2025-05-14 17:57:16', 0),
 ('4sdaom0dfk79bu1fki4duhg8ts', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 09:46:29', '2025-05-14 11:41:12', 1),
 ('50uk071h5e0qjoiugbrc0n0b0k', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 17:33:46', '2025-05-21 17:34:03', 0),
+('518fs65n7tbu8igvai4s6ai6ik', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 16:33:23', '2025-05-23 17:46:14', 1),
+('53j7dsm30d0c68h4pn5tp61l0u', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 06:27:02', '2025-05-23 10:10:04', 1),
+('5gid0qej0ocs3fnfc2skgldi8a', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 08:58:32', '2025-05-26 10:13:59', 0),
 ('5lnjnrg1b4eqte48cv6krcmpb5', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 15:54:56', '2025-05-12 16:44:12', 1),
+('5m2s5ji9a7gn8v8t5h6bpsip27', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 11:25:06', '2025-05-24 11:27:18', 1),
 ('5n3oqmgtocmrr6orqqehr8btrt', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 06:26:34', '2025-05-16 07:49:09', 1),
+('5oqijcr1gkc5juuapk7strd5aq', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-22 20:43:52', '2025-05-22 20:44:11', 1),
 ('6267jlhrk53dv2k5ad96hiumrt', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:16:05', '2025-05-21 09:16:24', 0),
 ('705kv3i4q433sc0c498hv24d2t', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 13:55:50', '2025-05-19 15:29:31', 1),
+('739qv06joie78afl4ka2aj8b13', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 11:50:27', '2025-05-25 13:01:36', 1),
 ('74i734hlmpul2r93is77if9kca', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-15 23:01:31', '2025-05-15 23:22:53', 1),
 ('7ae1m4kgqeijuavqfsq1h0838d', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-13 09:36:06', '2025-05-13 12:09:56', 1),
 ('7bqendcdlgquvkundhoe36ei38', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 20:40:56', '2025-05-17 20:41:06', 0),
 ('7d02amrpfnb9d83ppnadrrkiov', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:21:57', '2025-05-21 09:22:05', 1),
+('7i6r0r8ahj0tu6168jrdi8tumn', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 23:13:25', '2025-05-24 23:16:56', 1),
 ('7is621tk8ie672s8rrc4h7gf5j', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-13 19:54:01', '2025-05-13 23:41:22', 1),
 ('802amtsejvub7ra0cg02rpanjb', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 11:03:43', '2025-05-17 11:45:14', 1),
 ('833eavssu8l3mnvn0h3rtju099', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 15:31:15', '2025-05-14 16:24:20', 0),
 ('83vbjis4lka52tneei52ism55d', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 07:17:29', '2025-05-18 07:21:20', 0),
 ('86e9r4iv1e2q7ntafeffsadgce', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 19:06:21', '2025-05-19 23:34:34', 1),
+('89be43sc5uk4upigv76mqosf4u', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 06:57:44', '2025-05-26 08:06:47', 1),
 ('8ak58mef77r20tqliijnkga13d', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 07:21:24', '2025-05-18 07:22:19', 1),
 ('8d9rsrdp9samil3il77j3peejs', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 17:34:07', '2025-05-21 17:51:03', 0),
 ('8ei44jj0jguihnk75g22ln1d79', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 23:16:58', '2025-05-19 23:29:28', 1),
+('9etn7oc1j2hg423grh1b34sgcm', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-22 10:09:44', '2025-05-22 10:15:28', 1),
+('9t2h616mgstnl2rc79n2dj969l', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 10:24:17', '2025-05-26 10:48:27', 1),
 ('a5k4nq4mjkp9rmr2kb167bv5mm', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 21:09:16', '2025-05-12 22:37:18', 1),
+('arjoeh46l0mdkt9pbfjvc2059k', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 10:50:19', '2025-05-23 11:55:10', 0),
 ('as93r4gpjvhochg390igmp2vq2', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 13:40:11', '2025-05-14 15:29:31', 1),
+('b4roleb5l0inatksmftpk7eicf', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 13:11:42', '2025-05-23 14:11:47', 1),
 ('bcigqr11e1kop9iofi6ma448d7', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 18:01:36', '2025-05-21 18:06:59', 0),
 ('bf3m2ous2uqkabch00smijl28u', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-11 22:30:49', '2025-05-11 22:39:04', 1),
 ('bikhcpe6viic9efqmngpop9772', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 07:49:44', '2025-05-14 08:01:55', 1),
+('buavm1vr7d3vr3vfd5g3bncn7e', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 15:58:20', '2025-05-23 16:15:47', 1),
 ('c4haeknqjojm63nij9bhb9hu9f', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 17:58:39', '2025-05-16 18:22:55', 1),
 ('c6rffaehpbq1g5fv0vsgcbvfpm', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 17:20:20', '2025-05-17 18:47:19', 0),
 ('c8bs9dptrksse3r5j685p73krm', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-11 19:45:11', '2025-05-11 22:30:45', 1),
+('c8c5dakv67l5dslpc28cjgsbv1', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 11:55:13', '2025-05-23 13:04:55', 1),
+('ce9iv7utg6regb0f4sev2o45mq', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-22 10:09:56', '2025-05-22 10:43:12', 1),
 ('clp69irqtpdp4itiv09ae884dn', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 18:16:07', '2025-05-14 23:42:12', 1),
 ('dcajg4l4runb3v5rcp2v5anc07', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 22:25:45', '2025-05-17 23:18:18', 1),
+('dh7fcqrcom2m56rbrt6outb9cd', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 21:20:48', '2025-05-23 21:21:06', 1),
 ('dnqeee8lc6tp0k6q8l5qrgm0kh', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 15:05:56', '2025-05-16 16:41:24', 0),
 ('e1q3onvrn5sfi4qqnjjqm74l2e', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 20:40:24', '2025-05-17 20:40:34', 0),
 ('e3nh4o5ugpu3hugplckugk7h57', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 20:50:57', '2025-05-16 20:50:57', 1),
+('eara260oap433ev60va377ui72', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 17:10:36', '2025-05-23 17:20:59', 1),
+('echjadqmmdt7be0jckbqa4bc3g', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 22:45:01', '2025-05-23 22:45:13', 1),
 ('een5lmf382cnn93m4tid39thgm', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 18:00:20', '2025-05-21 18:00:47', 0),
 ('ekoghfktp7kp9d29npvdtn9bvd', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 16:41:54', '2025-05-16 16:51:42', 0),
+('fm2vjvohkld140hluhelmfm0ps', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-27 14:23:33', '2025-05-27 14:23:36', 1),
 ('fqk1c2ik14ii4vjcs0irojq17q', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 06:17:37', '2025-05-17 06:25:16', 0),
 ('gopni5l0c4nt2ov3mtnfkllk3r', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:21:39', '2025-05-21 09:21:49', 0),
+('gp04msh40mcsjvm86ttd9qvqpp', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-22 19:20:16', '2025-05-22 19:20:37', 0),
 ('gsjv50ksn9e10nbvs46d5m9ech', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 18:07:02', '2025-05-21 18:31:08', 1),
 ('gtbo10s3i6p8em1tr1if53rbco', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 16:44:29', '2025-05-19 16:49:51', 1),
+('guhp8fhveh1pr1hcbofpguqs3l', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 10:52:49', '2025-05-26 11:31:39', 1),
 ('gvtdbhaelpo7s317pq9e6g3n7m', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 06:43:21', '2025-05-21 07:32:28', 0),
+('h2tv3a9reen4c85pf8lb4ttunt', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 11:46:28', '2025-05-24 11:50:00', 1),
 ('hukanq224h9ij6qk5pgb33l6qd', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:17:39', '2025-05-21 09:18:05', 0),
 ('i3uogru3gs240i822to4gg8lrs', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 06:39:28', '2025-05-14 07:45:27', 1),
+('i8el0veaehmnfqkhkhun9mld0o', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 21:44:45', '2025-05-24 21:44:50', 1),
 ('io2alhrcvr4j3opbp858irfr3j', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-15 12:17:42', '2025-05-15 15:40:54', 1),
 ('iqc1bl9ndmbh3op1pfu1l6v9kq', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 06:11:36', '2025-05-17 06:16:25', 0),
 ('iqj0f7d1j15cfu0dtecnr2p5ve', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-11 18:44:00', '2025-05-11 19:45:07', 1),
+('is9kb5v0kn7aubgocrkv99u5pn', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 10:00:17', '2025-05-24 10:00:59', 1),
+('itrgln8o6hrt1ihj6vd8c499ii', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 11:56:37', '2025-05-24 11:56:37', 1),
 ('j431kq1piqs913tgpjuej5cnn0', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 20:40:45', '2025-05-17 20:40:53', 0),
 ('jbrpnbjj7lq0s4ct79t2k6e7ua', 10, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-15 23:01:03', '2025-05-15 23:01:23', 0),
 ('jmj547av0fe6umhi1ekmqq23v3', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 20:36:52', '2025-05-12 21:05:21', 0),
 ('jtk15dhtfqb12vaqtik84cn6o9', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:18:14', '2025-05-21 09:18:49', 0),
+('k56bonlb2tfoecnl7k9k3oeua7', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 23:25:23', '2025-05-24 23:29:22', 1),
 ('ki3fbll4apinnf06pckln0kr0m', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 06:27:01', '2025-05-17 07:46:39', 1),
+('ktsk0vp0svigq2614rfgilljp0', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 22:25:19', '2025-05-24 22:25:27', 1),
 ('l3rehqtm17v18rs03tgc02r716', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 18:00:51', '2025-05-21 18:01:08', 0),
+('leqpdtt52otbqo95jrpllggttb', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 15:30:03', '2025-05-25 18:11:12', 1),
 ('lp0ec2on4as215e4qc6mv79d40', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-13 06:30:06', '2025-05-13 06:49:46', 1),
 ('lplplpna8jm08d3p9f88gkle0a', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 08:58:30', '2025-05-18 09:42:34', 0),
 ('m85dv17c83o7393lnf7e8g5evj', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 07:37:03', '2025-05-21 07:37:09', 0),
+('mjqo7k0u10tfmhn5919socvith', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 11:41:17', '2025-05-24 11:46:22', 1),
 ('mpeuahoqb9blsqpjiik52fqh8k', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 10:25:35', '2025-05-17 11:03:40', 0),
 ('mrvao206ckuqpkto7030q398kj', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 16:52:07', '2025-05-16 17:36:41', 1),
+('n8nss4psjqgbmfhg74edh2s6t5', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 09:02:52', '2025-05-25 11:50:23', 1),
 ('nnhmbedalo8snhg1uptq9k8doj', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-11 18:21:26', '2025-05-11 18:41:50', 1),
+('o19udhdsii4ucj360rd0d2uibv', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 23:06:48', '2025-05-24 23:07:33', 1),
 ('o7e5tq2118ab2460s881t6obor', 11, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 16:41:28', '2025-05-16 16:41:45', 0),
 ('ob6cho21421qrr73vd44o70lln', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-15 07:32:51', '2025-05-15 07:58:28', 1),
+('ograjkh3ufhpad8kcdclok9dne', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 11:23:47', '2025-05-26 11:33:27', 1),
 ('oin3g13u5oi8ebrv6mih46e05h', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 06:25:42', '2025-05-17 06:26:53', 0),
+('oom9dfvqugb0e1ha1onhtljbir', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 10:55:20', '2025-05-26 10:55:27', 1),
 ('ott4a58m3fmccbhqint9mt1lkr', 8, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 18:15:41', '2025-05-14 18:16:02', 0),
 ('peo9husvdmu2umb0m1pq0pi2o9', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 13:38:06', '2025-05-21 15:16:49', 1),
 ('pk57o11foot20911umd8qph900', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 06:25:21', '2025-05-17 06:25:25', 0),
 ('q18ngh7ns4ftcv7ange37agu66', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 22:56:18', '2025-05-12 23:33:04', 1),
 ('q377883ge9u7t8jj8l3u052npl', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 13:45:47', '2025-05-12 15:33:14', 1),
+('r22656o8imf398ufs29l8aohn0', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-22 19:20:48', '2025-05-22 19:22:06', 0),
 ('raauihma6durgfmte65rtb5vrt', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 20:53:45', '2025-05-17 22:25:41', 0),
 ('rftksimiarmf5epopbe71bv4r9', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 19:22:47', '2025-05-16 23:49:22', 1),
+('rgrduo7lbfvqtgh40h17801ll5', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 16:31:53', '2025-05-23 16:33:19', 0),
 ('rmg0gee55hvj46cnt6h11kh956', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 20:44:01', '2025-05-17 20:53:42', 0),
 ('rrm3jjoovn385ig72omv0cmidi', 11, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 16:51:49', '2025-05-16 16:51:59', 0),
 ('rtc1iqtjgd5bkkvvh3qfk6a946', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 09:15:18', '2025-05-21 09:15:58', 0),
 ('sc61q8tndeidctff5m8aeigjok', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-16 18:03:48', '2025-05-16 18:05:08', 1),
+('sdf0140ga1hr6rme67nodrp8b3', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-22 19:22:11', '2025-05-22 20:39:27', 1),
+('se21l8kb3eb8ebn0c30n313kd6', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 11:31:16', '2025-05-24 11:35:30', 1),
 ('see9h077q2l30mvu8egp22kv00', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-13 06:53:21', '2025-05-13 09:36:02', 1),
+('sghv5vtr6nlqp7h8knq5je7bdv', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 11:03:52', '2025-05-26 11:18:57', 1),
 ('si3ssb74q5ptrfdhhlq40tf2jm', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-21 15:16:53', '2025-05-21 17:33:08', 0),
 ('t57uarqkc4kd39rfmntu6uggao', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 12:56:47', '2025-05-17 13:56:45', 1),
 ('t5fki6ssr5mi5tia9dk3l47ase', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 21:05:25', '2025-05-12 21:07:19', 1),
+('tdijrq0k0qo32podgaddarr06n', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 22:06:40', '2025-05-26 22:06:40', 1),
 ('tku7old1u90dus7jj48k00rgmh', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 20:26:21', '2025-05-17 20:40:20', 0),
 ('tpagt41j4jeqlrl25fn843i8dh', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-13 12:46:17', '2025-05-13 13:59:45', 1),
+('tqlcmj9siudejq0a9517ggi9pu', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 08:29:29', '2025-05-25 08:34:24', 0),
+('tr70dh3ppsiubihtsq7aruu9v1', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-25 18:54:50', '2025-05-25 23:45:34', 1),
+('trcq0ee4orhco9diggqrl72c1g', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 10:53:34', '2025-05-26 10:53:50', 1),
 ('ub6aublc15g1gh4kucim12pm99', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-19 13:06:01', '2025-05-19 13:53:46', 1),
+('uk0civ4t3h0454lvi2tfa88kgi', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-24 23:32:07', '2025-05-24 23:35:00', 1),
+('ukie4f4g7fgtblv77vuto28q7a', 6, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-26 23:15:31', '2025-05-26 23:15:35', 1),
 ('um5anedjherccd7ue14ri8v3ru', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 07:04:20', '2025-05-12 07:56:32', 1),
 ('unbmphj0kgnud841carmaspqss', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-11 23:40:02', '2025-05-11 23:40:04', 1),
 ('usrci1mtv27ogkuf7u7h3bm65i', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 06:16:41', '2025-05-17 06:16:52', 0),
 ('v4cerim3ds3eok82rv2qndjlub', 12, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-17 20:41:10', '2025-05-17 20:43:57', 0),
+('v9ru4da2hfvo0rlv28mkrd0bhm', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-23 15:45:46', '2025-05-23 15:45:50', 0),
 ('vaanvs08vojsp44rmcao9dkfgu', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-14 08:58:38', '2025-05-14 09:17:12', 1),
 ('vi8gk37c1t7fbde4g42cepedc6', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-18 06:06:27', '2025-05-18 07:17:23', 0),
 ('vqoliptrjqcrs3lh5p71ha82vu', 6, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', '2025-05-12 13:30:36', '2025-05-12 13:30:48', 1),
@@ -1123,7 +1365,17 @@ INSERT INTO `user_settings` (`id`, `user_id`, `notification_email`, `notificatio
 (14, 104, 1, 0, 'light', '2025-05-15 22:45:46', NULL),
 (15, 105, 1, 0, 'light', '2025-05-16 18:13:06', NULL),
 (16, 106, 1, 0, 'light', '2025-05-16 21:41:32', NULL),
-(17, 108, 1, 0, 'light', '2025-05-18 06:53:13', NULL);
+(17, 108, 1, 0, 'light', '2025-05-18 06:53:13', NULL),
+(18, 109, 1, 0, 'light', '2025-05-26 23:16:05', NULL),
+(19, 110, 1, 0, 'light', '2025-05-26 23:26:39', NULL),
+(20, 111, 1, 0, 'light', '2025-05-26 23:33:17', NULL),
+(21, 112, 1, 0, 'light', '2025-05-27 07:07:32', NULL),
+(22, 113, 1, 0, 'light', '2025-05-27 07:21:57', NULL),
+(23, 114, 1, 0, 'light', '2025-05-27 07:40:40', NULL),
+(24, 115, 1, 0, 'light', '2025-05-27 08:01:30', NULL),
+(25, 116, 1, 0, 'light', '2025-05-27 08:14:42', NULL),
+(26, 117, 1, 0, 'light', '2025-05-27 08:18:00', NULL),
+(27, 118, 1, 0, 'light', '2025-05-27 08:41:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -1154,10 +1406,10 @@ INSERT INTO `user_voucher_usage` (`id`, `user_id`, `voucher_id`, `transaction_id
 (14, 93, 7, NULL, '2025-05-10 20:47:02'),
 (18, 93, 3, NULL, '2025-05-11 14:58:56'),
 (19, 95, 1, NULL, '2025-05-11 18:05:02'),
-(20, 90, 3, 214, '2025-05-12 22:43:45'),
-(21, 90, 3, 215, '2025-05-12 22:48:52'),
-(22, 105, 4, 217, '2025-05-16 18:17:29'),
-(23, 90, 3, 221, '2025-05-19 22:18:29');
+(20, 90, 3, NULL, '2025-05-12 22:43:45'),
+(21, 90, 3, NULL, '2025-05-12 22:48:52'),
+(22, 105, 4, NULL, '2025-05-16 18:17:29'),
+(23, 90, 3, NULL, '2025-05-19 22:18:29');
 
 -- --------------------------------------------------------
 
@@ -1180,27 +1432,30 @@ CREATE TABLE `voucher` (
   `end_date` datetime NOT NULL COMMENT 'ngày kết thúc hiệu lực',
   `is_active` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'trạng thái kích hoạt',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `max_sa` int DEFAULT NULL COMMENT 'Số lượng tài khoản survey tối đa được phép áp dụng mã voucher. NULL = không giới hạn',
+  `location_id` int DEFAULT NULL COMMENT 'Tỉnh được áp dụng mã voucher. NULL = áp dụng cho tất cả các tỉnh',
+  `package_id` int DEFAULT NULL COMMENT 'Gói được áp dụng mã voucher. NULL = áp dụng cho tất cả các gói'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `voucher`
 --
 
-INSERT INTO `voucher` (`id`, `code`, `description`, `voucher_type`, `discount_value`, `max_discount`, `min_order_value`, `quantity`, `limit_usage`, `used_quantity`, `start_date`, `end_date`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'FIXED100K', 'Giảm 100,000đ cho đơn hàng từ 500,000đ', 'fixed_discount', 100000.00, NULL, 500000.00, 100, NULL, 1, '2025-05-10 00:00:00', '2025-06-10 23:59:59', 1, '2025-05-10 09:34:47', '2025-05-11 18:05:02'),
-(2, 'PERCENT15', 'Giảm 15% tối đa 200,000đ cho đơn hàng từ 1 triệu đồng', 'percentage_discount', 15.00, 200000.00, 1000000.00, 50, NULL, 0, '2025-05-10 00:00:00', '2025-07-31 23:59:59', 1, '2025-05-10 09:34:47', '2025-05-11 14:58:44'),
-(3, 'EXTRAMONTH', 'Tặng thêm 1 tháng khi gia hạn gói dịch vụ', 'extend_duration', 1.00, NULL, NULL, 200, NULL, 4, '2025-05-10 00:00:00', '2025-12-31 23:59:59', 1, '2025-05-10 09:34:47', '2025-05-19 22:18:29'),
-(4, 'PERCENT10', 'Giảm 10% tối đa 100.000đ cho đơn hàng từ 200.000đ', 'percentage_discount', 10.00, 100000.00, 200000.00, 120, NULL, 2, '2025-05-01 00:00:00', '2025-07-31 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-16 18:17:29'),
-(5, 'FIXED200K', 'Giảm 200.000đ cho đơn hàng từ 1.000.000đ', 'fixed_discount', 200000.00, NULL, 1000000.00, 30, NULL, 1, '2025-05-01 00:00:00', '2025-12-31 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 10:57:20'),
-(6, 'PERCENT20', 'Giảm 20% tối đa 300.000đ cho đơn hàng từ 800.000đ', 'percentage_discount', 20.00, 300000.00, 800000.00, 40, NULL, 0, '2025-05-01 00:00:00', '2025-08-31 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 10:20:40'),
-(7, 'FIXED30K', 'Giảm 30.000đ cho đơn hàng từ 150.000đ', 'fixed_discount', 30000.00, NULL, 150000.00, 200, NULL, 3, '2025-05-01 00:00:00', '2025-06-30 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 21:27:35'),
-(9, 'FIXED25K', 'Giảm 25.000đ cho đơn hàng từ 100.000đ', 'fixed_discount', 25000.00, NULL, 100000.00, 250, NULL, 3, '2025-05-01 00:00:00', '2025-07-31 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 11:40:02'),
-(10, 'PERCENT12', 'Giảm 12% tối đa 120.000đ cho đơn hàng từ 400.000đ', 'percentage_discount', 12.00, 120000.00, 400000.00, 60, NULL, 0, '2025-05-01 00:00:00', '2025-09-30 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 10:20:40'),
-(11, 'FIXED80K', 'Giảm 80.000đ cho đơn hàng từ 250.000đ', 'fixed_discount', 80000.00, NULL, 250000.00, 70, NULL, 0, '2025-05-01 00:00:00', '2025-08-31 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 10:20:40'),
-(12, 'PERCENT18', 'Giảm 18% tối đa 180.000đ cho mọi đơn hàng', 'percentage_discount', 18.00, 180000.00, NULL, 80, NULL, 0, '2025-05-01 00:00:00', '2025-07-31 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 10:20:40'),
-(13, 'WELCOME50', 'Giảm 50.000đ cho đơn hàng từ 200.000đ, mỗi tài khoản chỉ dùng 1 lần', 'fixed_discount', 50000.00, 0.00, 2000000.00, 100, 1, 0, '2025-05-01 00:00:00', '2025-12-31 00:00:00', 1, '2025-05-10 10:52:34', '2025-05-18 06:14:01'),
-(14, 'VIP20', 'Giảm 20% tối đa 500.000đ, mỗi tài khoản dùng tối đa 3 lần', 'percentage_discount', 20.00, 500000.00, 0.00, 200, 3, 0, '2025-05-01 00:00:00', '2025-12-31 00:00:00', 1, '2025-05-10 10:52:34', '2025-05-14 22:51:28');
+INSERT INTO `voucher` (`id`, `code`, `description`, `voucher_type`, `discount_value`, `max_discount`, `min_order_value`, `quantity`, `limit_usage`, `used_quantity`, `start_date`, `end_date`, `is_active`, `created_at`, `updated_at`, `max_sa`, `location_id`, `package_id`) VALUES
+(1, 'FIXED100K', 'Giảm 100,000đ cho đơn hàng từ 500,000đ', 'fixed_discount', 100000.00, NULL, 500000.00, 100, NULL, 1, '2025-05-10 00:00:00', '2025-06-10 23:59:59', 1, '2025-05-10 09:34:47', '2025-05-11 18:05:02', NULL, NULL, NULL),
+(2, 'PERCENT15', 'Giảm 15% tối đa 200,000đ cho đơn hàng từ 1 triệu đồng', 'percentage_discount', 15.00, 200000.00, 1000000.00, 50, NULL, 0, '2025-05-10 00:00:00', '2025-07-31 23:59:59', 1, '2025-05-10 09:34:47', '2025-05-11 14:58:44', NULL, NULL, NULL),
+(3, 'EXTRAMONTH', 'Tặng thêm 1 tháng khi gia hạn gói dịch vụ', 'extend_duration', 1.00, NULL, NULL, 200, NULL, 4, '2025-05-10 00:00:00', '2025-12-31 23:59:59', 1, '2025-05-10 09:34:47', '2025-05-19 22:18:29', NULL, NULL, NULL),
+(4, 'PERCENT10', 'Giảm 10% tối đa 100.000đ cho đơn hàng từ 200.000đ', 'percentage_discount', 10.00, 100000.00, 200000.00, 120, NULL, 2, '2025-05-01 00:00:00', '2025-07-31 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-16 18:17:29', NULL, NULL, NULL),
+(5, 'FIXED200K', 'Giảm 200.000đ cho đơn hàng từ 1.000.000đ', 'fixed_discount', 200000.00, NULL, 1000000.00, 30, NULL, 1, '2025-05-01 00:00:00', '2025-12-31 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 10:57:20', NULL, NULL, NULL),
+(6, 'PERCENT20', 'Giảm 20% tối đa 300.000đ cho đơn hàng từ 800.000đ', 'percentage_discount', 20.00, 300000.00, 800000.00, 40, NULL, 0, '2025-05-01 00:00:00', '2025-08-31 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 10:20:40', NULL, NULL, NULL),
+(7, 'FIXED30K', 'Giảm 30.000đ cho đơn hàng từ 150.000đ', 'fixed_discount', 30000.00, NULL, 150000.00, 200, NULL, 3, '2025-05-01 00:00:00', '2025-06-30 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 21:27:35', NULL, NULL, NULL),
+(9, 'FIXED25K', 'Giảm 25.000đ cho đơn hàng từ 100.000đ', 'fixed_discount', 25000.00, NULL, 100000.00, 250, NULL, 3, '2025-05-01 00:00:00', '2025-07-31 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 11:40:02', NULL, NULL, NULL),
+(10, 'PERCENT12', 'Giảm 12% tối đa 120.000đ cho đơn hàng từ 400.000đ', 'percentage_discount', 12.00, 120000.00, 400000.00, 60, NULL, 0, '2025-05-01 00:00:00', '2025-09-30 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 10:20:40', NULL, NULL, NULL),
+(11, 'FIXED80K', 'Giảm 80.000đ cho đơn hàng từ 250.000đ', 'fixed_discount', 80000.00, NULL, 250000.00, 70, NULL, 0, '2025-05-01 00:00:00', '2025-08-31 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 10:20:40', NULL, NULL, NULL),
+(12, 'PERCENT18', 'Giảm 18% tối đa 180.000đ cho mọi đơn hàng', 'percentage_discount', 18.00, 180000.00, NULL, 80, NULL, 0, '2025-05-01 00:00:00', '2025-07-31 23:59:59', 1, '2025-05-10 10:20:40', '2025-05-10 10:20:40', NULL, NULL, NULL),
+(13, 'WELCOME500', 'Giảm 50.000đ cho đơn hàng từ 200.000đ, mỗi tài khoản chỉ dùng 1 lần', 'fixed_discount', 50000.00, 0.00, 2000000.00, 100, 1, 0, '2025-05-01 00:00:00', '2025-12-31 00:00:00', 0, '2025-05-10 10:52:34', '2025-05-25 18:55:57', NULL, NULL, NULL),
+(14, 'VIP20', 'Giảm 20% tối đa 500.000đ, mỗi tài khoản dùng tối đa 3 lần', 'percentage_discount', 20.00, 500000.00, 0.00, 200, 3, 0, '2025-05-01 00:00:00', '2025-12-31 00:00:00', 1, '2025-05-10 10:52:34', '2025-05-14 22:51:28', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1418,6 +1673,24 @@ ALTER TABLE `user`
   ADD UNIQUE KEY `uq_user_username` (`username`);
 
 --
+-- Indexes for table `user_devices`
+--
+ALTER TABLE `user_devices`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_device_fingerprint` (`device_fingerprint`),
+  ADD KEY `idx_user_devices_ip` (`ip_address`),
+  ADD KEY `idx_user_devices_user_id` (`user_id`);
+
+--
+-- Indexes for table `user_ranking`
+--
+ALTER TABLE `user_ranking`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_user_ranking` (`user_id`),
+  ADD KEY `idx_total_commission` (`total_commission`),
+  ADD KEY `idx_monthly_commission` (`monthly_commission`);
+
+--
 -- Indexes for table `user_sessions`
 --
 ALTER TABLE `user_sessions`
@@ -1447,7 +1720,10 @@ ALTER TABLE `voucher`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `uq_voucher_code` (`code`),
   ADD KEY `idx_voucher_code` (`code`),
-  ADD KEY `idx_voucher_dates` (`start_date`,`end_date`,`is_active`);
+  ADD KEY `idx_voucher_dates` (`start_date`,`end_date`,`is_active`),
+  ADD KEY `idx_voucher_max_sa` (`max_sa`),
+  ADD KEY `idx_voucher_location` (`location_id`),
+  ADD KEY `idx_voucher_package` (`package_id`);
 
 --
 -- Indexes for table `withdrawal_request`
@@ -1464,7 +1740,7 @@ ALTER TABLE `withdrawal_request`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=385;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=513;
 
 --
 -- AUTO_INCREMENT for table `admin`
@@ -1500,7 +1776,7 @@ ALTER TABLE `guide`
 -- AUTO_INCREMENT for table `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `location`
@@ -1524,25 +1800,25 @@ ALTER TABLE `package`
 -- AUTO_INCREMENT for table `referral`
 --
 ALTER TABLE `referral`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `referral_commission`
 --
 ALTER TABLE `referral_commission`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `referred_user`
 --
 ALTER TABLE `referred_user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `registration`
 --
 ALTER TABLE `registration`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=231;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=263;
 
 --
 -- AUTO_INCREMENT for table `support_requests`
@@ -1554,19 +1830,31 @@ ALTER TABLE `support_requests`
 -- AUTO_INCREMENT for table `transaction_history`
 --
 ALTER TABLE `transaction_history`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=222;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=254;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
+
+--
+-- AUTO_INCREMENT for table `user_devices`
+--
+ALTER TABLE `user_devices`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `user_ranking`
+--
+ALTER TABLE `user_ranking`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=637;
 
 --
 -- AUTO_INCREMENT for table `user_settings`
 --
 ALTER TABLE `user_settings`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `user_voucher_usage`
@@ -1703,6 +1991,13 @@ ALTER TABLE `user_voucher_usage`
   ADD CONSTRAINT `fk_uvu_transaction_id` FOREIGN KEY (`transaction_id`) REFERENCES `transaction_history` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_uvu_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_uvu_voucher_id` FOREIGN KEY (`voucher_id`) REFERENCES `voucher` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `voucher`
+--
+ALTER TABLE `voucher`
+  ADD CONSTRAINT `fk_voucher_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_voucher_package` FOREIGN KEY (`package_id`) REFERENCES `package` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `withdrawal_request`

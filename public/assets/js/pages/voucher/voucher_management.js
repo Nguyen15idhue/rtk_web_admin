@@ -65,6 +65,24 @@ document.addEventListener('DOMContentLoaded', ()=> {
                     <input type="number" id="limitUsage" name="limit_usage">
                 </div>
                 <div class="form-group">
+                    <label for="maxSa">Số lượng tài khoản survey tối đa</label>
+                    <input type="number" id="maxSa" name="max_sa">
+                </div>
+                <div class="form-group">
+                    <label for="locationId">Tỉnh áp dụng</label>
+                    <select id="locationId" name="location_id">
+                        <option value="">Tất cả</option>
+                        <!-- Options will be populated by JS -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="packageId">Gói áp dụng</label>
+                    <select id="packageId" name="package_id">
+                        <option value="">Tất cả</option>
+                        <!-- Options will be populated by JS -->
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="startDate">Ngày bắt đầu</label>
                     <input type="date" id="startDate" name="start_date" required>
                 </div>
@@ -130,6 +148,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
                     html += `<div class="detail-row"><span class="detail-label">Số lượng:</span> <span class="detail-value">${v.quantity === null || v.quantity === undefined ? '-' : v.quantity}</span></div>`;
                     html += `<div class="detail-row"><span class="detail-label">Đã dùng:</span> <span class="detail-value">${v.used_quantity}</span></div>`;
                     html += `<div class="detail-row"><span class="detail-label">Giới hạn/người:</span> <span class="detail-value">${v.limit_usage === null || v.limit_usage === undefined ? '-' : v.limit_usage}</span></div>`;
+                    html += `<div class="detail-row"><span class="detail-label">SL TK Tối đa:</span> <span class="detail-value">${v.max_sa === null || v.max_sa === undefined ? 'Không giới hạn' : v.max_sa}</span></div>`;
+                    html += `<div class="detail-row"><span class="detail-label">Tỉnh áp dụng:</span> <span class="detail-value">${v.location_name || 'Tất cả'}</span></div>`;
+                    html += `<div class="detail-row"><span class="detail-label">Gói áp dụng:</span> <span class="detail-value">${v.package_name || 'Tất cả'}</span></div>`;
                     html += `<div class="detail-row"><span class="detail-label">Thời gian:</span> <span class="detail-value">${helpers.formatDate(v.start_date)} - ${helpers.formatDate(v.end_date)}</span></div>`;
                     html += `<div class="detail-row"><span class="detail-label">Trạng thái:</span> <span class="detail-value">${v.is_active == 1 ? 'Hoạt động':'Vô hiệu hóa'}</span></div>`;
                     genericModalBody.innerHTML = html;
@@ -145,6 +166,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
             genericModalPrimaryButton.style.display = 'block';
             genericModalPrimaryButton.onclick = () => document.getElementById('voucherForm').requestSubmit(); // Programmatically submit the form
             setupVoucherFormEventListeners();
+            populateSelectOptions(); // Populate new select dropdowns
             document.getElementById('voucherForm').reset();
             const errorEl = document.getElementById('voucherFormError');
             if(errorEl) errorEl.textContent = '';
@@ -157,6 +179,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
             genericModalPrimaryButton.style.display = 'block';
             genericModalPrimaryButton.onclick = () => document.getElementById('voucherForm').requestSubmit(); // Programmatically submit the form
             setupVoucherFormEventListeners();
+            populateSelectOptions(); // Populate new select dropdowns
             const voucherForm = document.getElementById('voucherForm');
             const errorEl = document.getElementById('voucherFormError');
             if(voucherForm) voucherForm.reset();
@@ -175,6 +198,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
                     document.getElementById('minOrderValue').value = v.min_order_value || '';
                     document.getElementById('quantity').value = v.quantity || '';
                     document.getElementById('limitUsage').value = v.limit_usage || '';
+                    document.getElementById('maxSa').value = v.max_sa || '';
+                    document.getElementById('locationId').value = v.location_id || '';
+                    document.getElementById('packageId').value = v.package_id || '';
                     document.getElementById('startDate').value = v.start_date ? v.start_date.split(' ')[0] : '';
                     document.getElementById('endDate').value = v.end_date ? v.end_date.split(' ')[0] : '';
                     document.getElementById('isActive').checked = (v.is_active == 1);
@@ -201,13 +227,70 @@ document.addEventListener('DOMContentLoaded', ()=> {
             postForm(`${apiBase}?action=delete_voucher`, new URLSearchParams({id}))
             .then(res => {
                 if (res.success) {
-                    window.showToast(res.message,'success');
+                    window.showToast(res.message, 'success');
                     setTimeout(() => location.reload(), 500);
                 } else {
                     window.showToast(res.message, 'error');
                 }
             }).catch(err => {
                 window.showToast('Lỗi: ' + err.message, 'error');
+            });
+        },
+        copyVoucherLinkAndShowQR(link, voucherCode) {
+            navigator.clipboard.writeText(link).then(function() {
+                window.showToast('Đã sao chép link voucher!', 'success');
+
+                // Generate QR code
+                const typeNumber = 4;
+                const errorCorrectionLevel = 'L';
+                const qr = qrcode(typeNumber, errorCorrectionLevel);
+                qr.addData(link);
+                qr.make();
+
+                // Prepare QR Code HTML for generic modal BODY
+                const qrCodeImageHTML = `
+                    <div style="text-align: center; margin-top: 20px;">
+                        ${qr.createImgTag(6, 12)} 
+                    </div>
+                `;
+                genericModalBody.innerHTML = qrCodeImageHTML;
+                genericModalTitle.textContent = `Mã QR cho Voucher: ${voucherCode}`;
+
+                // Ensure the primary button is a button, then reconfigure or replace
+                let primaryButton = document.getElementById('genericModalPrimaryButton');
+                // If the primary button was replaced by an anchor, we need to recreate it or ensure it's a button.
+                // For simplicity, we'll ensure it's a button and then change its behavior if needed,
+                // or create a new one if it's drastically different (e.g. an anchor).
+
+                // Check if it's an anchor, if so, replace it with a button before proceeding
+                if (primaryButton && primaryButton.tagName === 'A') {
+                    const newButton = document.createElement('button');
+                    newButton.id = 'genericModalPrimaryButton';
+                    newButton.className = primaryButton.className; // Assuming it has btn btn-primary
+                    primaryButton.parentNode.replaceChild(newButton, primaryButton);
+                    primaryButton = newButton;
+                }
+
+                if (primaryButton) {
+                    primaryButton.textContent = 'Tải xuống QR';
+                    primaryButton.style.display = 'block'; 
+                    primaryButton.onclick = function() { // Set onclick for download behavior
+                        const qrImgElement = genericModalBody.querySelector('img');
+                        if (qrImgElement) {
+                            const downloadLink = document.createElement('a');
+                            downloadLink.href = qrImgElement.src;
+                            downloadLink.download = `voucher_qr_${voucherCode}.png`;
+                            document.body.appendChild(downloadLink); // Required for Firefox
+                            downloadLink.click();
+                            document.body.removeChild(downloadLink);
+                        }
+                    };
+                }
+                
+                helpers.openModal('genericModal');
+
+            }, function(err) {
+                window.showToast('Không thể sao chép link. Lỗi: ' + err, 'error');
             });
         }
     };
@@ -248,6 +331,48 @@ document.addEventListener('DOMContentLoaded', ()=> {
             genericModalPrimaryButton.disabled=false;
             genericModalPrimaryButton.textContent=isEdit?'Lưu':'Tạo';
         });
+    }
+
+    // Function to populate location and package select options
+    async function populateSelectOptions() {
+        const locationSelect = document.getElementById('locationId');
+        const packageSelect = document.getElementById('packageId');
+
+        if (locationSelect) {
+            try {
+                const res = await getJson(`${basePath}public/handlers/voucher/index.php?action=get_locations`);
+                if (res.success && Array.isArray(res.data)) {
+                    res.data.forEach(location => {
+                        const option = document.createElement('option');
+                        option.value = location.id;
+                        option.textContent = location.name;
+                        locationSelect.appendChild(option);
+                    });
+                } else {
+                    console.error("Failed to load locations:", res.message);
+                }
+            } catch (error) {
+                console.error("Error loading locations:", error);
+            }
+        }
+
+        if (packageSelect) {
+            try {
+                const res = await getJson(`${basePath}public/handlers/voucher/index.php?action=get_packages`);
+                if (res.success && Array.isArray(res.data)) {
+                    res.data.forEach(pkg => {
+                        const option = document.createElement('option');
+                        option.value = pkg.id;
+                        option.textContent = pkg.name;
+                        packageSelect.appendChild(option);
+                    });
+                } else {
+                    console.error("Failed to load packages:", res.message);
+                }
+            } catch (error) {
+                console.error("Error loading packages:", error);
+            }
+        }
     }
 
     // Initial setup for voucher type change (if form is somehow already in DOM, though unlikely with this new structure)

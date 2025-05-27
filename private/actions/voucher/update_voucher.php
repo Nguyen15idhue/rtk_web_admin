@@ -24,12 +24,22 @@ $data = [
     'min_order_value' => $_POST['min_order_value'] ?? null,
     'quantity' => $_POST['quantity'] ?? null,
     'limit_usage' => $_POST['limit_usage'] ?? null,
+    'max_sa' => $_POST['max_sa'] ?? null,
+    'location_id' => $_POST['location_id'] ?? null,
+    'package_id' => $_POST['package_id'] ?? null,
     'start_date' => $_POST['start_date'] ?? '',
     'end_date' => $_POST['end_date'] ?? '',
     'is_active' => isset($_POST['is_active']) ? 1 : 0,
 ];
 if ($data['code'] === '' || $data['voucher_type'] === '' || $data['discount_value'] === '' || $data['start_date'] === '' || $data['end_date'] === '') {
     api_error('Missing required fields', 400);
+}
+
+// Convert empty string optional numeric fields to null, so DB receives proper NULL
+foreach (['max_discount', 'min_order_value', 'quantity', 'limit_usage', 'max_sa', 'location_id', 'package_id'] as $field) {
+    if (isset($data[$field]) && $data[$field] === '') {
+        $data[$field] = null;
+    }
 }
 
 $model = new VoucherModel();

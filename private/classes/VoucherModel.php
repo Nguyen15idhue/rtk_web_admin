@@ -10,8 +10,8 @@ class VoucherModel {
 
     // Fetch paginated vouchers with filters
     public function fetchPaginated(array $filters = [], int $page = 1, int $perPage = 10): array {
-        $baseSelect = "SELECT id, code, description, voucher_type, discount_value, max_discount, min_order_value, quantity, limit_usage, used_quantity, start_date, end_date, is_active, created_at";
-        $baseFrom = " FROM voucher";
+        $baseSelect = "SELECT v.id, v.code, v.description, v.voucher_type, v.discount_value, v.max_discount, v.min_order_value, v.quantity, v.limit_usage, v.used_quantity, v.start_date, v.end_date, v.is_active, v.created_at, v.max_sa, l.province as location_name, p.name as package_name";
+        $baseFrom = " FROM voucher v LEFT JOIN location l ON v.location_id = l.id LEFT JOIN package p ON v.package_id = p.id";
         $baseWhere = " WHERE 1=1";
         $params = [];
         if (!empty($filters['q'])) {
@@ -61,7 +61,7 @@ class VoucherModel {
 
     // Get voucher by ID
     public function getOne(int $id) {
-        $sql = "SELECT * FROM voucher WHERE id = ?";
+        $sql = "SELECT v.*, l.province as location_name, p.name as package_name FROM voucher v LEFT JOIN location l ON v.location_id = l.id LEFT JOIN package p ON v.package_id = p.id WHERE v.id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -69,8 +69,8 @@ class VoucherModel {
 
     // Create new voucher
     public function create(array $data) {
-        $sql = "INSERT INTO voucher (code, description, voucher_type, discount_value, max_discount, min_order_value, quantity, limit_usage, start_date, end_date, is_active, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+        $sql = "INSERT INTO voucher (code, description, voucher_type, discount_value, max_discount, min_order_value, quantity, limit_usage, start_date, end_date, is_active, max_sa, location_id, package_id, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
         $stmt = $this->db->prepare($sql);
         $ok = $stmt->execute([
             $data['code'],
@@ -83,14 +83,17 @@ class VoucherModel {
             $data['limit_usage'] ?? null,
             $data['start_date'],
             $data['end_date'],
-            isset($data['is_active']) ? (int)$data['is_active'] : 1
+            isset($data['is_active']) ? (int)$data['is_active'] : 1,
+            $data['max_sa'] ?? null,
+            $data['location_id'] ?? null,
+            $data['package_id'] ?? null
         ]);
         return $ok ? $this->db->lastInsertId() : false;
     }
 
     // Update existing voucher
     public function update(int $id, array $data): bool {
-        $sql = "UPDATE voucher SET code = ?, description = ?, voucher_type = ?, discount_value = ?, max_discount = ?, min_order_value = ?, quantity = ?, limit_usage = ?, start_date = ?, end_date = ?, is_active = ?, updated_at = NOW() WHERE id = ?";
+        $sql = "UPDATE voucher SET code = ?, description = ?, voucher_type = ?, discount_value = ?, max_discount = ?, min_order_value = ?, quantity = ?, limit_usage = ?, start_date = ?, end_date = ?, is_active = ?, max_sa = ?, location_id = ?, package_id = ?, updated_at = NOW() WHERE id = ?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
             $data['code'],
@@ -104,6 +107,9 @@ class VoucherModel {
             $data['start_date'],
             $data['end_date'],
             isset($data['is_active']) ? (int)$data['is_active'] : 1,
+            $data['max_sa'] ?? null,
+            $data['location_id'] ?? null,
+            $data['package_id'] ?? null,
             $id
         ]);
     }
@@ -134,19 +140,24 @@ class VoucherModel {
     public function getAllDataForExport(): array {
         $sql = "
             SELECT
-                id,
-                code,
-                description,
-                voucher_type,
-                discount_value,
-                max_discount,
-                min_order_value,
-                quantity,
-                used_quantity,
-                start_date,
-                end_date,
-                is_active
-            FROM voucher
+                v.id,
+                v.code,
+                v.description,
+                v.voucher_type,
+                v.discount_value,
+                v.max_discount,
+                v.min_order_value,
+                v.quantity,
+                v.used_quantity,
+                v.start_date,
+                v.end_date,
+                v.is_active,
+                v.max_sa,
+                l.province as location_name,
+                p.name as package_name
+            FROM voucher v
+            LEFT JOIN location l ON v.location_id = l.id
+            LEFT JOIN package p ON v.package_id = p.id
             ORDER BY created_at DESC
         ";
         $stmt = $this->db->prepare($sql);
@@ -166,19 +177,24 @@ class VoucherModel {
         $placeholders = implode(',', array_fill(0, count($ids), '?'));
         $sql = "
             SELECT
-                id,
-                code,
-                description,
-                voucher_type,
-                discount_value,
-                max_discount,
-                min_order_value,
-                quantity,
-                used_quantity,
-                start_date,
-                end_date,
-                is_active
-            FROM voucher
+                v.id,
+                v.code,
+                v.description,
+                v.voucher_type,
+                v.discount_value,
+                v.max_discount,
+                v.min_order_value,
+                v.quantity,
+                v.used_quantity,
+                v.start_date,
+                v.end_date,
+                v.is_active,
+                v.max_sa,
+                l.province as location_name,
+                p.name as package_name
+            FROM voucher v
+            LEFT JOIN location l ON v.location_id = l.id
+            LEFT JOIN package p ON v.package_id = p.id
             WHERE id IN ({$placeholders})
             ORDER BY created_at DESC
         ";
