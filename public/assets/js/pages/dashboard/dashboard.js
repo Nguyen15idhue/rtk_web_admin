@@ -28,6 +28,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Overview Chart (Đăng ký mới & Giới thiệu HĐ 7 ngày) ---
     const ovCtx = document.getElementById('overviewChart');
     if (ovCtx && cfg.newRegistrations && cfg.referral && cfg.newRegistrations.labels.length) {
+        // Fill missing data points with zero to avoid breaks in the line
+        cfg.newRegistrations.data = cfg.newRegistrations.labels.map((_, i) => cfg.newRegistrations.data[i] ?? 0);
+        cfg.referral.data       = cfg.newRegistrations.labels.map((_, i) => cfg.referral.data[i]       ?? 0);
+
         new Chart(ovCtx, {
             type: 'line',
             data: {
@@ -84,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
-                    y: { beginAtZero: true, grid: { color: 'rgba(229,231,235,0.5)' } },
+                    y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: 'rgba(229,231,235,0.5)' } },
                     x: { grid: { display: false } }
                 },
                 plugins: { legend: { display: false } }

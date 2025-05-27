@@ -137,6 +137,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                                     <?php if ($isEditVoucherAllowed): ?>
                                     <button type="button" class="btn-icon btn-edit" onclick="VoucherPage.openEditModal(<?php echo $v['id']; ?>)"><i class="fas fa-pencil-alt"></i></button>
                                     <button type="button" class="btn-icon" onclick="VoucherPage.toggleStatus(<?php echo $v['id']; ?>, '<?php echo $v['is_active']? 'disable':'enable'; ?>')"><i class="fas <?php echo $v['is_active']? 'fa-toggle-off':'fa-toggle-on'; ?>"></i></button>
+                                    <button type="button" class="btn-icon btn-link" title="Sao chép link đăng ký" onclick="copyVoucherLink('<?php echo IMAGE_HOST_BASE_URL . 'public/pages/auth/register.php?voucher=' . htmlspecialchars($v['code']); ?>')"><i class="fas fa-link"></i></button>
                                     <button type="button" class="btn-icon btn-danger" onclick="VoucherPage.deleteVoucher(<?php echo $v['id']; ?>)"><i class="fas fa-trash-alt"></i></button>
                                     <?php endif; ?>
                                 </td>
@@ -157,6 +158,14 @@ include $private_layouts_path . 'admin_sidebar.php';
 <script>
     // Ensure appConfig is defined for JS
     window.appConfig = { basePath: '' };
+
+    function copyVoucherLink(link) {
+        navigator.clipboard.writeText(link).then(function() {
+            window.showToast('Đã sao chép link voucher!', 'success');
+        }, function(err) {
+            window.showToast('Không thể sao chép link. Lỗi: ' + err, 'error');
+        });
+    }
 </script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/voucher/voucher_management.js"></script>
 <?php include $private_layouts_path . 'admin_footer.php'; ?>
