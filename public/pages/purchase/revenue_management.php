@@ -37,7 +37,7 @@ $current_page = $data['current_page'];
 $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
 
 // Get total and successful revenue using private action
-list($total_revenue, $successful_revenue) = get_revenue_sums($filters);
+list($total_revenue, $successful_revenue, $pending_revenue, $rejected_revenue) = get_revenue_sums($filters);
 
 // admin_header.php is assumed to open <html>, <head>, and <body>
 include $private_layouts_path . 'admin_header.php'; 
@@ -47,17 +47,24 @@ include $private_layouts_path . 'admin_sidebar.php';
         <?php include $private_layouts_path . 'content_header.php'; ?>
 
         <div class="content-section">
-            <h3>Doanh thu</h3>
-            <form method="GET" action="">
+            <h3>Doanh thu</h3>            <form method="GET" action="">
                 <div class="filter-bar">
-                    <input type="date" name="date_from" value="<?php echo htmlspecialchars($filters['date_from']); ?>" placeholder="Từ ngày">
-                    <input type="date" name="date_to"   value="<?php echo htmlspecialchars($filters['date_to']); ?>"   placeholder="Đến ngày">
+                    <input type="date" name="date_from" value="<?php echo htmlspecialchars($filters['date_from']); ?>" placeholder="Từ ngày" title="Từ ngày">
+                    <input type="date" name="date_to"   value="<?php echo htmlspecialchars($filters['date_to']); ?>"   placeholder="Đến ngày" title="Đến ngày">
+                    
+                    <select name="status" title="Lọc theo trạng thái">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="pending" <?php echo $filters['status'] === 'pending' ? 'selected' : ''; ?>>Chờ duyệt</option>
+                        <option value="approved" <?php echo $filters['status'] === 'approved' ? 'selected' : ''; ?>>Đã duyệt</option>
+                        <option value="rejected" <?php echo $filters['status'] === 'rejected' ? 'selected' : ''; ?>>Bị từ chối</option>
+                    </select>
+                    
+                    <input type="text" name="search" value="<?php echo htmlspecialchars($filters['search']); ?>" placeholder="Tìm theo mã GD hoặc email" title="Tìm kiếm">
+                    
                     <button class="btn btn-primary" type="submit"><i class="fas fa-filter"></i> Lọc</button>
                     <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary"><i class="fas fa-times"></i> Xóa lọc</a>
                 </div>
-            </form>
-
-            <div class="stats-container">
+            </form>            <div class="stats-container">
                 <div class="stats-box">
                     <i class="fas fa-coins icon"></i>
                     <div>
@@ -68,63 +75,90 @@ include $private_layouts_path . 'admin_sidebar.php';
                 <div class="stats-box">
                     <i class="fas fa-check-circle icon"></i>
                     <div>
-                        <span class="label">Tổng doanh thu thành công</span>
+                        <span class="label">Doanh thu thành công</span>
                         <span class="value"><?php echo number_format($successful_revenue, 0, ',', '.'); ?> đ</span>
                     </div>
                 </div>
-            </div>
-
-            <!-- Thêm form xuất Excel -->
+                <div class="stats-box">
+                    <i class="fas fa-percentage icon"></i>
+                    <div>
+                        <span class="label">Tỷ lệ thành công</span>
+                        <span class="value">
+                            <?php 
+                            $success_rate = $total_revenue > 0 ? ($successful_revenue / $total_revenue * 100) : 0;
+                            echo number_format($success_rate, 1) . '%'; 
+                            ?>
+                        </span>
+                    </div>
+                </div>
+                <div class="stats-box">
+                    <i class="fas fa-list-ol icon"></i>
+                    <div>
+                        <span class="label">Tổng giao dịch</span>
+                        <span class="value"><?php echo number_format($total_items, 0, ',', '.'); ?></span>
+                    </div>
+                </div>
+            </div><!-- Thêm form xuất Excel với các tùy chọn nâng cao -->
             <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
                 <input type="hidden" name="table_name" value="transactions">
-                <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px;">
-                    <button type="submit" name="export_selected" class="btn btn-info">
+                <input type="hidden" name="filters" value="<?php echo htmlspecialchars(json_encode($filters)); ?>">
+                <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px; flex-wrap: wrap;">
+                    <button type="submit" name="export_selected" class="btn btn-info" disabled>
                         <i class="fas fa-file-excel"></i> Xuất mục đã chọn
                     </button>
                     <button type="submit" name="export_all" class="btn btn-success">
-                        <i class="fas fa-file-excel"></i> Xuất tất cả
+                        <i class="fas fa-file-excel"></i> Xuất tất cả (<?php echo $total_items; ?> mục)
+                    </button>
+                    <button type="button" class="btn btn-warning" onclick="exportRevenueSummary()">
+                        <i class="fas fa-chart-bar"></i> Xuất báo cáo tổng hợp
                     </button>
                 </div>
 
                 <div class="table-wrapper">
-                    <table class="table">
-                        <thead>
+                    <table class="table">                        <thead>
                             <tr>
                                 <th><input type="checkbox" id="selectAll"></th>
                                 <th>Mã GD</th>
+                                <th>Loại</th>
                                 <th>Email</th>
                                 <th>Gói</th>
                                 <th>Số tiền</th>
                                 <th>Ngày YC</th>
                                 <th>Trạng thái</th>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (empty($transactions)): ?>
-                                <tr><td colspan="7" style="text-align:center;">Không có giao dịch.</td></tr>
-                            <?php else: foreach ($transactions as $tx): ?>
-                                <tr>
+                        </thead><tbody>                            <?php if (empty($transactions)): ?>
+                                <tr><td colspan="8" style="text-align:center;">Không có giao dịch.</td></tr>
+                            <?php else: foreach ($transactions as $tx): ?><?php 
+                                $typeText = $tx['transaction_type'] === 'renewal' ? 'Gia hạn' : 'Đăng ký mới';
+                                $transactionId = htmlspecialchars($tx['registration_id']);
+                                ?>
+                                <tr data-transaction-id="<?php echo $transactionId; ?>" data-type="<?php echo htmlspecialchars($tx['transaction_type']); ?>" data-status="<?php echo htmlspecialchars($tx['registration_status']); ?>">
                                     <td>
                                         <input type="checkbox" class="rowCheckbox" name="ids[]" 
-                                               value="<?php echo htmlspecialchars($tx['registration_id']); ?>">
+                                               value="<?php echo $transactionId; ?>">
+                                    </td>                                    <td>
+                                        <?php echo $transactionId; ?>
                                     </td>
-                                    <td><?php echo htmlspecialchars($tx['registration_id']); ?></td>
-                                    <td><?php echo htmlspecialchars($tx['user_email'] ?? ''); ?></td>
-                                    <td><?php echo htmlspecialchars($tx['package_name']); ?></td>
-                                    <td><?php echo number_format($tx['amount'], 0, ',', '.'); ?> đ</td>
+                                    <td><span class="transaction-type <?php echo $tx['transaction_type']; ?>"><?php echo $typeText; ?></span></td>
+                                    <td><?php echo htmlspecialchars($tx['user_email'] ?? ''); ?></td>                                    <td><?php echo htmlspecialchars($tx['package_name']); ?></td>
+                                    <td class="amount"><?php echo number_format($tx['amount'], 0, ',', '.'); ?> đ</td>
                                     <td><?php echo date('d/m/Y H:i', strtotime($tx['request_date'])); ?></td>
                                     <td><?php echo get_status_badge('transaction', $tx['registration_status']); ?></td>
                                 </tr>
                             <?php endforeach; endif; ?>
                         </tbody>
                     </table>
-                </div>
-            </form>  <!-- End bulkActionForm -->
+                </div>            </form>  <!-- End bulkActionForm -->
 
-            <?php include $private_layouts_path . 'pagination.php'; ?>
+            <!-- Hidden form for revenue summary export -->
+            <form id="revenueSummaryForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php" style="display: none;">
+                <input type="hidden" name="action" value="export_revenue_summary">
+                <input type="hidden" name="date_from" value="<?php echo htmlspecialchars($filters['date_from']); ?>">
+                <input type="hidden" name="date_to" value="<?php echo htmlspecialchars($filters['date_to']); ?>">
+                <input type="hidden" name="status" value="<?php echo htmlspecialchars($filters['status']); ?>">
+            </form>
 
-        </div>
-    </main>
+            <?php include $private_layouts_path . 'pagination.php'; ?></div>    </main>
 
     <!-- Đưa baseUrl vào JS và load file js mới -->
     <script>
@@ -132,7 +166,42 @@ include $private_layouts_path . 'admin_sidebar.php';
             baseUrl: '<?php echo rtrim($base_url, '/'); ?>'
         };
     </script>
-    <script src="<?php echo $base_url; ?>public/assets/js/pages/purchase/revenue_management.js"></script>
+    <script src="<?php echo $base_url; ?>public/assets/js/pages/purchase/revenue_management.js"></script>    <!-- Additional CSS for Revenue Management -->
+    <style>
+        .transaction-type {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .transaction-type.purchase {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .transaction-type.renewal {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .amount {
+            font-weight: 600;
+            text-align: right;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+        
+        .bulk-actions-bar button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
 
 <?php 
 // admin_footer.php is assumed to close </body> and </html>

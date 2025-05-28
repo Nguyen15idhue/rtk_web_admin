@@ -2,8 +2,7 @@
 // Ensure Composer's autoloader is loaded
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class ExcelExportService {
 
@@ -34,7 +33,7 @@ class ExcelExportService {
             }
         }
 
-        $spreadsheet = new Spreadsheet();
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
         // Set headers
@@ -64,6 +63,12 @@ class ExcelExportService {
             $column++;
         }
 
+        // Left-align all cells for readability
+        $dimension = $sheet->calculateWorksheetDimension();
+        $sheet->getStyle($dimension)
+              ->getAlignment()
+              ->setHorizontal(Alignment::HORIZONTAL_LEFT);
+
         // Stream the file to the browser
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
@@ -76,7 +81,7 @@ class ExcelExportService {
         header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
         header('Pragma: public'); // HTTP/1.0
 
-        $writer = new Xlsx($spreadsheet);
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         $writer->save('php://output');
         exit;
     }
