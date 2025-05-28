@@ -40,6 +40,22 @@ class InvoiceModel {
             $where[]        = 'inv.status = ?';
             $params[]       = $filters['status'];
         }
+        if (!empty($filters['email'])) {
+            $where[]        = 'u.email LIKE ?';
+            $params[]       = '%' . $filters['email'] . '%';
+        }
+        if (!empty($filters['company_name'])) {
+            $where[]        = 'u.company_name LIKE ?';
+            $params[]       = '%' . $filters['company_name'] . '%';
+        }
+        if (!empty($filters['tax_code'])) {
+            $where[]        = 'u.tax_code LIKE ?';
+            $params[]       = '%' . $filters['tax_code'] . '%';
+        }
+        if (!empty($filters['transaction_id'])) {
+            $where[]        = 'inv.transaction_history_id = ?';
+            $params[]       = $filters['transaction_id'];
+        }
         if (!empty($filters['date_from'])) {
             $where[]        = 'inv.created_at >= ?';
             $params[]       = $filters['date_from'] . ' 00:00:00';

@@ -1,0 +1,429 @@
+/* Invoice Review Page - PDF Modal Styles */
+
+/* Button styles for PDF viewer */
+.btn-link {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.btn-link:hover {
+    background-color: #f8f9fa;
+    color: #0056b3;
+}
+
+.btn-link i {
+    margin-right: 4px;
+}
+
+/* PDF Modal Core Styles */
+#genericModal {
+    z-index: 1060; /* Higher than sidebar (1050) */
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease-in-out;
+}
+
+#genericModal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#genericModal.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* PDF Modal Content Layout */
+#genericModal .modal-content {
+    width: 98vw;
+    height: 95vh;
+    max-width: 1600px;
+    margin: 2.5vh auto;
+    max-height: 95vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#genericModal .modal-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e5e5e5;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px 12px 0 0;
+    flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#genericModal .modal-header h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+#genericModal .modal-body {
+    height: calc(95vh - 100px);
+    padding: 0;
+    overflow: hidden;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+}
+
+#genericModal iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    flex-grow: 1;
+}
+
+/* PDF Loading States */
+.pdf-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: #666;
+    font-size: 16px;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pdf-loading.error {
+    color: #dc3545;
+}
+
+.pdf-loading i.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Fullscreen mode */
+#genericModal .modal-content.fullscreen {
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+}
+
+/* Invoice Review Page - PDF Modal Styles */
+
+/* Filter Bar Improvements */
+.filter-bar .filter-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-bar .form-select,
+.filter-bar .form-input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    min-width: 150px;
+}
+
+.filter-bar .filter-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
+/* Action Buttons Improvements */
+.actions {
+    text-align: center;
+    min-width: 120px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.btn-icon:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-approve {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-approve:hover {
+    background-color: #218838;
+}
+
+.btn-reject {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-reject:hover {
+    background-color: #c82333;
+}
+
+.btn-undo {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.btn-undo:hover {
+    background-color: #e0a800;
+}
+
+.no-actions {
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Rejection Reason Styling */
+.rejection-reason {
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.rejection-reason.rejected {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+.rejection-reason:empty {
+    color: #6c757d;
+}
+
+/* No File State */
+.no-file {
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Table Improvements */
+.table th.actions,
+.table td.actions {
+    text-align: center;
+    width: 120px;
+    min-width: 120px;
+}
+
+.table th.status,
+.table td.status {
+    text-align: center;
+    width: 100px;
+}
+
+/* Improved Table Responsiveness */
+@media (max-width: 1200px) {
+    .table-wrapper {
+        overflow-x: auto;
+    }
+    
+    .table {
+        min-width: 1000px;
+    }
+    
+    .table th,
+    .table td {
+        white-space: nowrap;
+        padding: 8px 6px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 768px) {
+    .table th,
+    .table td {
+        padding: 6px 4px;
+        font-size: 12px;
+    }
+    
+    .btn-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+    
+    .action-buttons {
+        gap: 4px;
+    }
+}
+
+/* Responsive Filter Bar */
+@media (max-width: 768px) {
+    .filter-bar .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-bar .form-select,
+    .filter-bar .form-input {
+        min-width: 100%;
+        margin-bottom: 8px;
+    }
+    
+    .filter-bar .filter-actions {
+        margin-left: 0;
+        justify-content: center;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 4px;
+    }
+}
+
+/* Desktop Responsive Design */
+@media (min-width: 1025px) {
+    /* Sidebar expanded */
+    body:not(.sidebar-is-collapsed) #genericModal .modal-content {
+        width: calc(98vw - var(--sidebar-width, 260px));
+        margin-left: calc(var(--sidebar-width, 260px) / 2);
+        max-width: calc(1600px - var(--sidebar-width, 260px));
+        height: 92vh;
+        margin-top: 0vh;
+    }
+    
+    /* Sidebar collapsed */
+    body.sidebar-is-collapsed #genericModal .modal-content {
+        width: calc(98vw - var(--sidebar-width-collapsed, 70px));
+        margin-left: calc(var(--sidebar-width-collapsed, 70px) / 2);
+        max-width: calc(1600px - var(--sidebar-width-collapsed, 70px));
+        height: 92vh;
+        margin-top: 0vh;
+    }
+}
+
+/* Large Desktop Screens */
+@media (min-width: 1440px) {
+    body:not(.sidebar-is-collapsed) #genericModal .modal-content {
+        width: calc(96vw - var(--sidebar-width, 260px));
+        max-width: calc(1800px - var(--sidebar-width, 260px));
+    }
+    
+    body.sidebar-is-collapsed #genericModal .modal-content {
+        width: calc(96vw - var(--sidebar-width-collapsed, 70px));
+        max-width: calc(1800px - var(--sidebar-width-collapsed, 70px));
+    }
+}
+
+/* Ultra-wide Screens */
+@media (min-width: 1920px) {
+    body:not(.sidebar-is-collapsed) #genericModal .modal-content {
+        width: calc(94vw - var(--sidebar-width, 260px));
+        max-width: calc(2200px - var(--sidebar-width, 260px));
+    }
+    
+    body.sidebar-is-collapsed #genericModal .modal-content {
+        width: calc(94vw - var(--sidebar-width-collapsed, 70px));
+        max-width: calc(2200px - var(--sidebar-width-collapsed, 70px));
+    }
+}
+
+/* Tablet Responsive Design */
+@media (max-width: 1024px) and (min-width: 769px) {
+    #genericModal .modal-content {
+        width: 96vw;
+        height: 92vh;
+        margin: 4vh auto;
+        max-width: 1200px;
+        border-radius: 10px;
+    }
+    
+    #genericModal .modal-body {
+        height: calc(92vh - 80px);
+    }
+    
+    #genericModal .modal-header {
+        padding: 12px 16px;
+    }
+    
+    #genericModal .modal-header h4 {
+        font-size: 17px;
+    }
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+    #genericModal .modal-content {
+        width: 98vw;
+        height: 98vh;
+        margin: 1vh auto;
+        max-width: none;
+        border-radius: 8px;
+    }
+    
+    #genericModal .modal-body {
+        height: calc(98vh - 70px);
+    }
+    
+    #genericModal .modal-header {
+        padding: 10px 15px;
+    }
+    
+    #genericModal .modal-header h4 {
+        font-size: 16px;
+    }
+    
+    .pdf-loading {
+        height: 150px; 
+        font-size: 14px;
+    }
+}
+
+/* Very Small Mobile Screens */
+@media (max-width: 480px) {
+    #genericModal .modal-content {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        border-radius: 0;
+    }
+    
+    #genericModal .modal-body {
+        height: calc(100vh - 60px);
+    }
+    
+    #genericModal .modal-header {
+        padding: 8px 12px;
+    }
+    
+    #genericModal .modal-header h4 {
+        font-size: 14px;
+    }
+}
