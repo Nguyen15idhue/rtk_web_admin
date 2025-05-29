@@ -10,8 +10,43 @@ class SupportRequestModel {
     }
 
     /**
+     * Calculate priority based on status and created_at date
+     * @param string $status
+     * @param string $created_at
+     * @return string
+     */
+    public function calculatePriority(string $status, string $created_at): string {
+        $now = new DateTime();
+        $created = new DateTime($created_at);
+        $daysDiff = $now->diff($created)->days;
+        
+        // Priority logic
+        if ($status === 'pending' && $daysDiff >= 3) {
+            return 'urgent';
+        } elseif ($status === 'pending' && $daysDiff >= 1) {
+            return 'high';
+        } elseif (in_array($status, ['pending', 'in_progress'])) {
+            return 'medium';
+        } else {
+            return 'low';
+        }
+    }
+
+    /**
+     * Add priority field to support request data
+     * @param array $supportRequests
+     * @return array
+     */
+    private function addPriorityToRequests(array $supportRequests): array {
+        foreach ($supportRequests as &$request) {
+            $request['priority'] = $this->calculatePriority($request['status'], $request['created_at']);
+        }
+        return $supportRequests;
+    }
+
+    /**
      * Get all support requests with optional filters.
-     * @param array $filters ['search' => string, 'status' => string, 'category' => string]
+     * @param array $filters ['search' => string, 'status' => string, 'category' => string, 'date_from' => string, 'date_to' => string]
      * @return array
      */
     public function getAll(array $filters = []): array {
@@ -31,6 +66,14 @@ class SupportRequestModel {
             $where[] = "sr.category = :category";
             $params[':category'] = $filters['category'];
         }
+        if (!empty($filters['date_from'])) {
+            $where[] = "DATE(sr.created_at) >= :date_from";
+            $params[':date_from'] = $filters['date_from'];
+        }
+        if (!empty($filters['date_to'])) {
+            $where[] = "DATE(sr.created_at) <= :date_to";
+            $params[':date_to'] = $filters['date_to'];
+        }
         if ($where) {
             $sql .= ' WHERE ' . implode(' AND ', $where);
         }
@@ -38,7 +81,17 @@ class SupportRequestModel {
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $data = $this->addPriorityToRequests($data);
+        
+        // Filter by priority if specified
+        if (!empty($filters['priority'])) {
+            $data = array_filter($data, function($request) use ($filters) {
+                return $request['priority'] === $filters['priority'];
+            });
+        }
+        
+        return $data;
     }
 
     /**
@@ -47,6 +100,12 @@ class SupportRequestModel {
      * @return int
      */
     public function getCount(array $filters = []): int {
+        // If priority filter is used, we need to fetch data and count
+        if (!empty($filters['priority'])) {
+            $data = $this->getAll($filters);
+            return count($data);
+        }
+        
         $sql = "SELECT COUNT(*) FROM support_requests sr JOIN user u ON sr.user_id = u.id";
         $where = [];
         $params = [];
@@ -61,6 +120,14 @@ class SupportRequestModel {
         if (!empty($filters['category'])) {
             $where[] = "sr.category = :category";
             $params[':category'] = $filters['category'];
+        }
+        if (!empty($filters['date_from'])) {
+            $where[] = "DATE(sr.created_at) >= :date_from";
+            $params[':date_from'] = $filters['date_from'];
+        }
+        if (!empty($filters['date_to'])) {
+            $where[] = "DATE(sr.created_at) <= :date_to";
+            $params[':date_to'] = $filters['date_to'];
         }
         if ($where) {
             $sql .= ' WHERE ' . implode(' AND ', $where);
@@ -94,6 +161,14 @@ class SupportRequestModel {
             $where[] = "sr.category = :category";
             $params[':category'] = $filters['category'];
         }
+        if (!empty($filters['date_from'])) {
+            $where[] = "DATE(sr.created_at) >= :date_from";
+            $params[':date_from'] = $filters['date_from'];
+        }
+        if (!empty($filters['date_to'])) {
+            $where[] = "DATE(sr.created_at) <= :date_to";
+            $params[':date_to'] = $filters['date_to'];
+        }
         if ($where) {
             $sql .= ' WHERE ' . implode(' AND ', $where);
         }
@@ -105,7 +180,17 @@ class SupportRequestModel {
         $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $data = $this->addPriorityToRequests($data);
+        
+        // Filter by priority if specified
+        if (!empty($filters['priority'])) {
+            $data = array_filter($data, function($request) use ($filters) {
+                return $request['priority'] === $filters['priority'];
+            });
+        }
+        
+        return $data;
     }
 
     /**
@@ -118,6 +203,9 @@ class SupportRequestModel {
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':id' => $id]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($data) {
+            $data['priority'] = $this->calculatePriority($data['status'], $data['created_at']);
+        }
         return $data ?: null;
     }
 
