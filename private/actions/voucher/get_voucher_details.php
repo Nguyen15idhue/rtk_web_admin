@@ -1,7 +1,7 @@
 <?php
 // filepath: private/actions/voucher/get_voucher_details.php
 declare(strict_types=1);
-require_once __DIR__ . '/../../utils/functions.php';
+
 require_once __DIR__ . '/../../classes/Auth.php';
 Auth::ensureAuthorized('voucher_management_view');
 if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {

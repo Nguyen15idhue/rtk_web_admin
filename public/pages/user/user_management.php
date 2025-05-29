@@ -84,7 +84,7 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
         <!-- Bulk Actions Form -->
         <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
             <input type="hidden" name="table_name" value="users">
-            <div class="table-actions-bar mb-3">
+            <div class="bulk-actions-bar mb-3">
                 <button type="submit" name="export_all" class="btn btn-success"><i class="fas fa-file-excel"></i> Xuất tất cả</button>
                 <button type="submit" name="export_selected" value="excel" class="btn btn-info">
                     <i class="fas fa-file-excel"></i> Xuất mục đã chọn

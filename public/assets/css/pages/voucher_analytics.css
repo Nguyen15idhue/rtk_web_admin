@@ -1,0 +1,25 @@
+/* Voucher Analytics Page Styles */
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    /* stats-grid already responsive; analytics-grid auto-fits columns */
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    
+    /* adjust analytics-card padding and typography on small screens */
+    .analytics-card {
+        padding: 15px;
+    }
+    
+    .analytics-card h4 {
+        font-size: 18px;
+    }
+}
+
+/* Desktop Layout Optimization */
+@media (min-width: 992px) {
+    .analytics-grid {
+        grid-template-columns: 2fr 1fr;
+    }
+}

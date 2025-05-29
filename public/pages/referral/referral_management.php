@@ -52,10 +52,10 @@ include $private_layouts_path . 'admin_sidebar.php';
     <?php include $private_layouts_path . 'content_header.php'; ?>
     <div class="content-section">
         <ul class="custom-tabs-nav">
-            <li class="nav-item"><a class="nav-link <?php echo $current_tab=='referrals'?'active':''?>" href="?tab=referrals">Mã Giới Thiệu</a></li>
+            <li class="nav-item"><a class="nav-link <?php echo $current_tab=='referrals'?'active':''?>" href="?tab=referrals">Mã GT</a></li>
             <li class="nav-item"><a class="nav-link <?php echo $current_tab=='commissions'?'active':''?>" href="?tab=commissions">Hoa Hồng</a></li>
-            <li class="nav-item"><a class="nav-link <?php echo $current_tab=='referred'?'active':''?>" href="?tab=referred">Người Được Giới Thiệu</a></li>
-            <li class="nav-item"><a class="nav-link <?php echo $current_tab=='withdrawals'?'active':''?>" href="?tab=withdrawals">Yêu Cầu Rút Tiền</a></li>
+            <li class="nav-item"><a class="nav-link <?php echo $current_tab=='referred'?'active':''?>" href="?tab=referred">Người Được GT</a></li>
+            <li class="nav-item"><a class="nav-link <?php echo $current_tab=='withdrawals'?'active':''?>" href="?tab=withdrawals">Rút Tiền</a></li>
         </ul>
         <div class="tab-content" style="margin-top:20px;">
             <?php if ($current_tab=='referrals'): ?>

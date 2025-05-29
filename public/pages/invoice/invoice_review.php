@@ -14,11 +14,18 @@ include $private_layouts_path . 'admin_header.php';
 include $private_layouts_path . 'admin_sidebar.php';
 
 require_once BASE_PATH . '/actions/invoice/fetch_invoices.php';
+require_once BASE_PATH . '/utils/invoice_review_helpers.php';
 define('PDF_BASE_URL', $base_url . 'public/uploads/invoice/');
 
 $current_page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $items_per_page = DEFAULT_ITEMS_PER_PAGE;
-$filters = ['status' => trim($_GET['status'] ?? '')];
+$filters = [
+    'status' => trim($_GET['status'] ?? ''),
+    'email' => trim($_GET['email'] ?? ''),
+    'company_name' => trim($_GET['company_name'] ?? ''),
+    'tax_code' => trim($_GET['tax_code'] ?? ''),
+    'transaction_id' => trim($_GET['transaction_id'] ?? '')
+];
 
 $data = fetch_admin_invoices($filters, $current_page, $items_per_page);
 $invoices = $data['invoices'];
@@ -44,17 +51,32 @@ $isEditInvoiceAllowed = Auth::can('invoice_review_edit');
     <div class="content-section">
         <div class="header-actions">
             <h3>Danh sách Yêu cầu Xuất Hóa đơn</h3>
-        </div>
-        <form method="GET" class="filter-bar">
-            <select name="status">
-                <?php foreach ($status_options as $value => $label): ?>
-                    <option value="<?php echo $value; ?>" <?php echo ($filters['status'] === $value) ? 'selected' : ''; ?>>
-                        <?php echo htmlspecialchars($label); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
-            <a href="<?php echo strtok($_SERVER['REQUEST_URI'],'?'); ?>" class="btn btn-secondary"><i class="fas fa-times"></i> Xóa</a>
+        </div>        <form method="GET" class="filter-bar">            <div class="filter-row">
+                <select name="status" class="form-select">
+                    <?php echo buildSelectOptions($status_options, $filters['status']); ?>
+                </select>
+                
+                <input type="text" name="email" class="form-input" placeholder="Email khách hàng" 
+                       value="<?php echo htmlspecialchars($filters['email']); ?>">
+                
+                <input type="text" name="company_name" class="form-input" placeholder="Tên công ty" 
+                       value="<?php echo htmlspecialchars($filters['company_name']); ?>">
+                
+                <input type="text" name="tax_code" class="form-input" placeholder="Mã số thuế" 
+                       value="<?php echo htmlspecialchars($filters['tax_code']); ?>">
+                
+                <input type="text" name="transaction_id" class="form-input" placeholder="ID giao dịch" 
+                       value="<?php echo htmlspecialchars($filters['transaction_id']); ?>">
+                
+                <div class="filter-actions">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search"></i> Tìm kiếm
+                    </button>
+                    <a href="<?php echo strtok($_SERVER['REQUEST_URI'],'?'); ?>" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Xóa bộ lọc
+                    </a>
+                </div>
+            </div>
         </form>
         <div class="table-wrapper">
             <table class="table">
@@ -92,47 +114,27 @@ $isEditInvoiceAllowed = Auth::can('invoice_review_edit');
                         </td>
                         <td class="status">
                             <?php echo get_status_badge('invoice', $inv['status']); ?>
+                        </td>                        <td>
+                            <?php renderPDFViewer($inv, PDF_BASE_URL); ?>
                         </td>
                         <td>
-                            <?php if ($inv['invoice_file']): ?>
-                                <a href="<?php echo PDF_BASE_URL . $inv['invoice_file']; ?>" target="_blank">Xem PDF</a>
-                            <?php else: ?>-
-                            <?php endif; ?>
-                        </td>
-                        <td><?php echo htmlspecialchars($inv['rejected_reason'] ?? ''); ?></td>
-                        <td class="actions" style="text-align:center;">
-                            <?php if ($inv['status'] === 'pending' && $isEditInvoiceAllowed): ?>
-                                <a href="invoice_upload.php?invoice_id=<?php echo $inv['invoice_id']; ?>">
-                                    <button type="button" class="btn-icon btn-approve" title="Upload & Approve">
-                                        <i class="fas fa-upload"></i>
-                                    </button>
-                                </a>
-                                <button class="btn-icon btn-reject" onclick="InvoiceReviewPageEvents.rejectInvoice(<?php echo $inv['invoice_id']; ?>)" title="Từ chối">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            <?php elseif ($inv['status'] === 'approved'): ?>
-                                <?php if ($isEditInvoiceAllowed): ?>
-                                <button class="btn-icon btn-undo" onclick="InvoiceReviewPageEvents.undoInvoice(<?php echo $inv['invoice_id']; ?>)" title="Hoàn tác">
-                                    <i class="fas fa-undo"></i>
-                                </button>
-                                <?php endif; ?>
-                            <?php else: // rejected ?>
-                                <?php if ($isEditInvoiceAllowed): ?>
-                                <button class="btn-icon btn-undo" onclick="InvoiceReviewPageEvents.undoInvoice(<?php echo $inv['invoice_id']; ?>)" title="Hoàn tác">
-                                    <i class="fas fa-undo"></i>
-                                </button>
-                                <?php endif; ?>
-                            <?php endif; ?>
+                            <?php renderRejectionReason($inv); ?>
+                        </td><td class="actions">
+                            <?php renderInvoiceActions($inv, $isEditInvoiceAllowed); ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
-        <?php include $private_layouts_path . 'pagination.php'; ?>
-    </div>
+        <?php include $private_layouts_path . 'pagination.php'; ?>    </div>
 </main>
+
+<!-- PDF Modal Styles -->
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/pages/invoice/invoice_review.css">
+
 <script>
+    // Configuration for Invoice Review Page
     window.appConfig = {
         baseUrl: '<?php echo rtrim($base_url,'/'); ?>',
         permissions: {
@@ -140,5 +142,8 @@ $isEditInvoiceAllowed = Auth::can('invoice_review_edit');
         }
     };
 </script>
+
+<?php include $private_layouts_path . 'generic_modal.php'; ?>
+<script src="<?php echo $base_url; ?>public/assets/js/pages/invoice/invoice_review_modal.js"></script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/invoice/invoice_review.js"></script>
 <?php include $private_layouts_path . 'admin_footer.php'; ?>

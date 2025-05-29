@@ -110,7 +110,7 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
                     <!-- buttons -->
                     <button class="btn btn-primary" type="submit"><i class="fas fa-filter"></i> Lọc</button>
                     <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary" style="text-decoration: none;">
-                        <i class="fas fa-times"></i> Xóa lọc
+                        <i class="fas fa-times"></i> Xóa
                     </a>
                 </div>
             </form>

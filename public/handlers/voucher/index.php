@@ -12,6 +12,7 @@ $allowed = [
     'update_voucher',
     'toggle_voucher_status',
     'delete_voucher',
+    'clone_voucher',
     'get_locations', // Add new action
     'get_packages'   // Add new action
 ];

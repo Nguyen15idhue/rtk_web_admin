@@ -15,5 +15,12 @@ if (isset($_POST['action']) && $_POST['action'] === 'export_report_excel') {
     $_POST['date_to'] = $_POST['end_date'] ?? null;
 }
 
+// Handle export_revenue_summary action
+if (isset($_POST['action']) && $_POST['action'] === 'export_revenue_summary') {
+    // Forward to revenue summary export logic
+    $_POST['table_name'] = 'revenue_summary';
+    // date_from, date_to, and status filters are already in $_POST
+}
+
 // Forward to the real exporter in private/actions
 require_once __DIR__ . '/../../private/actions/export_excel.php';

@@ -127,12 +127,7 @@
     padding-top: 1rem;
     border-top: 1px solid var(--border-color);
 }
-#createUserForm .error-message {
-    color: var(--danger-600);
-    font-size: var(--font-size-sm);
-    margin-top: 1rem;
-    text-align: left;
-}
+/* Error message styles moved to components/forms.css - use .error-message class */
 
 #proofModalImage { max-width: 100%; height: auto; display: block; margin: 1rem auto; border: 1px solid var(--gray-300); border-radius: var(--rounded-md); }
 

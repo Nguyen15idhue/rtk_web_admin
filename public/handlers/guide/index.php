@@ -10,6 +10,7 @@ $allowed = [
     'get_guide_details',
     'create_guide',
     'update_guide',
+    'delete_guide',
     'fetch_topics'
 ];
 

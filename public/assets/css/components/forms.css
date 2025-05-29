@@ -34,24 +34,52 @@
     cursor: not-allowed;
     opacity: 0.7;
 }
+
+/* ============================================= */
+/* == Standardized Error Message System       == */
+/* ============================================= */
+/* Base error message class - use this for all error messages */
+.error-message {
+    color: var(--danger-600);
+    font-size: var(--font-size-sm);
+    margin-top: 0.5rem;
+    text-align: left;
+    display: block;
+    line-height: 1.4;
+}
+
+/* Error message variants */
+.error-message.centered {
+    text-align: center;
+}
+
+.error-message.prominent {
+    background-color: #ffebee;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ef9a9a;
+    margin-bottom: 15px;
+}
+
+.error-message.inline {
+    margin-top: 0.25rem;
+    font-size: var(--font-size-xs);
+}
+
+/* Legacy aliases for backward compatibility */
+.field-error-message {
+    color: var(--danger-600);
+    font-size: var(--font-size-xs);
+    margin-top: 0.25rem;
+    display: block;
+    clear: both; /* Ensures it appears below floated elements */
+}
+
 .form-group .error-message {
     color: var(--danger-600);
     font-size: var(--font-size-sm);
     margin-top: 0.5rem;
     text-align: left;
-}
-.form-group .checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-.form-group .checkbox-group input[type="checkbox"] {
-    margin: 0;
-}
-.form-group .text-xs {
-    font-size: var(--font-size-xs);
-    color: var(--gray-500);
-    margin-top: 0.25rem;
 }
 
 /* Styles for form-check to align checkbox and label */
@@ -108,4 +136,111 @@
     outline: none;
     border-color: var(--primary-500);
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Form Validation Styles */
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+    border-color: var(--danger-500);
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+    background-color: rgba(239, 68, 68, 0.05);
+}
+
+/* Prevent error messages from affecting input-group layout */
+.form-group .input-group {
+    width: 100%;
+    margin-bottom: 0; /* Remove bottom margin to let error message handle spacing */
+}
+
+/* When input-group has error, ensure proper spacing */
+.form-group .input-group.has-error {
+    margin-bottom: 0.25rem;
+}
+
+/* Success state for validated fields */
+.form-group input.valid,
+.form-group select.valid,
+.form-group textarea.valid {
+    border-color: var(--success-500);
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+.form-group input.valid:focus,
+.form-group select.valid:focus,
+.form-group textarea.valid:focus {
+    border-color: var(--success-500);
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+}
+
+/* Input group styles for currency and unit inputs */
+.input-group {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.input-group input {
+    flex: 1;
+    border-radius: var(--rounded-md) 0 0 var(--rounded-md);
+    border-right: none;
+    margin: 0;
+}
+
+.input-unit {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 0.8rem;
+    background: linear-gradient(135deg, var(--gray-50), var(--gray-100));
+    border: 1px solid var(--gray-300);
+    border-left: none;
+    border-radius: 0 var(--rounded-md) var(--rounded-md) 0;
+    font-size: var(--font-size-sm);
+    color: var(--gray-700);
+    font-weight: var(--font-semibold);
+    white-space: nowrap;
+    min-width: fit-content;
+    height: auto;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    letter-spacing: 0.025em;
+}
+
+.input-unit:hover {
+    background: linear-gradient(135deg, var(--primary-50), var(--gray-100));
+    color: var(--primary-700);
+    transform: translateY(-0.5px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.input-group input:focus + .input-unit {
+    border-color: var(--primary-500);
+    background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+    color: var(--primary-700);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+.input-group input.error + .input-unit {
+    border-color: var(--danger-500);
+    background: linear-gradient(135deg, #fee2e2, #fef2f2);
+    color: var(--danger-700);
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
+}
+
+.input-group input.valid + .input-unit {
+    border-color: var(--success-500);
+    background: linear-gradient(135deg, #dcfce7, #f0fdf4);
+    color: var(--success-700);
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.1);
+}
+
+/* Override default styles for inputs inside input-group */
+.form-group .input-group input[type="number"] {
+    width: auto;
+    flex: 1;
+}
+
+/* Ensure proper alignment and spacing */
+.form-group .input-group {
+    width: 100%;
 }

@@ -1,81 +1,58 @@
 (function($){
     const apiUrl = basePath + '/public/handlers/guide/index.php';
-    const canEditGuide = window.appConfig && window.appConfig.permissions && window.appConfig.permissions.guide_management_edit;
+    const canEditGuide = window.appConfig && window.appConfig.permissions && window.appConfig.permissions.guide_management_edit;    $(function(){
+        // View button opens edit page in view-only mode
+        $(document).on('click', '.btn-view', function(){
+            const id = $(this).data('id');
+            window.location.href = 'edit_guide.php?id=' + id + '&mode=view';
+        });
 
-    function loadData(q = '', topic = '') {
-        api.getJson(`${apiUrl}?action=fetch_guides&search=${encodeURIComponent(q)}&topic=${encodeURIComponent(topic)}`)
-            .then(env => {
-                if (!env.success) throw new Error(env.message || 'Lỗi tải danh sách hướng dẫn');
-                const list = env.data;
-                let rows = list.map(g => `
-                    <tr>
-                        <td>${g.id}</td>
-                        <td>${g.title}</td>
-                        <td>${g.topic || '<em>Chưa rõ</em>'}</td>
-                        <td>${g.author_name || '<em>Chưa rõ</em>'}</td>
-                        <td class="status text-center">
-                            ${g.status==='published'
-                                ? '<span class="status-badge badge-success">Đã xuất bản</span>'
-                                : '<span class="status-badge badge-secondary">Bản nháp</span>'}
-                        </td>
-                        <td class="actions">
-                            ${canEditGuide ? `
-                            <button class="btn-icon btn-edit" data-id="${g.id}" title="Sửa">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button
-                                class="btn-icon btn-toggle ${g.status==='published'?'btn-success':'btn-secondary'}"
-                                data-id="${g.id}"
-                                data-status="${g.status==='published'?'draft':'published'}"
-                                title="${g.status==='published'?'Chuyển sang Nháp':'Xuất bản'}">
-                                <i class="fas fa-toggle-${g.status==='published'?'on':'off'}"></i>
-                            </button>
-                            ` : 'Không có quyền'}
-                        </td>
-                    </tr>`).join('');
-                $('#tbl-guides tbody').html(rows);
-            })
-            .catch(err => window.showToast(err.message, 'error'));
-    }
-
-    $(function(){
-        const $search = $('input[name=search]');
-        const $topic = $('#filter-topic');
-        // Fetch topics for filter
-        api.getJson(`${apiUrl}?action=fetch_topics`)
-            .then(env => {
-                if (!env.success) throw new Error(env.message || 'Lỗi tải chủ đề');
-                const topics = env.data;
-                topics.forEach(t => {
-                    const opt = $('<option>').val(t).text(t);
-                    $topic.append(opt);
-                });
-                // Set initial topic
-                const initTopic = window.appConfig.searchTopic || '';
-                $topic.val(initTopic);
-                // Initial load with search and topic
-                loadData($search.val(), $topic.val());
-            })
-            .catch(err => window.showToast(err.message, 'error'));
-        // Reload on search input
-        $search.on('input', () => loadData($search.val(), $topic.val()));
-        // Reload on topic change
-        $topic.on('change', () => loadData($search.val(), $topic.val()));
-
+        // Edit button navigates to edit page
         $(document).on('click', '.btn-edit', function(){
             if (!canEditGuide) return;
             window.location.href = 'edit_guide.php?id=' + $(this).data('id');
-        });
-
+        });        // Toggle status button
         $(document).on('click', '.btn-toggle', function(){
             if (!canEditGuide) return;
-            const id = $(this).data('id'), st = $(this).data('status');
+            const $btn = $(this);
+            const id = $btn.data('id');
+            const st = $btn.data('status');
+            $btn.prop('disabled', true);
             api.postJson(`${apiUrl}?action=toggle_guide_status`, { id, status: st })
                 .then(env => {
                     if (!env.success) throw new Error(env.message || 'Toggle thất bại');
-                    loadData($search.val(), $topic.val());
+                    // Reload page to reflect updated status with pagination
+                    window.location.reload();
                 })
-                .catch(err => window.showToast(err.message, 'error'));
+                .catch(err => {
+                    window.showToast(err.message, 'error');
+                    $btn.prop('disabled', false);
+                });
+        });
+
+        // Delete button with confirmation
+        $(document).on('click', '.btn-delete', function(){
+            if (!canEditGuide) return;
+            const $btn = $(this);
+            const id = $btn.data('id');
+            const title = $btn.data('title');
+            
+            if (!confirm(`Bạn có chắc chắn muốn xóa hướng dẫn "${title}"?\n\nHành động này không thể hoàn tác!`)) {
+                return;
+            }
+            
+            $btn.prop('disabled', true);
+            api.postJson(`${apiUrl}?action=delete_guide`, { id })
+                .then(env => {
+                    if (!env.success) throw new Error(env.message || 'Xóa thất bại');
+                    window.showToast('Xóa hướng dẫn thành công', 'success');
+                    // Reload page to reflect changes with pagination
+                    window.location.reload();
+                })
+                .catch(err => {
+                    window.showToast(err.message, 'error');
+                    $btn.prop('disabled', false);
+                });
         });
     });
 })(jQuery);

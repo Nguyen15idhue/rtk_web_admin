@@ -46,5 +46,11 @@ return [
         'resolved'    => ['class' => 'badge-green',     'text' => 'Đã giải quyết'],
         'closed'      => ['class' => 'badge-secondary', 'text' => 'Đã đóng'],
     ],
+    'priority' => [
+        'urgent'  => ['class' => 'badge-danger',   'text' => 'Khẩn cấp'],
+        'high'    => ['class' => 'badge-warning',  'text' => 'Cao'],
+        'medium'  => ['class' => 'badge-info',     'text' => 'Trung bình'],
+        'low'     => ['class' => 'badge-secondary','text' => 'Thấp'],
+    ],
 ];
 ?>

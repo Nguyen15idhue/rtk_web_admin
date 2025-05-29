@@ -1,0 +1,14 @@
+.description-col {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.action-cell .action-row {
+    display: flex;
+    gap: 4px;
+}
+.action-cell .action-row + .action-row {
+    margin-top: 6px;
+}

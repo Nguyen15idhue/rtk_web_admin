@@ -74,3 +74,190 @@
     background-color: #2563eb;    /* blue-600 */
     border-color: #2563eb;
 }
+
+/* ============================================= */
+/* == Button Size Variants                    == */
+/* ============================================= */
+.btn-sm {
+    padding: 0.5rem 0.8rem;
+    font-size: var(--font-size-xs);
+}
+
+.btn-lg {
+    padding: 0.8rem 1.5rem;
+    font-size: var(--font-size-base);
+}
+
+/* ============================================= */
+/* == Icon Buttons                            == */
+/* ============================================= */
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.4rem;
+    font-size: 1.1rem;
+    line-height: 1;
+    border-radius: var(--rounded-full);
+    color: var(--gray-500);
+    transition: background-color var(--transition-speed) ease-in-out, color var(--transition-speed) ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    min-height: 32px;
+}
+
+.btn-icon:hover {
+    background-color: var(--gray-100);
+    color: var(--gray-700);
+}
+
+/* Icon button color variants */
+.btn-icon.btn-view {
+    color: var(--info-600);
+}
+.btn-icon.btn-view:hover {
+    color: var(--info-600);
+    background-color: rgba(14, 165, 233, 0.1);
+}
+
+.btn-icon.btn-edit {
+    color: var(--warning-600);
+}
+.btn-icon.btn-edit:hover {
+    color: var(--warning-600);
+    background-color: rgba(245, 158, 11, 0.1);
+}
+
+.btn-icon.btn-approve {
+    color: var(--success-600);
+}
+.btn-icon.btn-approve:hover {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success-700);
+}
+
+.btn-icon.btn-reject {
+    color: var(--danger-600);
+}
+.btn-icon.btn-reject:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger-700);
+}
+
+.btn-icon.btn-revert {
+    color: var(--warning-600);
+}
+.btn-icon.btn-revert:hover {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--warning-700);
+}
+
+.btn-icon.btn-disabled {
+    color: var(--gray-400);
+    cursor: not-allowed;
+}
+.btn-icon.btn-disabled:hover {
+    background-color: transparent;
+}
+
+/* ============================================= */
+/* == Filter & Form Buttons                   == */
+/* ============================================= */
+.btn-filter {
+    padding: 0.75rem 1.5rem;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    border-radius: var(--rounded-md);
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.btn-filter:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================= */
+/* == Special Purpose Buttons                 == */
+/* ============================================= */
+/* Preset buttons for dashboard */
+.preset-btn {
+    padding: 0.6rem 1rem;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 1.25rem;
+    color: #495057;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    min-width: 85px;
+}
+
+.preset-btn:hover {
+    background: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,123,255,0.2);
+}
+
+.preset-btn:active,
+.preset-btn.active {
+    background: #0056b3;
+    border-color: #0056b3;
+    color: #fff;
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0,86,179,0.3);
+}
+
+/* Role tab buttons */
+.btn-role-tab {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.btn-role-tab.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+.btn-role-tab:hover {
+    background-color: #e9ecef;
+}
+
+/* ============================================= */
+/* == Warning Button                          == */
+/* ============================================= */
+.btn-warning {
+    background-color: #ff7849;
+    color: white;
+    border-color: #ff7849;
+    box-shadow: 0 2px 8px rgba(255, 120, 73, 0.2);
+}
+
+.btn-warning:hover {
+    background-color: #ff6332;
+    border-color: #ff6332;
+    box-shadow: 0 3px 12px rgba(255, 120, 73, 0.3);
+}

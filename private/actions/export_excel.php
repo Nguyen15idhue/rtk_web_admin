@@ -72,12 +72,50 @@ if ($tableName === 'reports') {
             $report_row_data[$field] = 0; // Or use '' or 'N/A' depending on expected data type
         }
     }
-    $dataToExport = [$report_row_data]; // Prepare data for Excel export
 
-    // Export directly and terminate script
-    ExcelExportService::export($dataToExport, 'reports_' . date('Ymd_His') . '.xlsx');
+    // Add chart data to report data
+    if (isset($revenue_trend_chart_data)) {
+        $report_row_data['revenue_trend_chart_data'] = $revenue_trend_chart_data;
+    }
+    if (isset($transaction_status_chart_data)) {
+        $report_row_data['transaction_status_chart_data'] = $transaction_status_chart_data;
+    }
+    if (isset($commission_analytics_chart_data)) {
+        $report_row_data['commission_analytics_chart_data'] = $commission_analytics_chart_data;
+    }
+
+    // Export with charts and multiple sheets using enhanced export method
+    ExcelExportService::exportReportsWithCharts($report_row_data, $start_date, $end_date, $pdo);
     exit; // IMPORTANT: Stop script execution after handling report export
 }
+
+// START: Special handling for 'revenue_summary' table export
+if ($tableName === 'revenue_summary') {
+    // Read filters from POST
+    $filters = [
+        'date_from' => $_POST['date_from'] ?? '',
+        'date_to' => $_POST['date_to'] ?? '',
+        'status' => $_POST['status'] ?? ''
+    ];
+
+    // Ensure $db (from page_bootstrap.php) is available
+    if (!isset($db) || !$db instanceof PDO) {
+        error_log("Export Excel (Revenue Summary): Database connection (\$db) not available or invalid.");
+        api_error("Internal server error: Database connection not available for revenue summary.", 500);
+        exit;
+    }
+
+    // Create RevenueModel instance and get summary data
+    require_once __DIR__ . '/../classes/RevenueModel.php';
+    $revenueModel = new RevenueModel($db);
+    $dataToExport = $revenueModel->getRevenueSummaryForExport($filters);
+
+    // Export directly and terminate script
+    $filename = 'revenue_summary_' . date('Ymd_His') . '.xlsx';
+    ExcelExportService::export($dataToExport, $filename);
+    exit; // IMPORTANT: Stop script execution after handling revenue summary export
+}
+// END: Special handling for 'revenue_summary' table export
 // END: Special handling for 'reports' table export
 
 // Sanitize IDs to be integers if they are expected to be numeric
@@ -104,6 +142,7 @@ $modelMapping = [
     'support_requests' => 'SupportRequestModel',
     'commissions'      => 'CommissionModel',      // Added for commissions export
     'withdrawal_requests' => 'WithdrawalRequestModel', // Added for withdrawal requests export
+    'revenue_summary'  => 'RevenueModel',         // Added for revenue summary export
 ];
 
 if (isset($modelMapping[$tableName])) {

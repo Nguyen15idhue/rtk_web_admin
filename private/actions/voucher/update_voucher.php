@@ -1,13 +1,15 @@
 <?php
 // filepath: private/actions/voucher/update_voucher.php
 declare(strict_types=1);
-require_once __DIR__ . '/../../utils/functions.php';
+
 require_once __DIR__ . '/../../classes/Auth.php';
 Auth::ensureAuthorized('voucher_management_edit');
 if (basename(__FILE__) === basename($_SERVER['SCRIPT_FILENAME'])) {
     api_forbidden('Forbidden: Direct access not allowed');
 }
 require_once __DIR__ . '/../../classes/VoucherModel.php';
+require_once __DIR__ . '/../../classes/ActivityLogModel.php';
+require_once __DIR__ . '/../../classes/Database.php';
 
 $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
 if ($id <= 0) {
@@ -44,12 +46,61 @@ foreach (['max_discount', 'min_order_value', 'quantity', 'limit_usage', 'max_sa'
 
 $model = new VoucherModel();
 try {
-    $updated = $model->update($id, $data);
-    if (!$updated) {
-        api_error('Failed to update voucher', 500);
+    // Get old voucher data for logging
+    $oldVoucher = $model->getOne($id);
+    if (!$oldVoucher) {
+        api_error('Voucher không tồn tại để cập nhật.', 404); // Not Found
+        return; // Stop execution if voucher not found
     }
+    
+    $updated = $model->update($id, $data);
+    // The $model->update() method now returns bool and throws an exception on validation error or DB error.
+    // So, if we reach here, it means the update was successful in the DB.
+    
+    // Log voucher update activity
+    $db = Database::getInstance()->getConnection();
+    $adminId = $_SESSION['admin_id'] ?? null;
+    
+    // Prepare old and new values for comparison
+    $oldValues = $oldVoucher ? [
+        'voucher_code'    => $oldVoucher['code'],
+        'voucher_type'    => $oldVoucher['voucher_type'],
+        'discount_value'  => $oldVoucher['discount_value'],
+        'start_date'      => $oldVoucher['start_date'],
+        'end_date'        => $oldVoucher['end_date'],
+        'is_active'       => $oldVoucher['is_active'],
+        'location_id'     => $oldVoucher['location_id'],
+        'package_id'      => $oldVoucher['package_id']
+    ] : null;
+    
+    $newValues = [
+        'voucher_code'    => $data['code'],
+        'voucher_type'    => $data['voucher_type'],
+        'discount_value'  => $data['discount_value'],
+        'start_date'      => $data['start_date'],
+        'end_date'        => $data['end_date'],
+        'is_active'       => $data['is_active'],
+        'location_id'     => $data['location_id'],
+        'package_id'      => $data['package_id']
+    ];
+    
+    ActivityLogModel::addLog(
+        $db,
+        [
+            ':user_id'        => $adminId, // Admin who updated the voucher
+            ':action'         => 'voucher_updated',
+            ':entity_type'    => 'voucher',
+            ':entity_id'      => $id,
+            ':old_values'     => json_encode($oldValues),
+            ':new_values'     => json_encode($newValues),
+            ':notify_content' => "Voucher '{$data['code']}' đã được cập nhật."
+        ]
+    );
+    
     api_success(['updated' => true]);
+} catch (InvalidArgumentException $e) {
+    api_error($e->getMessage(), 400); // Bad Request for validation errors
 } catch (Exception $e) {
     error_log('Error in update_voucher: ' . $e->getMessage());
-    api_error('Server error', 500);
+    api_error('Lỗi máy chủ khi cập nhật voucher.', 500); // Internal Server Error for other exceptions
 }
