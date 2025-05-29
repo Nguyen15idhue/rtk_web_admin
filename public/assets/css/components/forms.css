@@ -34,24 +34,52 @@
     cursor: not-allowed;
     opacity: 0.7;
 }
+
+/* ============================================= */
+/* == Standardized Error Message System       == */
+/* ============================================= */
+/* Base error message class - use this for all error messages */
+.error-message {
+    color: var(--danger-600);
+    font-size: var(--font-size-sm);
+    margin-top: 0.5rem;
+    text-align: left;
+    display: block;
+    line-height: 1.4;
+}
+
+/* Error message variants */
+.error-message.centered {
+    text-align: center;
+}
+
+.error-message.prominent {
+    background-color: #ffebee;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ef9a9a;
+    margin-bottom: 15px;
+}
+
+.error-message.inline {
+    margin-top: 0.25rem;
+    font-size: var(--font-size-xs);
+}
+
+/* Legacy aliases for backward compatibility */
+.field-error-message {
+    color: var(--danger-600);
+    font-size: var(--font-size-xs);
+    margin-top: 0.25rem;
+    display: block;
+    clear: both; /* Ensures it appears below floated elements */
+}
+
 .form-group .error-message {
     color: var(--danger-600);
     font-size: var(--font-size-sm);
     margin-top: 0.5rem;
     text-align: left;
-}
-.form-group .checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-.form-group .checkbox-group input[type="checkbox"] {
-    margin: 0;
-}
-.form-group .text-xs {
-    font-size: var(--font-size-xs);
-    color: var(--gray-500);
-    margin-top: 0.25rem;
 }
 
 /* Styles for form-check to align checkbox and label */
@@ -117,20 +145,6 @@
     border-color: var(--danger-500);
     box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
     background-color: rgba(239, 68, 68, 0.05);
-}
-
-.field-error-message {
-    color: var(--danger-600);
-    font-size: var(--font-size-xs);
-    margin-top: 0.25rem;
-    display: block;
-    clear: both; /* Ensures it appears below floated elements */
-}
-
-/* Ensure error messages for input-group appear below the entire group */
-.input-group + .field-error-message {
-    margin-top: 0.5rem;
-    width: 100%;
 }
 
 /* Prevent error messages from affecting input-group layout */

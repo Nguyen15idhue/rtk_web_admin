@@ -1,5 +1,6 @@
 /* invoice_upload.css - Custom styles for invoice upload page */
-body { background: #f8f9fa; }
+/* Body background moved to page-specific class to avoid global conflicts */
+.upload-page-body { background: #f8f9fa; }
 .upload-card { 
   width: 100%;
   max-width: 560px;

@@ -54,7 +54,6 @@
     .custom-tabs-nav {
         flex-wrap: nowrap; /* Ensure items stay on one line */
         overflow-x: auto;  /* Allow horizontal scrolling if they overflow */
-        min-width: fit-content; /* Encourage the container to be as wide as its nowrap content */
     }
     .custom-tabs-nav .nav-item {
         margin-right: 5px;

@@ -8,7 +8,6 @@
             <button type="button" class="preset-btn" data-days="30">30 ngày qua</button>
             <button type="button" class="preset-btn" data-period="this_quarter">Quý này</button>
             <button type="button" class="preset-btn" data-period="this_year">Năm nay</button>
-            <button type="button" class="preset-btn" data-period="last_month">Tháng trước</button>
         </div>
     </div>
     <div class="filter-bar flex items-end gap-2">
