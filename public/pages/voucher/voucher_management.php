@@ -183,7 +183,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                                             <i class="fas <?php echo $v['is_active']?'fa-toggle-off':'fa-toggle-on'; ?>"></i>
                                         </button>
                                         <button type="button" class="btn-icon btn-link" title="Sao chép link và QR"
-                                            onclick="VoucherPage.copyVoucherLinkAndShowQR('<?php echo IMAGE_HOST_BASE_URL . 'public/pages/auth/register.php?voucher=' . htmlspecialchars($v['code']); ?>','<?php echo htmlspecialchars($v['code']); ?>')">
+                                            onclick="VoucherPage.copyVoucherLinkAndShowQR('<?php echo USER_URL . 'public/pages/auth/register.php?voucher=' . htmlspecialchars($v['code']); ?>','<?php echo htmlspecialchars($v['code']); ?>')">
                                             <i class="fas fa-qrcode"></i>
                                         </button>
                                         <button type="button" class="btn-icon btn-danger" title="Xóa"

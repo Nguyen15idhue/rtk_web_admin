@@ -94,7 +94,7 @@ function fetch_admin_transactions(array $filters = [], int $page = 1, int $per_p
         // filter status (pending/approved/rejected)
         if (!empty($filters['status'])) {
             // properly parenthesize nested ternary
-            $map = $filters['status'] === 'approved'
+            $map = $filters['status'] === 'active' 
                 ? 'completed'
                 : ( $filters['status'] === 'rejected' ? 'failed' : $filters['status'] );
             $where_clauses[] = "th.status = :status";

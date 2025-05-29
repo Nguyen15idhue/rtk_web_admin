@@ -1,5 +1,0 @@
-<?php
-// Telegram bot configuration
-// Replace with your bot token and chat ID
-define('TELEGRAM_BOT_TOKEN', 'YOUR_TELEGRAM_BOT_TOKEN_HERE');
-define('TELEGRAM_CHAT_ID', 'YOUR_TELEGRAM_CHAT_ID_HERE');

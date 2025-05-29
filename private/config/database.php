@@ -12,5 +12,5 @@ define('DB_PASSWORD', $db_password);
 define('DB_NAME', $db_name);
 
 // Base URL for hosted images
-define('IMAGE_HOST_BASE_URL', 'http://localhost:8000/');
+define('USER_URL', 'http://localhost:8000/');
 ?>

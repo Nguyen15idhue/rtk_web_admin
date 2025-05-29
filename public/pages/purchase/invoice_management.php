@@ -147,7 +147,7 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
 
                                     $transaction_id = $transaction['registration_id'];
                                     $proof_image_url = !empty($transaction['payment_image'])
-                                        ? IMAGE_HOST_BASE_URL . 'public/uploads/payment_proofs/' . htmlspecialchars($transaction['payment_image'])
+                                        ? USER_URL . 'public/uploads/payment_proofs/' . htmlspecialchars($transaction['payment_image'])
                                         : '';
                                     $is_pending = $transaction['registration_status'] === 'pending';
                                     $is_approved = $transaction['registration_status'] === 'active';
