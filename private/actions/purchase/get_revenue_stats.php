@@ -1,5 +1,5 @@
 <?php
-// filepath: private/actions/invoice/get_revenue_stats.php
+// filepath: private/actions/purchase/get_revenue_stats.php
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../utils/functions.php';  

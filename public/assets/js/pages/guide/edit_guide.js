@@ -1,15 +1,22 @@
 (function($){
-    $(function(){
-        // init TinyMCE
-        tinymce.init({ selector:'#guideContent', height:400, menubar:false });
-
-        const form = $('#frm-guide');
+    $(function(){        const form = $('#frm-guide');
         const titleInput = form.find('input[name=title]');
         const slugInput = form.find('input[name=slug]');
-        const basePath = window.appConfig?.basePath || '';
+        const basePath = form.data('base-path') || window.basePath || '';
         const apiUrl = basePath + '/public/handlers/guide/index.php';
+        const isViewMode = form.data('view-mode') === 'true';
 
         const id = parseInt(form.find('input[name=id]').val(), 10);
+
+        // Initialize TinyMCE with readonly configuration for view mode
+        tinymce.init({ 
+            selector: '#guideContent', 
+            height: 400, 
+            menubar: false,
+            readonly: isViewMode,
+            toolbar: isViewMode ? false : 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+            plugins: isViewMode ? [] : 'lists advlist'
+        });
 
         // Lấy danh sách chủ đề hiện có và đổ vào datalist
         async function loadTopics() {
@@ -49,14 +56,14 @@
             text = text.replace(/^-+|-+$/g, '');
 
             return text;
+        }        // Auto-generate slug from title input (disabled in view mode)
+        if (!isViewMode) {
+            titleInput.on('input', function() {
+                const titleValue = $(this).val();
+                const slugValue = generateSlug(titleValue);
+                slugInput.val(slugValue);
+            });
         }
-
-        // Auto-generate slug from title input
-        titleInput.on('input', function() {
-            const titleValue = $(this).val();
-            const slugValue = generateSlug(titleValue);
-            slugInput.val(slugValue);
-        });
 
         if (id) {
             (async () => {
@@ -73,10 +80,14 @@
                     window.showToast(err.message, 'error');
                 }
             })();
-        }
-
-        form.on('submit', function(e){
+        }        form.on('submit', function(e){
             e.preventDefault();
+            
+            // Prevent form submission in view mode
+            if (isViewMode) {
+                return false;
+            }
+            
             const action = id ? 'update_guide' : 'create_guide';
             const formData = new FormData(this);
             (async () => {

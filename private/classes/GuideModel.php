@@ -8,7 +8,7 @@ class GuideModel {
     public function __construct() {
         $this->db = Database::getInstance()->getConnection();
     }
-    public function getAll($search = '', $topic = '') {
+    public function getAll($search = '', $topic = '', $status = '') {
         $sql = "SELECT g.*, a.name AS author_name
                 FROM guide g
                 LEFT JOIN admin a ON g.author_id=a.id
@@ -20,6 +20,10 @@ class GuideModel {
         if (!empty($topic)) {
             $sql .= " AND g.topic = ?";
             $params[] = $topic;
+        }
+        if (!empty($status)) {
+            $sql .= " AND g.status = ?";
+            $params[] = $status;
         }
         $sql .= " ORDER BY g.created_at DESC";
         $stmt = $this->db->prepare($sql);
@@ -148,5 +152,63 @@ class GuideModel {
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'topic');
+    }
+    
+    /**
+     * Đếm tổng số guides theo điều kiện filter
+     */
+    public function getCount($search = '', $topic = '', $status = '') {
+        $sql = "SELECT COUNT(*) as total
+                FROM guide g
+                WHERE (g.title LIKE ? OR g.topic LIKE ?)";
+        $params = [];
+        $like = "%$search%";
+        $params[] = $like;
+        $params[] = $like;
+        
+        if (!empty($topic)) {
+            $sql .= " AND g.topic = ?";
+            $params[] = $topic;
+        }
+        if (!empty($status)) {
+            $sql .= " AND g.status = ?";
+            $params[] = $status;
+        }
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int)$result['total'];
+    }
+    
+    /**
+     * Lấy guides với pagination từ database level
+     */
+    public function getPaginated($search = '', $topic = '', $status = '', $limit = 10, $offset = 0) {
+        $sql = "SELECT g.*, a.name AS author_name
+                FROM guide g
+                LEFT JOIN admin a ON g.author_id=a.id
+                WHERE (g.title LIKE ? OR g.topic LIKE ?)";
+        $params = [];
+        $like = "%$search%";
+        $params[] = $like;
+        $params[] = $like;
+        
+        if (!empty($topic)) {
+            $sql .= " AND g.topic = ?";
+            $params[] = $topic;
+        }
+        if (!empty($status)) {
+            $sql .= " AND g.status = ?";
+            $params[] = $status;
+        }
+        
+        $sql .= " ORDER BY g.created_at DESC LIMIT ? OFFSET ?";
+        $params[] = $limit;
+        $params[] = $offset;
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

@@ -29,7 +29,7 @@ class RevenueModel {
             list($total_revenue, $successful_revenue, $pending_revenue, $rejected_revenue) = get_revenue_sums($filters);
             
             // Get revenue stats
-            require_once __DIR__ . '/../actions/invoice/get_revenue_stats.php';
+            require_once __DIR__ . '/../actions/purchase/get_revenue_stats.php';
             $stats = get_revenue_stats($filters);
             
             // Calculate additional metrics
