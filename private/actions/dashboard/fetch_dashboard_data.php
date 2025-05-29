@@ -30,10 +30,7 @@ function fetch_dashboard_data(): array
         'total_referrers'              => 0,
         'referred_registrations'       => 0,
         'total_commission_paid'        => 0,
-        'recent_activities'            => [],
-        'voucher_details_map'          => [], // Added for pre-fetched voucher codes
-        'new_registrations_chart_data' => ['labels'=>[], 'data'=>[]],
-        'referral_chart_data'          => ['labels'=>[], 'data'=>[]],
+        'recent_activities'            => [],        'voucher_details_map'          => [], // Added for pre-fetched voucher codes
         'total_vouchers'               => 0, // Added for voucher stats
         'used_vouchers'                => 0, // Added for voucher stats
         'pending_support_requests'     => 0, // Added default for support stats
@@ -143,65 +140,10 @@ function fetch_dashboard_data(): array
         // Hỗ trợ: số yêu cầu chờ xử lý
         $dashboard_data['pending_support_requests'] = (int)$pdo->query(
             "SELECT COUNT(*) FROM support_requests WHERE status IN ('pending','in_progress')"
-        )->fetchColumn();
-        // Trạm: số trạm không hoạt động
+        )->fetchColumn();        // Trạm: số trạm không hoạt động
         $dashboard_data['inactive_stations'] = (int)$pdo->query(
             "SELECT COUNT(*) FROM station WHERE status IN (0,2,3)"
         )->fetchColumn();
-
-        // Phân tích người dùng: phân bổ theo gói
-        $labels = [];
-        $counts = [];
-        $stmt_dist = $pdo->query(
-            "SELECT p.name AS package_name, COUNT(DISTINCT r.user_id) AS user_count
-             FROM package p
-             LEFT JOIN registration r ON p.id = r.package_id AND r.status = 'active'
-             GROUP BY p.id ORDER BY p.name"
-        );
-        foreach ($stmt_dist->fetchAll(PDO::FETCH_ASSOC) as $row) {
-            $labels[] = htmlspecialchars($row['package_name']);
-            $counts[] = (int)$row['user_count'];
-        }
-        $dashboard_data['user_package_distribution'] = ['labels' => $labels, 'data' => $counts];
-
-        // Tỷ lệ người dùng có gói vs không có gói
-        $total_active = $dashboard_data['total_web_users'];
-        $with_pkg = $dashboard_data['users_with_package'];
-        $without_pkg = max(0, $total_active - $with_pkg);
-        $dashboard_data['user_package_ratio'] = ['with_package' => $with_pkg, 'without_package' => $without_pkg];
-
-        // Calculate the date 6 days ago for chart queries
-        $six_days_ago_start = date('Y-m-d 00:00:00', strtotime('-6 days'));
-
-        // Biểu đồ ĐK mới 7 ngày - Optimized
-        $stmt = $pdo->prepare(
-            "SELECT DATE(created_at) AS d, COUNT(*) AS c 
-             FROM registration 
-             WHERE created_at >= :six_days_ago
-             GROUP BY d ORDER BY d"
-        );
-        $stmt->execute([':six_days_ago' => $six_days_ago_start]);
-        $labels=[]; $data=[];
-        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
-            $labels[] = $r['d'];
-            $data[]   = (int)$r['c'];
-        }
-        $dashboard_data['new_registrations_chart_data'] = ['labels'=>$labels,'data'=>$data];
-        
-        // Biểu đồ GT 7 ngày - Optimized
-        $stmt = $pdo->prepare(
-            "SELECT DATE(created_at) AS d, COUNT(*) AS c 
-             FROM referral 
-             WHERE created_at >= :six_days_ago
-             GROUP BY d ORDER BY d"
-        );
-        $stmt->execute([':six_days_ago' => $six_days_ago_start]);
-        $labels=[]; $data=[];
-        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
-            $labels[] = $r['d'];
-            $data[]   = (int)$r['c'];
-        }
-        $dashboard_data['referral_chart_data'] = ['labels'=>$labels,'data'=>$data];
 
         // Top users by total spending and commission
         $stmt_top_users = $pdo->query(

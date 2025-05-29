@@ -108,6 +108,159 @@ class ReportModel {
         $data['commission_paid']      = (float)$row['commission_paid'];
         $data['commission_pending']   = (float)$row['commission_pending'];
 
+        // Chart data: new registrations per day within period
+        $stmt = $pdo->prepare(
+            "SELECT DATE(created_at) AS d, COUNT(*) AS c
+             FROM user
+             WHERE created_at BETWEEN :start AND :end
+             GROUP BY DATE(created_at)
+             ORDER BY d"
+        );
+        $stmt->execute([':start' => $start_datetime, ':end' => $end_datetime]);
+        $labels = [];
+        $dataReg = [];
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
+            $labels[]  = $r['d'];
+            $dataReg[] = (int)$r['c'];
+        }
+        $data['new_registrations_chart_data'] = ['labels' => $labels, 'data' => $dataReg];
+
+        // Chart data: new referrals per day within period
+        $stmt = $pdo->prepare(
+            "SELECT DATE(created_at) AS d, COUNT(*) AS c
+             FROM referral
+             WHERE created_at BETWEEN :start AND :end
+             GROUP BY DATE(created_at)
+             ORDER BY d"
+        );
+        $stmt->execute([':start' => $start_datetime, ':end' => $end_datetime]);
+        $labels = [];
+        $dataRef = [];
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
+            $labels[] = $r['d'];
+            $dataRef[] = (int)$r['c'];
+        }
+        $data['referral_chart_data'] = ['labels' => $labels, 'data' => $dataRef];
+
+        // User package distribution (new registrations within period)
+        $labels = [];
+        $counts = [];
+        $stmt = $pdo->prepare(
+            "SELECT p.name AS package_name, COUNT(r.user_id) AS user_count
+             FROM package p
+             LEFT JOIN registration r ON p.id = r.package_id
+                 AND r.deleted_at IS NULL
+                 AND r.created_at BETWEEN :start AND :end
+             GROUP BY p.id ORDER BY p.name"
+        );
+        $stmt->execute([':start' => $start_datetime, ':end' => $end_datetime]);
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
+            $labels[] = htmlspecialchars($r['package_name']);
+            $counts[] = (int)$r['user_count'];
+        }
+        $data['user_package_distribution'] = ['labels' => $labels, 'data' => $counts];
+
+        // User package ratio for new registrations within period
+        $totalNew = $data['new_registrations'];
+        $stmt = $pdo->prepare(
+            "SELECT COUNT(*) FROM registration
+             WHERE package_id IS NOT NULL
+               AND deleted_at IS NULL
+               AND created_at BETWEEN :start AND :end"
+        );
+        $stmt->execute([':start' => $start_datetime, ':end' => $end_datetime]);
+        $withPkg = (int)$stmt->fetchColumn();
+        $withoutPkg = max(0, $totalNew - $withPkg);
+        $data['user_package_ratio'] = ['with_package' => $withPkg, 'without_package' => $withoutPkg];
+
+        // Chart data: Revenue trend per day within period
+        $stmt = $pdo->prepare(
+            "SELECT DATE(created_at) AS d, SUM(amount) AS revenue
+             FROM transaction_history
+             WHERE status = 'completed'
+               AND created_at BETWEEN :start AND :end
+             GROUP BY DATE(created_at)
+             ORDER BY d"
+        );
+        $stmt->execute([':start' => $start_datetime, ':end' => $end_datetime]);
+        $labels = [];
+        $revenueData = [];
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
+            $labels[] = $r['d'];
+            $revenueData[] = (float)($r['revenue'] ?: 0);
+        }
+        $data['revenue_trend_chart_data'] = ['labels' => $labels, 'data' => $revenueData];
+
+        // Chart data: Transaction status breakdown (pie chart)
+        $stmt = $pdo->prepare(
+            "SELECT 
+                status,
+                COUNT(*) as count,
+                SUM(amount) as total_amount
+             FROM transaction_history 
+             WHERE created_at BETWEEN :start AND :end
+               AND status IN ('completed', 'pending', 'failed')
+             GROUP BY status"
+        );
+        $stmt->execute([':start' => $start_datetime, ':end' => $end_datetime]);
+        
+        $statusData = ['completed' => 0, 'pending' => 0, 'failed' => 0];
+        $statusAmounts = ['completed' => 0, 'pending' => 0, 'failed' => 0];
+        
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
+            $statusData[$r['status']] = (int)$r['count'];
+            $statusAmounts[$r['status']] = (float)$r['total_amount'];
+        }
+        
+        $data['transaction_status_chart_data'] = [
+            'labels' => ['Thành công', 'Chờ duyệt', 'Từ chối'],
+            'data' => [
+                $statusData['completed'], 
+                $statusData['pending'], 
+                $statusData['failed']
+            ],
+            'amounts' => [
+                $statusAmounts['completed'],
+                $statusAmounts['pending'], 
+                $statusAmounts['failed']
+            ]
+        ];
+
+        // Chart data: Commission Analytics breakdown
+        $stmt = $pdo->prepare(
+            "SELECT 
+                wr.status,
+                COUNT(*) as count,
+                SUM(wr.amount) as total_amount
+             FROM withdrawal_request wr
+             WHERE wr.created_at BETWEEN :start AND :end
+               AND wr.status IN ('completed', 'pending', 'rejected')
+             GROUP BY wr.status"
+        );
+        $stmt->execute([':start' => $start_datetime, ':end' => $end_datetime]);
+        
+        $commissionStatusData = ['completed' => 0, 'pending' => 0, 'rejected' => 0];
+        $commissionStatusAmounts = ['completed' => 0, 'pending' => 0, 'rejected' => 0];
+        
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
+            $commissionStatusData[$r['status']] = (int)$r['count'];
+            $commissionStatusAmounts[$r['status']] = (float)$r['total_amount'];
+        }
+        
+        $data['commission_analytics_chart_data'] = [
+            'labels' => ['Đã thanh toán', 'Chờ thanh toán', 'Từ chối'],
+            'data' => [
+                $commissionStatusData['completed'], 
+                $commissionStatusData['pending'], 
+                $commissionStatusData['rejected']
+            ],
+            'amounts' => [
+                $commissionStatusAmounts['completed'],
+                $commissionStatusAmounts['pending'], 
+                $commissionStatusAmounts['rejected']
+            ]
+        ];
+
         return $data;
     }
 }

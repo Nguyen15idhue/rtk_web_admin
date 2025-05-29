@@ -72,10 +72,20 @@ if ($tableName === 'reports') {
             $report_row_data[$field] = 0; // Or use '' or 'N/A' depending on expected data type
         }
     }
-    $dataToExport = [$report_row_data]; // Prepare data for Excel export
 
-    // Export directly and terminate script
-    ExcelExportService::export($dataToExport, 'reports_' . date('Ymd_His') . '.xlsx');
+    // Add chart data to report data
+    if (isset($revenue_trend_chart_data)) {
+        $report_row_data['revenue_trend_chart_data'] = $revenue_trend_chart_data;
+    }
+    if (isset($transaction_status_chart_data)) {
+        $report_row_data['transaction_status_chart_data'] = $transaction_status_chart_data;
+    }
+    if (isset($commission_analytics_chart_data)) {
+        $report_row_data['commission_analytics_chart_data'] = $commission_analytics_chart_data;
+    }
+
+    // Export with charts and multiple sheets using enhanced export method
+    ExcelExportService::exportReportsWithCharts($report_row_data, $start_date, $end_date, $pdo);
     exit; // IMPORTANT: Stop script execution after handling report export
 }
 
