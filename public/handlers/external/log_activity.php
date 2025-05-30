@@ -2,7 +2,7 @@
 // filepath: public/handlers/external/log_activity.php
 // MODIFIED: This script now runs as a cron job.
 // It scans the activity_log table for entries matching specific actions
-// from the last minute and sends Telegram notifications.
+// from the last minute and sends Discord notifications.
 
 date_default_timezone_set('UTC'); // Explicitly set PHP to UTC for internal calculations
 
@@ -129,17 +129,19 @@ foreach ($activities as $activity) {
     $formattedLog = format_activity_log($logDetails); // Assuming this function is robust
 
     if (isset($formattedLog['message']) && !empty(trim($formattedLog['message']))) {
-        // Sanitize unsupported <span> tags before sending to Telegram
+        // Convert HTML to Discord markdown: strip <span>, convert <strong> to **bold**, then remove other tags
         $messageToSend = preg_replace('#<span[^>]*>(.*?)</span>#i', '$1', $formattedLog['message']);
-        // Send Telegram notification
-        $sendSuccess = ActivityLogModel::sendTelegram($messageToSend);
+        $messageToSend = preg_replace('#<strong>(.*?)</strong>#i', '**$1**', $messageToSend);
+        $messageToSend = strip_tags($messageToSend);
+        // Send Discord notification
+        $sendSuccess = ActivityLogModel::sendDiscord($messageToSend);
         if ($sendSuccess) {
-            echo "Cron log_activity: Notification sent for action: {$activity['action']}, Entity: {$activity['entity_type']}#{$activity['entity_id']}\n";
+            echo "Cron log_activity: Notification sent for action: {$activity['action']}, Entity: {$activity['entity_type']}#{$activity['entity_id']}\\n";
             $notificationsSent++;
         } else {
-            $logMessage = "Cron log_activity: Failed to send Telegram notification for action: {$activity['action']}, Entity: {$activity['entity_type']}#{$activity['entity_id']}. Message: {$messageToSend}";
+            $logMessage = "Cron log_activity: Failed to send Discord notification for action: {$activity['action']}, Entity: {$activity['entity_type']}#{$activity['entity_id']}. Message: {$messageToSend}";
             error_log($logMessage);
-            echo $logMessage . "\n";
+            echo $logMessage . "\\n";
             $notificationsFailed++;
         }
     } else {

@@ -142,7 +142,7 @@ function get_transaction_details(int $transactionId): ?array {
         
         // Generate payment proof URL if exists
         if ($result['payment_image']) {
-            $result['payment_proof_url'] = IMAGE_HOST_BASE_URL . 'public/uploads/payment_proofs/' . $result['payment_image'];
+            $result['payment_proof_url'] = USER_URL . 'public/uploads/payment_proofs/' . $result['payment_image'];
         }
 
         return $result;
