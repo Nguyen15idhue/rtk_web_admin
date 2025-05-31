@@ -12,6 +12,22 @@ require_once $private_layouts_path . 'admin_sidebar.php';
 $GLOBALS['required_permission'] = 'station_management'; // Permission requirement
 $page_title = "Quản lý Trạm";
 
+// --- Determine active tab ---
+$active_tab = isset($_GET['active_tab']) ? $_GET['active_tab'] : 'station-management-tab';
+
+// --- Helper function to generate URL with preserved active_tab ---
+function get_url_with_active_tab($base_url, $tab_id) {
+    $parsed_url = parse_url($base_url);
+    $query_params = [];
+    if (isset($parsed_url['query'])) {
+        parse_str($parsed_url['query'], $query_params);
+    }
+    $query_params['active_tab'] = $tab_id;
+    $query_string = http_build_query($query_params);
+    $clean_url = strtok($base_url, '?');
+    return $clean_url . '?' . $query_string;
+}
+
 // --- Data & Business Logic ---
 require_once __DIR__ . '/../../../private/actions/station/management.php';
 
@@ -20,19 +36,18 @@ $canEditStation = Auth::can('station_management_edit');
 ?>
 
 <main class="content-wrapper">
-    <?php include $private_layouts_path . 'content_header.php'; ?>
-
-    <ul class="custom-tabs-nav">
-        <li class="nav-item"><a href="javascript:void(0)" class="nav-link active" data-tab="station-management-tab">Quản lý trạm</a></li>
-        <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-tab="manager-management-tab">Quản lý Người quản lý</a></li>
+    <?php include $private_layouts_path . 'content_header.php'; ?>    <ul class="custom-tabs-nav">
+        <li class="nav-item"><a href="javascript:void(0)" class="nav-link <?php echo $active_tab === 'station-management-tab' ? 'active' : ''; ?>" data-tab="station-management-tab">Quản lý trạm</a></li>
+        <li class="nav-item"><a href="javascript:void(0)" class="nav-link <?php echo $active_tab === 'manager-management-tab' ? 'active' : ''; ?>" data-tab="manager-management-tab">Quản lý Người quản lý</a></li>
+        <li class="nav-item"><a href="javascript:void(0)" class="nav-link <?php echo $active_tab === 'mountpoint-management-tab' ? 'active' : ''; ?>" data-tab="mountpoint-management-tab">Quản lý Mountpoint</a></li>
     </ul>
 
-    <div class="tab-content" id="station-management-tab">
-        <!-- Filter Form -->
+    <div class="tab-content" id="station-management-tab" <?php echo $active_tab !== 'station-management-tab' ? 'style="display:none;"' : ''; ?>>        <!-- Filter Form -->
         <form method="GET" action="" class="filter-bar" style="margin-bottom:15px;">
+            <input type="hidden" name="active_tab" value="station-management-tab">
             <input type="search" name="q" placeholder="Tìm kiếm trạm..." value="<?php echo htmlspecialchars($filters['q']); ?>">
             <button type="submit" class="btn btn-primary">Tìm</button>
-            <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary">Xóa lọc</a>
+            <a href="<?php echo get_url_with_active_tab(strtok($_SERVER["REQUEST_URI"], '?'), 'station-management-tab'); ?>" class="btn btn-secondary">Xóa lọc</a>
         </form>
 
         <!-- Bulk Export Form -->
@@ -42,6 +57,9 @@ $canEditStation = Auth::can('station_management_edit');
             <div class="bulk-actions-bar" style="margin-bottom:15px;">
                 <button type="submit" name="export_selected_excel" class="btn btn-info">Xuất mục đã chọn</button>
                 <button type="submit" name="export_all" class="btn btn-success">Xuất tất cả</button>
+                <button type="button" class="btn btn-warning" onclick="window.location.href='<?php echo $base_url; ?>public/handlers/account/index.php?action=cron_update_stations'">
+                    <i class="fas fa-sync-alt"></i> Làm mới danh sách
+                </button>
             </div>
         </form>
 
@@ -134,10 +152,19 @@ $canEditStation = Auth::can('station_management_edit');
                     <?php endforeach; endif; ?>
                 </tbody>
             </table>
-        </div>
-    </div>
+        </div> <!-- End of table-wrapper for stations -->
+        <?php
+            $current_page = $stations_page;
+            $total_items = $total_station_items;
+            $total_pages = $total_pages_stations;
+            $items_per_page = DEFAULT_ITEMS_PER_PAGE;
+            $pagination_base_url = get_url_with_active_tab(strtok($_SERVER["REQUEST_URI"], '?'), 'station-management-tab');
+            $pagination_param = 'station_page';
+            include $private_layouts_path . 'pagination.php';
+        ?>
+    </div> <!-- .tab-content #station-management-tab -->
 
-    <div class="tab-content" id="manager-management-tab" style="display:none;">
+    <div class="tab-content" id="manager-management-tab" <?php echo $active_tab !== 'manager-management-tab' ? 'style="display:none;"' : ''; ?>>
         <!-- Manager Management Section -->
         <div id="manager-management" class="content-section" style="margin-top:40px;">
             <div class="header-actions">
@@ -175,6 +202,89 @@ $canEditStation = Auth::can('station_management_edit');
                     </tbody>
                 </table>
             </div>
+            <?php
+                $current_page = $managers_page;
+                $total_items = $total_manager_items;
+                $total_pages = $total_pages_managers;
+                $items_per_page = DEFAULT_ITEMS_PER_PAGE;
+                $pagination_base_url = get_url_with_active_tab(strtok($_SERVER["REQUEST_URI"], '?'), 'manager-management-tab');
+                $pagination_param = 'manager_page';
+                include $private_layouts_path . 'pagination.php';
+            ?>        
+        </div>
+    </div> <!-- .tab-content #manager-management-tab -->
+
+    <div class="tab-content" id="mountpoint-management-tab" <?php echo $active_tab !== 'mountpoint-management-tab' ? 'style="display:none;"' : ''; ?>>
+        <div class="content-section" style="margin-top:40px;">
+            <!-- Filter Form for Mountpoints -->
+            <form method="GET" action="" class="filter-bar" style="margin-bottom:15px;">
+                <input type="hidden" name="active_tab" value="mountpoint-management-tab">
+                <input type="search" name="mp_q" placeholder="Tìm kiếm Mountpoint..." value="<?php echo htmlspecialchars($mp_filters['q_mp'] ?? ''); ?>">
+                <button type="submit" class="btn btn-primary">Tìm</button>
+                <a href="<?php echo get_url_with_active_tab(strtok($_SERVER['REQUEST_URI'], '?'), 'mountpoint-management-tab'); ?>" class="btn btn-secondary">Xóa lọc</a>
+            </form>
+            <div class="d-flex justify-content-end mb-2">
+                <button type="button" class="btn btn-warning" onclick="window.location.href='<?php echo $base_url; ?>public/handlers/account/index.php?action=cron_update_stations'">
+                    <i class="fas fa-sync-alt"></i> Làm mới danh sách
+                </button>
+            </div>
+            <div class="header-actions">
+                <h3>Quản lý Mountpoint</h3>
+            </div>
+            <div class="table-wrapper">
+                <table class="table" id="mountpointsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Mountpoint</th>
+                            <th>IP</th>
+                            <th>Port</th>
+                            <th>Province Assignment</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($allMountPoints)): ?>
+                            <tr><td colspan="6">Không tìm thấy Mountpoint nào.</td></tr>
+                        <?php else: foreach ($allMountPoints as $mp): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($mp['id']); ?></td>
+                                <td><?php echo htmlspecialchars($mp['mountpoint']); ?></td>
+                                <td><?php echo htmlspecialchars($mp['ip']); ?></td>
+                                <td><?php echo htmlspecialchars($mp['port']); ?></td>
+                                <td>
+                                    <form id="updateMountpointForm_<?php echo htmlspecialchars($mp['id']); ?>" action="<?php echo $base_url; ?>public/handlers/station/mountpoint_index.php" method="POST">
+                                        <input type="hidden" name="action" value="update_mountpoint">
+                                        <input type="hidden" name="mountpoint_id" value="<?php echo htmlspecialchars($mp['id']); ?>">
+                                        <select name="location_id" class="form-control" <?php echo !$canEditStation ? 'disabled' : ''; ?>>
+                                            <option value="">-- Chưa phân bổ --</option>
+                                            <?php foreach ($allLocations as $loc): ?>
+                                                <option value="<?php echo htmlspecialchars($loc['id'], ENT_QUOTES, 'UTF-8'); ?>" <?php echo ((string)$mp['location_id'] === (string)$loc['id']) ? 'selected' : ''; ?>>
+                                                    <?php echo htmlspecialchars($loc['province']); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                </td>
+                                <td>
+                                        <?php if ($canEditStation): ?>
+                                            <button type="submit" class="btn btn-primary btn-sm">Lưu</button>
+                                        <?php endif; ?>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; endif; ?>
+                    </tbody>
+                </table>
+            </div>
+            <?php
+                $current_page = $mountpoints_page;
+                $total_items = $total_mountpoint_items;
+                $total_pages = $total_pages_mountpoints;
+                $items_per_page = DEFAULT_ITEMS_PER_PAGE;
+                $pagination_base_url = get_url_with_active_tab(strtok($_SERVER["REQUEST_URI"], '?'), 'mountpoint-management-tab');
+                $pagination_param = 'mountpoint_page';
+                include $private_layouts_path . 'pagination.php';
+            ?>
         </div>
     </div>
 </main>
@@ -187,6 +297,7 @@ $canEditStation = Auth::can('station_management_edit');
             station_management_edit: <?php echo json_encode($canEditStation); ?>
         }
     };
+    window.activeTab = '<?php echo $active_tab; ?>';
 </script>
 
 <script>
@@ -196,7 +307,6 @@ $canEditStation = Auth::can('station_management_edit');
 </script>
 
 <!-- external scripts -->
-<script src="<?php echo $base_url; ?>public/assets/js/utils/bulk_actions.js"></script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/station/station_management.js"></script>
 
 <?php

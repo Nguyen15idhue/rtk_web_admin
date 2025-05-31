@@ -65,15 +65,6 @@ function renderRejectionReason($invoice) {
 }
 
 /**
- * Format filter values for safe HTML output
- * @param array $filters Filter array
- * @return array Sanitized filters
- */
-function sanitizeFilters($filters) {
-    return array_map('htmlspecialchars', $filters);
-}
-
-/**
  * Build filter select options
  * @param array $options Available options
  * @param string $selectedValue Currently selected value

@@ -1,6 +1,7 @@
 import { initializeDateRangePresets } from './modules/dateRangePresets.js';
 import { initializeReportFormHandler } from './modules/reportFormHandler.js';
 import { initializeTabSwitcher } from './modules/tabSwitcher.js';
+import { formatCurrencyShort, formatCurrencyFull, formatDateShort, formatDateForMobile, isMobile, getResponsiveChartOptions } from './modules/chartHelpers.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     initializeDateRangePresets();
@@ -41,16 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: {
-                    intersect: false,
-                    mode: 'index'
-                },
-                animation: {
-                    duration: 1000,
-                    easing: 'easeInOutQuart'
-                },
+                ...getResponsiveChartOptions('line'),
                 scales: {
                     y: { 
                         beginAtZero: true,
@@ -59,13 +51,13 @@ document.addEventListener('DOMContentLoaded', function() {
                             precision: 0,
                             font: {
                                 family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                                size: 12,
+                                size: isMobile() ? 10 : 12,
                                 weight: '500'
                             },
                             color: '#6B7280',
-                            padding: 12,
+                            padding: isMobile() ? 8 : 12,
                             callback: function(value) {
-                                return new Intl.NumberFormat('vi-VN').format(value) + ' đ';
+                                return formatCurrencyShort(value);
                             }
                         }, 
                         grid: { 
@@ -81,15 +73,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         grid: { display: false },
                         ticks: { 
                             autoSkip: true, 
-                            maxTicksLimit: 7, 
-                            maxRotation: 0,
+                            maxTicksLimit: isMobile() ? 4 : 7, 
+                            maxRotation: isMobile() ? 45 : 0,
                             font: {
                                 family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                                size: 12,
+                                size: isMobile() ? 10 : 12,
                                 weight: '500'
                             },
                             color: '#6B7280',
-                            padding: 8
+                            padding: isMobile() ? 4 : 8,
+                            callback: function(value, index, values) {
+                                const label = this.getLabelForValue(value);
+                                return isMobile() ? formatDateForMobile(label) : label;
+                            }
                         },
                         border: {
                             display: false
@@ -123,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             },
                             label: function(context) {
                                 return '💰 ' + context.dataset.label + ': ' + 
-                                       new Intl.NumberFormat('vi-VN').format(context.parsed.y) + ' đ';
+                                       formatCurrencyFull(context.parsed.y);
                             }
                         }
                     },
@@ -179,17 +175,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 plugins: {
                     legend: { 
-                        position: 'right',
+                        position: isMobile() ? 'bottom' : 'right',
                         labels: {
                             usePointStyle: true,
                             pointStyle: 'circle',
                             font: {
                                 family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                                size: 13,
+                                size: isMobile() ? 11 : 13,
                                 weight: '500'
                             },
                             color: '#374151',
-                            padding: 15,
+                            padding: isMobile() ? 10 : 15,
                             generateLabels: function(chart) {
                                 const data = chart.data;
                                 if (data.labels.length && data.datasets.length && data.datasets[0].data.length) {
@@ -198,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         const value = data.datasets[0].data[i] || 0;
                                         const percentage = total > 0 ? ((value / total) * 100).toFixed(0) : 0;
                                         return {
-                                            text: `${label} (${percentage}%)`,
+                                            text: isMobile() && label.length > 8 ? `${label.substring(0, 8)}... (${percentage}%)` : `${label} (${percentage}%)`,
                                             fillStyle: data.datasets[0].backgroundColor[i],
                                             index: i
                                         };
@@ -215,15 +211,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         borderColor: '#374151',
                         borderWidth: 1,
                         cornerRadius: 12,
-                        padding: 16,
+                        padding: isMobile() ? 12 : 16,
                         titleFont: {
                             family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                            size: 14,
+                            size: isMobile() ? 12 : 14,
                             weight: '600'
                         },
                         bodyFont: {
                             family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                            size: 13,
+                            size: isMobile() ? 11 : 13,
                             weight: '500'
                         },
                         callbacks: {
@@ -302,16 +298,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 ]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: {
-                    intersect: false,
-                    mode: 'index'
-                },
-                animation: {
-                    duration: 1000,
-                    easing: 'easeInOutQuart'
-                },
+                ...getResponsiveChartOptions('line'),
                 scales: {
                     y: { 
                         beginAtZero: true, 
@@ -319,11 +306,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             precision: 0,
                             font: {
                                 family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                                size: 12,
+                                size: isMobile() ? 10 : 12,
                                 weight: '500'
                             },
                             color: '#6B7280',
-                            padding: 12
+                            padding: isMobile() ? 8 : 12
                         }, 
                         grid: { 
                             color: 'rgba(229, 231, 235, 0.3)',
@@ -338,15 +325,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         grid: { display: false }, 
                         ticks: { 
                             autoSkip: true, 
-                            maxTicksLimit: 7,
-                            maxRotation: 0,
+                            maxTicksLimit: isMobile() ? 4 : 7,
+                            maxRotation: isMobile() ? 45 : 0,
                             font: {
                                 family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                                size: 12,
+                                size: isMobile() ? 10 : 12,
                                 weight: '500'
                             },
                             color: '#6B7280',
-                            padding: 8
+                            padding: isMobile() ? 4 : 8,
+                            callback: function(value, index, values) {
+                                const label = this.getLabelForValue(value);
+                                return isMobile() ? formatDateForMobile(label) : label;
+                            }
                         },
                         border: {
                             display: false
@@ -434,12 +425,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }] 
             },
             options: { 
-                responsive: true, 
-                maintainAspectRatio: false,
-                animation: {
-                    duration: 1000,
-                    easing: 'easeInOutQuart'
-                },
+                ...getResponsiveChartOptions('bar'),
                 scales: { 
                     y: {
                         beginAtZero: true,
@@ -447,11 +433,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             precision: 0,
                             font: {
                                 family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                                size: 12,
+                                size: isMobile() ? 10 : 12,
                                 weight: '500'
                             },
                             color: '#6B7280',
-                            padding: 12
+                            padding: isMobile() ? 8 : 12
                         },
                         grid: {
                             color: 'rgba(229, 231, 235, 0.3)',
@@ -465,13 +451,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     x: {
                         grid: { display: false },
                         ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: isMobile() ? 3 : 6,
+                            maxRotation: isMobile() ? 45 : 0,
                             font: {
                                 family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                                size: 12,
+                                size: isMobile() ? 9 : 12,
                                 weight: '500'
                             },
                             color: '#6B7280',
-                            padding: 8
+                            padding: isMobile() ? 4 : 8
                         },
                         border: {
                             display: false
@@ -541,17 +530,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 plugins: { 
                     legend: { 
-                        position: 'right',
+                        position: isMobile() ? 'bottom' : 'right',
                         labels: {
                             usePointStyle: true,
                             pointStyle: 'circle',
                             font: {
                                 family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                                size: 13,
+                                size: isMobile() ? 11 : 13,
                                 weight: '500'
                             },
                             color: '#374151',
-                            padding: 15,
+                            padding: isMobile() ? 10 : 15,
                             generateLabels: function(chart) {
                                 const data = chart.data;
                                 if (data.labels.length && data.datasets.length && data.datasets[0].data.length) {
@@ -560,7 +549,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         const value = data.datasets[0].data[i] || 0;
                                         const percentage = total > 0 ? ((value / total) * 100).toFixed(0) : 0;
                                         return {
-                                            text: `${label} (${percentage}%)`,
+                                            text: isMobile() ? `${label} (${percentage}%)` : `${label} (${percentage}%)`,
                                             fillStyle: data.datasets[0].backgroundColor[i],
                                             index: i
                                         };
@@ -577,15 +566,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         borderColor: '#374151',
                         borderWidth: 1,
                         cornerRadius: 12,
-                        padding: 16,
+                        padding: isMobile() ? 12 : 16,
                         titleFont: {
                             family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                            size: 14,
+                            size: isMobile() ? 12 : 14,
                             weight: '600'
                         },
                         bodyFont: {
                             family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                            size: 13,
+                            size: isMobile() ? 11 : 13,
                             weight: '500'
                         },
                         mode: 'index', 
@@ -646,17 +635,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 plugins: {
                     legend: { 
-                        position: 'bottom',
+                        position: isMobile() ? 'bottom' : 'bottom',
                         labels: {
                             usePointStyle: true,
                             pointStyle: 'circle',
                             font: {
                                 family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                                size: 13,
+                                size: isMobile() ? 11 : 13,
                                 weight: '500'
                             },
                             color: '#374151',
-                            padding: 15,
+                            padding: isMobile() ? 10 : 15,
                             generateLabels: function(chart) {
                                 const data = chart.data;
                                 if (data.labels.length && data.datasets.length && data.datasets[0].data.length) {
@@ -665,7 +654,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         const value = data.datasets[0].data[i] || 0;
                                         const percentage = total > 0 ? ((value / total) * 100).toFixed(0) : 0;
                                         return {
-                                            text: `${label} (${percentage}%)`,
+                                            text: isMobile() && label.length > 10 ? `${label.substring(0, 10)}... (${percentage}%)` : `${label} (${percentage}%)`,
                                             fillStyle: data.datasets[0].backgroundColor[i],
                                             index: i
                                         };
@@ -731,4 +720,26 @@ document.addEventListener('DOMContentLoaded', function() {
         sd.addEventListener('change', () => ed._flatpickr.set('minDate', sd.value));
         ed.addEventListener('change', () => sd._flatpickr.set('maxDate', ed.value));
     }
+
+    // Add resize listener to update charts on orientation change (mobile)
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            // Re-render charts with new responsive settings
+            // Use Chart.registry.getController to get chart instances safely
+            const chartIds = ['revenueTrendChart', 'overviewChart', 'userPackageDistributionChart', 'transactionStatusChart', 'userPackageRatioChart', 'commissionAnalyticsChart'];
+            
+            chartIds.forEach(chartId => {
+                const canvas = document.getElementById(chartId);
+                if (canvas) {
+                    const chart = Chart.getChart(canvas);
+                    if (chart) {
+                        chart.resize();
+                        chart.update('none'); // Update without animation for smoother experience
+                    }
+                }
+            });
+        }, 250);
+    });
 });

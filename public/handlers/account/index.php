@@ -18,9 +18,17 @@ if (!in_array($action, $allowed, true)) {
 
 // special handler for cron-driven station update
 if ($action === 'cron_update_stations') {
+    // Perform station update and redirect back to management page
     require_once dirname(__DIR__, 3) . '/private/api/rtk_system/account_api.php';
     fetchAndUpdateStations();
-    echo json_encode(['success' => true, 'message' => 'Stations updated']);
+    // Set flash message
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    $_SESSION['message'] = 'Danh sách trạm đã được làm mới.';
+    $_SESSION['message_type'] = 'success';
+    // Redirect back to station management page
+    header('Location: ' . BASE_URL . 'public/pages/station/station_management.php');
     exit;
 }
 

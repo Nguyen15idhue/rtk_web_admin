@@ -120,7 +120,8 @@ class ReportModel {
         $labels = [];
         $dataReg = [];
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
-            $labels[]  = $r['d'];
+            // Format date as dd/mm/yyyy
+            $labels[]  = date('d/m/Y', strtotime($r['d']));
             $dataReg[] = (int)$r['c'];
         }
         $data['new_registrations_chart_data'] = ['labels' => $labels, 'data' => $dataReg];
@@ -137,7 +138,8 @@ class ReportModel {
         $labels = [];
         $dataRef = [];
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
-            $labels[] = $r['d'];
+            // Format date as dd/mm/yyyy
+            $labels[] = date('d/m/Y', strtotime($r['d']));
             $dataRef[] = (int)$r['c'];
         }
         $data['referral_chart_data'] = ['labels' => $labels, 'data' => $dataRef];
@@ -186,7 +188,8 @@ class ReportModel {
         $labels = [];
         $revenueData = [];
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
-            $labels[] = $r['d'];
+            // Format date as dd/mm/yyyy
+            $labels[] = date('d/m/Y', strtotime($r['d']));
             $revenueData[] = (float)($r['revenue'] ?: 0);
         }
         $data['revenue_trend_chart_data'] = ['labels' => $labels, 'data' => $revenueData];

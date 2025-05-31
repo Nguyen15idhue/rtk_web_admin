@@ -1,14 +1,9 @@
 /* Dashboard Enhancements */
 .charts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
-}
-.chart-container {
-  background: #fff;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Base for auto-fit */
+  gap: 1.5rem;
+  align-items: start;
 }
 
 .recent-activity {
@@ -17,10 +12,94 @@
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
 .activity-list {
   max-height: 370px;
   overflow-y: auto;
 }
+
+/* Styles for the 3-column chart row, distinct from general charts-grid */
+.dashboard-charts-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns for desktop */
+    gap: 1rem;
+    margin-bottom: 1.5rem; /* Space before the top_users table */
+}
+
+.dashboard-charts-row .card .card-title { /* Ensure card titles in charts are consistent */
+    font-size: 0.9rem; /* Adjust as needed */
+    margin-bottom: 0;
+}
+
+.dashboard-charts-row .chart-container {
+    position: relative; /* Needed for chart.js responsiveness */
+    height: 240px; /* Uniform height for charts in this row */
+}
+
+/* General Chart Card Styling */
+.chart-card {
+    background: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #e5e7eb;
+}
+
+.chart-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.chart-header { /* General chart header */
+    background: #ffffff;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f1f3f4;
+    position: relative;
+}
+
+.chart-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.chart-title { /* General chart title */
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #4b5563;
+    text-align: center;
+    letter-spacing: 0.025em;
+}
+
+.chart-body { /* General chart body */
+    padding: 1.25rem;
+    background: #fff;
+}
+
+.chart-container { /* General chart container */
+    position: relative;
+    height: 280px; /* Default height */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.chart-container canvas {
+    max-width: 100%;
+    height: auto !important;
+}
+
+/* Responsive adjustments for .charts-grid */
 @media (max-width: 600px) {
     .custom-tabs-nav {
         gap: 0.5rem;
@@ -30,53 +109,115 @@
         text-align: left;
         border-radius: 0.25rem;
     }
-}
-.charts-section .card { /* Existing style for cards */
-    margin-bottom: 1rem;
-    box-shadow: none;
-    border-radius: 0.5rem;
-}
-.charts-section .card-header { /* Existing style for card headers */
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    background: #f8f9fa;
-    border-bottom: 1px solid #e5e5e5;
-}
-.charts-section .card-body { /* Existing style for card bodies */
-    padding: 1rem;
-    background: #f8f9fa;
-}
-@media (max-width: 600px) {
-    .charts-section .card-body {
+    .charts-grid { /* Was .charts-section .card-body and .charts-grid */
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .charts-section .card-body { /* Specific to .charts-section if still needed */
         padding: 0.5rem;
     }
 }
 
-/* New styles for the 3-column chart row */
-.dashboard-charts-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* Three columns for desktop */
-    gap: 1rem;
-    margin-bottom: 1.5rem; /* Space before the top_users table */
+@media (min-width: 601px) and (max-width: 992px) {
+    .charts-grid {
+        grid-template-columns: 1fr 1fr; /* Two columns for tablets */
+        gap: 1rem; /* Consistent gap */
+    }
 }
-@media (max-width: 992px) { /* Tablets: 2 columns */
+
+/* Responsive adjustments for .dashboard-charts-row */
+@media (max-width: 992px) { /* Tablets: 2 columns for dashboard-charts-row */
     .dashboard-charts-row {
         grid-template-columns: 1fr 1fr;
     }
 }
-@media (max-width: 767px) { /* Mobile: 1 column */
-    .dashboard-charts-row {
+
+/* Combined Mobile Responsiveness (up to 767px) */
+@media (max-width: 767px) {
+    .dashboard-charts-row { /* Mobile: 1 column for dashboard-charts-row */
         grid-template-columns: 1fr;
     }
+
+    /* General chart adjustments for mobile */
+    .chart-container { /* Applies to .dashboard-charts-row .chart-container and general .chart-container */
+        height: 240px !important; /* Adjusted height on mobile, was 220px in one rule, 240px in another */
+    }
+    .chart-title { /* General chart title on mobile */
+        font-size: 0.875rem; /* Was 0.8rem and 0.875rem */
+    }
+    .chart-body { /* General chart body on mobile */
+        padding: 1rem; /* Was 0.75rem and 1rem */
+    }
+    .chart-header { /* General chart header on mobile */
+        padding: 0.625rem 0.875rem; /* Was 0.5rem 0.75rem and 0.625rem 0.875rem */
+    }
+    .charts-grid { /* General charts grid on mobile */
+        grid-template-columns: 1fr; /* Ensures single column */
+        gap: 1rem;
+    }
 }
-.dashboard-charts-row .card .card-title { /* Ensure card titles in charts are consistent */
-    font-size: 0.9rem; /* Adjust as needed */
+
+/* Small mobile phones (max-width: 480px) */
+@media (max-width: 480px) {
+    .charts-section { /* Specific to .charts-section if still needed */
+        margin: 1rem 0;
+    }
+    .chart-container { /* Further height reduction for very small screens */
+        height: 220px !important; /* Was 200px and 220px */
+    }
+    .chart-body {
+        padding: 0.75rem; /* Was 0.5rem and 0.75rem */
+    }
+    .chart-title {
+        font-size: 0.825rem; /* Was 0.75rem and 0.825rem */
+    }
+    .chart-header {
+        padding: 0.5rem 0.75rem;
+    }
+    .preset-buttons-container {
+        padding: 0.75rem 1rem;
+    }
+    .preset-buttons {
+        gap: 0.4rem;
+    }
+    .preset-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.75rem;
+        min-width: 75px;
+    }
+}
+
+/* Desktop Grid Layouts */
+@media (min-width: 1400px) { /* For very large screens, ensure 3 columns and max-width */
+    .charts-grid {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1399.98px) { /* Large desktops, ensure 2 columns if not using auto-fit effectively */
+}
+
+
+/* Legacy .charts-section specific styles (if needed, otherwise integrate or remove) */
+.charts-section .card {
+    margin-bottom: 1rem;
+    box-shadow: none; /* Overridden by .chart-card if elements have both classes */
+    border-radius: 0.5rem; /* Overridden by .chart-card */
+}
+.charts-section .card-header {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background: #f8f9fa; /* Overridden by .chart-header */
+    border-bottom: 1px solid #e5e5e5; /* Overridden by .chart-header */
+}
+
+.content-section h3 {
     margin-bottom: 0;
 }
-.dashboard-charts-row .chart-container {
-    position: relative; /* Needed for chart.js responsiveness */
-    height: 240px; /* Uniform height for charts in this row */
-}
+
 .hidden { display: none; }
 .table-responsive { overflow-x: auto; }
 .table-sm th, .table-sm td { padding: 0.5rem; font-size: 0.875rem; }
@@ -116,168 +257,16 @@
     flex-wrap: wrap;
     gap: 0.6rem;
 }
-/* Preset button styles moved to components/buttons.css - use .preset-btn class */
-@media (max-width: 768px) {
-    .preset-buttons-container {
-        padding: 0.75rem 1rem;
-    }
-    .preset-buttons {
-        gap: 0.4rem;
-    }
-    .preset-btn {
-        padding: 0.5rem 0.8rem;
-        font-size: 0.75rem;
-        min-width: 75px;
-    }
-}
 
-/* Improved Chart Cards Layout */
 .charts-section {
     margin: 1.5rem 0;
 }
-
-.charts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 1.5rem;
-    align-items: start;
-}
-
-.chart-card {
-    background: #fff;
-    border-radius: 0.75rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid #e5e7eb;
-}
-
-.chart-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-}
-
-.chart-header {
-    background: #ffffff;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #f1f3f4;
-    position: relative;
-}
-
-.chart-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
-    border-radius: 0.75rem 0.75rem 0 0;
-}
-
-.chart-title {
-    margin: 0;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #4b5563;
-    text-align: center;
-    letter-spacing: 0.025em;
-}
-
-.chart-body {
-    padding: 1.25rem;
-    background: #fff;
-}
-
-.chart-container {
-    position: relative;
-    height: 280px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    padding: 0;
-}
-
-.chart-container canvas {
-    max-width: 100%;
-    height: auto !important;
-}
-
-/* Remove margin-bottom from h3 elements used as chart headers within .content-section */
-.content-section h3 {
-    margin-bottom: 0;
-}
-
-/* Responsive adjustments */
 @media (max-width: 1200px) {
     .charts-grid {
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 1.25rem;
     }
-    
-    .chart-container {
+    .chart-container { /* Specific height for 769px to 1200px */
         height: 260px;
-    }
-}
-
-@media (max-width: 768px) {
-    .charts-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-    
-    .chart-header {
-        padding: 0.625rem 0.875rem;
-    }
-    
-    .chart-title {
-        font-size: 0.875rem;
-    }
-    
-    .chart-body {
-        padding: 1rem;
-    }
-    
-    .chart-container {
-        height: 240px;
-    }
-}
-
-@media (max-width: 480px) {
-    .charts-section {
-        margin: 1rem 0;
-    }
-    
-    .chart-header {
-        padding: 0.5rem 0.75rem;
-    }
-    
-    .chart-title {
-        font-size: 0.825rem;
-    }
-    
-    .chart-body {
-        padding: 0.75rem;
-    }
-    
-    .chart-container {
-        height: 220px;
-    }
-}
-
-/* Ensure charts maintain aspect ratio and responsive behavior */
-@media (min-width: 1400px) {
-    .charts-grid {
-        grid-template-columns: repeat(3, 1fr);
-        max-width: 1400px;
-        margin: 0 auto;
-    }
-}
-
-@media (min-width: 992px) and (max-width: 1399px) {
-    .charts-grid {
-        grid-template-columns: repeat(2, 1fr);
     }
 }

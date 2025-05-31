@@ -48,6 +48,7 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
 $isEditVoucherAllowed = Auth::can('voucher_management_edit');
 // --- Page Setup for Header/Sidebar ---
 $page_title = 'Quản lý Voucher';
+$additional_css = ['pages/voucher/voucher_management.css']; // Add this line
 include $private_layouts_path . 'admin_header.php';
 include $private_layouts_path . 'admin_sidebar.php';
 ?>
@@ -216,13 +217,3 @@ include $private_layouts_path . 'admin_sidebar.php';
 <script src="<?php echo $base_url; ?>public/assets/js/utils/bulk_actions.js"></script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/voucher/voucher_management.js"></script>
 <?php include $private_layouts_path . 'admin_footer.php'; ?>
-
-<style>
-    /* Truncate long descriptions */
-    .description-col {
-        max-width: 200px; /* Adjust based on your layout */
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-</style>

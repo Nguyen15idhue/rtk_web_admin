@@ -35,7 +35,7 @@ $additional_css = [
     'components/stat-card.css',
     'components/analytics-card.css', 
     'components/progress-bar.css',
-    'pages/voucher_analytics.css'
+    'pages/voucher/voucher_analytics.css'
 ];
 
 include $private_layouts_path . 'admin_header.php';

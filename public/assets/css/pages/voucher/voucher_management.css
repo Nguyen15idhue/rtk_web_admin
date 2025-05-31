@@ -1,0 +1,27 @@
+.description-col {
+    max-width: 250px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Action column icon colors */
+.action-cell .btn-view i {
+    color: #0056b3;
+}
+.action-cell .btn-edit i {
+    color: #e65c00;
+}
+.action-cell .btn-success i {
+    color: #17a2b8;
+}
+.action-cell .btn-link i {
+    color: #6f42c1;
+}
+/* Toggle icons */
+.action-cell .fa-toggle-off {
+    color: #c82333;
+}
+.action-cell .fa-toggle-on {
+    color: #218838;
+}

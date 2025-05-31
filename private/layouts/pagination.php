@@ -19,22 +19,36 @@ if (!isset($pagination_base_url)) {
     $pagination_base_url = '?'; // Default base URL
 }
 
-// Function to generate pagination link, preserving existing query parameters
-function generate_pagination_link($page, $base_url) {
-    $query_params = $_GET; // Get current query parameters
-    $query_params['page'] = $page; // Set/update the page parameter
-    // Ensure base_url ends with '?' or '&' appropriately
-    $separator = (strpos($base_url, '?') === false) ? '?' : '&';
-    // Remove existing 'page' param from base_url if present to avoid duplicates
-    $base_url = preg_replace('/([?&])page=[^&]*&?/', '$1', $base_url);
-    // Ensure the base URL doesn't end with '?' or '&' before adding query string
-     if (substr($base_url, -1) === '?' || substr($base_url, -1) === '&') {
-         $base_url = rtrim($base_url, '?&');
-     }
-     $query_string = http_build_query($query_params);
+// Add support for custom pagination parameter name
+if (!isset($pagination_param)) {
+    $pagination_param = 'page';
+}
 
-     // Reconstruct the final URL
-     return $base_url . (empty($query_string) ? '' : $separator . $query_string);
+// Function to generate pagination link, preserving existing query parameters
+if (!function_exists('generate_pagination_link')) {
+    function generate_pagination_link($page, $base_url) {
+        global $pagination_param;
+        // Start with parameters from base_url query only
+        $parsed_base = parse_url($base_url);
+        $query_params = [];
+        if (isset($parsed_base['query'])) {
+            parse_str($parsed_base['query'], $query_params);
+        }
+        // Set/update the pagination parameter
+        $query_params[$pagination_param] = $page;
+        // Ensure base_url ends with '?' or '&' appropriately
+        $separator = (strpos($base_url, '?') === false) ? '?' : '&';
+        // Remove existing custom pagination param from base_url if present to avoid duplicates
+        $base_url = preg_replace('/([?&])'.preg_quote($pagination_param,'/').'=[^&]*&?/', '$1', $base_url);
+        // Ensure the base URL doesn't end with '?' or '&' before adding query string
+         if (substr($base_url, -1) === '?' || substr($base_url, -1) === '&') {
+             $base_url = rtrim($base_url, '?&');
+         }
+        $query_string = http_build_query($query_params);
+
+        // Reconstruct the final URL
+        return $base_url . (empty($query_string) ? '' : $separator . $query_string);
+    }
 }
 
 ?>
