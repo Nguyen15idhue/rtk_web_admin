@@ -108,10 +108,12 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
                     <!-- 6. Search input last -->
                     <input type="search" placeholder="Tìm Mã GD, Email..." id="searchInput" name="search" value="<?php echo htmlspecialchars($filters['search']); ?>">
                     <!-- buttons -->
-                    <button class="btn btn-primary" type="submit"><i class="fas fa-filter"></i> Lọc</button>
-                    <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary" style="text-decoration: none;">
-                        <i class="fas fa-times"></i> Xóa
-                    </a>
+                    <div class="filter-actions">
+                        <button class="btn btn-primary" type="submit"><i class="fas fa-filter"></i> Lọc</button>
+                        <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Xóa
+                        </a>
+                    </div>
                 </div>
             </form>
 

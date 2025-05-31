@@ -451,12 +451,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     x: {
                         grid: { display: false },
                         ticks: {
-                            autoSkip: true,
-                            maxTicksLimit: isMobile() ? 3 : 6,
-                            maxRotation: isMobile() ? 45 : 0,
+                            autoSkip: false, // Ensure all labels are shown
+                            maxRotation: 45, // Rotate labels to prevent overlap
+                            minRotation: 45, // Ensure labels are rotated
                             font: {
                                 family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                                size: isMobile() ? 9 : 12,
+                                size: isMobile() ? 9 : 11, // Adjusted desktop font size
                                 weight: '500'
                             },
                             color: '#6B7280',

@@ -85,7 +85,7 @@
 <?php if ($data['pages'] > 1): ?>
     <?php
     // mirror voucher pagination setup
-    $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
+    $pagination_base_url = $_SERVER["REQUEST_URI"];
     $total_pages        = $data['pages'];
     $current_page       = $data['current'];
     $items_per_page     = DEFAULT_ITEMS_PER_PAGE;

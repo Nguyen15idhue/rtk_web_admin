@@ -16,6 +16,7 @@ $active_nav = 'station_management';
 // Filters
 $filters = [
     'q' => isset($_GET['q']) ? trim((string)$_GET['q']) : '', // Use raw input
+    'status' => isset($_GET['status']) && $_GET['status'] !== '' ? (string)$_GET['status'] : null, // Add status filter
 ];
 
 // Instantiate models and fetch data
@@ -31,16 +32,37 @@ if ($filters['q'] !== '') {
     });
 }
 
-// Move stations with unknown status (-1) to bottom of the list
+// Filter by status if set
+if ($filters['status'] !== null) {
+    $stations = array_filter($stations, function($st) use ($filters) {
+        return isset($st['status']) && (string)$st['status'] === $filters['status'];
+    });
+}
+
+// Sort stations by status: Online (1), No Data (2), Offline (3), Stop (0), Unknown (-1 or null)
 usort($stations, function($a, $b) {
-    $sa = $a['status'] ?? null;
-    $sb = $b['status'] ?? null;
-    if ($sa === -1 && $sb !== -1) {
-        return 1;
-    } elseif ($sa !== -1 && $sb === -1) {
-        return -1;
+    $status_a = $a['status'] ?? null;
+    $status_b = $b['status'] ?? null;
+
+    // Define sort order priority (lower number = higher in list)
+    $priority = function($status) {
+        if ($status === null || $status === -1) return 5; // Unknown or null status
+        if ($status === 0) return 4; // Stop
+        if ($status === 3) return 3; // Offline
+        if ($status === 2) return 2; // No Data
+        if ($status === 1) return 1; // Online
+        return 0; // Default for any other statuses (comes first)
+    };
+
+    $priority_a = $priority($status_a);
+    $priority_b = $priority($status_b);
+
+    if ($priority_a === $priority_b) {
+        // Optional: secondary sort by ID or name if priorities are the same
+        // return ($a['id'] ?? 0) <=> ($b['id'] ?? 0);
+        return 0;
     }
-    return 0;
+    return ($priority_a < $priority_b) ? -1 : 1;
 });
 
 $allManagers = $managerModel->getAllManagers();

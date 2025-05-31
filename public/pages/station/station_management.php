@@ -13,19 +13,17 @@ $GLOBALS['required_permission'] = 'station_management'; // Permission requiremen
 $page_title = "Quản lý Trạm";
 
 // --- Determine active tab ---
-$active_tab = isset($_GET['active_tab']) ? $_GET['active_tab'] : 'station-management-tab';
+$tab_keys = ['station', 'manager', 'mountpoint']; // Valid short tab identifiers
+$default_tab_key = 'station';
+// Use 'tab' query parameter with short identifiers
+$active_tab = isset($_GET['tab']) && in_array($_GET['tab'], $tab_keys) ? $_GET['tab'] : $default_tab_key;
 
 // --- Helper function to generate URL with preserved active_tab ---
-function get_url_with_active_tab($base_url, $tab_id) {
-    $parsed_url = parse_url($base_url);
-    $query_params = [];
-    if (isset($parsed_url['query'])) {
-        parse_str($parsed_url['query'], $query_params);
-    }
-    $query_params['active_tab'] = $tab_id;
-    $query_string = http_build_query($query_params);
-    $clean_url = strtok($base_url, '?');
-    return $clean_url . '?' . $query_string;
+// Renamed and updated to use 'tab' and short key
+function get_url_with_tab($base_page_path, $tab_short_id) {
+    $query_params = ['tab' => $tab_short_id];
+    // This function assumes $base_page_path is the path component of the URL (e.g., from strtok)
+    return $base_page_path . '?' . http_build_query($query_params);
 }
 
 // --- Data & Business Logic ---
@@ -37,17 +35,34 @@ $canEditStation = Auth::can('station_management_edit');
 
 <main class="content-wrapper">
     <?php include $private_layouts_path . 'content_header.php'; ?>    <ul class="custom-tabs-nav">
-        <li class="nav-item"><a href="javascript:void(0)" class="nav-link <?php echo $active_tab === 'station-management-tab' ? 'active' : ''; ?>" data-tab="station-management-tab">Quản lý trạm</a></li>
-        <li class="nav-item"><a href="javascript:void(0)" class="nav-link <?php echo $active_tab === 'manager-management-tab' ? 'active' : ''; ?>" data-tab="manager-management-tab">Quản lý Người quản lý</a></li>
-        <li class="nav-item"><a href="javascript:void(0)" class="nav-link <?php echo $active_tab === 'mountpoint-management-tab' ? 'active' : ''; ?>" data-tab="mountpoint-management-tab">Quản lý Mountpoint</a></li>
+        <li class="nav-item"><a href="?tab=station" class="nav-link <?php echo $active_tab === 'station' ? 'active' : ''; ?>" data-tab="station">Quản lý trạm</a></li>
+        <li class="nav-item"><a href="?tab=manager" class="nav-link <?php echo $active_tab === 'manager' ? 'active' : ''; ?>" data-tab="manager">Quản lý Người quản lý</a></li>
+        <li class="nav-item"><a href="?tab=mountpoint" class="nav-link <?php echo $active_tab === 'mountpoint' ? 'active' : ''; ?>" data-tab="mountpoint">Quản lý Mountpoint</a></li>
     </ul>
 
-    <div class="tab-content" id="station-management-tab" <?php echo $active_tab !== 'station-management-tab' ? 'style="display:none;"' : ''; ?>>        <!-- Filter Form -->
+    <div class="tab-content" id="station" <?php echo $active_tab !== 'station' ? 'style="display:none;"' : ''; ?>>        <!-- Filter Form -->
         <form method="GET" action="" class="filter-bar" style="margin-bottom:15px;">
-            <input type="hidden" name="active_tab" value="station-management-tab">
+            <input type="hidden" name="tab" value="station">
             <input type="search" name="q" placeholder="Tìm kiếm trạm..." value="<?php echo htmlspecialchars($filters['q']); ?>">
+            <select name="status" class="form-control" style="width: auto; display: inline-block; margin-left: 10px;">
+                <option value="">-- Tất cả trạng thái --</option>
+                <?php
+                // Assuming $station_statuses is passed from the action file
+                // Example: $station_statuses = ['0' => 'Stop', '1' => 'Online', '2' => 'No Data', '3' => 'Offline'];
+                // In a real scenario, this would come from status_badge_maps.php or a similar source
+                $station_status_map = require __DIR__ . '/../../../private/config/status_badge_maps.php';
+                $station_statuses = $station_status_map['station'] ?? [];
+
+                foreach ($station_statuses as $key => $status_info):
+                    $selected = isset($filters['status']) && (string)$filters['status'] === (string)$key ? 'selected' : '';
+                ?>
+                    <option value="<?php echo htmlspecialchars($key); ?>" <?php echo $selected; ?>>
+                        <?php echo htmlspecialchars($status_info['text']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
             <button type="submit" class="btn btn-primary">Tìm</button>
-            <a href="<?php echo get_url_with_active_tab(strtok($_SERVER["REQUEST_URI"], '?'), 'station-management-tab'); ?>" class="btn btn-secondary">Xóa lọc</a>
+            <a href="<?php echo get_url_with_tab(strtok($_SERVER["REQUEST_URI"], '?'), 'station'); ?>" class="btn btn-secondary">Xóa lọc</a>
         </form>
 
         <!-- Bulk Export Form -->
@@ -158,13 +173,15 @@ $canEditStation = Auth::can('station_management_edit');
             $total_items = $total_station_items;
             $total_pages = $total_pages_stations;
             $items_per_page = DEFAULT_ITEMS_PER_PAGE;
-            $pagination_base_url = get_url_with_active_tab(strtok($_SERVER["REQUEST_URI"], '?'), 'station-management-tab');
+            // Use new helper function and short tab ID
+            $pagination_base_url = get_url_with_tab(strtok($_SERVER["REQUEST_URI"], '?'), 'station');
             $pagination_param = 'station_page';
             include $private_layouts_path . 'pagination.php';
         ?>
-    </div> <!-- .tab-content #station-management-tab -->
+    </div> <!-- .tab-content #station -->
 
-    <div class="tab-content" id="manager-management-tab" <?php echo $active_tab !== 'manager-management-tab' ? 'style="display:none;"' : ''; ?>>
+    <div class="tab-content" id="manager" 
+        <?php echo $active_tab !== 'manager' ? 'style="display:none;"' : ''; ?>>
         <!-- Manager Management Section -->
         <div id="manager-management" class="content-section" style="margin-top:40px;">
             <div class="header-actions">
@@ -207,30 +224,29 @@ $canEditStation = Auth::can('station_management_edit');
                 $total_items = $total_manager_items;
                 $total_pages = $total_pages_managers;
                 $items_per_page = DEFAULT_ITEMS_PER_PAGE;
-                $pagination_base_url = get_url_with_active_tab(strtok($_SERVER["REQUEST_URI"], '?'), 'manager-management-tab');
+                // Use new helper function and short tab ID
+                $pagination_base_url = get_url_with_tab(strtok($_SERVER["REQUEST_URI"], '?'), 'manager');
                 $pagination_param = 'manager_page';
                 include $private_layouts_path . 'pagination.php';
             ?>        
         </div>
-    </div> <!-- .tab-content #manager-management-tab -->
+    </div> <!-- .tab-content #manager -->
 
-    <div class="tab-content" id="mountpoint-management-tab" <?php echo $active_tab !== 'mountpoint-management-tab' ? 'style="display:none;"' : ''; ?>>
+    <div class="tab-content" id="mountpoint" <?php echo $active_tab !== 'mountpoint' ? 'style="display:none;"' : ''; ?>>
         <div class="content-section" style="margin-top:40px;">
-            <!-- Filter Form for Mountpoints -->
-            <form method="GET" action="" class="filter-bar" style="margin-bottom:15px;">
-                <input type="hidden" name="active_tab" value="mountpoint-management-tab">
-                <input type="search" name="mp_q" placeholder="Tìm kiếm Mountpoint..." value="<?php echo htmlspecialchars($mp_filters['q_mp'] ?? ''); ?>">
-                <button type="submit" class="btn btn-primary">Tìm</button>
-                <a href="<?php echo get_url_with_active_tab(strtok($_SERVER['REQUEST_URI'], '?'), 'mountpoint-management-tab'); ?>" class="btn btn-secondary">Xóa lọc</a>
-            </form>
-            <div class="d-flex justify-content-end mb-2">
+            <div class="header-actions d-flex justify-content-between align-items-center mb-2">
+                <h3>Quản lý Mountpoint</h3>
                 <button type="button" class="btn btn-warning" onclick="window.location.href='<?php echo $base_url; ?>public/handlers/account/index.php?action=cron_update_stations'">
                     <i class="fas fa-sync-alt"></i> Làm mới danh sách
                 </button>
             </div>
-            <div class="header-actions">
-                <h3>Quản lý Mountpoint</h3>
-            </div>
+            <!-- Filter Form for Mountpoints -->
+            <form method="GET" action="" class="filter-bar" style="margin-bottom:15px;">
+                <input type="hidden" name="tab" value="mountpoint">
+                <input type="search" name="mp_q" placeholder="Tìm kiếm Mountpoint..." value="<?php echo htmlspecialchars($mp_filters['q_mp'] ?? ''); ?>">
+                <button type="submit" class="btn btn-primary">Tìm</button>
+                <a href="<?php echo get_url_with_tab(strtok($_SERVER['REQUEST_URI'], '?'), 'mountpoint'); ?>" class="btn btn-secondary">Xóa lọc</a>
+            </form>
             <div class="table-wrapper">
                 <table class="table" id="mountpointsTable">
                     <thead>
@@ -239,8 +255,8 @@ $canEditStation = Auth::can('station_management_edit');
                             <th>Mountpoint</th>
                             <th>IP</th>
                             <th>Port</th>
-                            <th>Province Assignment</th>
-                            <th>Action</th>
+                            <th>Tỉnh/Thành phố</th>
+                            <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -281,7 +297,8 @@ $canEditStation = Auth::can('station_management_edit');
                 $total_items = $total_mountpoint_items;
                 $total_pages = $total_pages_mountpoints;
                 $items_per_page = DEFAULT_ITEMS_PER_PAGE;
-                $pagination_base_url = get_url_with_active_tab(strtok($_SERVER["REQUEST_URI"], '?'), 'mountpoint-management-tab');
+                // Use new helper function and short tab ID
+                $pagination_base_url = get_url_with_tab(strtok($_SERVER["REQUEST_URI"], '?'), 'mountpoint');
                 $pagination_param = 'mountpoint_page';
                 include $private_layouts_path . 'pagination.php';
             ?>
@@ -297,6 +314,7 @@ $canEditStation = Auth::can('station_management_edit');
             station_management_edit: <?php echo json_encode($canEditStation); ?>
         }
     };
+    // window.activeTab will now hold the short tab identifier e.g. 'station'
     window.activeTab = '<?php echo $active_tab; ?>';
 </script>
 
@@ -308,6 +326,7 @@ $canEditStation = Auth::can('station_management_edit');
 
 <!-- external scripts -->
 <script src="<?php echo $base_url; ?>public/assets/js/pages/station/station_management.js"></script>
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/pages/station/station_management.css">
 
 <?php
 require_once PRIVATE_LAYOUTS_PATH . '/admin_footer.php';

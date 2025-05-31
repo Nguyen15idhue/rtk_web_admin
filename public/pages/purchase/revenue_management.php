@@ -166,42 +166,8 @@ include $private_layouts_path . 'admin_sidebar.php';
             baseUrl: '<?php echo rtrim($base_url, '/'); ?>'
         };
     </script>
-    <script src="<?php echo $base_url; ?>public/assets/js/pages/purchase/revenue_management.js"></script>    <!-- Additional CSS for Revenue Management -->
-    <style>
-        .transaction-type {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-        
-        .transaction-type.purchase {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-        
-        .transaction-type.renewal {
-            background: #f3e5f5;
-            color: #7b1fa2;
-        }
-        
-        .amount {
-            font-weight: 600;
-            text-align: right;
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-            justify-content: center;
-        }
-        
-        .bulk-actions-bar button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-    </style>
+    <script src="<?php echo $base_url; ?>public/assets/js/pages/purchase/revenue_management.js"></script>
+    <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/pages/purchase/revenue_management.css">
 
 <?php 
 // admin_footer.php is assumed to close </body> and </html>

@@ -75,14 +75,6 @@
     border-color: #2563eb;
 }
 
-/* ============================================= */
-/* == Button Size Variants                    == */
-/* ============================================= */
-.btn-sm {
-    padding: 0.5rem 0.8rem;
-    font-size: var(--font-size-xs);
-}
-
 .btn-lg {
     padding: 0.8rem 1.5rem;
     font-size: var(--font-size-base);
