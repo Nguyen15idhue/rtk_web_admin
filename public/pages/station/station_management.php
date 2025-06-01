@@ -40,11 +40,24 @@ $canEditStation = Auth::can('station_management_edit');
         <li class="nav-item"><a href="?tab=mountpoint" class="nav-link <?php echo $active_tab === 'mountpoint' ? 'active' : ''; ?>" data-tab="mountpoint">Quản lý Mountpoint</a></li>
     </ul>
 
-    <div class="tab-content" id="station" <?php echo $active_tab !== 'station' ? 'style="display:none;"' : ''; ?>>        <!-- Filter Form -->
+    <div class="tab-content" id="station" <?php echo $active_tab !== 'station' ? 'style="display:none;"' : ''; ?>>
+        <!-- Bulk Export Form -->
+        <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
+            <input type="hidden" name="table_name" value="stations">
+            <input type="hidden" name="selected_ids" id="selected_ids_for_export" value="">
+            <div class="bulk-actions-bar">
+                <button type="submit" name="export_selected_excel" class="btn btn-info">Xuất mục đã chọn</button>
+                <button type="submit" name="export_all" class="btn btn-success">Xuất tất cả</button>
+                <button type="button" class="btn btn-warning" onclick="window.location.href='<?php echo $base_url; ?>public/handlers/account/index.php?action=cron_update_stations'">
+                    <i class="fas fa-sync-alt"></i> Làm mới danh sách
+                </button>
+            </div>
+        </form>
+        <!-- Filter Form -->
         <form method="GET" action="" class="filter-bar" style="margin-bottom:15px;">
             <input type="hidden" name="tab" value="station">
             <input type="search" name="q" placeholder="Tìm kiếm trạm..." value="<?php echo htmlspecialchars($filters['q']); ?>">
-            <select name="status" class="form-control" style="width: auto; display: inline-block; margin-left: 10px;">
+            <select name="status" class="form-control">
                 <option value="">-- Tất cả trạng thái --</option>
                 <?php
                 // Assuming $station_statuses is passed from the action file
@@ -63,19 +76,6 @@ $canEditStation = Auth::can('station_management_edit');
             </select>
             <button type="submit" class="btn btn-primary">Tìm</button>
             <a href="<?php echo get_url_with_tab(strtok($_SERVER["REQUEST_URI"], '?'), 'station'); ?>" class="btn btn-secondary">Xóa lọc</a>
-        </form>
-
-        <!-- Bulk Export Form -->
-        <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
-            <input type="hidden" name="table_name" value="stations">
-            <input type="hidden" name="selected_ids" id="selected_ids_for_export" value="">
-            <div class="bulk-actions-bar" style="margin-bottom:15px;">
-                <button type="submit" name="export_selected_excel" class="btn btn-info">Xuất mục đã chọn</button>
-                <button type="submit" name="export_all" class="btn btn-success">Xuất tất cả</button>
-                <button type="button" class="btn btn-warning" onclick="window.location.href='<?php echo $base_url; ?>public/handlers/account/index.php?action=cron_update_stations'">
-                    <i class="fas fa-sync-alt"></i> Làm mới danh sách
-                </button>
-            </div>
         </form>
 
         <!-- now the table is outside the export form -->

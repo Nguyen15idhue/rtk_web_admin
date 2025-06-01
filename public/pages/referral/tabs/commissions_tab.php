@@ -2,6 +2,22 @@
 // filepath: public/pages/tabs/commissions_tab.php
 // Tab: Commissions
 ?>
+<!-- Export Excel Form -->
+<form method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
+    <input type="hidden" name="table_name" value="commissions">
+    <?php
+    if (isset($_GET['search']) && $_GET['search'] !== '') {
+        echo '<input type="hidden" name="search" value="' . htmlspecialchars($_GET['search'] ?? '') . '">';
+    }
+    if (isset($_GET['status']) && $_GET['status'] !== '') {
+        echo '<input type="hidden" name="status" value="' . htmlspecialchars($_GET['status'] ?? '') . '">';
+    }
+    ?>
+    <div class="bulk-actions-bar">
+        <button type="submit" name="export_excel" class="btn btn-success">Xuất Excel</button>
+        <button type="submit" name="export_selected_excel" class="btn btn-info" id="export-selected-commissions-btn">Xuất mục đã chọn</button>
+    </div>
+</form>
 <form method="GET">
     <input type="hidden" name="tab" value="commissions">
     <div class="filter-bar">
@@ -16,22 +32,6 @@
         <a class="btn btn-secondary" href="?tab=commissions">Xóa</a>
     </div>
 </form>
-
-<!-- Export Excel Form -->
-<form method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
-    <input type="hidden" name="table_name" value="commissions">
-    <?php
-    if (isset($_GET['search']) && $_GET['search'] !== '') {
-        echo '<input type="hidden" name="search" value="' . htmlspecialchars($_GET['search'] ?? '') . '">';
-    }
-    if (isset($_GET['status']) && $_GET['status'] !== '') {
-        echo '<input type="hidden" name="status" value="' . htmlspecialchars($_GET['status'] ?? '') . '">';
-    }
-    ?>
-    <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px; justify-content: flex-end;">
-        <button type="submit" name="export_excel" class="btn btn-success">Xuất Excel</button>
-        <button type="submit" name="export_selected_excel" class="btn btn-info" id="export-selected-commissions-btn">Xuất mục đã chọn</button>
-    </div>
 
     <div class="table-wrapper">
         <table class="table">

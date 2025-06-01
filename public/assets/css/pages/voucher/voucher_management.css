@@ -6,12 +6,6 @@
 }
 
 /* Action column icon colors */
-.action-cell .btn-view i {
-    color: #0056b3;
-}
-.action-cell .btn-edit i {
-    color: #e65c00;
-}
 .action-cell .btn-success i {
     color: #17a2b8;
 }

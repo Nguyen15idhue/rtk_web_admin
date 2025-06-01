@@ -68,19 +68,6 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
         </div>
          <p class="text-xs sm:text-sm text-gray-600 mb-4 description-text">Quản lý tài khoản người dùng đăng ký (không phải tài khoản quản trị).</p>
 
-        <form method="GET" action="">
-            <div class="filter-bar">
-                <input type="search" placeholder="Tìm Email, Tên, Số ĐT, Mã số thuế..." name="q" value="<?php echo htmlspecialchars($filters['q'] ?? ''); ?>">
-                <select name="status">
-                    <option value="">Tất cả trạng thái</option>
-                    <option value="active" <?php echo ($filters['status'] == 'active') ? 'selected' : ''; ?>>Hoạt động</option>
-                    <option value="inactive" <?php echo ($filters['status'] == 'inactive') ? 'selected' : ''; ?>>Vô hiệu hóa</option>
-                </select>
-                <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Tìm</button>
-                <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary btn-clear"><i class="fas fa-times"></i> Xóa lọc</a>
-            </div>
-        </form>
-
         <!-- Bulk Actions Form -->
         <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
             <input type="hidden" name="table_name" value="users">
@@ -96,6 +83,20 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
                 </button>
                 <?php endif; ?>
             </div>
+        </form>
+
+        <form method="GET" action="">
+            <div class="filter-bar">
+                <input type="search" placeholder="Tìm Email, Tên, Số ĐT, Mã số thuế..." name="q" value="<?php echo htmlspecialchars($filters['q'] ?? ''); ?>">
+                <select name="status">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="active" <?php echo ($filters['status'] == 'active') ? 'selected' : ''; ?>>Hoạt động</option>
+                    <option value="inactive" <?php echo ($filters['status'] == 'inactive') ? 'selected' : ''; ?>>Vô hiệu hóa</option>
+                </select>
+                <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Tìm</button>
+                <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary btn-clear"><i class="fas fa-times"></i> Xóa lọc</a>
+            </div>
+        </form>
 
             <div class="table-wrapper">
                 <table class="table" id="usersTable">

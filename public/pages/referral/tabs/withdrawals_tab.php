@@ -2,6 +2,22 @@
 // filepath: public/pages/tabs/withdrawals_tab.php
 // Tab: Withdrawal Requests
 ?>
+<!-- Export Excel Form -->
+<form method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
+    <input type="hidden" name="table_name" value="withdrawal_requests">
+    <?php
+    if (isset($_GET['search']) && $_GET['search'] !== '') {
+        echo '<input type="hidden" name="search" value="' . escape_html($_GET['search']) . '">';
+    }
+    if (isset($_GET['status']) && $_GET['status'] !== '') {
+        echo '<input type="hidden" name="status" value="' . escape_html($_GET['status']) . '">';
+    }
+    ?>
+    <div class="bulk-actions-bar">
+        <button type="submit" name="export_excel" class="btn btn-success">Xuất Excel</button>
+        <button type="submit" name="export_selected_excel" class="btn btn-info" id="export-selected-withdrawals-btn">Xuất mục đã chọn</button>
+    </div>
+</form>
 <form method="GET">
     <input type="hidden" name="tab" value="withdrawals">
     <div class="filter-bar">
@@ -17,21 +33,6 @@
     </div>
 </form>
 
-<!-- Export Excel Form -->
-<form method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
-    <input type="hidden" name="table_name" value="withdrawal_requests">
-    <?php
-    if (isset($_GET['search']) && $_GET['search'] !== '') {
-        echo '<input type="hidden" name="search" value="' . escape_html($_GET['search']) . '">';
-    }
-    if (isset($_GET['status']) && $_GET['status'] !== '') {
-        echo '<input type="hidden" name="status" value="' . escape_html($_GET['status']) . '">';
-    }
-    ?>
-    <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px; justify-content: flex-end;">
-        <button type="submit" name="export_excel" class="btn btn-success">Xuất Excel</button>
-        <button type="submit" name="export_selected_excel" class="btn btn-info" id="export-selected-withdrawals-btn">Xuất mục đã chọn</button>
-    </div>
 
     <div class="table-wrapper">
         <table class="table">

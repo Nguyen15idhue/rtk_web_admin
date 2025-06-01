@@ -47,7 +47,24 @@ include $private_layouts_path . 'admin_sidebar.php';
         <?php include $private_layouts_path . 'content_header.php'; ?>
 
         <div class="content-section">
-            <h3>Doanh thu</h3>            <form method="GET" action="">
+            <h3>Doanh thu</h3>
+            <!-- Thêm form xuất Excel với các tùy chọn nâng cao -->
+            <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
+                <input type="hidden" name="table_name" value="transactions">
+                <input type="hidden" name="filters" value="<?php echo htmlspecialchars(json_encode($filters)); ?>">
+                <div class="bulk-actions-bar">
+                    <button type="submit" name="export_selected" class="btn btn-info" disabled>
+                        <i class="fas fa-file-excel"></i> Xuất mục đã chọn
+                    </button>
+                    <button type="submit" name="export_all" class="btn btn-success">
+                        <i class="fas fa-file-excel"></i> Xuất tất cả (<?php echo $total_items; ?> mục)
+                    </button>
+                    <button type="button" class="btn btn-warning" onclick="exportRevenueSummary()">
+                        <i class="fas fa-chart-bar"></i> Xuất báo cáo tổng hợp
+                    </button>
+                </div>
+            </form>
+            <form method="GET" action="">
                 <div class="filter-bar">
                     <input type="date" name="date_from" value="<?php echo htmlspecialchars($filters['date_from']); ?>" placeholder="Từ ngày" title="Từ ngày">
                     <input type="date" name="date_to"   value="<?php echo htmlspecialchars($filters['date_to']); ?>"   placeholder="Đến ngày" title="Đến ngày">
@@ -64,7 +81,8 @@ include $private_layouts_path . 'admin_sidebar.php';
                     <button class="btn btn-primary" type="submit"><i class="fas fa-filter"></i> Lọc</button>
                     <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary"><i class="fas fa-times"></i> Xóa lọc</a>
                 </div>
-            </form>            <div class="stats-container">
+            </form>
+            <div class="stats-container">
                 <div class="stats-box">
                     <i class="fas fa-coins icon"></i>
                     <div>
@@ -98,22 +116,7 @@ include $private_layouts_path . 'admin_sidebar.php';
                         <span class="value"><?php echo number_format($total_items, 0, ',', '.'); ?></span>
                     </div>
                 </div>
-            </div><!-- Thêm form xuất Excel với các tùy chọn nâng cao -->
-            <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
-                <input type="hidden" name="table_name" value="transactions">
-                <input type="hidden" name="filters" value="<?php echo htmlspecialchars(json_encode($filters)); ?>">
-                <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px; flex-wrap: wrap;">
-                    <button type="submit" name="export_selected" class="btn btn-info" disabled>
-                        <i class="fas fa-file-excel"></i> Xuất mục đã chọn
-                    </button>
-                    <button type="submit" name="export_all" class="btn btn-success">
-                        <i class="fas fa-file-excel"></i> Xuất tất cả (<?php echo $total_items; ?> mục)
-                    </button>
-                    <button type="button" class="btn btn-warning" onclick="exportRevenueSummary()">
-                        <i class="fas fa-chart-bar"></i> Xuất báo cáo tổng hợp
-                    </button>
-                </div>
-
+            </div>
                 <div class="table-wrapper">
                     <table class="table">                        <thead>
                             <tr>
