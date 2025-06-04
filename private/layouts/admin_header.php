@@ -30,9 +30,8 @@ $public_assets_path = BASE_URL . 'public/assets/';
             echo '<link rel="stylesheet" href="' . $public_assets_path . 'css/' . htmlspecialchars($css_file) . '">' . "\n    ";
         }
     }
-    ?>
-
-    <script type="module" src="<?php echo $public_assets_path; ?>js/app.js" crossorigin="anonymous" defer></script>
+    ?>    <script type="module" src="<?php echo $public_assets_path; ?>js/app.js" crossorigin="anonymous" defer></script>
+    <script src="<?php echo $public_assets_path; ?>js/components/content_header.js" defer></script>
 </head>
 <body>
 <div id="toast-container"></div> <!-- Container for toast notifications -->

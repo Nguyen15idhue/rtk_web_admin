@@ -166,6 +166,7 @@
                     const dateFrom = document.querySelector('input[name="date_from"]');
                     const dateTo = document.querySelector('input[name="date_to"]');
                     const status = document.querySelector('select[name="status"]');
+                    const packageId = document.querySelector('select[name="package_id"]');
                     
                     if (dateFrom) {
                         hiddenForm.querySelector('input[name="date_from"]').value = dateFrom.value || '';
@@ -175,6 +176,9 @@
                     }
                     if (status) {
                         hiddenForm.querySelector('input[name="status"]').value = status.value || '';
+                    }
+                    if (packageId) {
+                        hiddenForm.querySelector('input[name="package_id"]').value = packageId.value || '';
                     }
                     
                     console.log('Submitting hidden form');

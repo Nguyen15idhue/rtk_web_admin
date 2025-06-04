@@ -3,7 +3,7 @@
 // Tab: Withdrawal Requests
 ?>
 <!-- Export Excel Form -->
-<form method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
+<form id="export-withdrawals-form" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
     <input type="hidden" name="table_name" value="withdrawal_requests">
     <?php
     if (isset($_GET['search']) && $_GET['search'] !== '') {
@@ -82,6 +82,8 @@
         </table>
     </div>
 </form> <!-- End Export Excel Form -->
+
+<script src="<?php echo $base_url; ?>public/assets/js/pages/referral/withdrawals.js"></script>
 
 <?php if ($data['pages'] > 1): ?>
     <?php

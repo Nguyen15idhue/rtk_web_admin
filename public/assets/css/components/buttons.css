@@ -8,7 +8,6 @@
     border-radius: var(--rounded-md);
     font-size: var(--font-size-sm);
     font-weight: var(--font-medium);
-    text-align: center;
     cursor: pointer;
     text-decoration: none;
     transition: background-color var(--transition-speed) ease-in-out, border-color var(--transition-speed) ease-in-out, color var(--transition-speed) ease-in-out, box-shadow var(--transition-speed) ease-in-out;

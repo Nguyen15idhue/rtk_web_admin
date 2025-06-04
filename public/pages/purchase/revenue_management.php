@@ -18,14 +18,19 @@ $page_title = 'Quản lý Doanh thu'; // Define page title
 require_once $private_actions_path . 'invoice/fetch_transactions.php';
 require_once $private_actions_path . 'invoice/get_revenue_sums.php';
 
+// Lấy danh sách gói dịch vụ cho filter
+$packages_stmt = $db->query("SELECT id, name FROM package WHERE is_active=1 ORDER BY display_order");
+$packages = $packages_stmt->fetchAll(PDO::FETCH_ASSOC);
+
 // Lấy params phân trang & filter
 $current_page  = max(1, (int)($_GET['page'] ?? 1));
 $per_page      = DEFAULT_ITEMS_PER_PAGE;
 $filters = [
-    'search'    => trim($_GET['search'] ?? ''),
-    'status'    => trim($_GET['status'] ?? ''),
-    'date_from' => trim($_GET['date_from'] ?? ''),
-    'date_to'   => trim($_GET['date_to'] ?? ''),
+    'search'     => trim($_GET['search'] ?? ''),
+    'status'     => trim($_GET['status'] ?? ''),
+    'date_from'  => trim($_GET['date_from'] ?? ''),
+    'date_to'    => trim($_GET['date_to'] ?? ''),
+    'package_id' => trim($_GET['package_id'] ?? ''),
 ];
 
 // Lấy dữ liệu giao dịch & phân trang
@@ -63,23 +68,37 @@ include $private_layouts_path . 'admin_sidebar.php';
                         <i class="fas fa-chart-bar"></i> Xuất báo cáo tổng hợp
                     </button>
                 </div>
-            </form>
-            <form method="GET" action="">
-                <div class="filter-bar">
-                    <input type="date" name="date_from" value="<?php echo htmlspecialchars($filters['date_from']); ?>" placeholder="Từ ngày" title="Từ ngày">
-                    <input type="date" name="date_to"   value="<?php echo htmlspecialchars($filters['date_to']); ?>"   placeholder="Đến ngày" title="Đến ngày">
+            </form>            <form method="GET" action="">
+                <div class="filter-bar compact">
+                    <input type="text" name="search" value="<?php echo htmlspecialchars($filters['search']); ?>" placeholder="Tìm kiếm..." title="Tìm theo mã GD hoặc email">
                     
-                    <select name="status" title="Lọc theo trạng thái">
-                        <option value="">Tất cả trạng thái</option>
-                        <option value="pending" <?php echo $filters['status'] === 'pending' ? 'selected' : ''; ?>>Chờ duyệt</option>
-                        <option value="approved" <?php echo $filters['status'] === 'approved' ? 'selected' : ''; ?>>Đã duyệt</option>
-                        <option value="rejected" <?php echo $filters['status'] === 'rejected' ? 'selected' : ''; ?>>Bị từ chối</option>
+                    <select name="status" title="Lọc theo trạng thái" class="compact-select">
+                        <option value="">Trạng thái</option>
+                        <option value="pending" <?php echo $filters['status'] === 'pending' ? 'selected' : ''; ?>>Chờ</option>
+                        <option value="approved" <?php echo $filters['status'] === 'approved' ? 'selected' : ''; ?>>Duyệt</option>
+                        <option value="rejected" <?php echo $filters['status'] === 'rejected' ? 'selected' : ''; ?>>Từ chối</option>
                     </select>
                     
-                    <input type="text" name="search" value="<?php echo htmlspecialchars($filters['search']); ?>" placeholder="Tìm theo mã GD hoặc email" title="Tìm kiếm">
+                    <select name="package_id" title="Lọc theo gói dịch vụ" class="compact-select">
+                        <option value="">Gói</option>
+                        <?php foreach ($packages as $pkg): ?>
+                            <option value="<?php echo htmlspecialchars($pkg['id']); ?>" 
+                                <?php echo $filters['package_id'] == $pkg['id'] ? 'selected' : ''; ?>>
+                                <?php echo mb_strlen($pkg['name']) > 15 ? mb_substr(htmlspecialchars($pkg['name']), 0, 15) . '...' : htmlspecialchars($pkg['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                     
-                    <button class="btn btn-primary" type="submit"><i class="fas fa-filter"></i> Lọc</button>
-                    <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary"><i class="fas fa-times"></i> Xóa lọc</a>
+                    <div class="date-range">
+                        <input type="date" name="date_from" value="<?php echo htmlspecialchars($filters['date_from']); ?>" title="Từ ngày" class="compact-date">
+                        <span class="date-separator">-</span>
+                        <input type="date" name="date_to" value="<?php echo htmlspecialchars($filters['date_to']); ?>" title="Đến ngày" class="compact-date">
+                    </div>
+                    
+                    <div class="filter-actions">
+                        <button class="btn btn-primary btn-sm" type="submit" title="Áp dụng bộ lọc"><i class="fas fa-search"></i></button>
+                        <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary btn-sm" title="Xóa bộ lọc"><i class="fas fa-times"></i></a>
+                    </div>
                 </div>
             </form>
             <div class="stats-container">
@@ -151,14 +170,13 @@ include $private_layouts_path . 'admin_sidebar.php';
                             <?php endforeach; endif; ?>
                         </tbody>
                     </table>
-                </div>            </form>  <!-- End bulkActionForm -->
-
-            <!-- Hidden form for revenue summary export -->
+                </div>            </form>  <!-- End bulkActionForm -->            <!-- Hidden form for revenue summary export -->
             <form id="revenueSummaryForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php" style="display: none;">
                 <input type="hidden" name="action" value="export_revenue_summary">
                 <input type="hidden" name="date_from" value="<?php echo htmlspecialchars($filters['date_from']); ?>">
                 <input type="hidden" name="date_to" value="<?php echo htmlspecialchars($filters['date_to']); ?>">
                 <input type="hidden" name="status" value="<?php echo htmlspecialchars($filters['status']); ?>">
+                <input type="hidden" name="package_id" value="<?php echo htmlspecialchars($filters['package_id']); ?>">
             </form>
 
             <?php include $private_layouts_path . 'pagination.php'; ?></div>    </main>

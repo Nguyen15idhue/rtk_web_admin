@@ -55,8 +55,7 @@ function get_revenue_sums(array $filters = []): array {
             $params[':search_th'] = $search_term;
             $params[':search_u'] = $search_term;
             $needs_join = true;
-        }
-        // Status filter (filter by transaction status)
+        }        // Status filter (filter by transaction status)
         if (!empty($filters['status'])) {
             // Map UI status to DB status
             $statusMap = [
@@ -67,6 +66,13 @@ function get_revenue_sums(array $filters = []): array {
             $dbStatus = $statusMap[$filters['status']] ?? $filters['status'];
             $where_parts[] = "th.status = :filter_status";
             $params[':filter_status'] = $dbStatus;
+        }
+        
+        // Package filter
+        if (!empty($filters['package_id'])) {
+            $where_parts[] = "r.package_id = :package_id";
+            $params[':package_id'] = (int)$filters['package_id'];
+            $needs_join = true;
         }
         
         return [

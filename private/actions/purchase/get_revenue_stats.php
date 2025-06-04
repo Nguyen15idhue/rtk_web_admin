@@ -27,7 +27,8 @@ function get_revenue_stats(array $filters = []): array {
     global $db;
     
     try {
-        // Base query conditions
+        // Base query conditions and JOINs
+        $base_join = "JOIN registration r ON t.registration_id = r.id JOIN package p ON r.package_id = p.id";
         $conditions = "WHERE 1=1";
         $params = [];
         
@@ -41,6 +42,11 @@ function get_revenue_stats(array $filters = []): array {
             $params[':date_to'] = $filters['date_to'];
         }
         
+        if (!empty($filters['package_id'])) {
+            $conditions .= " AND r.package_id = :package_id";
+            $params[':package_id'] = $filters['package_id'];
+        }
+        
         // Daily revenue for the last 30 days or specified period
         $daily_query = "
             SELECT 
@@ -51,6 +57,7 @@ function get_revenue_stats(array $filters = []): array {
                 SUM(CASE WHEN t.status = 'pending' THEN t.amount ELSE 0 END) as pending_amount,
                 SUM(CASE WHEN t.status = 'failed' THEN t.amount ELSE 0 END) as failed_amount
             FROM transaction_history t 
+            $base_join
             $conditions
             GROUP BY DATE(t.created_at) 
             ORDER BY DATE(t.created_at) DESC 
@@ -68,6 +75,7 @@ function get_revenue_stats(array $filters = []): array {
                 COUNT(*) as count,
                 SUM(t.amount) as amount
             FROM transaction_history t 
+            $base_join
             $conditions
             GROUP BY t.transaction_type
         ";
@@ -83,6 +91,7 @@ function get_revenue_stats(array $filters = []): array {
                 COUNT(*) as count,
                 SUM(t.amount) as amount
             FROM transaction_history t 
+            $base_join
             $conditions
             GROUP BY t.status
         ";
@@ -98,8 +107,7 @@ function get_revenue_stats(array $filters = []): array {
                 COUNT(*) as transaction_count,
                 SUM(t.amount) as total_revenue
             FROM transaction_history t
-            JOIN registration r ON t.registration_id = r.id
-            JOIN package p ON r.package_id = p.id
+            $base_join
             $conditions
             GROUP BY p.id, p.name
             ORDER BY total_revenue DESC

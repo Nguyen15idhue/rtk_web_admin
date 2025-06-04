@@ -52,9 +52,9 @@ class InvoiceModel {
             $where[]        = 'u.tax_code LIKE ?';
             $params[]       = '%' . $filters['tax_code'] . '%';
         }
-        if (!empty($filters['transaction_id'])) {
-            $where[]        = 'inv.transaction_history_id = ?';
-            $params[]       = $filters['transaction_id'];
+        if (!empty($filters['invoice_id'])) { // Thay đổi từ transaction_id sang invoice_id
+            $where[]        = 'inv.id = ?'; // Lọc theo cột id của bảng invoice
+            $params[]       = $filters['invoice_id'];
         }
         if (!empty($filters['date_from'])) {
             $where[]        = 'inv.created_at >= ?';

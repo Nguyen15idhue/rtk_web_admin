@@ -41,23 +41,13 @@ require_once BASE_PATH . '/utils/dashboard_helpers.php';
 
 // Thiết lập tiêu đề trang để admin_header.php dùng
 $page_title = 'Quản lý TK Đo đạc - Admin';
-
-// Include header & sidebar (đã chứa <!DOCTYPE html>, <head> và CSS)
+$additional_css = ['pages/account/account_management.css'];
 include $private_layouts_path . 'admin_header.php';
 include $private_layouts_path . 'admin_sidebar.php';
 ?>
-<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/pages/account_management.css">
-
 
 <main class="content-wrapper">
-    <div class="content-header">
-        <h2>Quản lý TK Đo đạc</h2>
-        <div class="user-info">
-            <span>Chào mừng, <span class="highlight"><?php echo $user_display_name; // Already HTML-escaped in bootstrap ?></span>!</span>
-            <a href="<?php echo $base_url; ?>public/pages/setting/profile.php">Hồ sơ</a>
-            <a href="<?php echo $base_url; ?>public/pages/auth/admin_logout.php">Đăng xuất</a>
-        </div>
-    </div>
+    <?php include $private_layouts_path . 'content_header.php'; ?>
 
     <div id="admin-account-management" class="content-section">
         <div class="header-actions">
