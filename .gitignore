@@ -1,6 +1,7 @@
 # Ignore sensitive configuration files
 /private/config/api.php
 /private/config/message.php
+/private/config/mail.php
 
 # Ignore Composer dependencies
 /vendor/
