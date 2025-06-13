@@ -97,14 +97,6 @@
     flex-shrink: 0;
 }
 
-/* Filter Actions Container */
-.filter-actions {
-    display: flex;
-    gap: 0.25rem;
-    align-items: center;
-    flex-shrink: 0;
-}
-
 /* Small Button Styling */
 .btn-sm {
     padding: 0.5rem 0.75rem !important;
@@ -124,7 +116,6 @@
     padding: 0.5rem 0.75rem !important;
     font-size: 0.875rem !important;
     min-width: 150px !important;
-    flex: 1 1 150px;
     height: auto !important;
 }
 

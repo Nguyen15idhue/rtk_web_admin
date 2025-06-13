@@ -41,7 +41,7 @@ require_once BASE_PATH . '/utils/dashboard_helpers.php';
 
 // Thiết lập tiêu đề trang để admin_header.php dùng
 $page_title = 'Quản lý TK Đo đạc - Admin';
-$additional_css = ['pages/account/account_management.css'];
+$additional_css = ['pages/account_management.css'];
 include $private_layouts_path . 'admin_header.php';
 include $private_layouts_path . 'admin_sidebar.php';
 ?>
