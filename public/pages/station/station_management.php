@@ -258,24 +258,34 @@ $canEditStation = Auth::can('station_management_edit');
                             <th>Tỉnh/Thành phố</th>
                             <th>Hành động</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (empty($allMountPoints)): ?>
+                    </thead>                    <tbody>
+                        <?php if (empty($mountpointsForTable)): ?>
                             <tr><td colspan="6">Không tìm thấy Mountpoint nào.</td></tr>
-                        <?php else: foreach ($allMountPoints as $mp): ?>
+                        <?php else: foreach ($mountpointsForTable as $mp): 
+                            // Map database location info if available
+                            $dbMountpoint = null;
+                            foreach ($allMountPoints as $dbMp) {
+                                if ((string)$dbMp['id'] === (string)$mp['id']) {
+                                    $dbMountpoint = $dbMp;
+                                    break;
+                                }
+                            }
+                        ?>
                             <tr>
                                 <td><?php echo htmlspecialchars($mp['id']); ?></td>
-                                <td><?php echo htmlspecialchars($mp['mountpoint']); ?></td>
-                                <td><?php echo htmlspecialchars($mp['ip']); ?></td>
-                                <td><?php echo htmlspecialchars($mp['port']); ?></td>
+                                <td><?php echo htmlspecialchars($mp['name'] ?? $mp['mountpoint'] ?? ''); ?></td>
+                                <td><?php echo htmlspecialchars($mp['ip'] ?? 'N/A'); ?></td>
+                                <td><?php echo htmlspecialchars($mp['port'] ?? 'N/A'); ?></td>
                                 <td>
                                     <form id="updateMountpointForm_<?php echo htmlspecialchars($mp['id']); ?>" action="<?php echo $base_url; ?>public/handlers/station/mountpoint_index.php" method="POST">
                                         <input type="hidden" name="action" value="update_mountpoint">
                                         <input type="hidden" name="mountpoint_id" value="<?php echo htmlspecialchars($mp['id']); ?>">
                                         <select name="location_id" class="form-control" <?php echo !$canEditStation ? 'disabled' : ''; ?>>
                                             <option value="">-- Chưa phân bổ --</option>
-                                            <?php foreach ($allLocations as $loc): ?>
-                                                <option value="<?php echo htmlspecialchars($loc['id'], ENT_QUOTES, 'UTF-8'); ?>" <?php echo ((string)$mp['location_id'] === (string)$loc['id']) ? 'selected' : ''; ?>>
+                                            <?php foreach ($allLocations as $loc): 
+                                                $isSelected = $dbMountpoint && ((string)$dbMountpoint['location_id'] === (string)$loc['id']);
+                                            ?>
+                                                <option value="<?php echo htmlspecialchars($loc['id'], ENT_QUOTES, 'UTF-8'); ?>" <?php echo $isSelected ? 'selected' : ''; ?>>
                                                     <?php echo htmlspecialchars($loc['province']); ?>
                                                 </option>
                                             <?php endforeach; ?>

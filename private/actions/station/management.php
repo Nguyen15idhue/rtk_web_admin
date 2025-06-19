@@ -66,7 +66,7 @@ usort($stations, function($a, $b) {
 });
 
 $allManagers = $managerModel->getAllManagers();
-$availableMountpoints = $stationModel->fetchMountpointsFromAPI();
+$availableMountpoints = $stationModel->fetchAllMountpointsFromAPI(); // Sử dụng phương thức mới để lấy tất cả mountpoints (KHÔNG paginate cho dropdown)
 // Fetch mountpoints from database for management
 $mountPointModel = new MountPointModel();
 $allMountPoints = $mountPointModel->getAllMountPoints();
@@ -112,11 +112,19 @@ $total_manager_items = count($allManagers);
 $total_pages_managers = (int) ceil($total_manager_items / $items_per_page);
 $allManagers = array_slice($allManagers, ($managers_page - 1) * $items_per_page, $items_per_page);
 
-// Pagination for mount points
+// Pagination for mount points - sử dụng API data cho hiển thị
 $mountpoints_page = isset($_GET['mountpoint_page']) ? max(1, (int)$_GET['mountpoint_page']) : 1;
-$total_mountpoint_items = count($allMountPoints);
-$total_pages_mountpoints = (int) ceil($total_mountpoint_items / $items_per_page);
-$allMountPoints = array_slice($allMountPoints, ($mountpoints_page - 1) * $items_per_page, $items_per_page);
 
-// Variables now available to view: $stations, $allManagers, $availableMountpoints, $filters, $message, $message_type, $page_title, $active_nav, $base_url
+// Để hiển thị đầy đủ, sử dụng API mountpoints cho table management
+$mountpointsForTable = $availableMountpoints; // Sử dụng dữ liệu từ API
+$total_mountpoint_items = count($mountpointsForTable);
+$total_pages_mountpoints = (int) ceil($total_mountpoint_items / $items_per_page);
+
+// Paginate API data for table display
+$mountpointsForTable = array_slice($mountpointsForTable, ($mountpoints_page - 1) * $items_per_page, $items_per_page);
+
+// Keep database mountpoints for location mapping (nếu cần)
+$allMountPoints = $mountPointModel->getAllMountPoints();
+
+// Variables now available to view: $stations, $allManagers, $availableMountpoints, $mountpointsForTable, $allMountPoints, $filters, $message, $message_type, $page_title, $active_nav, $base_url
 ?>
