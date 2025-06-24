@@ -40,6 +40,17 @@ $pagination_base_url = strtok($_SERVER['REQUEST_URI'], '?');
         <div class="header-actions">
             <h3>Danh sách yêu cầu hỗ trợ</h3>
         </div>
+        <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
+            <input type="hidden" name="table_name" value="support_requests">
+            <div class="bulk-actions-bar">
+                <button type="submit" name="export_selected" class="btn btn-info">
+                    <i class="fas fa-file-excel"></i> Xuất mục đã chọn
+                </button>
+                <button type="submit" name="export_all" class="btn btn-success">
+                    <i class="fas fa-file-excel"></i> Xuất tất cả
+                </button>
+            </div>
+        </form>
         <form method="GET" class="filter-bar">
             <div class="filter-row" style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px;">
                 <input type="search" name="search" id="searchInput" placeholder="Tìm kiếm..." value="<?php echo htmlspecialchars($filters['search']); ?>">
@@ -73,16 +84,6 @@ $pagination_base_url = strtok($_SERVER['REQUEST_URI'], '?');
             </div>
         </form>
 
-        <form id="bulkActionForm" method="POST" action="<?php echo $base_url; ?>public/handlers/excel_index.php">
-            <input type="hidden" name="table_name" value="support_requests">
-            <div class="bulk-actions-bar" style="margin-bottom:15px; display:flex; gap:10px;">
-                <button type="submit" name="export_selected" class="btn btn-info">
-                    <i class="fas fa-file-excel"></i> Xuất mục đã chọn
-                </button>
-                <button type="submit" name="export_all" class="btn btn-success">
-                    <i class="fas fa-file-excel"></i> Xuất tất cả
-                </button>
-            </div>
 
             <div class="table-wrapper">
                 <table class="table" id="tbl-support">

@@ -52,7 +52,7 @@ function get_transaction_details(int $transactionId): ?array {
                 u.phone AS user_phone,
                 p.id AS package_id,
                 p.name AS package_name,
-                p.duration_in_days,
+                p.duration_text,
                 p.price AS package_price,
                 r.id AS registration_id,
                 r.start_time,
@@ -60,7 +60,6 @@ function get_transaction_details(int $transactionId): ?array {
                 r.num_account,
                 r.rejection_reason,
                 l.province,
-                l.district,
                 v.code AS voucher_code,
                 v.discount_value,
                 v.voucher_type,
@@ -90,7 +89,7 @@ function get_transaction_details(int $transactionId): ?array {
         }
 
         // Format the data for better presentation
-        $result['formatted_amount'] = number_format($result['amount'], 0, ',', '.') . ' đ';
+        $result['formatted_amount'] = number_format((float)$result['amount'], 0, ',', '.') . ' đ';
         $result['formatted_request_date'] = date('d/m/Y H:i:s', strtotime($result['request_date']));
         $result['formatted_updated_at'] = $result['updated_at'] ? date('d/m/Y H:i:s', strtotime($result['updated_at'])) : '';
         
@@ -115,7 +114,8 @@ function get_transaction_details(int $transactionId): ?array {
             if ($result['voucher_type'] === 'percentage_discount') {
                 $result['voucher_display'] = "Giảm {$result['discount_value']}%";
             } elseif ($result['voucher_type'] === 'fixed_discount') {
-                $result['voucher_display'] = "Giảm " . number_format($result['discount_value'], 0, ',', '.') . " đ";
+                $discount_value_numeric = (float)$result['discount_value'];
+                $result['voucher_display'] = "Giảm " . number_format($discount_value_numeric, 0, ',', '.') . " đ";
             } elseif ($result['voucher_type'] === 'extend_duration') {
                 $result['voucher_display'] = "Gia hạn {$result['discount_value']} ngày";
             } else {
@@ -124,13 +124,12 @@ function get_transaction_details(int $transactionId): ?array {
         }
         
         // Format package duration
-        if ($result['duration_in_days']) {
-            $result['package_duration_text'] = $result['duration_in_days'] . ' ngày';
+        if ($result['duration_text']) {
+            $result['package_duration_text'] = $result['duration_text'];
         }
         
         // Format location
-        $location_parts = array_filter([$result['district'], $result['province']]);
-        $result['location_text'] = implode(', ', $location_parts);
+        $result['location_text'] = $result['province'] ?: '';
         
         // Format start and end time
         if ($result['start_time']) {
@@ -161,12 +160,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $transactionId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
     
     if ($transactionId <= 0) {
+        error_log("get_transaction_details: Invalid transaction ID: " . $transactionId);
         api_error('Invalid transaction ID', 400);
     }
     
     $details = get_transaction_details($transactionId);
     
     if ($details === null) {
+        error_log("get_transaction_details: Transaction not found for ID: " . $transactionId);
         api_error('Transaction not found', 404);
     }
     

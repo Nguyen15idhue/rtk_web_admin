@@ -8,6 +8,85 @@
 
         const id = parseInt(form.find('input[name=id]').val(), 10);
 
+        // Thumbnail preview functionality
+        const thumbnailInput = document.getElementById('thumbnailInput');
+        const thumbnailPreview = document.getElementById('thumbnailPreview');
+        const removeThumbnailBtn = document.getElementById('removeThumbnail');
+        let currentThumbnailUrl = '';        function updateThumbnailPreview(imageSrc) {
+            if (imageSrc) {
+                thumbnailPreview.innerHTML = `
+                    <img src="${imageSrc}" alt="Thumbnail preview">
+                `;
+                thumbnailPreview.classList.add('has-image');
+                
+                // Show overlay for edit mode
+                if (!isViewMode) {
+                    const overlay = document.getElementById('thumbnailOverlay');
+                    if (overlay) {
+                        overlay.style.display = 'flex';
+                    }
+                }
+            } else {
+                thumbnailPreview.innerHTML = `
+                    <div class="preview-placeholder">
+                        <i class="fas fa-image"></i>
+                        <p class="mb-0 small">Nhấp để chọn ảnh</p>
+                    </div>
+                `;
+                thumbnailPreview.classList.remove('has-image');
+                
+                // Hide overlay
+                const overlay = document.getElementById('thumbnailOverlay');
+                if (overlay) {
+                    overlay.style.display = 'none';
+                }
+            }
+        }
+
+        // Global function for removing thumbnail
+        window.removeThumbnailPreview = function() {
+            if (thumbnailInput) {
+                thumbnailInput.value = '';
+            }
+            currentThumbnailUrl = '';
+            updateThumbnailPreview('');
+        };        // Handle file input change
+        if (thumbnailInput && !isViewMode) {
+            thumbnailInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Validate file type
+                    if (!file.type.startsWith('image/')) {
+                        window.showToast('Vui lòng chọn file ảnh hợp lệ', 'error');
+                        return;
+                    }
+                    
+                    // Validate file size (max 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        window.showToast('Kích thước file không được vượt quá 5MB', 'error');
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        updateThumbnailPreview(e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Handle remove button click using event delegation
+        if (!isViewMode) {
+            document.addEventListener('click', function(e) {
+                if (e.target.id === 'removeThumbnail' || e.target.closest('#removeThumbnail')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.removeThumbnailPreview();
+                }
+            });
+        }
+
         // Initialize TinyMCE with readonly configuration for view mode
         tinymce.init({ 
             selector: '#guideContent', 
@@ -63,9 +142,7 @@
                 const slugValue = generateSlug(titleValue);
                 slugInput.val(slugValue);
             });
-        }
-
-        if (id) {
+        }        if (id) {
             (async () => {
                 try {
                     const env = await api.getJson(`${apiUrl}?action=get_guide_details&id=${id}`);
@@ -75,12 +152,18 @@
                         if (k !== 'thumbnail') form.find(`[name=${k}]`).val(d[k]);
                     });
                     form.find('[name=existing_thumbnail]').val(d.thumbnail || '');
+                      // Update thumbnail preview
+                    if (d.thumbnail) {
+                        currentThumbnailUrl = basePath + '/public/uploads/guide/' + d.thumbnail;
+                        updateThumbnailPreview(currentThumbnailUrl);
+                    }
+                    
                     tinymce.get('guideContent').setContent(d.content || '');
                 } catch (err) {
                     window.showToast(err.message, 'error');
                 }
             })();
-        }        form.on('submit', function(e){
+        }form.on('submit', function(e){
             e.preventDefault();
             
             // Prevent form submission in view mode

@@ -43,7 +43,7 @@ include $private_layouts_path . 'admin_sidebar.php';
     <!-- Header Section within Content -->
     <?php include $private_layouts_path . 'content_header.php'; ?>
 
-    <ul class="custom-tabs-nav nav nav-pills flex-wrap">
+    <ul class="custom-tabs-nav">
         <li class="nav-item"><a href="javascript:void(0)" class="nav-link active" data-tab="overview">Tổng quan</a></li>
         <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-tab="analysis_ranking">Xếp hạng</a></li>
         <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-tab="activity">Hoạt động</a></li>

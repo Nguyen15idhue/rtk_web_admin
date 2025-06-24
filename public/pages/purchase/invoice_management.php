@@ -67,51 +67,53 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
                     </button>
                     <?php endif; ?>
                 </div>
-            </form>
-
-            <form method="GET" action="">
-                <div class="filter-bar">
-                    <!-- 1. Date range first -->
-                    <input type="date" id="dateFrom" name="date_from" value="<?php echo htmlspecialchars($filters['date_from']); ?>" title="Từ ngày">
-                    <input type="date" id="dateTo" name="date_to" value="<?php echo htmlspecialchars($filters['date_to']); ?>" title="Đến ngày">
-                    <!-- 2. Status filter -->
-                    <select id="statusFilter" name="status">
-                        <option value="" <?php echo ($filters['status'] == '') ? 'selected' : ''; ?>>Tất cả trạng thái</option>
-                        <option value="pending" <?php echo ($filters['status'] == 'pending') ? 'selected' : ''; ?>>Chờ duyệt</option>
-                        <option value="active" <?php echo ($filters['status'] == 'active') ? 'selected' : ''; ?>>Đã duyệt</option>
-                        <option value="rejected" <?php echo ($filters['status'] == 'rejected') ? 'selected' : ''; ?>>Bị từ chối</option>
+            </form>            <form method="GET" action="">
+                <div class="filter-bar compact">
+                    <input type="text" name="search" value="<?php echo htmlspecialchars($filters['search']); ?>" placeholder="Tìm mã GD, email..." title="Tìm theo mã GD hoặc email">
+                    
+                    <select name="status" title="Lọc theo trạng thái" class="compact-select">
+                        <option value="">Trạng thái</option>
+                        <option value="pending" <?php echo $filters['status'] === 'pending' ? 'selected' : ''; ?>>Chờ duyệt</option>
+                        <option value="active" <?php echo $filters['status'] === 'active' ? 'selected' : ''; ?>>Đã duyệt</option>
+                        <option value="rejected" <?php echo $filters['status'] === 'rejected' ? 'selected' : ''; ?>>Từ chối</option>
                     </select>
-                    <!-- 3. Package filter -->
-                    <select id="packageFilter" name="package_id">
-                        <option value="" <?php echo ($filters['package_id'] === '') ? 'selected' : ''; ?>>Tất cả Gói</option>
-                        <?php foreach($packages as $pkg): ?>
-                            <option value="<?php echo $pkg['id']; ?>" <?php echo ($filters['package_id'] == $pkg['id']) ? 'selected' : ''; ?>>
-                                <?php echo htmlspecialchars($pkg['name']); ?>
+                    
+                    <select name="package_id" title="Lọc theo gói dịch vụ" class="compact-select">
+                        <option value="">Gói</option>
+                        <?php foreach ($packages as $pkg): ?>
+                            <option value="<?php echo htmlspecialchars($pkg['id']); ?>" 
+                                <?php echo $filters['package_id'] == $pkg['id'] ? 'selected' : ''; ?>>
+                                <?php echo mb_strlen($pkg['name']) > 15 ? mb_substr(htmlspecialchars($pkg['name']), 0, 15) . '...' : htmlspecialchars($pkg['name']); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
-                    <!-- 4. Province filter -->
-                    <select id="provinceFilter" name="province">
-                        <option value="" <?php echo ($filters['province'] === '') ? 'selected' : ''; ?>>Tất cả Tỉnh</option>
-                        <?php foreach($provinces as $prov): ?>
-                            <option value="<?php echo htmlspecialchars($prov); ?>" <?php echo ($filters['province'] == $prov) ? 'selected' : ''; ?>>
-                                <?php echo htmlspecialchars($prov); ?>
+                    
+                    <select name="province" title="Lọc theo tỉnh/thành phố" class="compact-select">
+                        <option value="">Tỉnh</option>
+                        <?php foreach ($provinces as $prov): ?>
+                            <option value="<?php echo htmlspecialchars($prov); ?>" 
+                                <?php echo $filters['province'] == $prov ? 'selected' : ''; ?>>
+                                <?php echo mb_strlen($prov) > 12 ? mb_substr(htmlspecialchars($prov), 0, 12) . '...' : htmlspecialchars($prov); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
-                    <!-- 5. Type filter -->
-                    <select id="typeFilter" name="type">
-                        <option value=""    <?= $filters['type']===''       ? 'selected':'' ?>>Tất cả loại</option>
-                        <option value="purchase" <?= $filters['type']==='purchase' ? 'selected':'' ?>>Đăng ký mới</option>
-                        <option value="renewal"  <?= $filters['type']==='renewal'  ? 'selected':'' ?>>Gia hạn</option>
+                    
+                    <select name="type" title="Lọc theo loại giao dịch" class="compact-select">
+                        <option value="">Loại</option>
+                        <option value="purchase" <?php echo $filters['type'] === 'purchase' ? 'selected' : ''; ?>>Đăng ký</option>
+                        <option value="renewal" <?php echo $filters['type'] === 'renewal' ? 'selected' : ''; ?>>Gia hạn</option>
                     </select>
-                    <!-- 6. Search input last -->
-                    <input type="search" placeholder="Tìm Mã GD, Email..." id="searchInput" name="search" value="<?php echo htmlspecialchars($filters['search']); ?>">
-                    <!-- buttons -->
-                    <button class="btn btn-primary" type="submit"><i class="fas fa-filter"></i> Lọc</button>
-                    <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary" style="text-decoration: none;">
-                        <i class="fas fa-times"></i> Xóa
-                    </a>
+                    
+                    <div class="date-range">
+                        <input type="date" name="date_from" value="<?php echo htmlspecialchars($filters['date_from']); ?>" title="Từ ngày" class="compact-date">
+                        <span class="date-separator">-</span>
+                        <input type="date" name="date_to" value="<?php echo htmlspecialchars($filters['date_to']); ?>" title="Đến ngày" class="compact-date">
+                    </div>
+                    
+                    <div class="filter-actions">
+                        <button class="btn btn-primary btn-sm" type="submit" title="Áp dụng bộ lọc"><i class="fas fa-search"></i></button>
+                        <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary btn-sm" title="Xóa bộ lọc"><i class="fas fa-times"></i></a>
+                    </div>
                 </div>
             </form>
 
@@ -329,7 +331,9 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
         }
     };
 </script>
+<script src="<?php echo $base_url; ?>public/assets/js/utils/bulk_actions.js"></script>
 <script src="<?php echo $base_url; ?>public/assets/js/pages/purchase/invoice_management.js"></script>
+<link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/pages/purchase/invoice_management.css">
 </body>
 </html>
 <?php include $private_layouts_path . 'admin_footer.php'; ?>

@@ -1,25 +1,1881 @@
-/* Content Header */
+/* Content Header - Simplified for Admin */
 .content-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 1.5rem; padding: 1rem 1.5rem;
-    background: white; border-radius: var(--rounded-lg);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    border: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.5rem;
+    background: #ffffff;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    gap: 1rem;
 }
-.content-header h2 {
-    font-size: 1.5rem; font-weight: var(--font-semibold);
+
+/* Basic dropdown items - no animations */
+.notification-item,
+.search-result-item,
+.quick-action-item,
+.menu-item {
+    opacity: 1;
+    transform: none;
+}
+
+/* Simple hover effects only */
+.notification-bell:hover > i {
+    color: #3b82f6;
+}
+
+.search-input-wrapper:hover i {
+    color: #3b82f6;
+}
+
+/* Tooltip styles for keyboard shortcuts */
+[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gray-900);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--rounded);
+    font-size: var(--font-size-xs);
+    white-space: nowrap;
+    z-index: 10001; /* Increased z-index to be above dropdowns */
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: tooltipFadeIn 0.2s ease forwards;
+    pointer-events: none; /* Prevent tooltip from interfering with hover */
+}
+
+[title]:hover::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 0.25rem solid transparent;
+    border-top-color: var(--gray-900);
+    z-index: 10001; /* Increased z-index to be above dropdowns */
+    margin-bottom: 0.25rem;
+    opacity: 0;
+    animation: tooltipFadeIn 0.2s ease forwards;
+    pointer-events: none; /* Prevent tooltip from interfering with hover */
+}
+
+/* Special tooltip styling for system-status - CSS fallback only */
+.system-status[title]:not([data-js-tooltip]):hover::after {
+    content: attr(title);
+    /* Simplified tooltip styling */
+}
+
+/* Simplified interactive elements */
+
+/* Basic focus styles */
+.content-header [tabindex="0"]:focus,
+.content-header button:focus,
+.content-header a:focus,
+.content-header input:focus {
+    outline: 1px solid var(--primary-500);
+}
+
+/* Remove high contrast and reduced motion styles - keep simple */
+
+/* Header Left Section */
+.header-left {
+    flex: 1;
+    min-width: 0;
+}
+
+.page-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0;
+    flex-wrap: wrap;
+}
+
+.page-subtitle .time-section {
+    padding: 0.25rem 0.75rem;
+    background: rgba(59, 130, 246, 0.08);
+    border-radius: 16px;
+    color: #3b82f6;
+}
+
+.page-subtitle .welcome-section {
+    color: #475569;
+}
+
+.page-subtitle .welcome-section strong {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+/* Simplified system status */
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    background: #ecfdf5;
+    border: 1px solid #d1fae5;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #065f46;
+}
+
+@keyframes shimmerStatus {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.system-status.online-indicator i {
+    color: #10b981 !important;
+    font-size: 0.5rem;
+    animation: pulseGreen 2s infinite;
+}
+
+@keyframes pulseGreen {
+    0%, 100% { 
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+/* Header Center Section - Search */
+.header-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    max-width: 400px;
+    position: relative; /* Add relative positioning */
+    z-index: 15; /* Ensure it's above header-left but potentially below header-right children if they have dropdowns */
+}
+
+.quick-search {
+    position: relative;
+    width: 100%;
+}
+
+/* Enhanced Search Bar */
+.search-input-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+}
+
+.search-input-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    background: linear-gradient(135deg, #e2e8f0, #f1f5f9, #e2e8f0);
+    border-radius: 24px;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    -webkit-mask-composite: xor;
+    pointer-events: none;
+}
+
+.search-input-wrapper i {
+    position: absolute;
+    left: 1.125rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.search-input-wrapper:focus-within i {
+    color: #3b82f6;
+    transform: translateY(-50%) scale(1.1);
+}
+
+#global-search {
+    width: 100%;
+    padding: 0.875rem 1.25rem 0.875rem 3rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    font-size: 0.875rem;
+    background: linear-gradient(145deg, #ffffff 0%, #fafbfc 100%);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #1e293b;
+    font-weight: 500;
+    box-shadow: 
+        0 1px 2px rgba(0, 0, 0, 0.02),
+        0 0 0 1px rgba(255, 255, 255, 0.95) inset;
+    box-sizing: border-box;
+}
+
+#global-search:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: #ffffff;
+    box-shadow: 
+        0 0 0 3px rgba(59, 130, 246, 0.08),
+        0 2px 8px rgba(59, 130, 246, 0.12),
+        0 0 0 1px rgba(59, 130, 246, 0.2) inset;
+    transform: translateY(-1px);
+}
+
+#global-search::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
+}
+
+/* Enhanced Search Results */
+.search-results {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 16px;
+    box-shadow: 
+        0 4px 6px rgba(0, 0, 0, 0.03),
+        0 10px 25px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.95) inset;
+    z-index: 10003; /* Increased z-index to ensure it's above all other elements */
+    max-height: 320px;
+    overflow-y: auto;
+    display: none;
+    backdrop-filter: blur(8px);
+}
+
+/* Header Right Section - User Actions */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Adjusted gap */
+    position: relative; /* Ensure stacking context */
+    z-index: 20; /* Higher than other direct children of content-header */
+}
+
+.notification-bell,
+.quick-actions,
+.user-menu {
+    position: relative; /* Ensure these elements establish their own stacking context */
+    z-index: 1; /* Default stacking within header-right */
+}
+
+/* Notification Bell - Enhanced Interaction */
+.notification-bell {
+    position: relative;
+    cursor: pointer;
+    padding: 0.625rem; /* Consistent padding */
+    border-radius: 50%; /* Circular shape */
+    background: transparent;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    color: #4b5563; /* Default icon color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; /* Fixed width */
+    height: 40px; /* Fixed height */
+}
+
+.notification-bell:hover{
+    background-color: rgba(59, 130, 246, 0.1); /* Subtle hover background */
+    color: #3b82f6; /* Icon color change on hover */
+}
+
+.notification-bell > i {
+    font-size: 1.25rem;
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1.5); /* Smoother, bouncier rotation */
+}
+
+.notification-bell:hover > i {
+    transform: rotate(15deg) scale(1.1); /* Add slight scale for more pop */
+}
+
+.notification-badge {
+    position: absolute;
+    top: 0.125rem;
+    right: 0.125rem;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    padding: 0.1875rem 0.4375rem;
+    border-radius: 50px;
+    min-width: 1.125rem;
+    text-align: center;
+    line-height: 1;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+    animation: notificationPulse 2s infinite;
+}
+
+@keyframes notificationPulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+    }
+    50% { 
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(245, 158, 11, 0.4);
+    }
+}
+
+.notification-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 360px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--rounded-lg);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+    z-index: 10000; /* Ensure dropdown is above everything */
+    display: none;
+    margin-top: 0.5rem;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+    background: linear-gradient(135deg, #f8fafc, #ffffff);
+}
+
+.notification-header h4 {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.01em;
+}
+
+.mark-all-read {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.05));
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    color: #2563eb;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.375rem 0.75rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.mark-all-read:hover {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.notification-list {
+    max-height: 320px;
+    overflow-y: auto;
+    padding: 0.5rem;
+}
+
+.notification-footer {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid rgba(226, 232, 240, 0.6);
+    text-align: center;
+    background: linear-gradient(135deg, #f8fafc, #ffffff);
+}
+
+.notification-footer a {
+    color: #3b82f6;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.notification-footer a:hover {
+    background: rgba(59, 130, 246, 0.08);
+    transform: translateY(-1px);
+}
+
+/* Quick Actions */
+.quick-actions {
+    position: relative;
+}
+
+.quick-action-btn > i {
+    font-size: 1.5rem; /* Increased further for better proportion with larger button */
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1.5); /* Match notification bell icon transition */
+}
+
+.quick-action-btn:hover > i {
+    transform: rotate(90deg) scale(1.1); /* Keep existing rotate and add scale like notification-bell */
+    color: #3b82f6; /* Match notification-bell hover icon color */
+}
+
+.quick-actions-menu {
+    position: absolute;
+    top: calc(100% + 10px); /* Increased spacing from button */
+    right: 0;
+    width: 240px;
+    padding: 0.75rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--rounded-lg);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+    z-index: 10000; /* Ensure dropdown is above everything */
+    display: none;
+    margin-top: 0.5rem;
+}
+
+/* User Menu - Enhanced Interaction */
+.user-menu {
+    position: relative;
+}
+
+.user-menu-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    cursor: pointer;
+    padding: 0.625rem 1rem;
+    border-radius: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 1px 3px rgba(0, 0, 0, 0.05),
+        0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+}
+
+.user-menu-trigger:hover {
+    background: linear-gradient(145deg, #f8fafc, #f1f5f9);
+    transform: translateY(-1px);
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.95) inset;
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.user-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    color: #2563eb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.125rem;
+    font-weight: 600;
+    border: 2px solid rgba(59, 130, 246, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* User Menu Compact Display - Always show short name since full info is in sidebar */
+.user-name-full,
+.user-name-short {
+    transition: opacity 0.3s ease;
+}
+
+/* Always prioritize short name for compact header */
+.user-name-full {
+    display: none;
+}
+
+.user-name-short {
+    display: inline;
+    font-weight: 600;
+    color: #334155;
+}
+
+/* Extra small screens: Hide name entirely, keep only avatar */
+@media (max-width: 480px) {
+    .user-name-full,
+    .user-name-short {
+        display: none;
+    }
+    
+    .user-menu-trigger {
+        padding: 0.625rem;
+        gap: 0;
+    }
+    
+    .user-menu-trigger .user-avatar {
+        margin: 0;
+    }
+    
+    .user-menu-trigger .fas.fa-chevron-down {
+        display: none;
+    }
+}
+
+/* Enhanced User Menu - Enhanced Interaction */
+.user-menu {
+    position: relative;
+}
+
+.user-menu-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    cursor: pointer;
+    padding: 0.625rem 1rem;
+    border-radius: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 1px 3px rgba(0, 0, 0, 0.05),
+        0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+}
+
+.user-menu-trigger:hover {
+    background: linear-gradient(145deg, #f8fafc, #f1f5f9);
+    transform: translateY(-1px);
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.95) inset;
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.user-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    color: #2563eb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.125rem;
+    font-weight: 600;
+    border: 2px solid rgba(59, 130, 246, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Enhanced Dropdown Menus */
+.user-menu-dropdown,
+.notification-dropdown,
+.quick-actions-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 280px;
+    background: linear-gradient(145deg, #ffffff, #fafbfc);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 16px;
+    box-shadow: 
+        0 4px 6px rgba(0, 0, 0, 0.03),
+        0 10px 25px rgba(0, 0, 0, 0.08),
+        0 20px 40px rgba(0, 0, 0, 0.06),
+        0 0 0 1px rgba(255, 255, 255, 0.95) inset;
+    z-index: 10000; /* Ensure dropdown is above everything */
+    display: none;
+    backdrop-filter: blur(12px);
+    overflow: hidden;
+    transform: translateY(-8px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.user-menu-dropdown.show,
+.notification-dropdown.show,
+.quick-actions-menu.show {
+    display: block;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.user-menu-dropdown::before,
+.notification-dropdown::before,
+.quick-actions-menu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+}
+
+/* Enhanced User Info Card */
+.user-info-card {
+    padding: 1.5rem;
+    text-align: center;
+    background: linear-gradient(135deg, #f8fafc, #ffffff);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+    position: relative;
+}
+
+.user-info-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+}
+
+.user-avatar-large {
+    width: 4rem;
+    height: 4rem;
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    color: #2563eb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin: 0 auto 1rem;
+    border: 3px solid rgba(59, 130, 246, 0.2);
+    box-shadow: 
+        0 4px 8px rgba(59, 130, 246, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+    transition: all 0.3s ease;
+}
+
+.user-details h4 {
+    margin: 0 0 0.375rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.01em;
+}
+
+.user-details p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #64748b;
+    font-weight: 500;
+    padding: 0.25rem 0.75rem;
+    background: rgba(59, 130, 246, 0.08);
+    border-radius: 12px;
+    display: inline-block;
+    border: 1px solid rgba(59, 130, 246, 0.15);
+}
+
+/* Enhanced Menu Items */
+.menu-item,
+.quick-action-item {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.875rem 1.25rem;
+    color: #374151;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 12px;
+    margin: 0.125rem 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-item::before,
+.quick-action-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.05), transparent);
+    transition: left 0.5s ease;
+}
+
+.menu-item:hover::before,
+.quick-action-item:hover::before {
+    left: 100%;
+}
+
+.menu-item:hover,
+.quick-action-item:hover {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.05));
+    color: #2563eb;
+    transform: translateX(4px);
+    border-left: 3px solid #3b82f6;
+}
+
+.menu-item.logout {
+    color: #dc2626;
+    margin-top: 0.5rem;
+    border-top: 1px solid rgba(226, 232, 240, 0.6);
+    padding-top: 1rem;
+}
+
+.menu-item.logout:hover {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.05));
+    color: #b91c1c;
+    border-left-color: #ef4444;
+}
+
+.menu-item i,
+.quick-action-item i {
+    width: 1.125rem;
+    text-align: center;
+    color: #9ca3af;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.menu-item:hover i,
+.quick-action-item:hover i {
+    color: inherit;
+    transform: scale(1.1);
+}
+
+.menu-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(226, 232, 240, 0.8), transparent);
+    margin: 0.5rem 1rem;
+}
+
+/* Search Results Styling */
+.search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: var(--gray-700);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gray-100);
+    transition: background 0.2s ease;
+}
+
+.search-result-item:hover {
+    background: var(--gray-50);
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.result-icon {
+    width: 2rem;
+    height: 2rem;
+    background: var(--primary-100);
+    color: var(--primary-600);
+    border-radius: var(--rounded);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    position: relative;
+    margin-right: 0;
+}
+
+.result-icon i {
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    line-height: 1 !important;
+    display: block !important;
+    transform: none !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+/* Comprehensive FontAwesome icon fixes for result-icon */
+.result-icon .fa,
+.result-icon .fas,
+.result-icon .far,
+.result-icon .fab,
+.result-icon .fal,
+.result-icon .fad,
+.result-icon [class*="fa-"] {
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+    transform: none !important;
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    width: auto !important;
+    height: auto !important;
+    vertical-align: baseline !important;
+    float: none !important;
+    text-indent: 0 !important;
+    font-style: normal !important;
+    font-variant: normal !important;
+    text-decoration: none !important;
+}
+
+/* Ensure the container properly centers the icon */
+.result-icon {
+    text-align: center !important;
+    overflow: hidden;
+}
+
+/* Additional specificity for stubborn FontAwesome styles */
+.search-result-item .result-icon i,
+.search-result-item .result-icon .fa,
+.search-result-item .result-icon .fas,
+.search-result-item .result-icon .far,
+.search-result-item .result-icon .fab {
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    position: static !important;
+    text-align: center !important;
+    display: inline-block !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+.result-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.result-title {
+    font-weight: var(--font-medium);
     color: var(--gray-800);
-}
-.user-info {
-    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 0.125rem;
     font-size: var(--font-size-sm);
 }
-.user-info span .highlight {
-    color: var(--primary-600); font-weight: var(--font-semibold);
+
+.result-subtitle {
+    font-size: var(--font-size-xs);
+    color: var(--gray-500);
 }
-.user-info a {
-    color: var(--primary-600); text-decoration: none;
+
+.search-loading,
+.search-no-results,
+.no-notifications {
+    padding: 1rem;
+    text-align: center;
+    color: var(--gray-500);
+    font-size: var(--font-size-sm);
 }
-.user-info a:hover {
-    text-decoration: underline;
+
+/* Enhanced search loading and error states */
+.search-loading,
+.no-results,
+.search-error {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1rem 1rem 3rem; /* Added extra left padding to prevent overlap with search icon */
+    text-align: center;
+    color: var(--gray-600);
+    font-size: var(--font-size-sm);
+    border-radius: var(--rounded-md);
+}
+
+.search-loading {
+    background: var(--blue-50);
+    color: var(--blue-700);
+}
+
+.search-loading i {
+    color: var(--primary-500);
+}
+
+.no-results {
+    background: var(--gray-50);
+    color: var(--gray-600);
+}
+
+.search-error {
+    background: var(--red-50);
+    color: var(--red-700);
+}
+
+.search-error i {
+    color: var(--red-500);
+}
+
+/* Notification Item Styling */
+.notification-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--gray-100);
+    cursor: pointer;
+    transition: background 0.2s ease;
+    position: relative;
+}
+
+.notification-item:hover {
+    background: var(--gray-50);
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item.unread {
+    background: var(--blue-50);
+    border-left: 3px solid var(--primary-500);
+}
+
+.notification-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--rounded-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.notification-icon.warning {
+    background: var(--yellow-100);
+    color: var(--yellow-600);
+}
+
+.notification-icon.info {
+    background: var(--blue-100);
+    color: var(--blue-600);
+}
+
+.notification-icon.success {
+    background: var(--green-100);
+    color: var(--green-600);
+}
+
+.notification-icon.error {
+    background: var(--red-100);
+    color: var(--red-600);
+}
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-title {
+    font-weight: var(--font-medium);
+    color: var(--gray-800);
+    margin-bottom: 0.25rem;
+    font-size: var(--font-size-sm);
+}
+
+.notification-message {
+    font-size: var(--font-size-xs);
+    color: var(--gray-600);
+    margin-bottom: 0.25rem;
+    line-height: 1.4;
+}
+
+.notification-time {
+    font-size: var(--font-size-xs);
+    color: var(--gray-500);
+}
+
+.unread-indicator {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--primary-500);
+    border-radius: var(--rounded-full);
+}
+
+/* Loading and Empty States */
+.search-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.search-loading::before {
+    content: '';
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid var(--gray-300);
+    border-top: 2px solid var(--primary-500);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Remove hover underline pseudo-elements for quick actions and notifications */
+.notification-bell::before,
+.quick-action-btn::before,
+.notification-bell:hover::before,
+.quick-action-btn:hover::before {
+    display: none !important;
+    opacity: 0 !important;
+    background: none !important;
+}
+
+/* Enhanced Responsive Design */
+
+/* Tablet optimizations */
+@media (max-width: 1024px) and (min-width: 641px) {
+    .content-header {
+        padding: 1rem 1.25rem;
+        gap: 1rem;
+    }
+    
+    .quick-search {
+        min-width: 200px;
+        max-width: 300px;
+    }
+    
+    #global-search {
+        padding: 0.5rem 0.75rem 0.5rem 2rem;
+    }
+    
+    .notification-dropdown,
+    .quick-actions-menu,
+    .user-menu-dropdown {
+        min-width: 280px;
+        max-width: 320px;
+    }
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+    .content-header {
+        min-height: auto;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        padding: 1rem;
+        overflow: visible !important;
+    }
+    
+    .header-left {
+        order: 1;
+    }
+    
+    .header-center {
+        order: 2;
+        width: 100%;
+        z-index: 30; /* Increased z-index for mobile search */
+    }
+    
+    .header-right {
+        order: 3;
+        justify-content: space-between;
+        width: 100%;
+        position: relative;
+        overflow: visible !important;
+    }
+    
+    .content-header::before {
+        height: 2px;
+    }
+    
+    .page-title-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .page-subtitle {
+        font-size: 0.75rem;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+    
+    .quick-search {
+        width: 100%;
+        min-width: unset;
+        max-width: unset;
+        position: relative;
+        z-index: 35; /* Ensure search container has high z-index */
+    }
+    
+    .search-input-wrapper {
+        position: relative;
+        z-index: 36; /* Ensure input wrapper has high z-index */
+    }
+    
+    /* Enhanced mobile search results positioning */
+    .search-results {
+        position: absolute !important;
+        top: calc(100% + 8px) !important;
+        bottom: auto !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: auto !important;
+        max-height: 60vh !important;
+        z-index: 10004 !important; /* Highest z-index for mobile search results */
+        border-radius: 16px !important;
+        box-shadow: 
+            0 10px 25px rgba(0, 0, 0, 0.15),
+            0 20px 40px rgba(0, 0, 0, 0.1),
+            0 0 0 1px rgba(255, 255, 255, 0.95) inset !important;
+        backdrop-filter: blur(12px) !important;
+    }
+    
+    /* Ensure search results show above mobile navbar if exists */
+    .search-results.show {
+        display: block !important;
+        z-index: 10004 !important;
+    }
+    
+    #global-search {
+        font-size: 14px;
+        padding: 0.625rem 0.875rem 0.625rem 2.25rem;
+        width: 100%;
+    }
+    
+    .search-input-wrapper {
+        width: 100%;
+    }
+    
+    .search-input-wrapper i {
+        left: 0.875rem;
+    }
+    
+    .notification-bell,
+    .quick-actions,
+    .user-menu {
+        flex-shrink: 0;
+        position: relative;
+    }
+    
+    /* Mobile dropdown positioning - align to right edge of screen with margin */
+    .notification-dropdown,
+    .quick-actions-menu,
+    .user-menu-dropdown {
+        position: fixed !important;
+        top: auto !important;
+        bottom: 1rem !important;
+        left: 1rem !important;
+        right: 1rem !important;
+        width: auto !important;
+        min-width: unset !important;
+        max-width: unset !important;
+        transform: none !important;
+        max-height: 60vh !important;
+        overflow-y: auto !important;
+        border-radius: 16px !important;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+        z-index: 10001 !important;
+        margin: 0 !important;
+    }
+    
+    /* Alternative positioning for specific dropdowns if needed */
+    .notification-bell .notification-dropdown {
+        right: calc(100vw - 100% - 1rem) !important;
+        left: auto !important;
+        width: calc(100vw - 2rem) !important;
+        max-width: 360px !important;
+        min-width: 300px !important;
+    }
+    
+    .quick-actions .quick-actions-menu {
+        right: calc(100vw - 100% - 1rem) !important;
+        left: auto !important;
+        width: calc(100vw - 2rem) !important;
+        max-width: 280px !important;
+        min-width: 240px !important;
+    }
+    
+    .user-menu .user-menu-dropdown {
+        right: calc(100vw - 100% - 1rem) !important;
+        left: auto !important;
+        width: calc(100vw - 2rem) !important;
+        max-width: 320px !important;
+        min-width: 280px !important;
+    }
+    
+    .user-info-card {
+        padding: 1rem;
+    }
+    
+    .user-avatar-large {
+        width: 3rem;
+        height: 3rem;
+        font-size: 1.25rem;
+    }
+    
+    .system-status {
+        font-size: 0.625rem;
+        padding: 0.0625rem 0.375rem;
+    }
+    
+    .current-time {
+        font-size: 0.6875rem;
+    }
+}
+
+/* Extra small devices optimization */
+@media (max-width: 480px) {
+    .content-header {
+        padding: 0.75rem;
+    }
+    
+    .page-title-section h2 {
+        font-size: 1.25rem;
+    }
+    
+    .page-subtitle {
+        font-size: 0.6875rem;
+    }
+    
+    #global-search {
+        font-size: 13px;
+        padding: 0.5rem 0.75rem 0.5rem 2rem;
+    }
+    
+    .search-input-wrapper i {
+        left: 0.75rem;
+    }
+    
+    .notification-badge {
+        font-size: 0.625rem;
+        min-width: 1rem;
+        height: 1rem;
+        line-height: 1rem;
+    }
+    
+    .quick-action-btn {
+        width: 52px !important; /* Increased further for consistency */
+        height: 52px !important; /* Increased further for consistency */
+        font-size: 0.875rem;
+        border-radius: 50% !important; /* Ensure circular shape on small screens */
+    }
+    
+    .user-avatar {
+        width: 2rem;
+        height: 2rem;
+        font-size: 0.75rem;
+    }
+    
+    /* Enhanced search results for very small screens */
+    .search-results {
+        position: fixed !important;
+        top: auto !important;
+        bottom: 1rem !important;
+        left: 0.5rem !important;
+        right: 0.5rem !important;
+        width: auto !important;
+        max-height: 70vh !important;
+        z-index: 10005 !important; /* Even higher z-index for very small screens */
+        border-radius: 12px !important;
+        margin: 0 !important;
+    }
+    
+    /* Prevent body scroll when search results are open */
+    body.search-results-open {
+        overflow: hidden !important;
+        position: fixed !important;
+        width: 100% !important;
+    }
+}
+
+/* Mobile-specific dropdown positioning improvements */
+@media (max-width: 768px) {
+    /* Ensure content-header and children don't cause horizontal scroll */
+    .content-header {
+        overflow: visible !important;
+        position: relative;
+    }
+    
+    .header-right {
+        overflow: visible !important;
+        position: relative;
+    }
+    
+    /* Base dropdown positioning for mobile */
+    .notification-dropdown,
+    .quick-actions-menu,
+    .user-menu-dropdown {
+        position: absolute !important;
+        top: calc(100% + 0.5rem) !important;
+        right: 0 !important;
+        left: auto !important;
+        width: 300px !important;
+        max-width: calc(100vw - 2rem) !important;
+        transform: translateX(0) !important;
+        z-index: 10001 !important;
+        border-radius: 12px !important;
+        box-shadow: 
+            0 8px 16px rgba(0, 0, 0, 0.12),
+            0 4px 8px rgba(0, 0, 0, 0.08) !important;
+    }
+    
+    /* Smart positioning: if dropdown would overflow right edge, align to right */
+    .header-right > *:last-child .notification-dropdown,
+    .header-right > *:last-child .quick-actions-menu,
+    .header-right > *:last-child .user-menu-dropdown {
+        right: 0 !important;
+        left: auto !important;
+    }
+    
+    /* Smart positioning: if dropdown would overflow left edge, align to left */
+    .header-right > *:first-child .notification-dropdown,
+    .header-right > *:first-child .quick-actions-menu,
+    .header-right > *:first-child .user-menu-dropdown {
+        left: 0 !important;
+        right: auto !important;
+    }
+    
+    /* Center dropdowns for middle elements */
+    .header-right > *:not(:first-child):not(:last-child) .notification-dropdown,
+    .header-right > *:not(:first-child):not(:last-child) .quick-actions-menu,
+    .header-right > *:not(:first-child):not(:last-child) .user-menu-dropdown {
+        right: 50% !important;
+        left: auto !important;
+        transform: translateX(50%) !important;
+    }
+    
+    /* Prevent body scroll when dropdown is open */
+    body.mobile-dropdown-open {
+        overflow: hidden;
+        touch-action: none;
+    }
+    
+    /* Mobile-specific backdrop */
+    .mobile-dropdown-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 10000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    
+    .mobile-dropdown-backdrop.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    /* Improved search results positioning on mobile */
+    .search-results {
+        position: absolute !important;
+        top: calc(100% + 8px) !important;
+        bottom: auto !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: auto !important;
+        max-height: 60vh !important;
+        z-index: 10004 !important; /* Highest z-index for search results */
+        border-radius: 16px !important;
+        box-shadow: 
+            0 10px 25px rgba(0, 0, 0, 0.15),
+            0 20px 40px rgba(0, 0, 0, 0.1),
+            0 0 0 1px rgba(255, 255, 255, 0.95) inset !important;
+        backdrop-filter: blur(12px) !important;
+    }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+    .notification-dropdown,
+    .quick-actions-menu,
+    .user-menu-dropdown {
+        width: 280px !important;
+        max-width: calc(100vw - 1rem) !important;
+    }
+    
+    /* On very small screens, always use full-width bottom sheets */
+    .notification-dropdown,
+    .quick-actions-menu,
+    .user-menu-dropdown {
+        position: fixed !important;
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        max-height: 70vh !important;
+        border-radius: 16px 16px 0 0 !important;
+        transform: none !important;
+    }
+}
+
+/* Button and icon colors */
+.notification-bell i,
+.quick-action-btn,
+.user-menu-trigger,
+.search-icon {
+    color: #4b5563 !important; /* Changed to match notification-bell color */
+}
+
+.notification-bell:hover i {
+    color: #3b82f6 !important;
+    background: #f8fafc !important;
+}
+
+.quick-action-btn {
+    background: transparent !important; /* Changed to match notification-bell base */
+    border-radius: 50% !important;
+    width: 52px !important; /* Increased further for even larger size */
+    height: 52px !important; /* Increased further for even larger size */
+    padding: 0.875rem !important; /* Increased padding for better proportion */
+    /* color is handled by the rule above */
+}
+
+.quick-action-btn:hover {
+    background-color: rgba(59, 130, 246, 0.1) !important;
+    color: #3b82f6 !important; /* Icon color change on hover */
+}
+
+.quick-action-btn:hover i {
+    color: #3b82f6 !important; /* Ensure icon color matches on hover */
+}
+
+/* Ensure user-menu-trigger stays rounded on interaction */
+.user-menu-trigger:hover,
+.user-menu-trigger:active,
+.user-menu-trigger:focus {
+    border-radius: 20px !important;
+}
+
+/* Menu items */
+.menu-item,
+.quick-action-item,
+.notification-item,
+.search-result-item {
+    color: #374151 !important;
+}
+
+.menu-item:hover,
+.quick-action-item:hover,
+.notification-item:hover,
+.search-result-item:hover {
+    background: #f8fafc !important;
+    color: #3b82f6 !important;
+}
+
+/* Text elements */
+.page-title-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    margin-top: 0.25rem;
+    color: #334155 !important;
+}
+
+.page-subtitle {
+    color: #64748b !important;
+}
+
+.notification-title {
+    color: #374151 !important;
+}
+
+.notification-message {
+    color: #64748b !important;
+}
+
+.notification-time {
+    color: #94a3b8 !important;
+}
+
+/* System status */
+.current-time {
+    color: #64748b !important;
+}
+
+/* Enhanced Loading and Animation Effects */
+.loading-spinner {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid transparent;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Enhanced mark highlight for search results */
+mark {
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
+    color: #1e40af;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+}
+
+/* Dropdown backdrop */
+.dropdown-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.02);
+    backdrop-filter: blur(2px);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Search results backdrop for mobile */
+.search-results-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    z-index: 10003;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.search-results-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Show backdrop only on mobile */
+@media (max-width: 768px) {
+    .search-results-backdrop {
+        display: block;
+    }
+}
+
+@media (min-width: 769px) {
+    .search-results-backdrop {
+        display: none !important;
+    }
+}
+.page-subtitle .time-section {
+    border-radius: 20px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(59, 130, 246, 0.15);
+    border-image: initial;
+}
+/* Enhanced time display */
+.time-section .time {
+    font-weight: 700;
+    color: #2563eb;
+}
+
+.time-section .date {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    font-weight: 500;
+    margin-left: 0.5rem;
+}
+
+/* Status indicator variations */
+.system-status.warning-indicator {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-color: rgba(245, 158, 11, 0.3);
+    color: #92400e;
+}
+
+.system-status.warning-indicator i {
+    color: #f59e0b;
+}
+
+.system-status.offline-indicator {
+    background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #991b1b;
+}
+
+.system-status.offline-indicator i {
+    color: #ef4444;
+}
+
+/* Enhanced notification badge pulse */
+.notification-badge.pulse {
+    animation: notificationPulse 1.5s ease-in-out infinite;
+}
+
+/* Enhanced hover effects for interactive elements */
+.notification-bell,
+.quick-action-btn,
+.user-menu-trigger {
+    position: relative;
+    overflow: visible;
+}
+
+.notification-bell::before,
+user-menu-trigger::before,
+.quick-action-btn::before { /* Added .quick-action-btn::before */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.notification-bell:hover::before,
+.user-menu-trigger:hover::before,
+.quick-action-btn:hover::before { 
+    opacity: 1;
+}
+
+/* Enhanced responsive animations */
+@media (prefers-reduced-motion: reduce) {
+    .loading-spinner,
+    .notification-badge,
+    .quick-action-btn,
+    .system-status::before {
+        animation: none !important;
+    }
+    
+    .search-result-item,
+    .notification-item,
+    .quick-action-item,
+    .menu-item {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
+/* Enhanced focus states for better accessibility */
+.search-result-item:focus,
+.notification-item:focus,
+.quick-action-item:focus,
+.menu-item:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: -2px;
+    background: rgba(59, 130, 246, 0.08) !important;
+}
+
+/* Smooth scrollbar for dropdown lists */
+.notification-list::-webkit-scrollbar,
+.search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notification-list::-webkit-scrollbar-track,
+.search-results::-webkit-scrollbar-track {
+    background: rgba(226, 232, 240, 0.3);
+    border-radius: 3px;
+}
+
+.notification-list::-webkit-scrollbar-thumb,
+.search-results::-webkit-scrollbar-thumb {
+    background: rgba(59, 130, 246, 0.3);
+    border-radius: 3px;
+}
+
+.notification-list::-webkit-scrollbar-thumb:hover,
+.search-results::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 130, 246, 0.5);
+}
+
+/* Enhanced mobile experience */
+@media (max-width: 640px) {
+    .dropdown-backdrop {
+        background: rgba(0, 0, 0, 0.1);
+        z-index: 10000;
+    }
+    
+    /* Ensure dropdowns stay within viewport on mobile */
+    .notification-dropdown,
+    .quick-actions-menu,
+    .user-menu-dropdown {
+        position: fixed !important;
+        top: auto !important;
+        bottom: 1rem !important;
+        left: 1rem !important;
+        right: 1rem !important;
+        width: auto !important;
+        min-width: unset !important;
+        max-width: unset !important;
+        transform: none !important;
+        max-height: 60vh !important;
+        border-radius: 16px !important;
+        box-shadow: 
+            0 10px 25px rgba(0, 0, 0, 0.15),
+            0 20px 40px rgba(0, 0, 0, 0.1) !important;
+        z-index: 10001 !important;
+    }
+    
+    /* Search results mobile positioning */
+    .search-results {
+        position: absolute !important;
+        top: calc(100% + 8px) !important;
+        bottom: auto !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: auto !important;
+        max-height: 60vh !important;
+        z-index: 10004 !important; /* Highest z-index to ensure visibility */
+        border-radius: 16px !important;
+        box-shadow: 
+            0 10px 25px rgba(0, 0, 0, 0.15),
+            0 20px 40px rgba(0, 0, 0, 0.1),
+            0 0 0 1px rgba(255, 255, 255, 0.95) inset !important;
+        backdrop-filter: blur(12px) !important;
+    }
+    
+    /* Override for smaller dropdowns to appear from parent position */
+    .header-right .notification-dropdown,
+    .header-right .quick-actions-menu,
+    .header-right .user-menu-dropdown {
+        position: absolute !important;
+        top: calc(100% + 0.5rem) !important;
+        bottom: auto !important;
+        right: 0 !important;
+        left: auto !important;
+        width: 280px !important;
+        max-width: calc(100vw - 2rem) !important;
+        min-width: 240px !important;
+        transform: translateX(0) !important;
+    }
+    
+    /* Prevent horizontal scroll when dropdowns appear */
+    body.dropdown-open {
+        overflow-x: hidden;
+    }
+    
+    /* Adjust dropdown positioning based on screen edge proximity */
+    .header-right .notification-bell:last-child .notification-dropdown,
+    .header-right .quick-actions:last-child .quick-actions-menu,
+    .header-right .user-menu:last-child .user-menu-dropdown {
+        right: 0 !important;
+        left: auto !important;
+    }
+    
+    .header-right .notification-bell:first-child .notification-dropdown,
+    .header-right .quick-actions:first-child .quick-actions-menu,
+    .header-right .user-menu:first-child .user-menu-dropdown {
+        left: 0 !important;
+        right: auto !important;
+    }
+}
+
+/* Enhanced transitions for all interactive elements */
+.content-header * {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.content-header button,
+.content-header a,
+.content-header input {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Micro-interactions for better feedback */
+.notification-item:active,
+.search-result-item:active,
+.quick-action-item:active,
+.menu-item:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+}
+
+.quick-action-btn:active {
+    transform: translateY(-1px) scale(0.95);
+}
+
+.user-menu-trigger:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+/* Quick Actions Modern Style Override */
+.quick-action-btn {
+    animation: float 3s ease-in-out infinite;
+    background: transparent;
+    color: #4b5563; /* Match notification-bell default color */
+    border: 2px solid transparent;
+    border-radius: 50%; /* Match notification-bell circular shape */
+    padding: 0.875rem; /* Increased padding further for better proportion */
+    transition: background-color 0.2s ease, transform 0.2s ease; /* Match notification-bell transition */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px; /* Increased further for even larger size */
+    height: 52px; /* Increased further for even larger size */
+}
+
+.quick-action-btn:hover {
+    background-color: rgba(59, 130, 246, 0.1); /* Match notification-bell hover background */
+    color: #3b82f6; /* Match notification-bell hover color */
+    transform: scale(1.0); /* Remove scale transform to match notification-bell */
+}
+
+.quick-action-btn:hover > i {
+    transform: rotate(90deg) scale(1.1); /* Restore icon rotation effect */
+    color: #3b82f6; /* Match notification-bell hover icon color */
+}
+
+.quick-action-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+/* Page Title Section - Container for proper tooltip positioning */
+.page-title-section {
+    position: relative;
+    overflow: visible;
+    z-index: 20; /* Higher than header-left base z-index */
+}
+
+/* Final override rules for quick-action-btn to match notification-bell exactly */
+button.quick-action-btn,
+.quick-action-btn {
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 50% !important;
+    padding: 0.625rem !important;
+    background: transparent !important;
+    color: #4b5563 !important;
+    border: 2px solid transparent !important;
+    transition: background-color 0.2s ease, transform 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+button.quick-action-btn:hover,
+.quick-action-btn:hover {
+    background-color: rgba(59, 130, 246, 0.1) !important;
+    color: #3b82f6 !important;
+    transform: scale(1.0) !important;
+}
+
+button.quick-action-btn:hover > i,
+.quick-action-btn:hover > i,
+button.quick-action-btn:hover i,
+.quick-action-btn:hover i {
+    color: #3b82f6 !important;
+    transform: rotate(90deg) scale(1.1) !important; /* Restore rotation effect */
+}
+
+button.quick-action-btn > i,
+.quick-action-btn > i,
+button.quick-action-btn i,
+.quick-action-btn i {
+    font-size: 1.25rem !important; /* Match notification bell icon size */
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1.5), color 0.2s ease !important; /* Match notification bell transition */
 }

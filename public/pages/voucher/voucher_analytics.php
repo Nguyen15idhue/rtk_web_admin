@@ -11,20 +11,19 @@ $private_layouts_path = $bootstrap_data['private_layouts_path'];
 $admin_role        = $bootstrap_data['admin_role'];
 
 // authorization check
-require_once __DIR__ . '/../../../private/core/auth_check.php';
+require_once BASE_PATH . '/core/auth_check.php';
 
 // --- Includes and Setup ---
-require_once BASE_PATH . '/utils/functions.php';
-require_once BASE_PATH . '/classes/VoucherModel.php';
+require_once BASE_PATH . '/actions/voucher/get_voucher_analytics.php';
 
 // Get analytics data
 $voucherModel = new VoucherModel();
 
-// Get date range from filters
-$start_date = filter_input(INPUT_GET, 'start_date', FILTER_SANITIZE_SPECIAL_CHARS) ?: date('Y-m-01'); // First day of current month
-$end_date = filter_input(INPUT_GET, 'end_date', FILTER_SANITIZE_SPECIAL_CHARS) ?: date('Y-m-d'); // Today
+// Get date range from filters (empty means no filter)
+$start_date = filter_input(INPUT_GET, 'start_date', FILTER_SANITIZE_SPECIAL_CHARS);
+$end_date = filter_input(INPUT_GET, 'end_date', FILTER_SANITIZE_SPECIAL_CHARS);
 
-// Fetch analytics data
+// Fetch analytics data based on filters (supports single or both dates)
 $analytics = get_voucher_analytics($start_date, $end_date);
 
 // --- Page Setup for Header/Sidebar ---
@@ -35,85 +34,11 @@ $additional_css = [
     'components/stat-card.css',
     'components/analytics-card.css', 
     'components/progress-bar.css',
-    'pages/voucher_analytics.css'
+    'pages/voucher/voucher_analytics.css'
 ];
 
 include $private_layouts_path . 'admin_header.php';
 include $private_layouts_path . 'admin_sidebar.php';
-
-function get_voucher_analytics($start_date, $end_date) {
-    global $db;
-    
-    $analytics = [];
-    
-    // 1. Tổng quan voucher
-    $stmt = $db->prepare("
-        SELECT 
-            COUNT(*) as total_vouchers,
-            SUM(CASE WHEN is_active = 1 AND end_date >= NOW() THEN 1 ELSE 0 END) as active_vouchers,
-            SUM(CASE WHEN is_active = 0 THEN 1 ELSE 0 END) as inactive_vouchers,
-            SUM(CASE WHEN end_date < NOW() THEN 1 ELSE 0 END) as expired_vouchers,
-            SUM(used_quantity) as total_usage,
-            SUM(quantity) as total_available
-        FROM voucher 
-        WHERE created_at BETWEEN ? AND ?
-    ");
-    $stmt->execute([$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
-    $analytics['overview'] = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    // 2. Top vouchers được sử dụng nhiều nhất
-    $stmt = $db->prepare("
-        SELECT code, description, voucher_type, used_quantity, quantity,
-               ROUND((used_quantity * 100.0 / NULLIF(quantity, 0)), 2) as usage_rate
-        FROM voucher 
-        WHERE created_at BETWEEN ? AND ?
-        ORDER BY used_quantity DESC 
-        LIMIT 10
-    ");
-    $stmt->execute([$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
-    $analytics['top_vouchers'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // 3. Phân tích theo loại voucher
-    $stmt = $db->prepare("
-        SELECT 
-            voucher_type,
-            COUNT(*) as count,
-            SUM(used_quantity) as total_used,
-            AVG(used_quantity) as avg_used
-        FROM voucher 
-        WHERE created_at BETWEEN ? AND ?
-        GROUP BY voucher_type
-    ");
-    $stmt->execute([$start_date . ' 00:00:00', $end_date . ' 23:59:59']);
-    $analytics['by_type'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // 4. Voucher sắp hết hạn (trong 7 ngày tới)
-    $stmt = $db->prepare("
-        SELECT code, description, end_date, used_quantity, quantity
-        FROM voucher 
-        WHERE end_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 7 DAY)
-        AND is_active = 1
-        ORDER BY end_date ASC
-    ");
-    $stmt->execute();
-    $analytics['expiring_soon'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // 5. Thống kê sử dụng theo tháng (3 tháng gần nhất)
-    $stmt = $db->prepare("
-        SELECT 
-            DATE_FORMAT(uvu.used_at, '%Y-%m') as month,
-            COUNT(*) as usage_count
-        FROM user_voucher_usage uvu
-        JOIN voucher v ON uvu.voucher_id = v.id
-        WHERE uvu.used_at >= DATE_SUB(NOW(), INTERVAL 3 MONTH)
-        GROUP BY DATE_FORMAT(uvu.used_at, '%Y-%m')
-        ORDER BY month DESC
-    ");
-    $stmt->execute();
-    $analytics['monthly_usage'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    return $analytics;
-}
 ?>
 
 <main class="content-wrapper">
@@ -130,17 +55,26 @@ function get_voucher_analytics($start_date, $end_date) {
 
         <!-- Date Range Filter -->
         <form method="GET" action="" class="filter-bar">
-            <div class="form-group">
+            <div class="filter-group">
                 <label for="start_date">Từ ngày:</label>
-                <input type="date" id="start_date" name="start_date" value="<?php echo htmlspecialchars($start_date); ?>">
+                <input type="date" id="start_date" name="start_date" value="<?php echo htmlspecialchars(
+                    $start_date ?: ''
+                ); ?>">
             </div>
-            <div class="form-group">
+            <div class="filter-group">
                 <label for="end_date">Đến ngày:</label>
-                <input type="date" id="end_date" name="end_date" value="<?php echo htmlspecialchars($end_date); ?>">
+                <input type="date" id="end_date" name="end_date" value="<?php echo htmlspecialchars(
+                    $end_date ?: ''
+                ); ?>">
             </div>
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-filter"></i> Lọc
-            </button>
+            <div class="filter-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-filter"></i> Lọc
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="window.location.href=window.location.pathname">
+                    <i class="fas fa-times"></i> Xóa lọc
+                </button>
+            </div>
         </form>
 
         <!-- Overview Cards -->

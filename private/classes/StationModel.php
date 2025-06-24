@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../config/constants.php'; // Ensure constants are loaded
+require_once __DIR__ . '/RtkApiClient.php'; // Include the RtkApiClient class
 
 class StationModel {
-    private $api_base_url = 'http://203.171.25.138:8090/openapi/broadcast/mounts';
 
     public function __construct() {
         // Constructor can be left empty or used for other initializations
@@ -91,77 +91,99 @@ class StationModel {
     }
 
     /**
-     * Fetch mountpoints from the external API.
+     * Fetch mountpoints from RTK API using the RtkApiClient.
      *
      * @param int $page Page number.
      * @param int $size Number of records per page.
      * @return array The API response data (records array) or an empty array on failure.
      */
     public function fetchMountpointsFromAPI(int $page = 1, int $size = 100): array {
-        $queryString = "page={$page}&size={$size}";
-        $url = $this->api_base_url . "?{$queryString}";
-        
-        $nonce = bin2hex(random_bytes(16));
-        $timestamp = (string)(round(microtime(true) * 1000));
-        $accessKey = defined('API_ACCESS_KEY') ? API_ACCESS_KEY : '';
-        $secretKey = defined('API_SECRET_KEY') ? API_SECRET_KEY : '';
-        $signMethod = 'HmacSHA256';
-
-        $headersToSign = [
-            'X-Nonce' => $nonce,
-            'X-Access-Key' => $accessKey,
-            'X-Sign-Method' => $signMethod,
-            'X-Timestamp' => $timestamp
-        ];
-
-        $signPath = '/openapi/broadcast/mounts'; // Path part of the URL
-
-        // String to sign: METHOD URI Headers (URI without query string for signing)
-        $stringToSign = "GET {$signPath} "; // Note the space at the end. Query string is NOT included here.
-        
-        $headerSignParts = [];
-        foreach ($headersToSign as $key => $value) {
-            $headerSignParts[strtolower($key)] = $value;
-        }
-        ksort($headerSignParts);
-        $headerComponent = "";
-        foreach ($headerSignParts as $key => $value) {
-            $headerComponent .= "{$key}={$value}&";
-        }
-        $headerComponent = rtrim($headerComponent, '&');
-        $stringToSign .= $headerComponent;
-
-        $sign = hash_hmac('sha256', $stringToSign, $secretKey);
-        
-        $curlHeaders = [];
-        foreach ($headersToSign as $key => $value) {
-            $curlHeaders[] = "$key: $value";
-        }
-        $curlHeaders[] = "Sign: $sign";
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15); 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $curlHeaders);
-
-        $response = curl_exec($ch);
-        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $curl_error = curl_error($ch);
-        curl_close($ch);
-
-        if ($http_code == 200 && $response) {
-            $data = json_decode($response, true);
-            if (isset($data['code']) && $data['code'] === 'SUCCESS' && isset($data['data']['records'])) {
-                return $data['data']['records'];
+        try {
+            $client = new RtkApiClient(); // Sử dụng default timeout thay vì custom
+            $params = ['page' => $page, 'size' => $size];
+            
+            $response = $client->request('GET', '/openapi/broadcast/mounts', $params);
+            
+            if ($response['success'] && isset($response['data']['records'])) {
+                // Log thông tin để debug
+                $total = $response['data']['total'] ?? 0;
+                $recordCount = count($response['data']['records']);
+                error_log("StationModel::fetchMountpointsFromAPI - Page {$page}: Got {$recordCount} records out of {$total} total");
+                
+                return $response['data']['records'];
             } else {
-                error_log("StationModel::fetchMountpointsFromAPI - API Error: " . ($data['msg'] ?? 'Unknown API error or malformed response') . " | Response: " . $response);
+                $errorMsg = $response['error'] ?? 'Unknown API error';
+                error_log("StationModel::fetchMountpointsFromAPI - API Error: {$errorMsg}");
+                if (isset($response['data'])) {
+                    error_log("StationModel::fetchMountpointsFromAPI - Response Data: " . json_encode($response['data']));
+                }
                 return [];
             }
-        } else {
-            error_log("StationModel::fetchMountpointsFromAPI - cURL Error: {$curl_error} (HTTP Code: {$http_code}) for URL: {$url}");
+        } catch (Exception $e) {
+            error_log("StationModel::fetchMountpointsFromAPI - Exception: " . $e->getMessage());
             return [];
         }
+    }
+
+    /**
+     * Fetch ALL mountpoints from RTK API (handles pagination automatically).
+     *
+     * @return array All mountpoints from all pages
+     */
+    public function fetchAllMountpointsFromAPI(): array {
+        $allMountpoints = [];
+        $page = 1;
+        $size = 100;
+        $total = null;
+        
+        do {
+            try {
+                $client = new RtkApiClient(); // Sử dụng default timeout
+                $params = ['page' => $page, 'size' => $size];
+                
+                $response = $client->request('GET', '/openapi/broadcast/mounts', $params);
+                
+                if ($response['success'] && isset($response['data']['records'])) {
+                    $records = $response['data']['records'];
+                    $total = $response['data']['total'] ?? 0;
+                    
+                    if (empty($records)) {
+                        break; // No more data
+                    }
+                    
+                    $allMountpoints = array_merge($allMountpoints, $records);
+                    
+                    // Kiểm tra xem đã lấy đủ chưa
+                    if (count($allMountpoints) >= $total) {
+                        error_log("StationModel::fetchAllMountpointsFromAPI - Completed: Got all {$total} records");
+                        break;
+                    }
+                    
+                    $page++;
+                    
+                    // Safety check để tránh vòng lặp vô hạn
+                    if ($page > 50) {
+                        error_log("StationModel::fetchAllMountpointsFromAPI - Safety break at page 50");
+                        break;
+                    }
+                    
+                } else {
+                    $errorMsg = $response['error'] ?? 'Unknown API error';
+                    error_log("StationModel::fetchAllMountpointsFromAPI - API Error on page {$page}: {$errorMsg}");
+                    break;
+                }
+                
+            } catch (Exception $e) {
+                error_log("StationModel::fetchAllMountpointsFromAPI - Exception on page {$page}: " . $e->getMessage());
+                break;
+            }
+            
+        } while (true);
+        
+        $finalCount = count($allMountpoints);
+        error_log("StationModel::fetchAllMountpointsFromAPI - Final result: {$finalCount} mountpoints" . ($total ? " (expected: {$total})" : ""));
+        
+        return $allMountpoints;
     }
 
     /**
@@ -198,6 +220,28 @@ class StationModel {
         } catch (PDOException $e) {
             error_log("Error in StationModel::getDataByIdsForExport: " . $e->getMessage());
             return [];
+        }
+    }
+
+    /**
+     * Debug method to get detailed API response.
+     *
+     * @return array Full API response for debugging
+     */
+    public function debugMountpointsAPI(): array {
+        try {
+            $client = new RtkApiClient();
+            $params = ['page' => 1, 'size' => 100];
+            
+            $response = $client->request('GET', '/openapi/broadcast/mounts', $params);
+            
+            error_log("StationModel::debugMountpointsAPI - Full response: " . json_encode($response, JSON_PRETTY_PRINT));
+            
+            return $response;
+            
+        } catch (Exception $e) {
+            error_log("StationModel::debugMountpointsAPI - Exception: " . $e->getMessage());
+            return ['error' => $e->getMessage()];
         }
     }
 }

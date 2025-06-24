@@ -18,6 +18,10 @@ $id = (int)$input['id'];
 $status = trim($input['status']);
 $response = trim($input['admin_response']);
 
+// Get localized status text for email notification
+$statusMaps = require __DIR__ . '/../../config/status_badge_maps.php';
+$localizedStatus = $statusMaps['support'][$status]['text'] ?? $status;
+
 if ($id <= 0) {
     api_response(null, 'Invalid ID', 400);
 }
@@ -40,7 +44,7 @@ try {
                 ':entity_id'    => $id,
                 ':old_values'   => json_encode(['status' => $oldStatus, 'admin_response' => $oldRequest['admin_response'] ?? null]),
                 ':new_values'   => json_encode(['status' => $status, 'admin_response' => $response]),
-                ':notify_content'  => "Yêu cầu hỗ trợ #{$id} đã được cập nhật trạng thái thành {$status}."
+                ':notify_content'  => "Yêu cầu hỗ trợ #{$id} đã được cập nhật trạng thái thành \"{$localizedStatus}\"."
             ]
         );
         api_response(null, 'Updated successfully');

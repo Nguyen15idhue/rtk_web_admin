@@ -203,7 +203,7 @@ function fetchAllStations(): array {
         'page' => 1,
         'size' => 100
     ]);
-    error_log("RTK API response: " . json_encode($resp));
+    //error_log("RTK API response: " . json_encode($resp));
     $records = $resp['data']['records'] ?? [];
     $out = [];
     foreach ($records as $r) {

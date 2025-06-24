@@ -64,16 +64,26 @@ function generateSurveyAccountUsername(PDO $db, int $locationId, int $numDigits 
     if ($provinceCode === '') {
         $provinceCode = 'X'; // Fallback prefix
     }
+    // Fix: Get all usernames and find the highest sequence number numerically
     $pattern = $provinceCode . '%';
-    $stmtLast = $db->prepare(
-        "SELECT username_acc FROM survey_account WHERE username_acc LIKE :pattern ORDER BY username_acc DESC LIMIT 1"
+    $stmtAll = $db->prepare(
+        "SELECT username_acc FROM survey_account WHERE username_acc LIKE :pattern"
     );
-    $stmtLast->bindParam(':pattern', $pattern, PDO::PARAM_STR);
-    $stmtLast->execute();
-    $lastUser = (string)$stmtLast->fetchColumn();
-    $seq = 1;
-    if (preg_match('/^' . preg_quote($provinceCode, '/') . '(\d{' . $numDigits . '})$/', $lastUser, $m)) {
-        $seq = intval($m[1]) + 1;
+    $stmtAll->bindParam(':pattern', $pattern, PDO::PARAM_STR);
+    $stmtAll->execute();
+    $allUsers = $stmtAll->fetchAll(PDO::FETCH_COLUMN);
+    
+    $maxSeq = 0;
+    foreach ($allUsers as $username) {
+        // Match any number of digits after the province code
+        if (preg_match('/^' . preg_quote($provinceCode, '/') . '(\d+)$/', $username, $matches)) {
+            $currentSeq = intval($matches[1]);
+            if ($currentSeq > $maxSeq) {
+                $maxSeq = $currentSeq;
+            }
+        }
     }
+    
+    $seq = $maxSeq + 1;
     return sprintf('%s%0' . $numDigits . 'd', $provinceCode, $seq);
 }

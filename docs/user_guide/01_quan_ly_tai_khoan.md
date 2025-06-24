@@ -1,15 +1,54 @@
-# Hướng dẫn Quản lý Tài khoản
+# Quản lý Tài khoản Đo đạc - Hướng dẫn Nhanh
 
-Trang này giải thích cách quản lý tài khoản người dùng trong hệ thống.
+**Truy cập:** Menu > QL TK đo đạc
 
-## Các chức năng chính:
+## ⚡ Thao tác Thường dùng
 
-*   **Xem danh sách tài khoản:** Liệt kê tất cả tài khoản người dùng.
-*   **Tạo tài khoản mới:** Các bước để thêm người dùng mới vào hệ thống.
-*   **Sửa thông tin tài khoản:** Thay đổi chi tiết của tài khoản hiện có.
-*   **Xóa tài khoản:** Loại bỏ tài khoản khỏi hệ thống.
-*   **Kích hoạt/Vô hiệu hóa:** Quản lý trạng thái hoạt động của tài khoản.
-*   **Gia hạn tài khoản:** Kéo dài thời gian sử dụng cho tài khoản.
-*   **Tìm kiếm và lọc:** Công cụ giúp tìm kiếm tài khoản nhanh chóng.
+### 🆕 Tạo Tài khoản Mới
+1. **Thêm tài khoản** → Điền form:
+   - Tên tài khoản (*), Email chủ sở hữu (*)
+   - Gói dịch vụ (*), Thời hạn (*) 
+   - Tỉnh thành
+   - Mật khẩu (tối thiểu 8 ký tự)
+2. **Lưu** → Tài khoản sẵn sàng
 
-*(Chi tiết từng chức năng sẽ được mô tả ở đây với hình ảnh minh họa nếu cần)*
+### 🔍 Tìm kiếm & Lọc
+- **Tìm kiếm**: Nhập tên/email/username
+- **Lọc theo trạng thái**: Hoạt động (🟢) / Bị từ chối (🔴) / Chờ KH (🟡) / Đình chỉ (⚫) 
+- **Lọc theo gói**: Chọn từ dropdown
+- **Lọc theo thời gian**: Sắp hết hạn, đã hết hạn
+
+### ⚙️ Các Thao tác Khác
+- **Xem chi tiết**: Nút 👁️ - Thông tin đầy đủ
+- **Chỉnh sửa**: Nút ✏️ - Sửa thông tin cơ bản
+- **Gia hạn**: Nút 🔄 - Gia hạn thời gian sử dụng  
+- **Khóa/Mở**: Thay đổi trạng thái hoạt động
+- **Xóa**: Nút 🗑️ (cẩn thận - không thể hoàn tác)
+
+## 📋 Quản lý Danh sách
+
+### Thông tin Hiển thị
+- **Tài khoản**: Username, Mật khẩu
+- **Thời gian**: Ngày tạo, ngày hết hạn
+
+### Thao tác Hàng loạt
+1. **Chọn nhiều tài khoản** (checkbox)
+2. **Chọn thao tác**: Kích hoạt/Khóa/Xóa hàng loạt
+3. **Xác nhận** → Thực hiện
+
+## 🔧 Xử lý Tình huống
+
+**Tài khoản sắp hết hạn:**
+- Lọc "Sắp hết hạn" → Gia hạn hàng loạt
+
+**Khách hàng không đăng nhập được:**
+- Kiểm tra trạng thái Active
+- Reset mật khẩu nếu cần
+
+**Thay đổi gói dịch vụ:**
+- Sửa tài khoản → Chọn gói mới → Cập nhật thời hạn
+
+## ⚠️ Lưu ý Quan trọng
+- Username không thể thay đổi sau khi tạo
+- Xóa tài khoản sẽ mất toàn bộ dữ liệu
+- Gia hạn tự động cộng thêm từ ngày hết hạn hiện tại

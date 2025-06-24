@@ -1,0 +1,5 @@
+/* Tăng khoảng cách giữa các cột ở bảng Mountpoint */
+#mountpointsTable th, #mountpointsTable td {
+    padding-left: 50px;
+    padding-right: 50px;
+}

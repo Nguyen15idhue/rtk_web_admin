@@ -26,10 +26,10 @@ class AccountModel {
                 ELSE 'unknown'
             END AS derived_status
         FROM survey_account sa
-        JOIN registration r ON sa.registration_id = r.id
-        JOIN user u ON r.user_id = u.id
+        LEFT JOIN registration r ON sa.registration_id = r.id
+        LEFT JOIN user u ON r.user_id = u.id
         LEFT JOIN package p ON r.package_id = p.id
-        JOIN location l ON r.location_id = l.id
+        LEFT JOIN location l ON r.location_id = l.id
         WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL
     ";
 
@@ -93,10 +93,10 @@ class AccountModel {
     public function getTotalAccountsCount(array $filters = []): int {
         $sql = "SELECT COUNT(sa.id)
                 FROM survey_account sa
-                JOIN registration r ON sa.registration_id = r.id
-                JOIN user u ON r.user_id = u.id
+                LEFT JOIN registration r ON sa.registration_id = r.id
+                LEFT JOIN user u ON r.user_id = u.id
                 LEFT JOIN package p ON r.package_id = p.id
-                JOIN location l ON r.location_id = l.id
+                LEFT JOIN location l ON r.location_id = l.id
                 WHERE r.deleted_at IS NULL AND sa.deleted_at IS NULL";
         $params = [];
 
@@ -463,7 +463,7 @@ class AccountModel {
                            sa.username_acc AS username,
                            r.location_id AS location_id
                     FROM survey_account sa
-                    JOIN registration r ON sa.registration_id = r.id
+                    LEFT JOIN registration r ON sa.registration_id = r.id
                     LEFT JOIN package p ON r.package_id = p.id
                     WHERE r.user_id = :user_id AND sa.deleted_at IS NULL
                     ORDER BY sa.created_at DESC";

@@ -8,7 +8,6 @@
     border-radius: var(--rounded-md);
     font-size: var(--font-size-sm);
     font-weight: var(--font-medium);
-    text-align: center;
     cursor: pointer;
     text-decoration: none;
     transition: background-color var(--transition-speed) ease-in-out, border-color var(--transition-speed) ease-in-out, color var(--transition-speed) ease-in-out, box-shadow var(--transition-speed) ease-in-out;
@@ -73,14 +72,6 @@
 .btn-info:hover {
     background-color: #2563eb;    /* blue-600 */
     border-color: #2563eb;
-}
-
-/* ============================================= */
-/* == Button Size Variants                    == */
-/* ============================================= */
-.btn-sm {
-    padding: 0.5rem 0.8rem;
-    font-size: var(--font-size-xs);
 }
 
 .btn-lg {

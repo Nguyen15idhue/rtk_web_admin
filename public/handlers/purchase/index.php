@@ -7,7 +7,8 @@ $action = basename($_GET['action'] ?? '');
 $allowed = [
     'process_transaction_approve',
     'process_transaction_reject',
-    'process_transaction_revert'
+    'process_transaction_revert',
+    'get_transaction_details'
 ];
 if (!in_array($action, $allowed, true)) {
     api_error('Invalid action', 400);

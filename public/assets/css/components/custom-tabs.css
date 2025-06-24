@@ -44,11 +44,6 @@
     color: #fff; /* White text on hover */
 }
 
-/* Common tab content style */
-.tab-content {
-    padding-top: 10px; /* Reduced top padding */
-}
-
 /* Responsive adjustments from referral_management.css */
 @media (max-width: 576px) {
     .custom-tabs-nav {

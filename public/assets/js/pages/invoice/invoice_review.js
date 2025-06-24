@@ -163,22 +163,181 @@
         if (actionsCell) {
             actionsCell.innerHTML = `
                 <button class="btn-icon btn-undo"
-                        onclick="InvoiceReviewPageEvents.undoInvoice(${id})"
+                                        onclick="InvoiceReviewPageEvents.undoInvoice(${id})"
                         title="Hoàn tác">
                     <i class="fas fa-undo"></i>
                 </button>
             `;
         }
+    }    /**
+     * Show transaction details modal
+     * @param {number} transactionId Transaction History ID
+     */
+    function showTransactionDetails(transactionId) {
+        if (!transactionId || transactionId <= 0) {
+            window.showToast('ID giao dịch không hợp lệ', 'error');
+            return;
+        }
+
+        const modal = document.getElementById('transaction-details-modal');
+        if (!modal) {
+            window.showToast('Modal không tìm thấy', 'error');
+            return;
+        }
+
+        // Reset modal content and show loading state
+        document.getElementById('modal-title').textContent = 'Đang tải...';
+        
+        // Clear previous content
+        const modalBody = modal.querySelector('.modal-body');
+        if (modalBody) {
+            modalBody.style.opacity = '0.5';
+        }
+        
+        // Show modal with smooth animation
+        requestAnimationFrame(() => {
+            modal.classList.add('active');
+        });
+
+        // Fetch transaction details
+        window.api.getJson(`../../handlers/purchase/index.php?action=get_transaction_details&id=${transactionId}`)
+            .then(data => {
+                if (data.success && data.data) {
+                    populateTransactionModal(data.data);
+                    if (modalBody) {
+                        modalBody.style.opacity = '1';
+                    }
+                } else {
+                    window.showToast(data.message || 'Không thể lấy thông tin giao dịch', 'error');
+                    closeTransactionDetailsModal();
+                }
+            })
+            .catch(err => {
+                console.error('Error fetching transaction details:', err);
+                window.showToast('Lỗi khi tải thông tin giao dịch', 'error');
+                closeTransactionDetailsModal();
+            });
+    }
+
+    /**
+     * Populate transaction details modal with data
+     * @param {Object} data Transaction details data
+     */
+    function populateTransactionModal(data) {
+        document.getElementById('modal-title').textContent = `Chi Tiết Giao Dịch #${data.transaction_id}`;
+        document.getElementById('modal-tx-id').textContent = data.transaction_id || '';
+        document.getElementById('modal-tx-email').textContent = data.user_email || '';
+        document.getElementById('modal-tx-package').textContent = data.package_name || '';
+        document.getElementById('modal-tx-amount').textContent = data.formatted_amount || '';
+        document.getElementById('modal-tx-request-date').textContent = data.formatted_request_date || '';
+
+        // Handle voucher information
+        const voucherEl = document.getElementById('modal-tx-voucher-code');
+        if (data.voucher_code) {
+            let detailsText = "";
+            if (data.voucher_type === 'percentage_discount') {
+                detailsText = `Giảm ${data.discount_value}%`;
+            } else if (data.voucher_type === 'fixed_discount') {
+                detailsText = `Giảm ${window.helpers.formatCurrency(data.discount_value)}`;
+            } else if (data.voucher_type === 'extend_duration') {
+                detailsText = `Tặng ${data.discount_value} ngày`;
+            }
+            
+            if (detailsText) {
+                voucherEl.textContent = `${data.voucher_code} (${detailsText})`;
+            } else {
+                voucherEl.textContent = data.voucher_code;
+            }
+        } else {
+            voucherEl.textContent = 'Không có';
+        }
+
+        // Populate other voucher details
+        document.getElementById('modal-tx-voucher-description').textContent = data.voucher_description || '-';
+        document.getElementById('modal-tx-voucher-start-date').textContent = data.voucher_start_date || '-';
+        document.getElementById('modal-tx-voucher-end-date').textContent = data.voucher_end_date || '-';        // Handle status
+        const statusBadge = document.getElementById('modal-tx-status-badge');
+        const statusText = document.getElementById('modal-tx-status-text');
+        
+        // Map status to appropriate class
+        let statusClass = '';
+        let statusTextDisplay = '';
+        
+        if (data.status === 'pending') {
+            statusClass = 'badge-yellow';
+            statusTextDisplay = 'Đang chờ';
+        } else if (data.status === 'completed' || data.status === 'active') {
+            statusClass = 'badge-green';
+            statusTextDisplay = 'Thành công';
+        } else if (data.status === 'failed' || data.status === 'rejected') {
+            statusClass = 'badge-red';
+            statusTextDisplay = 'Bị từ chối';
+        } else {
+            statusClass = data.status_class || 'badge-gray';
+            statusTextDisplay = data.status_text || data.status || '';
+        }
+        
+        statusBadge.className = `status-badge status-badge-modal ${statusClass}`;
+        statusText.textContent = statusTextDisplay;
+
+        // Handle rejection reason
+        const rejectionContainer = document.getElementById('modal-tx-rejection-reason-container');
+        if (data.rejection_reason) {
+            document.getElementById('modal-tx-rejection-reason').textContent = data.rejection_reason;
+            rejectionContainer.style.display = 'flex';
+        } else {
+            rejectionContainer.style.display = 'none';
+        }
+
+        // Handle proof link
+        const proofLink = document.getElementById('modal-tx-proof-link');
+        if (data.payment_image) {
+            const imageUrl = `${window.appConfig.baseUrl}/public/uploads/payment_proofs/${data.payment_image}`;
+            proofLink.innerHTML = `<a href="${imageUrl}" target="_blank">Xem hình ảnh</a>`;
+        } else {
+            proofLink.textContent = 'Không có';
+        }
+    }
+
+    /**
+     * Close transaction details modal
+     */
+    function closeTransactionDetailsModal() {
+        const modal = document.getElementById('transaction-details-modal');
+        if (modal) {
+            modal.classList.remove('active');
+        }
     }    // Expose functions globally for inline onclick handlers
     window.InvoiceReviewPageEvents = {
         rejectInvoice,
         approveInvoice,
-        undoInvoice
-    };
-
-    // Initialize when dependencies are available
+        undoInvoice,
+        showTransactionDetails,
+        closeTransactionDetailsModal
+    };    // Initialize when dependencies are available
     waitForDependencies().then(() => {
         console.log('Invoice Review Page initialized with all dependencies');
+        
+        // Initialize modal event listeners
+        const modal = document.getElementById('transaction-details-modal');
+        if (modal) {
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeTransactionDetailsModal();
+                }
+            });
+        }
+
+        // Close modal with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('transaction-details-modal');
+                if (modal && modal.classList.contains('active')) {
+                    closeTransactionDetailsModal();
+                }
+            }
+        });
         
         // Initialize any additional functionality here
         document.addEventListener('DOMContentLoaded', function() {

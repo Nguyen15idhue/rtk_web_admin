@@ -15,7 +15,7 @@ $admin_nav_items = [
     ['label' => 'QL Voucher', 'icon' => 'fa-ticket-alt', 'url' => '/public/pages/voucher/voucher_management.php', 'active_check' => 'voucher_management.php', 'permission' => 'voucher_management_view'],
     ['label' => 'QL phân quyền', 'icon' => 'fa-user-lock', 'url' => '/public/pages/auth/permission_management.php', 'active_check' => 'permission_management.php', 'permission' => 'permission_management_view'],
 
-    ['type' => 'section', 'label' => 'Quản lý Người dùng & KH'],
+    ['type' => 'section', 'label' => 'Quản lý Khách hàng'],
     ['label' => 'Người dùng & Tài khoản', 'icon' => 'fa-users-cog', 'children' => [
         ['label' => 'QL người dùng', 'icon' => 'fa-users', 'url' => '/public/pages/user/user_management.php', 'active_check' => 'user_management.php', 'permission' => 'user_management_view'],
         ['label' => 'QL TK đo đạc', 'icon' => 'fa-ruler-combined', 'url' => '/public/pages/account/account_management.php', 'active_check' => 'account_management.php', 'permission' => 'account_management_view'],

@@ -24,7 +24,7 @@ $filters = [
     'email' => trim($_GET['email'] ?? ''),
     'company_name' => trim($_GET['company_name'] ?? ''),
     'tax_code' => trim($_GET['tax_code'] ?? ''),
-    'transaction_id' => trim($_GET['transaction_id'] ?? '')
+    'invoice_id' => trim($_GET['invoice_id'] ?? '') // Thay đổi từ transaction_id sang invoice_id
 ];
 
 $data = fetch_admin_invoices($filters, $current_page, $items_per_page);
@@ -65,8 +65,8 @@ $isEditInvoiceAllowed = Auth::can('invoice_review_edit');
                 <input type="text" name="tax_code" class="form-input" placeholder="Mã số thuế" 
                        value="<?php echo htmlspecialchars($filters['tax_code']); ?>">
                 
-                <input type="text" name="transaction_id" class="form-input" placeholder="ID giao dịch" 
-                       value="<?php echo htmlspecialchars($filters['transaction_id']); ?>">
+                <input type="text" name="invoice_id" class="form-input" placeholder="ID hóa đơn" 
+                       value="<?php echo htmlspecialchars($filters['invoice_id']); ?>"> 
                 
                 <div class="filter-actions">
                     <button class="btn btn-primary" type="submit">
@@ -97,10 +97,13 @@ $isEditInvoiceAllowed = Auth::can('invoice_review_edit');
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($invoices as $inv): ?>
-                    <tr data-id="<?php echo $inv['invoice_id']; ?>">
+                    <?php foreach ($invoices as $inv): ?>                    <tr data-id="<?php echo $inv['invoice_id']; ?>">
                         <td><?php echo $inv['invoice_id']; ?></td>
-                        <td><?php echo $inv['transaction_history_id']; ?></td>
+                        <td>
+                            <a href="#" class="clickable-id" title="Xem chi tiết giao dịch" onclick="InvoiceReviewPageEvents.showTransactionDetails(<?php echo $inv['transaction_history_id']; ?>); return false;">
+                                <?php echo $inv['transaction_history_id']; ?>
+                            </a>
+                        </td>
                         <td><?php echo htmlspecialchars($inv['user_email']); ?></td>
                         <td><?php echo htmlspecialchars($inv['company_name'] ?? ''); ?></td>
                         <td><?php echo htmlspecialchars($inv['tax_code'] ?? ''); ?></td>
@@ -132,6 +135,73 @@ $isEditInvoiceAllowed = Auth::can('invoice_review_edit');
 
 <!-- PDF Modal Styles -->
 <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/pages/invoice/invoice_review.css">
+
+<!-- Transaction Details Modal -->
+<div id="transaction-details-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 id="modal-title">Chi Tiết Giao Dịch</h4>
+            <button class="modal-close" onclick="InvoiceReviewPageEvents.closeTransactionDetailsModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="detail-row">
+                <span class="detail-label">Mã Giao dịch:</span>
+                <span class="detail-value" id="modal-tx-id"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Email Người dùng:</span>
+                <span class="detail-value" id="modal-tx-email"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Gói đăng ký:</span>
+                <span class="detail-value" id="modal-tx-package"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Voucher:</span>
+                <span class="detail-value" id="modal-tx-voucher-code"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Mô tả Voucher:</span>
+                <span class="detail-value" id="modal-tx-voucher-description"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Ngày bắt đầu:</span>
+                <span class="detail-value" id="modal-tx-voucher-start-date"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Ngày kết thúc:</span>
+                <span class="detail-value" id="modal-tx-voucher-end-date"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Số tiền:</span>
+                <span class="detail-value" id="modal-tx-amount"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Ngày yêu cầu:</span>
+                <span class="detail-value" id="modal-tx-request-date"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Trạng thái:</span>
+                <span class="detail-value">
+                    <span id="modal-tx-status-badge" class="status-badge status-badge-modal">
+                        <span id="modal-tx-status-text"></span>
+                    </span>
+                </span>
+            </div>
+            <div class="detail-row" id="modal-tx-rejection-reason-container">
+                <span class="detail-label">Lý do từ chối:</span>
+                <span class="detail-value" id="modal-tx-rejection-reason" style="color: var(--danger-600);"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Minh chứng:</span>
+                <span class="detail-value" id="modal-tx-proof-link"></span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="InvoiceReviewPageEvents.closeTransactionDetailsModal()">Đóng</button>
+        </div>
+    </div>
+</div>
 
 <script>
     // Configuration for Invoice Review Page

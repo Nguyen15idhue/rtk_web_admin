@@ -117,11 +117,34 @@ document.addEventListener('DOMContentLoaded', function() {
     // Tab switching
     const tabs = document.querySelectorAll('.custom-tabs-nav .nav-link');
     const contents = document.querySelectorAll('.tab-content');
-    tabs.forEach(btn => btn.addEventListener('click', () => {
+
+    function activateTab(tabId) {
         tabs.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        contents.forEach(c => c.style.display = (c.id === btn.dataset.tab ? '' : 'none'));
+        contents.forEach(c => c.style.display = (c.id === tabId ? '' : 'none'));
+        const btn = document.querySelector(`.custom-tabs-nav .nav-link[data-tab="${tabId}"]`);
+        if (btn) btn.classList.add('active');
+    }
+
+    // Replace simple click handler with URL update logic
+    tabs.forEach(btn => btn.addEventListener('click', () => {
+        activateTab(btn.dataset.tab);
+        // Update URL parameter to reflect active tab
+        const url = new URL(window.location);
+        url.searchParams.set('active_tab', btn.dataset.tab);
+        window.history.replaceState({}, '', url);
     }));
+
+    // Activate initial tab based on URL parameters or window.activeTab
+    const urlParams = new URLSearchParams(window.location.search);
+    if (window.activeTab) {
+        activateTab(window.activeTab);
+    } else if (urlParams.has('manager_page')) {
+        activateTab('manager-management-tab');
+    } else if (urlParams.has('mountpoint_page')) {
+        activateTab('mountpoint-management-tab');
+    } else {
+        activateTab('station-management-tab');
+    }
 
     // Display toast if any
     if (window.initialToast) {
