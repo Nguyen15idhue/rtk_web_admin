@@ -3,7 +3,7 @@
 error_reporting(E_ALL); // Report all errors for logging
 ini_set('display_errors', 0); // Keep off for browser output
 ini_set('log_errors', 1); // Ensure errors are logged
-ini_set('error_log', LOGS_PATH . '/error.log');
+// ini_set('error_log', LOGS_PATH . '/error.log'); // Removed - let Logger class handle this
 
 class AccountModel {
     private $db;

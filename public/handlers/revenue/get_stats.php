@@ -5,6 +5,7 @@ header('Content-Type: application/json');
 
 $bootstrap = require_once __DIR__ . '/../../../private/core/page_bootstrap.php';
 require_once __DIR__ . '/../../../private/actions/purchase/get_revenue_stats.php';
+require_once __DIR__ . '/../../../private/utils/logger_helpers.php';
 
 Auth::ensureAuthorized('revenue_management_view');
 
@@ -34,5 +35,9 @@ try {
         'success' => false,
         'error' => 'Internal server error'
     ]);
-    error_log("Revenue stats error: " . $e->getMessage());
+    log_error("Revenue stats error", [
+        'exception' => $e->getMessage(),
+        'file' => basename($e->getFile()),
+        'line' => $e->getLine()
+    ]);
 }

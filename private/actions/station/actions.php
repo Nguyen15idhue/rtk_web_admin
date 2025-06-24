@@ -15,8 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-require_once __DIR__ . '/../../classes/StationModel.php';
-require_once __DIR__ . '/../../classes/ManagerModel.php';
+require_once __DIR__ . '/../../classes/StationManager/StationModel.php';
+require_once __DIR__ . '/../../classes/StationManager/ManagerModel.php';
 
 $stationModel = new StationModel();
 $managerModel = new ManagerModel();

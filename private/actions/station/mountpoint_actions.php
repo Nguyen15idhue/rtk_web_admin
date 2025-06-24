@@ -3,7 +3,7 @@
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 $base_url = $bootstrap['base_url'] ?? '/';
 
-require_once __DIR__ . '/../../classes/MountPointModel.php';
+require_once __DIR__ . '/../../classes/StationManager/MountPointModel.php';
 Auth::ensureAuthorized('station_management_edit');
 $action = $_POST['action'] ?? '';
 $model = new MountPointModel();

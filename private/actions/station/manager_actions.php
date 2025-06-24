@@ -1,8 +1,8 @@
 <?php
 $bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
 $base_url = $bootstrap['base_url'] ?? '/';
-require_once __DIR__ . '/../../classes/ManagerModel.php';
-require_once __DIR__ . '/../../../private/classes/ManagerModel.php';
+require_once __DIR__ . '/../../classes/StationManager/ManagerModel.php';
+require_once __DIR__ . '/../../../private/classes/StationManager/ManagerModel.php';
 Auth::ensureAuthorized('station_management_edit');
 $action = $_POST['action'] ?? '';
 $model = new ManagerModel();

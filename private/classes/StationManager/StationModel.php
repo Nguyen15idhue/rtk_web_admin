@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../config/constants.php'; // Ensure constants are loaded
-require_once __DIR__ . '/RtkApiClient.php'; // Include the RtkApiClient class
+require_once BASE_PATH . '/config/constants.php'; // Ensure constants are loaded
+require_once BASE_PATH . '/classes/RtkApiClient.php'; // Include the RtkApiClient class
 
 class StationModel {
 

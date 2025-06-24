@@ -3,9 +3,9 @@
 // Handles fetching data and business logic for station management page
 $base_url = $bootstrap_data['base_url'] ?? '/';
 
-require_once __DIR__ . '/../../../private/classes/StationModel.php';
-require_once __DIR__ . '/../../../private/classes/ManagerModel.php';
-require_once __DIR__ . '/../../../private/classes/MountPointModel.php';
+require_once __DIR__ . '/../../../private/classes/StationManager/StationModel.php';
+require_once __DIR__ . '/../../../private/classes/StationManager/ManagerModel.php';
+require_once __DIR__ . '/../../../private/classes/StationManager/MountPointModel.php';
 require_once __DIR__ . '/../../../private/classes/LocationModel.php';
 Auth::ensureAuthorized('station_management_view');
 

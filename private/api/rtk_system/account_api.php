@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../classes/RtkApiClient.php'; // Include the RtkApiC
 error_reporting(E_ALL); // Report all errors for logging
 ini_set('display_errors', 0); // Keep off for browser output
 ini_set('log_errors', 1); // Ensure errors are logged
-ini_set('error_log', LOGS_PATH . '/error.log');
+// ini_set('error_log', LOGS_PATH . '/error.log'); // Removed - let Logger class handle this
 
 /**
  * Tạo tài khoản RTK mới qua API.
@@ -231,21 +231,28 @@ function fetchStationDynamicInfo(array $ids): array {
  * Fetch stations + dynamic info, then UPDATE `station` table.
  */
 function fetchAndUpdateStations(): void {
+    require_once __DIR__ . '/../../classes/Logger.php';
+    
     // Initialize MySQLi connection using defined database constants
     require_once BASE_PATH . '/config/database.php';
     $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
     if ($conn->connect_error) {
-        error_log("DB connect failed: " . $conn->connect_error);
+        Logger::error("Kết nối database thất bại: " . $conn->connect_error, ['action' => 'cron_update_stations']);
         return;
     }
     // Set charset to UTF-8
     if (!$conn->set_charset("utf8mb4")) {
-        error_log(sprintf("Error loading character set utf8mb4: %s\n", $conn->error));
+        Logger::error("Lỗi thiết lập character set utf8mb4: " . $conn->error, ['action' => 'cron_update_stations']);
     }
 
     // 1. Lấy danh sách station từ API
+    Logger::debug("Bắt đầu lấy danh sách trạm từ API", ['action' => 'cron_update_stations']);
     $map = fetchAllStations();
-    if (empty($map)) return;
+    if (empty($map)) {
+        Logger::warning("Không lấy được danh sách trạm từ API", ['action' => 'cron_update_stations']);
+        return;
+    }
+    Logger::info("Lấy được " . count($map) . " trạm từ API", ['action' => 'cron_update_stations', 'station_count' => count($map)]);
     $dynList = fetchStationDynamicInfo(array_keys($map));
     // chuyển thành map theo stationId để tiện truy cập
     $dyn = [];
@@ -265,6 +272,11 @@ function fetchAndUpdateStations(): void {
     // 3. Xoá trạm không còn trong API
     $toDelete = array_diff($existingIds, $apiIds);
     if (!empty($toDelete)) {
+        Logger::info("Đánh dấu xóa " . count($toDelete) . " trạm không còn trong API", [
+            'action' => 'cron_update_stations', 
+            'deleted_count' => count($toDelete),
+            'deleted_ids' => $toDelete
+        ]);
         $ids = implode(',', $toDelete);
         // Soft-delete: gán status = -1
         $conn->query("UPDATE station SET status = -1 WHERE id IN ($ids)");
@@ -273,6 +285,11 @@ function fetchAndUpdateStations(): void {
     // 4. Thêm mới trạm API chưa có trong DB
     $toInsert = array_diff($apiIds, $existingIds);
     if (!empty($toInsert)) {
+        Logger::info("Thêm mới " . count($toInsert) . " trạm từ API", [
+            'action' => 'cron_update_stations', 
+            'inserted_count' => count($toInsert),
+            'new_station_ids' => $toInsert
+        ]);
         $stmtI = $conn->prepare("
             INSERT INTO station
                 (id, station_name, identificationName, lat, `long`, status, mountpoint_id)
