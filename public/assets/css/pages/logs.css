@@ -578,7 +578,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 220px;
     gap: 1.5rem;
     color: #6c757d;
     background: none;
@@ -642,7 +641,6 @@
 
 @media (max-width: 576px) {
     .loading-spinner {
-        min-height: 120px;
         gap: 1rem;
     }
     .loading-spinner .modern-spinner {
@@ -1414,7 +1412,6 @@
     
     /* Loading and Error States */
     .loading-spinner {
-        min-height: 120px;
         gap: 1rem;
         padding: 1rem;
     }

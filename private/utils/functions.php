@@ -247,63 +247,12 @@ function validateSession(int $userId, string $sessionId): void {
 }
 
 /**
- * Enhanced logging functions using the Logger class
- * These provide backward compatibility and ease of use
+ * Include shared logging helpers instead of redefining functions
  */
-
-/**
- * Log an error message
- */
-function log_error(string $message, array $context = []): void {
-    if (class_exists('Logger')) {
-        Logger::error($message, $context);
-    } else {
-        error_log("ERROR: $message");
-    }
-}
-
-/**
- * Log a warning message
- */
-function log_warning(string $message, array $context = []): void {
-    if (class_exists('Logger')) {
-        Logger::warning($message, $context);
-    } else {
-        error_log("WARNING: $message");
-    }
-}
-
-/**
- * Log an info message
- */
-function log_info(string $message, array $context = []): void {
-    if (class_exists('Logger')) {
-        Logger::info($message, $context);
-    } else {
-        error_log("INFO: $message");
-    }
-}
-
-/**
- * Log a debug message
- */
-function log_debug(string $message, array $context = []): void {
-    if (class_exists('Logger')) {
-        Logger::debug($message, $context);
-    } else {
-        error_log("DEBUG: $message");
-    }
-}
-
-/**
- * Log an exception
- */
-function log_exception(Throwable $e, array $context = []): void {
-    if (class_exists('Logger')) {
-        Logger::exception($e, $context);
-    } else {
-        error_log("EXCEPTION: " . $e->getMessage() . " in " . $e->getFile() . ":" . $e->getLine());
-    }
+try {
+    require_once __DIR__ . '/logger_helpers.php';
+} catch (Exception $e) {
+    // Fallback if helpers not found
 }
 
 // Add more helper functions as needed...

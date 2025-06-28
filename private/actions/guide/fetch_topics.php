@@ -1,16 +1,19 @@
 <?php
 require_once __DIR__ . '/../../core/page_bootstrap.php';
-header('Content-Type: application/json');
+Auth::ensureAuthorized('guide_management_view');
 
-// Kiểm tra quyền truy cập
-Auth::ensureAuthorized('guide_management_edit');
+header('Content-Type: application/json');
 
 try {
     $model = new GuideModel();
     $topics = $model->getDistinctTopics();
-    // Trả về danh sách chủ đề
-    api_success($topics, 'Danh sách chủ đề lấy thành công');
+    api_success($topics);
 } catch (\Throwable $e) {
-    error_log("Error fetching topics: " . $e->getMessage());
-    api_error('Lỗi khi lấy danh sách chủ đề', 500);
+    error_log(sprintf(
+        "Critical [fetch_topics.php:%d]: %s\nStack trace:\n%s",
+        $e->getLine(),
+        $e->getMessage(),
+        $e->getTraceAsString()
+    ));
+    api_error('Error fetching topics: ' . $e->getMessage(), 500);
 }
