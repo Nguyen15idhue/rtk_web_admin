@@ -35,7 +35,7 @@ $admin_nav_items = [
     ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => '/public/pages/report/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports_view'],
 
     ['type' => 'section', 'label' => 'Cài đặt'],
-    ['label' => 'Nhật ký Hệ thống', 'icon' => 'fa-file-alt', 'url' => '/public/pages/logs.php', 'active_check' => 'logs.php', 'permission' => 'settings'],
+    //['label' => 'Nhật ký Hệ thống', 'icon' => 'fa-file-alt', 'url' => '/public/pages/logs.php', 'active_check' => 'logs.php', 'permission' => 'settings'],
     ['label' => 'Thông tin tài khoản', 'icon' => 'fa-id-card', 'url' => '/public/pages/setting/profile.php', 'active_check' => 'profile.php', 'permission' => 'settings'],
     ['label' => 'Đăng xuất', 'icon' => 'fa-sign-out-alt', 'url' => '/public/pages/auth/admin_logout.php', 'class' => 'logout-link'],
 ];

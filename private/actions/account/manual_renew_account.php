@@ -69,12 +69,12 @@ try {
     $apiResult = updateRtkAccount($rtkApiPayload);
     error_log("[manual_renew_account] RTK API Result: " . print_r($apiResult, true));
 
+    // If RTK update failed, rollback and return error
     if (!($apiResult['success'] ?? false)) {
-        // Log the error but don't necessarily roll back DB changes,
-        // as admin might need to fix RTK manually.
-        // Or, decide on a stricter policy (e.g., throw Exception to rollback).
-        error_log("RTK API update failed for account {$accountId} during manual renewal. Message: " . ($apiResult['error'] ?? 'Unknown RTK error'));
-        // For now, we'll proceed but the message will indicate potential RTK issue.
+        $db->rollBack();
+        $errorMsg = $apiResult['error'] ?? 'Unknown RTK error';
+        error_log("[manual_renew_account] RTK API failed with error: $errorMsg");
+        api_error('Lỗi khi cập nhật hệ thống RTK: ' . $errorMsg, 500);
     }
 
     $db->commit();

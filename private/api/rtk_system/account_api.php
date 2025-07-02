@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../classes/RtkApiClient.php'; // Include the RtkApiC
 error_reporting(E_ALL); // Report all errors for logging
 ini_set('display_errors', 0); // Keep off for browser output
 ini_set('log_errors', 1); // Ensure errors are logged
-// ini_set('error_log', LOGS_PATH . '/error.log'); // Removed - let Logger class handle this
+ini_set('error_log', LOGS_PATH . '/error.log'); // Direct PHP error_log to application log
 
 /**
  * Tạo tài khoản RTK mới qua API.
@@ -40,6 +40,14 @@ function createRtkAccount(array $accountData): array {
             'mountIds' => []
         ], $accountData);
 
+        // Remove userId if it's null to avoid RTK API errors
+        if (isset($accountData['userId']) && $accountData['userId'] === null) {
+            unset($accountData['userId']);
+        }
+
+        // Debug logging - log payload before sending to RTK API
+        error_log("[createRtkAccount] Final payload for RTK API: " . json_encode($accountData, JSON_PRETTY_PRINT));
+
         $client = new RtkApiClient();
         return $client->request('POST', '/openapi/broadcast/users', $accountData);
     } catch (Exception $e) {
@@ -63,77 +71,20 @@ function createRtkAccount(array $accountData): array {
  * @return array Danh sách các mount point ID dạng số
  */
 function getMountPointsByLocationId(int $locationId): array {
-    try {
-        require_once BASE_PATH . '/classes/Database.php';
-        $database = Database::getInstance();
-        $pdo = $database->getConnection();
-        if (!$pdo) {
-            error_log("Error connecting for mount points (loc {$locationId}): Failed via Database class");
-            // fallback defaults
-            switch ($locationId) {
-                case 63: return [44,45,46,47,48,49,64];
-                case 24: return [1,2,3];
-                default:   return [40 + $locationId % 10];
-            }
-        }
-        
-        // Tìm mount point IDs và chuyển thành số (API yêu cầu giá trị số)
-        $mountIds = [];
-        
-        try {
-            // Phương pháp 1: Sử dụng REGEXP_REPLACE để lấy phần số từ ID
-            $stmt = $pdo->prepare("SELECT CAST(REGEXP_REPLACE(id, '[^0-9]', '') AS UNSIGNED) as numeric_id FROM mount_point WHERE location_id = :location_id");
-            $stmt->bindParam(':location_id', $locationId, PDO::PARAM_INT);
-            $stmt->execute();
-            
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                if (!empty($row['numeric_id'])) {
-                    $mountIds[] = (int)$row['numeric_id']; // Đảm bảo là số nguyên
-                }
-            }
-        } catch (PDOException $e) {
-            // Phương pháp 2: Lấy ID nguyên gốc và xử lý bằng regex
-            $stmt = $pdo->prepare("SELECT id FROM mount_point WHERE location_id = :location_id");
-            $stmt->bindParam(':location_id', $locationId, PDO::PARAM_INT);
-            $stmt->execute();
-            
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                preg_match('/(\d+)/', $row['id'], $matches);
-                if (!empty($matches[1])) {
-                    $mountIds[] = (int)$matches[1]; // Chuyển thành số nguyên
-                } else {
-                    // Sử dụng hash của ID làm giá trị số nếu không tìm thấy số
-                    $mountIds[] = abs(crc32($row['id'])) % 1000 + 1000; // Tạo một số nguyên dương
-                }
-            }
-        }
-        
-        // Nếu không tìm thấy mount points, sử dụng ID mặc định dựa vào location
-        if (empty($mountIds)) {
-            // Default mount point IDs based on location
-            switch ($locationId) {
-                case 63: // Yên Bái
-                    $mountIds = [44, 45, 46, 47, 48, 49, 64];
-                    break;
-                case 24: // Hà Nội
-                    $mountIds = [1, 2, 3];
-                    break;
-                default:
-                    $mountIds = [40 + $locationId % 10]; // Tạo ID hợp lý dựa trên locationId
-            }
-            error_log("Using default mount points for location ID: $locationId - " . json_encode($mountIds));
-        }
-        
-        return $mountIds;
-    } catch (PDOException $e) {
-        error_log("Error fetching mount points for location $locationId: " . $e->getMessage());
-        // fallback defaults
-        switch ($locationId) {
-            case 63: return [44,45,46,47,48,49,64];
-            case 24: return [1,2,3];
-            default:   return [40 + $locationId % 10];
+    // Load database connection
+    require_once BASE_PATH . '/classes/Database.php';
+    $pdo = Database::getInstance()->getConnection();
+    $mountIds = [];
+    if ($pdo) {
+        // Fetch all mount_point IDs for given location
+        $stmt = $pdo->prepare("SELECT id FROM mount_point WHERE location_id = :location_id");
+        $stmt->bindParam(':location_id', $locationId, PDO::PARAM_INT);
+        $stmt->execute();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $mountIds[] = (int)$row['id'];
         }
     }
+    return $mountIds;
 }
 
 /**
@@ -143,18 +94,26 @@ function getMountPointsByLocationId(int $locationId): array {
  * @return array Response dạng ['success' => bool, 'data' => array|null, 'error' => string|null]
  */
 function updateRtkAccount(array $accountData): array {
+    $id = ''; // Initialize to avoid undefined variable in catch block
     try {
         // Extract and validate ID
         $id = $accountData['id'] ?? '';
         if (empty($id)) {
+            error_log("[updateRtkAccount] Missing required field: id. Payload: " . json_encode($accountData));
             return ['success' => false, 'data' => null, 'error' => 'Missing required field: id'];
         }
         unset($accountData['id']);
 
+        // Remove userId if it's null to avoid RTK API errors - DO THIS FIRST
+        if (isset($accountData['userId']) && $accountData['userId'] === null) {
+            unset($accountData['userId']);
+        }
+
         // Validate required fields
         $required = ['name', 'userPwd', 'startTime', 'endTime'];
         foreach ($required as $f) {
-            if (empty($accountData[$f])) {
+            if (!isset($accountData[$f]) || $accountData[$f] === '' || $accountData[$f] === null) {
+                error_log("[updateRtkAccount] Missing required field: $f for ID: $id. Payload: " . json_encode($accountData));
                 return ['success' => false, 'data' => null, 'error' => "Missing required field: $f"];
             }
         }
@@ -169,6 +128,9 @@ function updateRtkAccount(array $accountData): array {
             'regionIds'       => [],
             'mountIds'        => []
         ], $accountData);
+
+        // Debug logging - log payload before sending to RTK API
+        error_log("[updateRtkAccount] Final payload for RTK API (ID: $id): " . json_encode($accountData, JSON_PRETTY_PRINT));
 
         $client = new RtkApiClient();
         return $client->request('PUT', "/openapi/broadcast/users/{$id}", $accountData);

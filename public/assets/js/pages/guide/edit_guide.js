@@ -15,7 +15,7 @@
             hasUnsavedChanges: false,
             lastSavedData: '',
             isProcessing: false,
-            debounceDelay: 30000, // 30 seconds
+            debounceDelay: 60000, // 60 seconds
             lastSaveTime: null,
             retryCount: 0,
             maxRetries: 3,
@@ -65,7 +65,7 @@
                                 </div>
                                 <div class="flex-grow-1 min-w-0">
                                     <div id="autoSaveText" class="small fw-medium text-dark" style="font-size: 0.8rem; line-height: 1.3;">
-                                        Tự động lưu nháp sau 30 giây không tương tác
+                                        Tự động lưu nháp sau 60 giây không tương tác
                                     </div>
                                     <div id="autoSaveTimestamp" class="small text-muted" style="font-size: 0.7rem; display: none; line-height: 1.2;">
                                     </div>
@@ -243,7 +243,7 @@
             
             // Show pending changes indicator
             if (autoSaveState.hasUnsavedChanges) {
-                updateAutoSaveStatus('idle', 'Có thay đổi chưa lưu - sẽ tự động lưu sau 30 giây');
+                updateAutoSaveStatus('idle', 'Có thay đổi chưa lưu - sẽ tự động lưu sau 60 giây');
             }
             
             autoSaveState.timer = setTimeout(() => {
@@ -2018,7 +2018,7 @@
 
         function showMobileFloatingButton() {
             const { floatingButton } = mobileState.elements;
-            if (floatingButton && mobileState.isMobile) {
+            if ( floatingButton && mobileState.isMobile) {
                 floatingButton.style.display = 'flex';
                 floatingButton.style.transform = 'scale(1)';
             }
