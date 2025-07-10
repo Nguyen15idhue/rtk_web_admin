@@ -811,6 +811,84 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Sync IDs button
+    const syncIdsBtn = document.getElementById('syncIdsBtn');
+    const syncModal = document.getElementById('syncIdsModal');
+    const syncModalBody = document.getElementById('syncIdsModalBody');
+    const confirmSyncBtn = document.getElementById('confirmSyncIdsBtn');
+    if (syncIdsBtn) {
+        syncIdsBtn.addEventListener('click', openSyncIdsModal);
+    }
+
+    async function openSyncIdsModal() {
+        if (!syncModal || !syncModalBody) return;
+        syncModalBody.innerHTML = '<p>Đang tìm kiếm tài khoản tương ứng...</p>';
+        syncModal.style.display = 'block';
+        try {
+            const res = await getJson(`${apiBasePath}?action=sync_account_ids`);
+            if (!res.success) throw new Error(res.message || 'Error fetching matches');
+            const matches = res.data.matches || [];
+            if (matches.length === 0) {
+                syncModalBody.innerHTML = '<p>Không tìm thấy tài khoản nào khớp.</p>';
+                confirmSyncBtn.style.display = 'none';
+                return;
+            }
+            // Build table of matches
+            let html = '<form id="syncIdsForm"><table class="table"><thead><tr>' +
+                       '<th><input type="checkbox" id="selectAllSync"></th>' +
+                       '<th>Username</th><th>ID hiện tại</th><th>ID mới</th>' +
+                       '</tr></thead><tbody>';
+            matches.forEach(m => {
+                html += `<tr>` +
+                        `<td><input type="checkbox" class="syncCheckbox" data-local-id="${m.local_id}" data-remote-id="${m.remote_id}" checked></td>` +
+                        `<td>${m.username}</td>` +
+                        `<td>${m.local_id}</td>` +
+                        `<td>${m.remote_id}</td>` +
+                        `</tr>`;
+            });
+            html += '</tbody></table></form>';
+            syncModalBody.innerHTML = html;
+            confirmSyncBtn.style.display = 'inline-block';
+            // select all behavior
+            document.getElementById('selectAllSync').addEventListener('change', function() {
+                document.querySelectorAll('.syncCheckbox').forEach(cb => cb.checked = this.checked);
+            });
+        } catch (e) {
+            syncModalBody.innerHTML = `<p class="error">Lỗi: ${e.message}</p>`;
+            confirmSyncBtn.style.display = 'none';
+        }
+    }
+
+    async function handleConfirmSyncIds() {
+        const checked = document.querySelectorAll('.syncCheckbox:checked');
+        if (!checked.length) {
+            window.showToast('Chưa chọn mục nào để đồng bộ.', 'error');
+            return;
+        }
+        const pairs = Array.from(checked).map(cb => ({ local_id: cb.dataset.localId, remote_id: cb.dataset.remoteId }));
+        confirmSyncBtn.disabled = true;
+        confirmSyncBtn.textContent = 'Đang cập nhật...';
+        try {
+            const result = await postJson(`${apiBasePath}?action=apply_sync_ids`, { pairs });
+            if (result.success) {
+                window.showToast(result.message || 'Đồng bộ thành công!', 'success');
+                helperCloseModal('syncIdsModal');
+                window.location.reload();
+            } else {
+                window.showToast(result.message || 'Đồng bộ thất bại.', 'error');
+            }
+        } catch (e) {
+            console.error('Error syncing IDs:', e);
+            window.showToast('Lỗi khi gửi yêu cầu đồng bộ.', 'error');
+        } finally {
+            confirmSyncBtn.disabled = false;
+            confirmSyncBtn.textContent = 'Cập nhật ID';
+        }
+    }
+    if (confirmSyncBtn) {
+        confirmSyncBtn.addEventListener('click', handleConfirmSyncIds);
+    }
+
     window.AccountManagementPageEvents = {
         closeModal: helperCloseModal,
         openCreateMeasurementAccountModal,

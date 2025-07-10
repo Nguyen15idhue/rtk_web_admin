@@ -1,0 +1,88 @@
+[07-Jul-2025 05:12:11 UTC] ActivityLogModel: Email for tranhailong2407@gmail.com action revert_transaction queued successfully.
+[07-Jul-2025 05:12:14 UTC] [PTA] activate survey_account executed, affectedRows=0
+[07-Jul-2025 05:12:14 UTC] Warning: No survey accounts found or enabled for approved registration ID: 281
+[07-Jul-2025 05:12:14 UTC] [PTA] Generated survey account username: DBN001
+[07-Jul-2025 05:12:14 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":281,"username_acc":"DBN001","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":18,"package_id":2,"start_time":"2025-07-07 12:12:14","end_time":"2025-07-14 12:12:14","enabled":1,"concurrent_user":1,"account_count":1}
+[07-Jul-2025 05:12:14 UTC] ActivityLogModel: Email for tranhailong2407@gmail.com action approve_transaction queued successfully.
+[07-Jul-2025 05:12:15 UTC] [PTA] create_account timed out (could be pending), transaction 272
+[07-Jul-2025 05:12:15 UTC] [CREATE_ACCOUNT] Creating account DBN001 for registration_id: 281
+[07-Jul-2025 05:12:15 UTC] [createRtkAccount] Final payload for RTK API: {
+    "enabled": 1,
+    "numOnline": 1,
+    "customerBizType": 1,
+    "customerCompany": "",
+    "casterIds": [],
+    "regionIds": [],
+    "mountIds": [],
+    "name": "DBN001",
+    "userPwd": "0999999443",
+    "startTime": 1751865134000,
+    "endTime": 1752469934000,
+    "customerName": "Long2002",
+    "customerPhone": "0999999443"
+}
+[07-Jul-2025 05:12:15 UTC] [CREATE_ACCOUNT] RTK API failed for DBN001: User name exist
+[07-Jul-2025 05:12:15 UTC] [CREATE_ACCOUNT] Transaction failed, rolling back: RTK API failed for DBN001: User name exist
+[07-Jul-2025 05:12:56 UTC] ActivityLogModel: Email for tranhailong2407@gmail.com action revert_transaction queued successfully.
+[07-Jul-2025 05:16:38 UTC] [PTA] activate survey_account executed, affectedRows=0
+[07-Jul-2025 05:16:38 UTC] Warning: No survey accounts found or enabled for approved registration ID: 281
+[07-Jul-2025 05:16:38 UTC] [PTA] Generated survey account username: DBN001
+[07-Jul-2025 05:16:38 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":281,"username_acc":"DBN001","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":18,"package_id":2,"start_time":"2025-07-07 12:16:38","end_time":"2025-07-14 12:16:38","enabled":1,"concurrent_user":1,"account_count":1}
+[07-Jul-2025 05:16:38 UTC] ActivityLogModel: Email for tranhailong2407@gmail.com action approve_transaction queued successfully.
+[07-Jul-2025 05:16:39 UTC] [PTA] create_account timed out (could be pending), transaction 272
+[07-Jul-2025 05:16:39 UTC] [createRtkAccount] Final payload for RTK API: {
+    "enabled": 1,
+    "numOnline": 1,
+    "customerBizType": 1,
+    "customerCompany": "",
+    "casterIds": [],
+    "regionIds": [],
+    "mountIds": [],
+    "name": "DBN001",
+    "userPwd": "0999999443",
+    "startTime": 1751865398000,
+    "endTime": 1752470198000,
+    "customerName": "Long2002",
+    "customerPhone": "0999999443"
+}
+[07-Jul-2025 05:16:40 UTC] [PTA] Successfully inserted survey_account DBN001 with ID 1942090389704097793, affectedRows=1
+[07-Jul-2025 05:16:55 UTC] RTK API Payload: {"id":"1942090389704097793","name":"DBN001","userPwd":"0999999443","startTime":1751890598000,"endTime":1752495398000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[]}
+[07-Jul-2025 05:16:55 UTC] [updateRtkAccount] Final payload for RTK API (ID: 1942090389704097793): {
+    "enabled": 0,
+    "numOnline": 1,
+    "customerBizType": 1,
+    "customerCompany": "",
+    "casterIds": [],
+    "regionIds": [],
+    "mountIds": [],
+    "name": "DBN001",
+    "userPwd": "0999999443",
+    "startTime": 1751890598000,
+    "endTime": 1752495398000
+}
+[07-Jul-2025 05:16:56 UTC] RTK API Response: {"success":true,"data":true,"error":null}
+[07-Jul-2025 05:17:02 UTC] [Revert Transaction 272] Deleting RTK account 1942090389704097793
+[07-Jul-2025 05:17:03 UTC] [Revert Transaction 272] RTK delete success for account 1942090389704097793.
+[07-Jul-2025 05:17:03 UTC] ActivityLogModel: Email for tranhailong2407@gmail.com action revert_transaction queued successfully.
+[07-Jul-2025 05:59:10 UTC] [PTA] activate survey_account executed, affectedRows=0
+[07-Jul-2025 05:59:10 UTC] Warning: No survey accounts found or enabled for approved registration ID: 281
+[07-Jul-2025 05:59:10 UTC] [PTA] Generated survey account username: DBN001
+[07-Jul-2025 05:59:10 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":281,"username_acc":"DBN001","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":18,"package_id":2,"start_time":"2025-07-07 12:59:10","end_time":"2025-07-14 12:59:10","enabled":1,"concurrent_user":1,"account_count":1}
+[07-Jul-2025 05:59:10 UTC] ActivityLogModel: Email for tranhailong2407@gmail.com action approve_transaction queued successfully.
+[07-Jul-2025 05:59:11 UTC] [PTA] create_account timed out (could be pending), transaction 272
+[07-Jul-2025 05:59:11 UTC] [createRtkAccount] Final payload for RTK API: {
+    "enabled": 1,
+    "numOnline": 1,
+    "customerBizType": 1,
+    "customerCompany": "",
+    "casterIds": [],
+    "regionIds": [],
+    "mountIds": [],
+    "name": "DBN001",
+    "userPwd": "0999999443",
+    "startTime": 1751867950000,
+    "endTime": 1752472750000,
+    "customerName": "Long2002",
+    "customerPhone": "0999999443"
+}
+[07-Jul-2025 05:59:12 UTC] [PTA] Successfully inserted survey_account DBN001 with ID 1942101094759088130, affectedRows=1

@@ -55,6 +55,9 @@ include $private_layouts_path . 'admin_sidebar.php';
             <button class="btn btn-primary" onclick="openCreateMeasurementAccountModal()" data-permission="account_management_edit">
                 <i class="fas fa-plus"></i> Tạo TK thủ công
             </button>
+            <button id="syncIdsBtn" class="btn btn-secondary" data-permission="account_management_edit">
+                <i class="fas fa-sync"></i> Đồng bộ ID
+            </button>
         </div>
         <p class="text-xs sm:text-sm text-gray-600 mb-4 description-text">Quản lý các tài khoản dịch vụ đo đạc RTK của khách hàng.</p>
 
@@ -418,6 +421,23 @@ include $private_layouts_path . 'admin_sidebar.php';
                 <button type="submit" class="btn btn-primary">Xác nhận Gia hạn</button>
             </div>
         </form>
+    </div>
+</div>
+
+<!-- Sync Account IDs Modal -->
+<div id="syncIdsModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>Đồng bộ ID tài khoản RTK</h4>
+            <span class="modal-close" onclick="closeModal('syncIdsModal')">&times;</span>
+        </div>
+        <div class="modal-body" id="syncIdsModalBody">
+            <p>Đang tìm kiếm tài khoản tương ứng...</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeModal('syncIdsModal')">Hủy</button>
+            <button type="button" id="confirmSyncIdsBtn" class="btn btn-primary">Cập nhật ID</button>
+        </div>
     </div>
 </div>
 

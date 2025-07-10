@@ -96,9 +96,20 @@ try {
     ];
     // Log payload for debugging
     error_log("RTK API Payload: " . json_encode($apiPayload));
-    $apiResult = updateRtkAccount($apiPayload);
-    // Log response from RTK API
-    error_log("RTK API Response: " . json_encode($apiResult));
+    
+    $apiSuccess = false;
+    $apiError = '';
+    
+    try {
+        $apiResult = updateRtkAccount($apiPayload);
+        // Log response from RTK API
+        error_log("RTK API Response: " . json_encode($apiResult));
+        $apiSuccess = $apiResult['success'];
+        $apiError = $apiResult['error'] ?? '';
+    } catch (Exception $apiEx) {
+        error_log("RTK API exception in toggle: " . $apiEx->getMessage());
+        $apiError = 'RTK API timeout/error: ' . $apiEx->getMessage();
+    }
 
     $payload = [
         'newStatus'          => $newDerivedStatus,
@@ -106,19 +117,18 @@ try {
         'newButtonsHtml'     => $newButtonsHtml
     ];
 
-    if (!$apiResult['success']) {
-        // External API failed: commit DB but notify front‑end
-        $db->commit();
-        api_error(
-            'Account status updated but external API error: ' . $apiResult['error'],
-            400,
-            [],
-            [] // errors array; payload remains in data
-        );
-    }
-
+    // Always commit the database changes since they're valid
     $db->commit();
-    api_success($payload, 'Account status updated successfully.');
+    
+    if (!$apiSuccess) {
+        // External API failed: DB committed but notify front‑end with warning
+        api_success(
+            $payload,
+            'Account status updated in database but RTK API sync failed: ' . $apiError
+        );
+    } else {
+        api_success($payload, 'Account status updated successfully');
+    }
 } catch (Exception $e) {
     $db->rollBack();
     error_log("Error in toggle_status.php: " 

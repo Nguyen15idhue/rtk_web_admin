@@ -116,6 +116,24 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
                 }
                 exit;
                 
+            case 'clear_old_logs':
+                $logDir = __DIR__ . '/../../private/logs/';
+                $files = glob($logDir . '*.log');
+                $threshold = time() - 7 * 24 * 60 * 60; // 7 days
+                $deletedCount = 0;
+                foreach ($files as $file) {
+                    if (filemtime($file) < $threshold) {
+                        unlink($file);
+                        $deletedCount++;
+                    }
+                }
+                Logger::info("Đã xóa {$deletedCount} file nhật ký cũ hơn 7 ngày", ['admin_action' => true]);
+                echo json_encode([
+                    'success' => true,
+                    'message' => "Đã xóa thành công {$deletedCount} file nhật ký cũ hơn 7 ngày"
+                ]);
+                break;
+                
             default:
                 throw new Exception('Hành động không hợp lệ');
         }

@@ -232,6 +232,62 @@ if (!empty($dataToExport) && is_array($dataToExport)) {
     }
 }
 
+// Custom handling for 'accounts' table export with specific columns
+if ($tableName === 'accounts') {
+    $remappedData = [];
+    foreach ($dataToExport as $idx => $row) {
+        // Fetch mount points by location_id
+        $ip = '';
+        $port = '';
+        $mountpoints = [];
+        $ips = [];
+        $ports = [];
+        if (!empty($row['location_id'])) {
+            $stmtMp = $db->prepare("SELECT ip, port, mountpoint FROM mount_point WHERE location_id = ?");
+            $stmtMp->execute([$row['location_id']]);
+            foreach ($stmtMp->fetchAll(PDO::FETCH_ASSOC) as $mp) {
+                $ips[] = $mp['ip'];
+                $ports[] = $mp['port'];
+                $mountpoints[] = $mp['mountpoint'];
+            }
+        }
+        $ip = implode(', ', array_unique($ips));
+        $port = implode(', ', array_unique($ports));
+        $mountStr = implode(', ', $mountpoints);
+        // Format dates
+        $formattedStart = !empty($row['activation_date']) ? (new DateTime($row['activation_date']))->format('d/m/Y H:i:s') : '';
+        $formattedEnd = !empty($row['expiry_date']) ? (new DateTime($row['expiry_date']))->format('d/m/Y H:i:s') : '';
+        // Translate status
+        $statusMap = [
+            'active' => 'Hoạt động',
+            'pending' => 'Chờ KH',
+            'expired' => 'Hết hạn',
+            'suspended' => 'Đình chỉ',
+            'rejected' => 'Bị từ chối'
+        ];
+        $translatedStatus = $statusMap[$row['derived_status']] ?? $row['derived_status'];
+
+        $remappedData[] = [
+            'STT' => $idx + 1,
+            'IP' => $ip,
+            'Port' => $port,
+            'Tài khoản' => $row['username_acc'] ?? '',
+            'Mật khẩu' => $row['password_acc'] ?? '',
+            'Khu vực' => $row['location_name'] ?? '',
+            'Mount Point' => $mountStr,
+            'Ngày bắt đầu' => $formattedStart,
+            'Ngày kết thúc' => $formattedEnd,
+            'Trạng thái' => $translatedStatus,
+            'Tên người dùng' => $row['user_username'] ?? '',
+            'Số điện thoại' => $row['user_phone'] ?? '',
+        ];
+     }
+     // Use a specific filename for accounts export
+    $fileName = 'accounts_export_' . date('Ymd_His') . '.xlsx';
+    ExcelExportService::export($remappedData, $fileName);
+    exit; // Stop further processing
+}
+
 try {
     ExcelExportService::export($dataToExport, $fileName);
     // ExcelExportService calls exit, so no code below this will run on success.

@@ -10,7 +10,8 @@ $allowed = [
     'get_account_details', 'handle_account_list',
     'toggle_account_status', 'update_account',
     'search_users', 'manual_renew_account',
-    'cron_update_stations' // <-- added cron action
+    'cron_update_stations',
+    'sync_account_ids', 'apply_sync_ids'
 ];
 if (!in_array($action, $allowed, true)) {
     api_error('Invalid action', 400);

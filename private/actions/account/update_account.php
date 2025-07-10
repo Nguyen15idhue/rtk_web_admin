@@ -52,48 +52,58 @@ try {
         throw new Exception("Database connection failed.");
     }
 
-    $accountModel = new AccountModel($db);
+    // Start transaction for data consistency
+    $db->beginTransaction();
+    
+    try {
+        $accountModel = new AccountModel($db);
 
-    // Check if username already exists (excluding the current account)
-    if ($accountModel->usernameExists($input['username_acc'], $accountId)) {
-         abort('Username already exists.', 409);
-    }
+        // Check if username already exists (excluding the current account)
+        if ($accountModel->usernameExists($input['username_acc'], $accountId)) {
+             abort('Username already exists.', 409);
+        }
 
-    // Prepare data for update (filter out ID)
-    $updateData = $input;
-    unset($updateData['id']); // Don't try to update the ID itself
-    error_log("[update_account] updateData initial: " . print_r($updateData, true));
+        // Prepare data for update (filter out ID)
+        $updateData = $input;
+        unset($updateData['id']); // Don't try to update the ID itself
+        error_log("[update_account] updateData initial: " . print_r($updateData, true));
 
-    // override enabled based on status select
-    if ($inputStatus !== null) {
-        $updateData['enabled'] = ($inputStatus === 'suspended') ? 0 : 1;
-    }
+        // override enabled based on status select
+        if ($inputStatus !== null) {
+            $updateData['enabled'] = ($inputStatus === 'suspended') ? 0 : 1;
+        }
 
-    // Handle password: only include if not empty
-    if (empty($updateData['password_acc'])) {
-        unset($updateData['password_acc']);
-    }
+        // Handle password: only include if not empty
+        if (empty($updateData['password_acc'])) {
+            unset($updateData['password_acc']);
+        }
 
-    // Ensure boolean/int types are correct
-    if (isset($updateData['enabled'])) {
-        $updateData['enabled'] = (int)$updateData['enabled'];
-    }
-    if (isset($updateData['concurrent_user'])) {
-        $updateData['concurrent_user'] = (int)$updateData['concurrent_user'];
-    }
-     if (isset($updateData['user_type'])) {
-        $updateData['user_type'] = empty($updateData['user_type']) ? null : (int)$updateData['user_type'];
-    }
-     if (isset($updateData['regionIds'])) {
-        $updateData['regionIds'] = empty($updateData['regionIds']) ? null : (int)$updateData['regionIds'];
-    }
-     if (isset($updateData['customerBizType'])) {
-        $updateData['customerBizType'] = empty($updateData['customerBizType']) ? null : (int)$updateData['customerBizType'];
-    }
+        // Ensure boolean/int types are correct
+        if (isset($updateData['enabled'])) {
+            $updateData['enabled'] = (int)$updateData['enabled'];
+        }
+        if (isset($updateData['concurrent_user'])) {
+            $updateData['concurrent_user'] = (int)$updateData['concurrent_user'];
+        }
+         if (isset($updateData['user_type'])) {
+            $updateData['user_type'] = empty($updateData['user_type']) ? null : (int)$updateData['user_type'];
+        }
+         if (isset($updateData['regionIds'])) {
+            $updateData['regionIds'] = empty($updateData['regionIds']) ? null : (int)$updateData['regionIds'];
+        }
+         if (isset($updateData['customerBizType'])) {
+            $updateData['customerBizType'] = empty($updateData['customerBizType']) ? null : (int)$updateData['customerBizType'];
+        }
 
-    $success = $accountModel->updateAccount($accountId, $updateData);
+        // Update local database first
+        $success = $accountModel->updateAccount($accountId, $updateData);
 
-    if ($success) {
+        if (!$success) {
+            throw new Exception('Failed to update account in local database.');
+        }
+
+        error_log("[update_account] Successfully updated local database for account {$accountId}");
+
         // ---- Thay đổi ở đây: luôn dùng chung registration_id ----
         $stmtRegId = $db->prepare("SELECT registration_id FROM survey_account WHERE id = ?");
         $stmtRegId->execute([$accountId]);
@@ -230,38 +240,57 @@ try {
         $startMs = strtotime($activation . ' 00:00:00') * 1000;
         $endMs   = strtotime($expiry     . ' 23:59:59') * 1000;
 
-        {
+        // call external RTK update API with improved error handling
+        $apiMsg = '';
+        $apiSuccess = false;
+        
+        try {
             // Xây payload qua AccountModel
             $apiPayload = $accountModel->buildRtkUpdatePayload($accountId, $input);
-            //error_log("[update_account] RTK API payload via model: " . print_r($apiPayload, true));
+            error_log("[update_account] RTK API payload via model: " . print_r($apiPayload, true));
+            
+            $apiResult = updateRtkAccount($apiPayload);
+            error_log("[update_account] RTK API result: " . print_r($apiResult, true));
+
+            // capture the informational message
+            $apiMsg = $apiResult['data']['msg'] ?? '';
+            $apiSuccess = $apiResult['success'];
+
+            if (!$apiResult['success']) {
+                // Log the API error but don't fail the whole operation since local DB is already updated
+                error_log("[update_account] RTK API failed: " . ($apiResult['error'] ?? 'Unknown error'));
+                $apiMsg = 'RTK API Error: ' . ($apiResult['error'] ?? 'Unknown error');
+            }
+        } catch (Exception $apiEx) {
+            // If API fails due to timeout or other issues, log it but don't fail the operation
+            error_log("[update_account] RTK API exception: " . $apiEx->getMessage());
+            $apiMsg = 'RTK API timeout/error: ' . $apiEx->getMessage();
         }
 
-        // call external RTK update API (giữ nguyên)
-        $apiResult = updateRtkAccount($apiPayload);
-        error_log("[update_account] RTK API result: " . print_r($apiResult, true));
-
-        // capture the informational message
-        $apiMsg = $apiResult['data']['msg'] ?? '';
-
-        if (!$apiResult['success']) {
-            $response['message'] .= ' External API Error: ' . $apiResult['error'];
-            $response['success'] = false;
-        }
+        // Commit the transaction regardless of API result since local updates succeeded
+        $db->commit();
+        error_log("[update_account] Database transaction committed successfully");
 
         // finally, return the refreshed account record
-        $response['account'] = $accountModel->getAccountById($accountId);
+        $refreshedAccount = $accountModel->getAccountById($accountId);
 
-        // ensure we surface the RTK info in the final message
-        $response['success'] = true;
-        $response['message'] = 'Account updated successfully'
-                            . ($apiMsg ? '. RTK Info: ' . $apiMsg : '');
+        // Build success message
+        $successMessage = 'Account updated successfully in local database';
+        if ($apiSuccess) {
+            $successMessage .= ' and RTK API';
+            if ($apiMsg) {
+                $successMessage .= '. RTK Info: ' . $apiMsg;
+            }
+        } else {
+            $successMessage .= ' (RTK API sync issue: ' . $apiMsg . ')';
+        }
 
         // Log activity
         $adminId = $_SESSION['admin_id'] ?? null; // Get admin_id from session
         if ($adminId) {
             $logMessage = "Quản trị viên đã cập nhật tài khoản '{$input['username_acc']}' (ID Tài khoản: {$accountId})."; // Changed this line
             if ($apiMsg) {
-                $logMessage .= " RTK Info: {$apiMsg}";
+                $logMessage .= " RTK Status: {$apiMsg}";
             }
             $logData = [
                 ':user_id' => $rtkUserId, // ID of the user whose account is being modified (null if not found/specified)
@@ -276,8 +305,14 @@ try {
             error_log("[update_account] Failed to log activity: Admin User ID not found in session. Auth issue?");
         }
 
-    } else {
-        $response['message'] = 'Failed to update account. Check logs for details.';
+        // Return success response
+        api_success(['account' => $refreshedAccount], $successMessage);
+
+    } catch (Exception $innerEx) {
+        // Rollback transaction on any database error
+        $db->rollback();
+        error_log("[update_account] Transaction rolled back due to error: " . $innerEx->getMessage());
+        throw $innerEx;
     }
 
 } catch (PDOException $e) {
@@ -293,12 +328,5 @@ try {
         . "\nTrace: " . $e->getTraceAsString()
     );
     abort($e->getMessage(), 500);
-}
-
-if (!empty($response['success'])) {
-    // wrap updated account under data.account
-    api_success(['account' => $response['account'] ?? null], $response['message']);
-} else {
-    api_error($response['message'], 400);
 }
 ?>

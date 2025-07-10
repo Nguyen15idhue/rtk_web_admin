@@ -13,7 +13,7 @@ class RtkApiClient {
     private int $connectTimeout;
     private int $timeout;
 
-    public function __construct(int $connectTimeout = 1, int $timeout = 1) {
+    public function __construct(int $connectTimeout = 5, int $timeout = 30) {
         $this->baseUrl = API_BASE_URL;
         $this->accessKey = API_ACCESS_KEY;
         $this->secretKey = API_SECRET_KEY;

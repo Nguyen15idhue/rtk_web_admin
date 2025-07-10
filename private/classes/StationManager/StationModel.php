@@ -89,42 +89,6 @@ class StationModel {
             return false;
         }
     }
-
-    /**
-     * Fetch mountpoints from RTK API using the RtkApiClient.
-     *
-     * @param int $page Page number.
-     * @param int $size Number of records per page.
-     * @return array The API response data (records array) or an empty array on failure.
-     */
-    public function fetchMountpointsFromAPI(int $page = 1, int $size = 100): array {
-        try {
-            $client = new RtkApiClient(); // Sử dụng default timeout thay vì custom
-            $params = ['page' => $page, 'size' => $size];
-            
-            $response = $client->request('GET', '/openapi/broadcast/mounts', $params);
-            
-            if ($response['success'] && isset($response['data']['records'])) {
-                // Log thông tin để debug
-                $total = $response['data']['total'] ?? 0;
-                $recordCount = count($response['data']['records']);
-                error_log("StationModel::fetchMountpointsFromAPI - Page {$page}: Got {$recordCount} records out of {$total} total");
-                
-                return $response['data']['records'];
-            } else {
-                $errorMsg = $response['error'] ?? 'Unknown API error';
-                error_log("StationModel::fetchMountpointsFromAPI - API Error: {$errorMsg}");
-                if (isset($response['data'])) {
-                    error_log("StationModel::fetchMountpointsFromAPI - Response Data: " . json_encode($response['data']));
-                }
-                return [];
-            }
-        } catch (Exception $e) {
-            error_log("StationModel::fetchMountpointsFromAPI - Exception: " . $e->getMessage());
-            return [];
-        }
-    }
-
     /**
      * Fetch ALL mountpoints from RTK API (handles pagination automatically).
      *
@@ -220,28 +184,6 @@ class StationModel {
         } catch (PDOException $e) {
             error_log("Error in StationModel::getDataByIdsForExport: " . $e->getMessage());
             return [];
-        }
-    }
-
-    /**
-     * Debug method to get detailed API response.
-     *
-     * @return array Full API response for debugging
-     */
-    public function debugMountpointsAPI(): array {
-        try {
-            $client = new RtkApiClient();
-            $params = ['page' => 1, 'size' => 100];
-            
-            $response = $client->request('GET', '/openapi/broadcast/mounts', $params);
-            
-            error_log("StationModel::debugMountpointsAPI - Full response: " . json_encode($response, JSON_PRETTY_PRINT));
-            
-            return $response;
-            
-        } catch (Exception $e) {
-            error_log("StationModel::debugMountpointsAPI - Exception: " . $e->getMessage());
-            return ['error' => $e->getMessage()];
         }
     }
 }
