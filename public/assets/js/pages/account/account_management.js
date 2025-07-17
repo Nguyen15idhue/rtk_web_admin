@@ -829,26 +829,71 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!res.success) throw new Error(res.message || 'Error fetching matches');
             const matches = res.data.matches || [];
             if (matches.length === 0) {
-                syncModalBody.innerHTML = '<p>Không tìm thấy tài khoản nào khớp.</p>';
+                syncModalBody.innerHTML = '<p>Không tìm thấy tài khoản nào cần đồng bộ.</p>';
                 confirmSyncBtn.style.display = 'none';
                 return;
             }
-            // Build table of matches
-            let html = '<form id="syncIdsForm"><table class="table"><thead><tr>' +
+            
+            // Build table of matches with detailed changes
+            let html = '<form id="syncIdsForm">' +
+                       '<p>Tìm thấy ' + matches.length + ' tài khoản có thay đổi:</p>' +
+                       '<table class="table"><thead><tr>' +
                        '<th><input type="checkbox" id="selectAllSync"></th>' +
-                       '<th>Username</th><th>ID hiện tại</th><th>ID mới</th>' +
+                       '<th>Username</th><th>Thay đổi</th>' +
                        '</tr></thead><tbody>';
-            matches.forEach(m => {
+            
+            matches.forEach((m, index) => {
+                let changesHtml = '<ul style="margin:0; padding-left:15px;">';
+                
+                // Display changes
+                Object.keys(m.changes).forEach(field => {
+                    const change = m.changes[field];
+                    let fieldName = field;
+                    switch(field) {
+                        case 'id': fieldName = 'ID'; break;
+                        case 'password_acc': fieldName = 'Mật khẩu'; break;
+                        case 'start_time': fieldName = 'Ngày bắt đầu'; break;
+                        case 'end_time': fieldName = 'Ngày hết hạn'; break;
+                        case 'enabled': fieldName = 'Trạng thái'; break;
+                        case 'concurrent_user': fieldName = 'Số user đồng thời'; break;
+                        // case 'caster': fieldName = 'Caster/Mount'; break;
+                    }
+                    
+                    let oldVal = change.old || 'Không có';
+                    let newVal = change.new || 'Không có';
+                    
+                    // Format date fields (only show date, not time)
+                    if (field.includes('time') && oldVal !== 'Không có') {
+                        oldVal = new Date(oldVal).toLocaleDateString('vi-VN');
+                    }
+                    if (field.includes('time') && newVal !== 'Không có') {
+                        newVal = new Date(newVal).toLocaleDateString('vi-VN');
+                    }
+                    
+                    // Format enabled field
+                    if (field === 'enabled') {
+                        oldVal = oldVal == 1 ? 'Hoạt động' : 'Tạm khóa';
+                        newVal = newVal == 1 ? 'Hoạt động' : 'Tạm khóa';
+                    }
+                    
+                    changesHtml += `<li><strong>${fieldName}:</strong> ${oldVal} → ${newVal}</li>`;
+                });
+                changesHtml += '</ul>';
+                
                 html += `<tr>` +
-                        `<td><input type="checkbox" class="syncCheckbox" data-local-id="${m.local_id}" data-remote-id="${m.remote_id}" checked></td>` +
-                        `<td>${m.username}</td>` +
-                        `<td>${m.local_id}</td>` +
-                        `<td>${m.remote_id}</td>` +
+                        `<td><input type="checkbox" class="syncCheckbox" data-index="${index}" checked></td>` +
+                        `<td><strong>${m.username}</strong></td>` +
+                        `<td>${changesHtml}</td>` +
                         `</tr>`;
             });
             html += '</tbody></table></form>';
+            
             syncModalBody.innerHTML = html;
             confirmSyncBtn.style.display = 'inline-block';
+            
+            // Store matches data for later use
+            window.syncMatches = matches;
+            
             // select all behavior
             document.getElementById('selectAllSync').addEventListener('change', function() {
                 document.querySelectorAll('.syncCheckbox').forEach(cb => cb.checked = this.checked);
@@ -865,11 +910,17 @@ document.addEventListener('DOMContentLoaded', () => {
             window.showToast('Chưa chọn mục nào để đồng bộ.', 'error');
             return;
         }
-        const pairs = Array.from(checked).map(cb => ({ local_id: cb.dataset.localId, remote_id: cb.dataset.remoteId }));
+        
+        // Get selected accounts data
+        const selectedAccounts = Array.from(checked).map(cb => {
+            const index = parseInt(cb.dataset.index);
+            return window.syncMatches[index];
+        });
+        
         confirmSyncBtn.disabled = true;
         confirmSyncBtn.textContent = 'Đang cập nhật...';
         try {
-            const result = await postJson(`${apiBasePath}?action=apply_sync_ids`, { pairs });
+            const result = await postJson(`${apiBasePath}?action=apply_sync_ids`, { accounts: selectedAccounts });
             if (result.success) {
                 window.showToast(result.message || 'Đồng bộ thành công!', 'success');
                 helperCloseModal('syncIdsModal');
@@ -878,15 +929,73 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.showToast(result.message || 'Đồng bộ thất bại.', 'error');
             }
         } catch (e) {
-            console.error('Error syncing IDs:', e);
+            console.error('Error syncing accounts:', e);
             window.showToast('Lỗi khi gửi yêu cầu đồng bộ.', 'error');
         } finally {
             confirmSyncBtn.disabled = false;
-            confirmSyncBtn.textContent = 'Cập nhật ID';
+            confirmSyncBtn.textContent = 'Cập nhật thông tin';
         }
     }
     if (confirmSyncBtn) {
         confirmSyncBtn.addEventListener('click', handleConfirmSyncIds);
+    }
+
+    // Full sync functionality
+    const fullSyncBtn = document.getElementById('fullSyncBtn');
+    const fullSyncModal = document.getElementById('fullSyncModal');
+    const confirmFullSyncBtn = document.getElementById('confirmFullSyncBtn');
+    const fullSyncStatus = document.getElementById('fullSyncStatus');
+    
+    if (fullSyncBtn) {
+        fullSyncBtn.addEventListener('click', function() {
+            if (fullSyncModal) {
+                fullSyncModal.style.display = 'block';
+                fullSyncStatus.style.display = 'none';
+                confirmFullSyncBtn.disabled = false;
+                confirmFullSyncBtn.textContent = '🔄 Xác nhận đồng bộ hoàn toàn';
+            }
+        });
+    }
+    
+    if (confirmFullSyncBtn) {
+        confirmFullSyncBtn.addEventListener('click', async function() {
+            const confirmation = confirm('⚠️ CẢNH BÁO CUỐI CÙNG: Thao tác này sẽ thay thế hoàn toàn dữ liệu hiện tại. Bạn có chắc chắn?');
+            if (!confirmation) return;
+            
+            confirmFullSyncBtn.disabled = true;
+            confirmFullSyncBtn.textContent = '🔄 Đang đồng bộ...';
+            fullSyncStatus.style.display = 'block';
+            fullSyncStatus.innerHTML = '<p>🔄 Đang sao lưu dữ liệu hiện tại...</p>';
+            
+            try {
+                const result = await postJson(`${apiBasePath}?action=full_sync_accounts`, {});
+                
+                if (result.success) {
+                    fullSyncStatus.innerHTML = `
+                        <div style="color: green;">
+                            <p>✅ Đồng bộ hoàn toàn thành công!</p>
+                            <p>📊 Đã cập nhật: ${result.data.inserted_count}/${result.data.total_records} tài khoản</p>
+                        </div>
+                    `;
+                    
+                    setTimeout(() => {
+                        helperCloseModal('fullSyncModal');
+                        window.location.reload();
+                    }, 3000);
+                    
+                    window.showToast(result.message || 'Đồng bộ hoàn toàn thành công!', 'success');
+                } else {
+                    throw new Error(result.message || 'Đồng bộ thất bại');
+                }
+            } catch (e) {
+                console.error('Error in full sync:', e);
+                fullSyncStatus.innerHTML = `<div style="color: red;">❌ Lỗi: ${e.message}</div>`;
+                window.showToast('Lỗi khi đồng bộ hoàn toàn: ' + e.message, 'error');
+            } finally {
+                confirmFullSyncBtn.disabled = false;
+                confirmFullSyncBtn.textContent = '🔄 Xác nhận đồng bộ hoàn toàn';
+            }
+        });
     }
 
     window.AccountManagementPageEvents = {

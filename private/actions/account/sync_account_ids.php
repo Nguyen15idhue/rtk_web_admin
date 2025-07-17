@@ -17,24 +17,78 @@ if (!$resp['success']) {
 }
 $records = $resp['data']['records'] ?? [];
 
-// Fetch local accounts usernames and IDs
-$stmt = $db->query('SELECT id, username_acc FROM survey_account');
+// Fetch local accounts with all relevant fields
+$stmt = $db->query('SELECT id, username_acc, password_acc, start_time, end_time, enabled, concurrent_user, caster FROM survey_account');
 $localAccounts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $localMap = [];
 foreach ($localAccounts as $la) {
-    $localMap[$la['username_acc']] = $la['id'];
+    $localMap[$la['username_acc']] = $la;
 }
 
-// Find matches by username
+// Helper function to convert timestamp to date only (no time)
+function timestampToDate($timestamp) {
+    if (!$timestamp) return null;
+    return date('Y-m-d', $timestamp / 1000); // Convert milliseconds to seconds, date only
+}
+
+// Helper function to extract date from datetime string
+function extractDate($datetime) {
+    if (!$datetime) return null;
+    return date('Y-m-d', strtotime($datetime));
+}
+
+// Find matches by username and collect all sync data
 $matches = [];
 foreach ($records as $r) {
     $name = $r['name'] ?? null;
     if ($name !== null && isset($localMap[$name])) {
-        $matches[] = [
-            'local_id'  => $localMap[$name],
-            'username'  => $name,
-            'remote_id' => $r['id'],
+        $localAccount = $localMap[$name];
+        
+        // Prepare remote data for comparison
+        $remoteData = [
+            'id' => $r['id'],
+            'password_acc' => $r['userPwd'] ?? '',
+            'start_time' => timestampToDate($r['startTime'] ?? null),
+            'end_time' => timestampToDate($r['endTime'] ?? null),
+            'enabled' => $r['enabled'] ?? 1,
+            'concurrent_user' => $r['numOnline'] ?? 1,
+            // 'caster' => !empty($r['mountNames']) ? implode(',', $r['mountNames']) : null
         ];
+        
+        // Check what fields need updating (compare dates only for time fields)
+        $changes = [];
+        if ($localAccount['id'] !== $remoteData['id']) {
+            $changes['id'] = ['old' => $localAccount['id'], 'new' => $remoteData['id']];
+        }
+        if ($localAccount['password_acc'] !== $remoteData['password_acc']) {
+            $changes['password_acc'] = ['old' => $localAccount['password_acc'], 'new' => $remoteData['password_acc']];
+        }
+        if (extractDate($localAccount['start_time']) !== $remoteData['start_time']) {
+            $changes['start_time'] = ['old' => extractDate($localAccount['start_time']), 'new' => $remoteData['start_time']];
+        }
+        if (extractDate($localAccount['end_time']) !== $remoteData['end_time']) {
+            $changes['end_time'] = ['old' => extractDate($localAccount['end_time']), 'new' => $remoteData['end_time']];
+        }
+        if ($localAccount['enabled'] != $remoteData['enabled']) {
+            $changes['enabled'] = ['old' => $localAccount['enabled'], 'new' => $remoteData['enabled']];
+        }
+        if ($localAccount['concurrent_user'] != $remoteData['concurrent_user']) {
+            $changes['concurrent_user'] = ['old' => $localAccount['concurrent_user'], 'new' => $remoteData['concurrent_user']];
+        }
+        // if ($localAccount['caster'] !== $remoteData['caster']) {
+        //     $changes['caster'] = ['old' => $localAccount['caster'], 'new' => $remoteData['caster']];
+        // }
+        
+        // Only include accounts that have changes
+        if (!empty($changes)) {
+            $matches[] = [
+                'local_id' => $localAccount['id'],
+                'username' => $name,
+                'remote_id' => $remoteData['id'],
+                'remote_data' => $remoteData,
+                'changes' => $changes
+            ];
+        }
     }
 }
 

@@ -56,7 +56,10 @@ include $private_layouts_path . 'admin_sidebar.php';
                 <i class="fas fa-plus"></i> Tạo TK thủ công
             </button>
             <button id="syncIdsBtn" class="btn btn-secondary" data-permission="account_management_edit">
-                <i class="fas fa-sync"></i> Đồng bộ ID
+                <i class="fas fa-sync"></i> Đồng bộ thông tin
+            </button>
+            <button id="fullSyncBtn" class="btn btn-warning" data-permission="account_management_edit">
+                <i class="fas fa-sync-alt"></i> Đồng bộ hoàn toàn
             </button>
         </div>
         <p class="text-xs sm:text-sm text-gray-600 mb-4 description-text">Quản lý các tài khoản dịch vụ đo đạc RTK của khách hàng.</p>
@@ -428,15 +431,42 @@ include $private_layouts_path . 'admin_sidebar.php';
 <div id="syncIdsModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h4>Đồng bộ ID tài khoản RTK</h4>
+            <h4>Đồng bộ thông tin tài khoản RTK</h4>
             <span class="modal-close" onclick="closeModal('syncIdsModal')">&times;</span>
         </div>
         <div class="modal-body" id="syncIdsModalBody">
-            <p>Đang tìm kiếm tài khoản tương ứng...</p>
+            <p>Đang tìm kiếm thông tin tài khoản cần cập nhật...</p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" onclick="closeModal('syncIdsModal')">Hủy</button>
-            <button type="button" id="confirmSyncIdsBtn" class="btn btn-primary">Cập nhật ID</button>
+            <button type="button" id="confirmSyncIdsBtn" class="btn btn-primary">Cập nhật thông tin</button>
+        </div>
+    </div>
+</div>
+
+<!-- Full Sync Confirmation Modal -->
+<div id="fullSyncModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>⚠️ Đồng bộ hoàn toàn từ API RTK</h4>
+            <span class="modal-close" onclick="closeModal('fullSyncModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="warning-message" style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                <strong>🚨 CẢNH BÁO:</strong>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                    <li>Thao tác này sẽ <strong>sao lưu dữ liệu hiện tại</strong> vào bảng backup</li>
+                    <li>Sau đó <strong>XÓA TOÀN BỘ</strong> dữ liệu trong bảng survey_account</li>
+                    <li>Và <strong>GHI ĐÈ</strong> bằng dữ liệu từ API RTK</li>
+                    <li>Các thông tin bổ sung sẽ được lấy từ backup theo username</li>
+                </ul>
+            </div>
+            <p><strong>Bạn có chắc chắn muốn thực hiện đồng bộ hoàn toàn không?</strong></p>
+            <div id="fullSyncStatus" style="display: none; margin-top: 15px;"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeModal('fullSyncModal')">Hủy bỏ</button>
+            <button type="button" id="confirmFullSyncBtn" class="btn btn-danger">🔄 Xác nhận đồng bộ hoàn toàn</button>
         </div>
     </div>
 </div>

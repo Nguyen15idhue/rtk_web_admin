@@ -1,6 +1,7 @@
 <?php
 require_once BASE_PATH . '/config/constants.php'; // Ensure constants are loaded
 require_once BASE_PATH . '/classes/RtkApiClient.php'; // Include the RtkApiClient class
+require_once BASE_PATH . '/classes/Database.php'; // Include the Database class
 
 class StationModel {
 
@@ -89,6 +90,52 @@ class StationModel {
             return false;
         }
     }
+
+    /**
+     * Delete stations with undefined status (NULL or -1).
+     *
+     * @return array Array containing count of deleted stations and their IDs.
+     */
+    public function deleteStationsWithUndefinedStatus(): array {
+        try {
+            $pdo = Database::getInstance()->getConnection();
+            
+            // First, get the list of stations to be deleted for logging
+            $selectSql = "SELECT id, station_name FROM station WHERE status IS NULL OR status = -1";
+            $selectStmt = $pdo->prepare($selectSql);
+            $selectStmt->execute();
+            $stationsToDelete = $selectStmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Delete stations with undefined status
+            $deleteSql = "DELETE FROM station WHERE status IS NULL OR status = -1";
+            $deleteStmt = $pdo->prepare($deleteSql);
+            $success = $deleteStmt->execute();
+            
+            $deletedCount = $deleteStmt->rowCount();
+            $deletedIds = array_column($stationsToDelete, 'id');
+            
+            if ($success && $deletedCount > 0) {
+                error_log("StationModel::deleteStationsWithUndefinedStatus - Deleted {$deletedCount} stations with undefined status: " . implode(', ', $deletedIds));
+            }
+            
+            return [
+                'success' => $success,
+                'deleted_count' => $deletedCount,
+                'deleted_ids' => $deletedIds,
+                'deleted_stations' => $stationsToDelete
+            ];
+        } catch (PDOException $e) {
+            error_log("Error in StationModel::deleteStationsWithUndefinedStatus: " . $e->getMessage());
+            return [
+                'success' => false,
+                'deleted_count' => 0,
+                'deleted_ids' => [],
+                'deleted_stations' => [],
+                'error' => $e->getMessage()
+            ];
+        }
+    }
+
     /**
      * Fetch ALL mountpoints from RTK API (handles pagination automatically).
      *

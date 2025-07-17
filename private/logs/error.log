@@ -1,88 +1,114 @@
-[07-Jul-2025 05:12:11 UTC] ActivityLogModel: Email for tranhailong2407@gmail.com action revert_transaction queued successfully.
-[07-Jul-2025 05:12:14 UTC] [PTA] activate survey_account executed, affectedRows=0
-[07-Jul-2025 05:12:14 UTC] Warning: No survey accounts found or enabled for approved registration ID: 281
-[07-Jul-2025 05:12:14 UTC] [PTA] Generated survey account username: DBN001
-[07-Jul-2025 05:12:14 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":281,"username_acc":"DBN001","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":18,"package_id":2,"start_time":"2025-07-07 12:12:14","end_time":"2025-07-14 12:12:14","enabled":1,"concurrent_user":1,"account_count":1}
-[07-Jul-2025 05:12:14 UTC] ActivityLogModel: Email for tranhailong2407@gmail.com action approve_transaction queued successfully.
-[07-Jul-2025 05:12:15 UTC] [PTA] create_account timed out (could be pending), transaction 272
-[07-Jul-2025 05:12:15 UTC] [CREATE_ACCOUNT] Creating account DBN001 for registration_id: 281
-[07-Jul-2025 05:12:15 UTC] [createRtkAccount] Final payload for RTK API: {
-    "enabled": 1,
-    "numOnline": 1,
-    "customerBizType": 1,
-    "customerCompany": "",
-    "casterIds": [],
-    "regionIds": [],
-    "mountIds": [],
-    "name": "DBN001",
-    "userPwd": "0999999443",
-    "startTime": 1751865134000,
-    "endTime": 1752469934000,
-    "customerName": "Long2002",
-    "customerPhone": "0999999443"
-}
-[07-Jul-2025 05:12:15 UTC] [CREATE_ACCOUNT] RTK API failed for DBN001: User name exist
-[07-Jul-2025 05:12:15 UTC] [CREATE_ACCOUNT] Transaction failed, rolling back: RTK API failed for DBN001: User name exist
-[07-Jul-2025 05:12:56 UTC] ActivityLogModel: Email for tranhailong2407@gmail.com action revert_transaction queued successfully.
-[07-Jul-2025 05:16:38 UTC] [PTA] activate survey_account executed, affectedRows=0
-[07-Jul-2025 05:16:38 UTC] Warning: No survey accounts found or enabled for approved registration ID: 281
-[07-Jul-2025 05:16:38 UTC] [PTA] Generated survey account username: DBN001
-[07-Jul-2025 05:16:38 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":281,"username_acc":"DBN001","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":18,"package_id":2,"start_time":"2025-07-07 12:16:38","end_time":"2025-07-14 12:16:38","enabled":1,"concurrent_user":1,"account_count":1}
-[07-Jul-2025 05:16:38 UTC] ActivityLogModel: Email for tranhailong2407@gmail.com action approve_transaction queued successfully.
-[07-Jul-2025 05:16:39 UTC] [PTA] create_account timed out (could be pending), transaction 272
-[07-Jul-2025 05:16:39 UTC] [createRtkAccount] Final payload for RTK API: {
-    "enabled": 1,
-    "numOnline": 1,
-    "customerBizType": 1,
-    "customerCompany": "",
-    "casterIds": [],
-    "regionIds": [],
-    "mountIds": [],
-    "name": "DBN001",
-    "userPwd": "0999999443",
-    "startTime": 1751865398000,
-    "endTime": 1752470198000,
-    "customerName": "Long2002",
-    "customerPhone": "0999999443"
-}
-[07-Jul-2025 05:16:40 UTC] [PTA] Successfully inserted survey_account DBN001 with ID 1942090389704097793, affectedRows=1
-[07-Jul-2025 05:16:55 UTC] RTK API Payload: {"id":"1942090389704097793","name":"DBN001","userPwd":"0999999443","startTime":1751890598000,"endTime":1752495398000,"enabled":0,"numOnline":1,"customerBizType":1,"mountIds":[]}
-[07-Jul-2025 05:16:55 UTC] [updateRtkAccount] Final payload for RTK API (ID: 1942090389704097793): {
-    "enabled": 0,
-    "numOnline": 1,
-    "customerBizType": 1,
-    "customerCompany": "",
-    "casterIds": [],
-    "regionIds": [],
-    "mountIds": [],
-    "name": "DBN001",
-    "userPwd": "0999999443",
-    "startTime": 1751890598000,
-    "endTime": 1752495398000
-}
-[07-Jul-2025 05:16:56 UTC] RTK API Response: {"success":true,"data":true,"error":null}
-[07-Jul-2025 05:17:02 UTC] [Revert Transaction 272] Deleting RTK account 1942090389704097793
-[07-Jul-2025 05:17:03 UTC] [Revert Transaction 272] RTK delete success for account 1942090389704097793.
-[07-Jul-2025 05:17:03 UTC] ActivityLogModel: Email for tranhailong2407@gmail.com action revert_transaction queued successfully.
-[07-Jul-2025 05:59:10 UTC] [PTA] activate survey_account executed, affectedRows=0
-[07-Jul-2025 05:59:10 UTC] Warning: No survey accounts found or enabled for approved registration ID: 281
-[07-Jul-2025 05:59:10 UTC] [PTA] Generated survey account username: DBN001
-[07-Jul-2025 05:59:10 UTC] [PTA] cURL timeout set to 1s; calling public front-controller URL=http://localhost:3000/public/handlers/account/index.php?action=create_account with payload={"registration_id":281,"username_acc":"DBN001","password_acc":"0999999443","user_email":"tranhailong2407@gmail.com","location_id":18,"package_id":2,"start_time":"2025-07-07 12:59:10","end_time":"2025-07-14 12:59:10","enabled":1,"concurrent_user":1,"account_count":1}
-[07-Jul-2025 05:59:10 UTC] ActivityLogModel: Email for tranhailong2407@gmail.com action approve_transaction queued successfully.
-[07-Jul-2025 05:59:11 UTC] [PTA] create_account timed out (could be pending), transaction 272
-[07-Jul-2025 05:59:11 UTC] [createRtkAccount] Final payload for RTK API: {
-    "enabled": 1,
-    "numOnline": 1,
-    "customerBizType": 1,
-    "customerCompany": "",
-    "casterIds": [],
-    "regionIds": [],
-    "mountIds": [],
-    "name": "DBN001",
-    "userPwd": "0999999443",
-    "startTime": 1751867950000,
-    "endTime": 1752472750000,
-    "customerName": "Long2002",
-    "customerPhone": "0999999443"
-}
-[07-Jul-2025 05:59:12 UTC] [PTA] Successfully inserted survey_account DBN001 with ID 1942101094759088130, affectedRows=1
+[17-Jul-2025 02:39:40 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:39:40 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:39:41 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:39:41 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:39:43 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:39:43 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:39:45 UTC] mountpoint_actions.php - POST data: {"action":"update_mountpoint","mountpoint_id":"39","location_id":""}
+[17-Jul-2025 02:39:45 UTC] mountpoint_actions.php - GET data: []
+[17-Jul-2025 02:39:45 UTC] mountpoint_actions.php - Action: update_mountpoint
+[17-Jul-2025 02:39:45 UTC] Error in MountPointModel::updateMountPointLocation (ID: 39): SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'location_id' cannot be null
+[17-Jul-2025 02:40:11 UTC] mountpoint_actions.php - POST data: {"action":"update_mountpoint","mountpoint_id":"40","location_id":""}
+[17-Jul-2025 02:40:11 UTC] mountpoint_actions.php - GET data: []
+[17-Jul-2025 02:40:11 UTC] mountpoint_actions.php - Action: update_mountpoint
+[17-Jul-2025 02:40:11 UTC] Error in MountPointModel::updateMountPointLocation (ID: 40): SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'location_id' cannot be null
+[17-Jul-2025 02:40:17 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:40:17 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:46:40 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:46:40 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:46:44 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:46:44 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:46:45 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:46:45 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:46:47 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:46:47 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:46:58 UTC] mountpoint_actions.php - POST data: {"action":"update_mountpoint","mountpoint_id":"4","location_id":""}
+[17-Jul-2025 02:46:58 UTC] mountpoint_actions.php - GET data: []
+[17-Jul-2025 02:46:58 UTC] mountpoint_actions.php - Action: update_mountpoint
+[17-Jul-2025 02:46:58 UTC] Error in MountPointModel::updateMountPointLocation (ID: 4): SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'location_id' cannot be null
+[17-Jul-2025 02:47:30 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:47:30 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:54:03 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:54:03 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:54:05 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:54:05 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:54:07 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:54:07 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:54:09 UTC] mountpoint_actions.php - POST data: {"action":"update_mountpoint","mountpoint_id":"39","location_id":""}
+[17-Jul-2025 02:54:09 UTC] mountpoint_actions.php - GET data: []
+[17-Jul-2025 02:54:09 UTC] mountpoint_actions.php - Action: update_mountpoint
+[17-Jul-2025 02:54:09 UTC] mountpoint_actions.php - Update mountpoint: ID=39, LocationRaw='', LocationProcessed=0
+[17-Jul-2025 02:54:09 UTC] MountPointModel::updateMountPointLocation - Updating mountpoint ID: 39, location_id: 0
+[17-Jul-2025 02:54:09 UTC] MountPointModel::updateMountPointLocation - Binding 0 (Chưa phân bổ) for location_id
+[17-Jul-2025 02:54:09 UTC] Error in MountPointModel::updateMountPointLocation (ID: 39): SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`quantri`.`mount_point`, CONSTRAINT `fk_mount_point_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`) ON UPDATE CASCADE)
+[17-Jul-2025 02:54:09 UTC] SQL: UPDATE mount_point SET location_id = :location_id WHERE id = :id
+[17-Jul-2025 02:54:09 UTC] Parameters: mountpointId=39, locationId=0
+[17-Jul-2025 02:54:12 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:54:12 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:54:14 UTC] mountpoint_actions.php - POST data: {"action":"update_mountpoint","mountpoint_id":"39","location_id":""}
+[17-Jul-2025 02:54:14 UTC] mountpoint_actions.php - GET data: []
+[17-Jul-2025 02:54:14 UTC] mountpoint_actions.php - Action: update_mountpoint
+[17-Jul-2025 02:54:14 UTC] mountpoint_actions.php - Update mountpoint: ID=39, LocationRaw='', LocationProcessed=0
+[17-Jul-2025 02:54:15 UTC] MountPointModel::updateMountPointLocation - Updating mountpoint ID: 39, location_id: 0
+[17-Jul-2025 02:54:15 UTC] MountPointModel::updateMountPointLocation - Binding 0 (Chưa phân bổ) for location_id
+[17-Jul-2025 02:54:15 UTC] Error in MountPointModel::updateMountPointLocation (ID: 39): SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`quantri`.`mount_point`, CONSTRAINT `fk_mount_point_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`) ON UPDATE CASCADE)
+[17-Jul-2025 02:54:15 UTC] SQL: UPDATE mount_point SET location_id = :location_id WHERE id = :id
+[17-Jul-2025 02:54:15 UTC] Parameters: mountpointId=39, locationId=0
+[17-Jul-2025 02:55:30 UTC] mountpoint_actions.php - POST data: {"action":"update_mountpoint","mountpoint_id":"39","location_id":"15"}
+[17-Jul-2025 02:55:30 UTC] mountpoint_actions.php - GET data: []
+[17-Jul-2025 02:55:30 UTC] mountpoint_actions.php - Action: update_mountpoint
+[17-Jul-2025 02:55:32 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:55:32 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:55:37 UTC] mountpoint_actions.php - POST data: {"action":"update_mountpoint","mountpoint_id":"39","location_id":""}
+[17-Jul-2025 02:55:37 UTC] mountpoint_actions.php - GET data: []
+[17-Jul-2025 02:55:37 UTC] mountpoint_actions.php - Action: update_mountpoint
+[17-Jul-2025 02:55:37 UTC] Error in MountPointModel::updateMountPointLocation (ID: 39): SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'location_id' cannot be null
+[17-Jul-2025 02:55:40 UTC] mountpoint_actions.php - POST data: {"action":"update_mountpoint","mountpoint_id":"39","location_id":"15"}
+[17-Jul-2025 02:55:40 UTC] mountpoint_actions.php - GET data: []
+[17-Jul-2025 02:55:40 UTC] mountpoint_actions.php - Action: update_mountpoint
+[17-Jul-2025 02:55:42 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:55:42 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:55:56 UTC] mountpoint_actions.php - POST data: {"action":"update_mountpoint","mountpoint_id":"39","location_id":""}
+[17-Jul-2025 02:55:56 UTC] mountpoint_actions.php - GET data: []
+[17-Jul-2025 02:55:56 UTC] mountpoint_actions.php - Action: update_mountpoint
+[17-Jul-2025 02:55:56 UTC] Error in MountPointModel::updateMountPointLocation (ID: 39): SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'location_id' cannot be null
+[17-Jul-2025 02:57:57 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:57:57 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:58:00 UTC] mountpoint_actions.php - POST data: {"action":"update_mountpoint","mountpoint_id":"39","location_id":""}
+[17-Jul-2025 02:58:00 UTC] mountpoint_actions.php - GET data: []
+[17-Jul-2025 02:58:00 UTC] mountpoint_actions.php - Action: update_mountpoint
+[17-Jul-2025 02:58:00 UTC] Error in MountPointModel::updateMountPointLocation (ID: 39): SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`quantri`.`mount_point`, CONSTRAINT `fk_mount_point_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`) ON UPDATE CASCADE)
+[17-Jul-2025 02:58:02 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:58:02 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:58:04 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:58:04 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 02:58:06 UTC] mountpoint_actions.php - POST data: {"action":"update_mountpoint","mountpoint_id":"39","location_id":""}
+[17-Jul-2025 02:58:06 UTC] mountpoint_actions.php - GET data: []
+[17-Jul-2025 02:58:06 UTC] mountpoint_actions.php - Action: update_mountpoint
+[17-Jul-2025 02:58:06 UTC] Error in MountPointModel::updateMountPointLocation (ID: 39): SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`quantri`.`mount_point`, CONSTRAINT `fk_mount_point_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`) ON UPDATE CASCADE)
+[17-Jul-2025 02:58:18 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 02:58:18 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 03:15:46 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 03:15:46 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 03:16:00 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 03:16:00 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 03:16:02 UTC] mountpoint_actions.php - POST data: {"action":"update_mountpoint","mountpoint_id":"39","location_id":""}
+[17-Jul-2025 03:16:02 UTC] mountpoint_actions.php - GET data: []
+[17-Jul-2025 03:16:02 UTC] mountpoint_actions.php - Action: update_mountpoint
+[17-Jul-2025 03:16:02 UTC] Error in MountPointModel::updateMountPointLocation (ID: 39): SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`quantri`.`mount_point`, CONSTRAINT `fk_mount_point_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`) ON UPDATE CASCADE)
+[17-Jul-2025 03:16:04 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 03:16:04 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 03:16:45 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 03:16:45 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 03:16:51 UTC] mountpoint_actions.php - POST data: {"action":"update_mountpoint","mountpoint_id":"39","location_id":""}
+[17-Jul-2025 03:16:51 UTC] mountpoint_actions.php - GET data: []
+[17-Jul-2025 03:16:51 UTC] mountpoint_actions.php - Action: update_mountpoint
+[17-Jul-2025 03:16:53 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 03:16:53 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 03:17:30 UTC] mountpoint_actions.php - POST data: {"action":"update_mountpoint","mountpoint_id":"39","location_id":"24"}
+[17-Jul-2025 03:17:30 UTC] mountpoint_actions.php - GET data: []
+[17-Jul-2025 03:17:30 UTC] mountpoint_actions.php - Action: update_mountpoint
+[17-Jul-2025 03:17:32 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 03:17:32 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)
+[17-Jul-2025 03:17:48 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 33 records
+[17-Jul-2025 03:17:48 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 33 mountpoints (expected: 33)

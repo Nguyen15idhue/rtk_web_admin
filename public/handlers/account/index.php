@@ -11,7 +11,7 @@ $allowed = [
     'toggle_account_status', 'update_account',
     'search_users', 'manual_renew_account',
     'cron_update_stations',
-    'sync_account_ids', 'apply_sync_ids'
+    'sync_account_ids', 'apply_sync_ids', 'full_sync_accounts'
 ];
 if (!in_array($action, $allowed, true)) {
     api_error('Invalid action', 400);

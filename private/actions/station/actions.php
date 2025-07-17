@@ -7,6 +7,10 @@ $base_url = $bootstrap_data['base_url'] ?? '/';
 
 Auth::ensureAuthorized('station_management_edit');
 
+// Check if request is AJAX
+$isAjax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') 
+    || (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
+
 // Ensure POST request
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     $_SESSION['message'] = 'Phương thức yêu cầu không hợp lệ.';
@@ -67,16 +71,79 @@ if ($action === 'update_station') {
     );
 
     if ($success) {
-        $_SESSION['message'] = 'Thông tin trạm được cập nhật thành công.';
-        $_SESSION['message_type'] = 'success';
+        if ($isAjax) {
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode([
+                'success' => true,
+                'message' => 'Thông tin trạm được cập nhật thành công.'
+            ]);
+            exit;
+        } else {
+            $_SESSION['message'] = 'Thông tin trạm được cập nhật thành công.';
+            $_SESSION['message_type'] = 'success';
+        }
     } else {
-        $_SESSION['message'] = 'Cập nhật thông tin trạm thất bại. Vui lòng kiểm tra logs hoặc thử lại.';
+        if ($isAjax) {
+            header('Content-Type: application/json; charset=UTF-8');
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Cập nhật thông tin trạm thất bại. Vui lòng kiểm tra logs hoặc thử lại.'
+            ]);
+            exit;
+        } else {
+            $_SESSION['message'] = 'Cập nhật thông tin trạm thất bại. Vui lòng kiểm tra logs hoặc thử lại.';
+            $_SESSION['message_type'] = 'danger';
+        }
+    }
+} elseif ($action === 'delete_undefined_stations') {
+    // Action để xóa các trạm có trạng thái không xác định
+    $result = $stationModel->deleteStationsWithUndefinedStatus();
+    
+    if ($result['success'] && $result['deleted_count'] > 0) {
+        $_SESSION['message'] = "Đã xóa thành công {$result['deleted_count']} trạm có trạng thái không xác định.";
+        $_SESSION['message_type'] = 'success';
+        
+        // Log the deletion for audit trail
+        require_once __DIR__ . '/../../classes/Logger.php';
+        Logger::info("Deleted stations with undefined status", [
+            'action' => 'delete_undefined_stations',
+            'deleted_count' => $result['deleted_count'],
+            'deleted_ids' => $result['deleted_ids'],
+            'admin_user' => $_SESSION['admin_user'] ?? 'unknown'
+        ]);
+    } elseif ($result['success'] && $result['deleted_count'] === 0) {
+        $_SESSION['message'] = 'Không tìm thấy trạm nào có trạng thái không xác định để xóa.';
+        $_SESSION['message_type'] = 'info';
+    } else {
+        $_SESSION['message'] = 'Xóa trạm thất bại. ' . ($result['error'] ?? 'Lỗi không xác định.');
         $_SESSION['message_type'] = 'danger';
+        
+        // Log the error
+        require_once __DIR__ . '/../../classes/Logger.php';
+        Logger::error("Failed to delete stations with undefined status", [
+            'action' => 'delete_undefined_stations',
+            'error' => $result['error'] ?? 'Unknown error',
+            'admin_user' => $_SESSION['admin_user'] ?? 'unknown'
+        ]);
     }
 } else {
-    $_SESSION['message'] = 'Hành động không hợp lệ.';
-    $_SESSION['message_type'] = 'danger';
+    if ($isAjax) {
+        header('Content-Type: application/json; charset=UTF-8');
+        http_response_code(400);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Hành động không hợp lệ.'
+        ]);
+        exit;
+    } else {
+        $_SESSION['message'] = 'Hành động không hợp lệ.';
+        $_SESSION['message_type'] = 'danger';
+    }
 }
 
-header('Location: ' . $base_url . 'public/pages/station/station_management.php');
+// Only redirect for non-AJAX requests
+if (!$isAjax) {
+    header('Location: ' . $base_url . 'public/pages/station/station_management.php?tab=station');
+}
 exit;

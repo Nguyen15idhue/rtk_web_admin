@@ -52,4 +52,85 @@ class MountPointModel {
             return false;
         }
     }
+
+    /**
+     * Auto-update location_id for mountpoints based on first 3 characters of masterStationNames
+     * by matching with province_code in location table.
+     *
+     * @param array $mountpointsFromAPI Array of mountpoints from API with masterStationNames
+     * @return array Result with success status, updated count, and details
+     */
+    public function autoUpdateLocationsByMasterStationNames(array $mountpointsFromAPI): array {
+        try {
+            // Get all locations with their province codes
+            $sql = "SELECT id, province, province_code FROM location WHERE status = 1";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Create a map of province_code => location_id
+            $provinceCodeMap = [];
+            foreach ($locations as $location) {
+                $provinceCodeMap[strtoupper($location['province_code'])] = $location['id'];
+            }
+            
+            $updatedCount = 0;
+            $updatedDetails = [];
+            $errors = [];
+            
+            foreach ($mountpointsFromAPI as $mountpoint) {
+                $mountpointId = $mountpoint['id'] ?? '';
+                $masterStationNames = $mountpoint['masterStationNames'] ?? [];
+                
+                if (empty($mountpointId) || empty($masterStationNames)) {
+                    continue;
+                }
+                
+                // Process each masterStationName to find matching province code
+                foreach ($masterStationNames as $stationName) {
+                    if (strlen($stationName) >= 3) {
+                        $first3Chars = strtoupper(substr($stationName, 0, 3));
+                        
+                        if (isset($provinceCodeMap[$first3Chars])) {
+                            $locationId = $provinceCodeMap[$first3Chars];
+                            
+                            // Update the mountpoint location
+                            if ($this->updateMountPointLocation($mountpointId, $locationId)) {
+                                $updatedCount++;
+                                $updatedDetails[] = [
+                                    'mountpoint_id' => $mountpointId,
+                                    'station_name' => $stationName,
+                                    'matched_code' => $first3Chars,
+                                    'location_id' => $locationId,
+                                    'province' => array_search($locationId, $provinceCodeMap) 
+                                ];
+                                break; // Exit loop after first match
+                            } else {
+                                $errors[] = "Failed to update mountpoint {$mountpointId}";
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return [
+                'success' => true,
+                'updated_count' => $updatedCount,
+                'total_processed' => count($mountpointsFromAPI),
+                'updated_details' => $updatedDetails,
+                'errors' => $errors
+            ];
+            
+        } catch (PDOException $e) {
+            error_log("Error in MountPointModel::autoUpdateLocationsByMasterStationNames: " . $e->getMessage());
+            return [
+                'success' => false,
+                'error' => $e->getMessage(),
+                'updated_count' => 0,
+                'total_processed' => 0,
+                'updated_details' => [],
+                'errors' => []
+            ];
+        }
+    }
 }

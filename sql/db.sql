@@ -638,6 +638,28 @@ CREATE TABLE `survey_account` (
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Backup table for survey_account
+CREATE TABLE `survey_account_backup` (
+  `id` varchar(64) NOT NULL,
+  `registration_id` int(11) NOT NULL,
+  `start_time` datetime DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL,
+  `username_acc` varchar(100) NOT NULL,
+  `password_acc` varchar(255) NOT NULL,
+  `concurrent_user` int(11) DEFAULT 1,
+  `enabled` tinyint(1) DEFAULT 1,
+  `caster` varchar(100) DEFAULT NULL,
+  `user_type` int(11) DEFAULT NULL,
+  `regionIds` int(11) DEFAULT NULL,
+  `customerBizType` int(11) DEFAULT 1,
+  `area` varchar(255) DEFAULT NULL,
+  `temp_phone` varchar(20) DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `deleted_at` datetime DEFAULT NULL,
+  `backup_date` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -1091,13 +1113,6 @@ ALTER TABLE `voucher`
   ADD KEY `idx_voucher_max_sa` (`max_sa`),
   ADD KEY `idx_voucher_location` (`location_id`),
   ADD KEY `idx_voucher_package` (`package_id`);
-
---
--- Chỉ mục cho bảng `withdrawal_request`
---
-ALTER TABLE `withdrawal_request`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_withdrawal_user` (`user_id`);
 
 --
 -- AUTO_INCREMENT cho các bảng đã đổ
