@@ -3,9 +3,9 @@
 // Handles fetching data and business logic for station management page
 $base_url = $bootstrap_data['base_url'] ?? '/';
 
-require_once __DIR__ . '/../../../private/classes/StationModel.php';
-require_once __DIR__ . '/../../../private/classes/ManagerModel.php';
-require_once __DIR__ . '/../../../private/classes/MountPointModel.php';
+require_once __DIR__ . '/../../../private/classes/StationManager/StationModel.php';
+require_once __DIR__ . '/../../../private/classes/StationManager/ManagerModel.php';
+require_once __DIR__ . '/../../../private/classes/StationManager/MountPointModel.php';
 require_once __DIR__ . '/../../../private/classes/LocationModel.php';
 Auth::ensureAuthorized('station_management_view');
 
@@ -78,8 +78,45 @@ $allLocations = $locationModel->getAllLocations();
 $mp_filters = [
     'q_mp' => isset($_GET['mp_q']) ? trim((string)$_GET['mp_q']) : ''
 ];
+
+// Apply filter to API mountpoints (for table display)
+$filteredMountpoints = $availableMountpoints;
 if ($mp_filters['q_mp'] !== '') {
     // Build location map for filtering by province name
+    $locationMap = [];
+    foreach ($allLocations as $loc) {
+        $locationMap[$loc['id']] = $loc['province'];
+    }
+    
+    // Apply filter to API mountpoints
+    $filteredMountpoints = array_filter($availableMountpoints, function($mp) use ($mp_filters, $locationMap, $allMountPoints) {
+        $q = mb_strtolower($mp_filters['q_mp']);
+        
+        // Search in basic mountpoint info
+        $found = stripos(mb_strtolower($mp['name'] ?? $mp['mountpoint'] ?? ''), $q) !== false
+            || stripos(mb_strtolower($mp['ip'] ?? ''), $q) !== false
+            || stripos((string)($mp['port'] ?? ''), $q) !== false;
+        
+        // Also search in province (from database mapping)
+        if (!$found) {
+            // Find corresponding database mountpoint for location info
+            foreach ($allMountPoints as $dbMp) {
+                if ((string)$dbMp['id'] === (string)$mp['id']) {
+                    if (isset($locationMap[$dbMp['location_id']]) && 
+                        stripos(mb_strtolower($locationMap[$dbMp['location_id']]), $q) !== false) {
+                        $found = true;
+                    }
+                    break;
+                }
+            }
+        }
+        
+        return $found;
+    });
+}
+
+// Also apply the same filter to database mountpoints (for consistency)
+if ($mp_filters['q_mp'] !== '') {
     $locationMap = [];
     foreach ($allLocations as $loc) {
         $locationMap[$loc['id']] = $loc['province'];
@@ -93,6 +130,12 @@ if ($mp_filters['q_mp'] !== '') {
             || (isset($locationMap[$mp['location_id']]) && stripos(mb_strtolower($locationMap[$mp['location_id']]), $q) !== false);
     });
 }
+
+// Count stations with undefined status (null or -1) for informational purposes
+$undefinedStatusStations = array_filter($stations, function($st) {
+    return $st['status'] === null || $st['status'] === -1;
+});
+$undefinedStatusCount = count($undefinedStatusStations);
 
 // Session messages
 $message = $_SESSION['message'] ?? null;
@@ -112,19 +155,16 @@ $total_manager_items = count($allManagers);
 $total_pages_managers = (int) ceil($total_manager_items / $items_per_page);
 $allManagers = array_slice($allManagers, ($managers_page - 1) * $items_per_page, $items_per_page);
 
-// Pagination for mount points - sử dụng API data cho hiển thị
+// Pagination for mount points - sử dụng filtered data cho hiển thị
 $mountpoints_page = isset($_GET['mountpoint_page']) ? max(1, (int)$_GET['mountpoint_page']) : 1;
 
-// Để hiển thị đầy đủ, sử dụng API mountpoints cho table management
-$mountpointsForTable = $availableMountpoints; // Sử dụng dữ liệu từ API
+// Để hiển thị đầy đủ, sử dụng filtered mountpoints cho table management
+$mountpointsForTable = $filteredMountpoints; // Sử dụng dữ liệu đã được filter
 $total_mountpoint_items = count($mountpointsForTable);
 $total_pages_mountpoints = (int) ceil($total_mountpoint_items / $items_per_page);
 
-// Paginate API data for table display
+// Paginate filtered data for table display
 $mountpointsForTable = array_slice($mountpointsForTable, ($mountpoints_page - 1) * $items_per_page, $items_per_page);
 
-// Keep database mountpoints for location mapping (nếu cần)
-$allMountPoints = $mountPointModel->getAllMountPoints();
-
-// Variables now available to view: $stations, $allManagers, $availableMountpoints, $mountpointsForTable, $allMountPoints, $filters, $message, $message_type, $page_title, $active_nav, $base_url
+// Variables now available to view: $stations, $allManagers, $availableMountpoints, $mountpointsForTable, $allMountPoints, $filteredMountpoints, $filters, $mp_filters, $message, $message_type, $page_title, $active_nav, $base_url, $undefinedStatusCount
 ?>

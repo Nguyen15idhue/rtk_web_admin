@@ -99,6 +99,11 @@ try {
         abort('Database connection failed. Please check server configuration.', 500);
     }
 
+    // Start transaction for data consistency
+    $db->beginTransaction();
+    
+    try {
+
     // NEW: fetch user_id based on provided email
     $userEmail = filter_var($input['user_email'] ?? null, FILTER_VALIDATE_EMAIL);
     if (!$userEmail) {
@@ -192,20 +197,38 @@ try {
         }
         // insert local (trial) – use API-returned ID as the PK
         $accId = (int)$res['data']['id'];    // <-- use API id
-        $ins = $db->prepare("
-            INSERT INTO survey_account
-              (id,registration_id,username_acc,password_acc,concurrent_user,enabled,customerBizType,created_at)
-            VALUES (?,?,?,?,?,?,?,NOW())
-        ");
-        $ins->execute([
-            $accId,
-            $registration_id,
-            $username,
-            $password,
-            $concurrent_user,
-            $enabled,    // reflect selected status (0 for pending/rejected)
-            1            // customerBizType
-        ]);
+        try {
+            $ins = $db->prepare("
+                INSERT INTO survey_account
+                  (id,registration_id,username_acc,password_acc,concurrent_user,enabled,customerBizType,created_at)
+                VALUES (?,?,?,?,?,?,?,NOW())
+            ");
+            $insertResult = $ins->execute([
+                $accId,
+                $registration_id,
+                $username,
+                $password,
+                $concurrent_user,
+                $enabled,    // reflect selected status (0 for pending/rejected)
+                1            // customerBizType
+            ]);
+            
+            if (!$insertResult) {
+                throw new Exception("Failed to insert trial account {$username} into database");
+            }
+            
+            $affectedRows = $ins->rowCount();
+            if ($affectedRows === 0) {
+                throw new Exception("No rows affected when inserting trial account {$username}");
+            }
+            
+            error_log("[PTA] Successfully inserted trial survey_account {$username} with ID {$accId}, affectedRows={$affectedRows}");
+            
+        } catch (Exception $insertEx) {
+            error_log("[PTA] Failed to insert trial account {$username} into database: " . $insertEx->getMessage());
+            throw $insertEx;
+        }
+        
         // update registration & transaction
         $db->prepare("UPDATE registration SET status='active',updated_at=NOW() WHERE id=?")
            ->execute([$registration_id]);
@@ -214,6 +237,9 @@ try {
             SET status='completed',updated_at=NOW() 
             WHERE registration_id=? AND status='pending'
         ")->execute([$registration_id]);
+
+        // Commit transaction for trial account
+        $db->commit();
 
         api_success(
             ['account' => ['id' => $accId, 'username' => $username, 'password' => $password]],
@@ -295,23 +321,49 @@ try {
         }
         $apiId = (int)$apiRes['data']['id'];
 
-        // --- insert local record via model ---
-        $accountData = [
-            'id'              => $apiId,
-            'registration_id' => $registration_id,
-            'username_acc'    => $curUsername,
-            'password_acc'    => $password_acc,
-            'concurrent_user' => $concurrent_user,
-            'enabled'         => $enabled,
-            'caster'          => !empty($input['caster']) ? trim($input['caster']) : null,
-            'user_type'       => $user_type,
-            'regionIds'       => $regionIds,
-            'customerBizType' => $customerBizType,
-            'area'            => !empty($input['area']) ? trim($input['area']) : null,
-            'start_time'      => $start_time_db,
-            'end_time'        => $end_time_db,
-        ];
-        $accountModel->createAccount($accountData);
+        // --- insert local record via direct SQL to ensure success ---
+        try {
+            $insertStmt = $db->prepare("
+                INSERT INTO survey_account 
+                (id, registration_id, username_acc, password_acc, concurrent_user, enabled, 
+                 caster, user_type, regionIds, customerBizType, area, start_time, end_time, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+            ");
+            
+            $insertResult = $insertStmt->execute([
+                $apiId,
+                $registration_id,
+                $curUsername,
+                $password_acc,
+                $concurrent_user,
+                $enabled,
+                !empty($input['caster']) ? trim($input['caster']) : null,
+                $user_type,
+                $regionIds,
+                $customerBizType,
+                !empty($input['area']) ? trim($input['area']) : null,
+                $start_time_db,
+                $end_time_db
+            ]);
+            
+            if (!$insertResult) {
+                throw new Exception("Failed to insert account {$curUsername} into database");
+            }
+            
+            $affectedRows = $insertStmt->rowCount();
+            if ($affectedRows === 0) {
+                throw new Exception("No rows affected when inserting account {$curUsername}");
+            }
+            
+            // Log successful insertion
+            error_log("[PTA] Successfully inserted survey_account {$curUsername} with ID {$apiId}, affectedRows={$affectedRows}");
+            
+        } catch (Exception $insertEx) {
+            // If local insert fails, we should try to cleanup the API account
+            error_log("[PTA] Failed to insert account {$curUsername} into database: " . $insertEx->getMessage());
+            // Could implement API cleanup here if needed
+            throw $insertEx;
+        }
 
         $createdAccounts[] = [
             'username' => $curUsername,
@@ -319,10 +371,20 @@ try {
         ];
     }
 
+    // Commit transaction if all accounts created successfully
+    $db->commit();
+    
     api_success(
         ['accounts' => $createdAccounts],
         'Accounts created: ' . count($createdAccounts)
     );
+
+    } catch (Exception $innerEx) {
+        // Rollback transaction on any error
+        $db->rollback();
+        error_log("[PTA] Transaction rolled back due to error: " . $innerEx->getMessage());
+        throw $innerEx;
+    }
 
 } catch (PDOException $e) {
     if ($e->getCode() == '23000') {

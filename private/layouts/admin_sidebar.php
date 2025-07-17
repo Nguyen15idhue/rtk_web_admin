@@ -31,11 +31,11 @@ $admin_nav_items = [
         ['label' => 'QL giao dịch', 'icon' => 'fa-file-invoice-dollar', 'url' => '/public/pages/purchase/invoice_management.php', 'active_check' => 'invoice_management.php', 'permission' => 'invoice_management_view'],
         ['label' => 'QL doanh thu', 'icon' => 'fa-dollar-sign', 'url' => '/public/pages/purchase/revenue_management.php', 'active_check' => 'revenue_management.php', 'permission' => 'revenue_management_view'],
         ['label' => 'Phê duyệt hóa đơn', 'icon' => 'fa-file-invoice', 'url' => '/public/pages/invoice/invoice_review.php', 'active_check' => 'invoice_review.php', 'permission' => 'invoice_review_view'],
-    ]],
-
+    ]],    
     ['label' => 'Báo cáo', 'icon' => 'fa-chart-line', 'url' => '/public/pages/report/reports.php', 'active_check' => 'reports.php', 'permission' => 'reports_view'],
 
     ['type' => 'section', 'label' => 'Cài đặt'],
+    //['label' => 'Nhật ký Hệ thống', 'icon' => 'fa-file-alt', 'url' => '/public/pages/logs.php', 'active_check' => 'logs.php', 'permission' => 'settings'],
     ['label' => 'Thông tin tài khoản', 'icon' => 'fa-id-card', 'url' => '/public/pages/setting/profile.php', 'active_check' => 'profile.php', 'permission' => 'settings'],
     ['label' => 'Đăng xuất', 'icon' => 'fa-sign-out-alt', 'url' => '/public/pages/auth/admin_logout.php', 'class' => 'logout-link'],
 ];

@@ -8,6 +8,10 @@
 $bootstrap_data = require_once __DIR__ . '/../../private/core/page_bootstrap.php';
 $db = $bootstrap_data['db'];
 
+// Include logger helpers
+require_once __DIR__ . '/../../private/utils/logger_helpers.php';
+require_once __DIR__ . '/../../private/classes/Auth.php';
+
 header('Content-Type: application/json');
 
 // Check if user is authenticated
@@ -94,16 +98,41 @@ try {
     }
 
     // Limit total results to prevent overwhelming UI
-    $results = array_slice($results, 0, 9);
+    // Filter results by permissions
+    $filtered = [];
+    foreach ($results as $r) {
+        $perm = null;
+        switch ($r['type']) {
+            case 'user':
+                $perm = 'user_management_view';
+                break;
+            case 'invoice':
+                $perm = 'invoice_review_view';
+                break;
+            case 'station':
+                $perm = 'station_management_view';
+                break;
+        }
+        if ($perm === null || Auth::can($perm)) {
+            $filtered[] = $r;
+        }
+    }
+    $results = array_slice($filtered, 0, 9);
 
     echo json_encode(['success' => true, 'results' => $results]);
 
 } catch (PDOException $e) {
-    error_log("Quick search error: " . $e->getMessage());
+    log_error("Quick search PDO error", [
+        'exception' => $e->getMessage(),
+        'query' => $_GET['q'] ?? 'unknown'
+    ]);
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Search failed']);
 } catch (Exception $e) {
-    error_log("Quick search error: " . $e->getMessage());
+    log_error("Quick search error", [
+        'exception' => $e->getMessage(),
+        'query' => $_GET['q'] ?? 'unknown'
+    ]);
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Search failed']);
 }

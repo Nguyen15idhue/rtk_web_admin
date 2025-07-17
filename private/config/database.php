@@ -4,7 +4,7 @@
 $db_server = getenv('DB_SERVER') ?: '127.0.0.1';
 $db_username = getenv('DB_USERNAME') ?: 'root';
 $db_password = getenv('DB_PASSWORD') ?: '';
-$db_name = getenv('DB_NAME') ?: 'sa3';
+$db_name = getenv('DB_NAME') ?: 'quantri';
 
 define('DB_SERVER', $db_server);
 define('DB_USERNAME', $db_username);

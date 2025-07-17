@@ -1,6 +1,7 @@
 <?php
-require_once __DIR__ . '/../config/constants.php'; // Ensure constants are loaded
-require_once __DIR__ . '/RtkApiClient.php'; // Include the RtkApiClient class
+require_once BASE_PATH . '/config/constants.php'; // Ensure constants are loaded
+require_once BASE_PATH . '/classes/RtkApiClient.php'; // Include the RtkApiClient class
+require_once BASE_PATH . '/classes/Database.php'; // Include the Database class
 
 class StationModel {
 
@@ -91,37 +92,47 @@ class StationModel {
     }
 
     /**
-     * Fetch mountpoints from RTK API using the RtkApiClient.
+     * Delete stations with undefined status (NULL or -1).
      *
-     * @param int $page Page number.
-     * @param int $size Number of records per page.
-     * @return array The API response data (records array) or an empty array on failure.
+     * @return array Array containing count of deleted stations and their IDs.
      */
-    public function fetchMountpointsFromAPI(int $page = 1, int $size = 100): array {
+    public function deleteStationsWithUndefinedStatus(): array {
         try {
-            $client = new RtkApiClient(); // Sử dụng default timeout thay vì custom
-            $params = ['page' => $page, 'size' => $size];
+            $pdo = Database::getInstance()->getConnection();
             
-            $response = $client->request('GET', '/openapi/broadcast/mounts', $params);
+            // First, get the list of stations to be deleted for logging
+            $selectSql = "SELECT id, station_name FROM station WHERE status IS NULL OR status = -1";
+            $selectStmt = $pdo->prepare($selectSql);
+            $selectStmt->execute();
+            $stationsToDelete = $selectStmt->fetchAll(PDO::FETCH_ASSOC);
             
-            if ($response['success'] && isset($response['data']['records'])) {
-                // Log thông tin để debug
-                $total = $response['data']['total'] ?? 0;
-                $recordCount = count($response['data']['records']);
-                error_log("StationModel::fetchMountpointsFromAPI - Page {$page}: Got {$recordCount} records out of {$total} total");
-                
-                return $response['data']['records'];
-            } else {
-                $errorMsg = $response['error'] ?? 'Unknown API error';
-                error_log("StationModel::fetchMountpointsFromAPI - API Error: {$errorMsg}");
-                if (isset($response['data'])) {
-                    error_log("StationModel::fetchMountpointsFromAPI - Response Data: " . json_encode($response['data']));
-                }
-                return [];
+            // Delete stations with undefined status
+            $deleteSql = "DELETE FROM station WHERE status IS NULL OR status = -1";
+            $deleteStmt = $pdo->prepare($deleteSql);
+            $success = $deleteStmt->execute();
+            
+            $deletedCount = $deleteStmt->rowCount();
+            $deletedIds = array_column($stationsToDelete, 'id');
+            
+            if ($success && $deletedCount > 0) {
+                error_log("StationModel::deleteStationsWithUndefinedStatus - Deleted {$deletedCount} stations with undefined status: " . implode(', ', $deletedIds));
             }
-        } catch (Exception $e) {
-            error_log("StationModel::fetchMountpointsFromAPI - Exception: " . $e->getMessage());
-            return [];
+            
+            return [
+                'success' => $success,
+                'deleted_count' => $deletedCount,
+                'deleted_ids' => $deletedIds,
+                'deleted_stations' => $stationsToDelete
+            ];
+        } catch (PDOException $e) {
+            error_log("Error in StationModel::deleteStationsWithUndefinedStatus: " . $e->getMessage());
+            return [
+                'success' => false,
+                'deleted_count' => 0,
+                'deleted_ids' => [],
+                'deleted_stations' => [],
+                'error' => $e->getMessage()
+            ];
         }
     }
 
@@ -220,28 +231,6 @@ class StationModel {
         } catch (PDOException $e) {
             error_log("Error in StationModel::getDataByIdsForExport: " . $e->getMessage());
             return [];
-        }
-    }
-
-    /**
-     * Debug method to get detailed API response.
-     *
-     * @return array Full API response for debugging
-     */
-    public function debugMountpointsAPI(): array {
-        try {
-            $client = new RtkApiClient();
-            $params = ['page' => 1, 'size' => 100];
-            
-            $response = $client->request('GET', '/openapi/broadcast/mounts', $params);
-            
-            error_log("StationModel::debugMountpointsAPI - Full response: " . json_encode($response, JSON_PRETTY_PRINT));
-            
-            return $response;
-            
-        } catch (Exception $e) {
-            error_log("StationModel::debugMountpointsAPI - Exception: " . $e->getMessage());
-            return ['error' => $e->getMessage()];
         }
     }
 }

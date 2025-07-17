@@ -51,6 +51,11 @@ $canEditStation = Auth::can('station_management_edit');
                 <button type="button" class="btn btn-warning" onclick="window.location.href='<?php echo $base_url; ?>public/handlers/account/index.php?action=cron_update_stations'">
                     <i class="fas fa-sync-alt"></i> Làm mới danh sách
                 </button>
+                <?php if ($canEditStation && $undefinedStatusCount > 0): ?>
+                <button type="button" class="btn btn-danger" onclick="deleteUndefinedStations()" title="Xóa <?php echo $undefinedStatusCount; ?> trạm có trạng thái không xác định">
+                    <i class="fas fa-trash-alt"></i> Xóa <?php echo $undefinedStatusCount; ?> trạm không xác định
+                </button>
+                <?php endif; ?>
             </div>
         </form>
         <!-- Filter Form -->
@@ -90,12 +95,11 @@ $canEditStation = Auth::can('station_management_edit');
                         <th>Người quản lý Hiện tại</th>
                         <th>Mountpoint Hiện tại</th>
                         <th>Trạng thái</th>
-                        <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($stations)): ?>
-                        <tr><td colspan="8">Không tìm thấy trạm nào.</td></tr>
+                        <tr><td colspan="7">Không tìm thấy trạm nào.</td></tr>
                     <?php else: foreach ($stations as $station): ?>
                         <tr>
                             <td><input type="checkbox" class="rowCheckbox" name="ids[]" value="<?php echo htmlspecialchars($station['id']); ?>"></td>
@@ -110,7 +114,9 @@ $canEditStation = Auth::can('station_management_edit');
                                 <td><?php echo htmlspecialchars($station['station_name']); ?></td>
                                 <td><?php echo htmlspecialchars($station['identificationName'] ?? 'N/A'); ?></td>
                                 <td>
-                                    <select name="manager_name" class="form-control" <?php echo !$canEditStation ? 'disabled' : ''; ?>>
+                                    <select name="manager_name" class="form-control station-manager-select" 
+                                            data-station-id="<?php echo htmlspecialchars($station['id']); ?>"
+                                            <?php echo !$canEditStation ? 'disabled' : ''; ?>>
                                         <option value="">-- Chọn người quản lý --</option>
                                         <?php
                                         $currentManagerAssignedName = $station['manager_name'] ?? null;
@@ -127,7 +133,9 @@ $canEditStation = Auth::can('station_management_edit');
                                     </select>
                                 </td>
                                 <td>
-                                    <select name="mountpoint_details" class="form-control" <?php echo !$canEditStation ? 'disabled' : ''; ?>>
+                                    <select name="mountpoint_details" class="form-control station-mountpoint-select" 
+                                            data-station-id="<?php echo htmlspecialchars($station['id']); ?>"
+                                            <?php echo !$canEditStation ? 'disabled' : ''; ?>>
                                         <option value="">-- Chọn Mountpoint --</option>
                                         <?php foreach ($availableMountpoints as $mp): 
                                             $mountpointValueJson = json_encode([
@@ -150,17 +158,6 @@ $canEditStation = Auth::can('station_management_edit');
                                     <?php 
                                         echo get_status_badge('station', $station['status'] ?? null);
                                     ?>
-                                </td>
-                                <td>
-                                    <?php if ($canEditStation): ?>
-                                    <button 
-                                        type="button" 
-                                        class="btn btn-primary btn-sm"
-                                        onclick="document.getElementById('updateStationForm_<?php echo htmlspecialchars($station['id']); ?>').submit();"
-                                    >
-                                        Lưu
-                                    </button>
-                                    <?php endif; ?>
                                 </td>
                             </form>
                         </tr>
@@ -236,10 +233,19 @@ $canEditStation = Auth::can('station_management_edit');
         <div class="content-section" style="margin-top:40px;">
             <div class="header-actions d-flex justify-content-between align-items-center mb-2">
                 <h3>Quản lý Mountpoint</h3>
-                <button type="button" class="btn btn-warning" onclick="window.location.href='<?php echo $base_url; ?>public/handlers/account/index.php?action=cron_update_stations'">
-                    <i class="fas fa-sync-alt"></i> Làm mới danh sách
-                </button>
+                <div class="sync-buttons">
+                    <button type="button" class="btn btn-warning" onclick="window.location.href='<?php echo $base_url; ?>public/handlers/account/index.php?action=cron_update_stations'">
+                        <i class="fas fa-sync-alt"></i> Làm mới danh sách
+                    </button>
+                    <button id="autoUpdateLocationsBtn" class="btn btn-info" data-permission="station_management_edit">
+                        <i class="fas fa-map-marker-alt"></i> Tự động cập nhật vị trí
+                    </button>
+                    <button id="fullSyncMountpointsBtn" class="btn btn-warning" data-permission="station_management_edit">
+                        <i class="fas fa-sync-alt"></i> Đồng bộ hoàn toàn
+                    </button>
+                </div>
             </div>
+            <p class="text-xs sm:text-sm text-gray-600 mb-4 description-text">Quản lý các mount point từ hệ thống RTK.</p>
             <!-- Filter Form for Mountpoints -->
             <form method="GET" action="" class="filter-bar" style="margin-bottom:15px;">
                 <input type="hidden" name="tab" value="mountpoint">
@@ -256,11 +262,10 @@ $canEditStation = Auth::can('station_management_edit');
                             <th>IP</th>
                             <th>Port</th>
                             <th>Tỉnh/Thành phố</th>
-                            <th>Hành động</th>
                         </tr>
                     </thead>                    <tbody>
                         <?php if (empty($mountpointsForTable)): ?>
-                            <tr><td colspan="6">Không tìm thấy Mountpoint nào.</td></tr>
+                            <tr><td colspan="5">Không tìm thấy Mountpoint nào.</td></tr>
                         <?php else: foreach ($mountpointsForTable as $mp): 
                             // Map database location info if available
                             $dbMountpoint = null;
@@ -280,7 +285,9 @@ $canEditStation = Auth::can('station_management_edit');
                                     <form id="updateMountpointForm_<?php echo htmlspecialchars($mp['id']); ?>" action="<?php echo $base_url; ?>public/handlers/station/mountpoint_index.php" method="POST">
                                         <input type="hidden" name="action" value="update_mountpoint">
                                         <input type="hidden" name="mountpoint_id" value="<?php echo htmlspecialchars($mp['id']); ?>">
-                                        <select name="location_id" class="form-control" <?php echo !$canEditStation ? 'disabled' : ''; ?>>
+                                        <select name="location_id" class="form-control mountpoint-location-select" 
+                                                data-mountpoint-id="<?php echo htmlspecialchars($mp['id']); ?>"
+                                                <?php echo !$canEditStation ? 'disabled' : ''; ?>>
                                             <option value="">-- Chưa phân bổ --</option>
                                             <?php foreach ($allLocations as $loc): 
                                                 $isSelected = $dbMountpoint && ((string)$dbMountpoint['location_id'] === (string)$loc['id']);
@@ -290,11 +297,6 @@ $canEditStation = Auth::can('station_management_edit');
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
-                                </td>
-                                <td>
-                                        <?php if ($canEditStation): ?>
-                                            <button type="submit" class="btn btn-primary btn-sm">Lưu</button>
-                                        <?php endif; ?>
                                     </form>
                                 </td>
                             </tr>
@@ -315,6 +317,70 @@ $canEditStation = Auth::can('station_management_edit');
         </div>
     </div>
 </main>
+
+<!-- Auto Update Locations Confirmation Modal -->
+<div id="autoUpdateLocationsModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>🗺️ Tự động cập nhật vị trí Mount Point</h4>
+            <span class="modal-close" onclick="window.helpers && window.helpers.closeModal ? window.helpers.closeModal('autoUpdateLocationsModal') : (document.getElementById('autoUpdateLocationsModal').style.display='none')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="info-message" style="background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                <strong>🔍 Cách thức hoạt động:</strong>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                    <li>Hệ thống sẽ lấy dữ liệu <strong>masterStationNames</strong> từ API RTK</li>
+                    <li>Lấy <strong>3 ký tự đầu</strong> của mỗi tên trạm chủ</li>
+                    <li>So khớp với <strong>province_code</strong> trong bảng location</li>
+                    <li>Tự động gán <strong>location_id</strong> tương ứng cho mountpoint</li>
+                </ul>
+                <p><strong>Ví dụ:</strong> Nếu masterStationNames có "HNI_Station1", sẽ lấy "HNI" để khớp với location có province_code = "HNI"</p>
+            </div>
+            <div class="warning-message" style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                <strong>⚠️ Lưu ý:</strong>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                    <li>Chỉ cập nhật các mountpoint <strong>chưa có location_id</strong> hoặc có thể ghi đè</li>
+                    <li>Nếu có nhiều trạm chủ, sẽ ưu tiên trạm đầu tiên có khớp province_code</li>
+                    <li>Thao tác này <strong>không ảnh hưởng</strong> đến dữ liệu mountpoint hiện tại</li>
+                </ul>
+            </div>
+            <div id="autoUpdateLocationsStatus" style="display: none; margin-top: 15px;"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="window.helpers && window.helpers.closeModal ? window.helpers.closeModal('autoUpdateLocationsModal') : (document.getElementById('autoUpdateLocationsModal').style.display='none')">Hủy</button>
+            <button id="confirmAutoUpdateLocationsBtn" type="button" class="btn btn-info">
+                🗺️ Bắt đầu cập nhật tự động
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Full Sync Mountpoints Confirmation Modal -->
+<div id="fullSyncMountpointsModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4>⚠️ Đồng bộ hoàn toàn mountpoint từ API RTK</h4>
+            <span class="modal-close" onclick="window.helpers && window.helpers.closeModal ? window.helpers.closeModal('fullSyncMountpointsModal') : (document.getElementById('fullSyncMountpointsModal').style.display='none')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="warning-message" style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                <strong>🚨 CẢNH BÁO:</strong>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                    <li>Thao tác này sẽ <strong>sao lưu dữ liệu hiện tại</strong> vào bảng mountpoint_backup</li>
+                    <li>Sau đó <strong>XÓA TOÀN BỘ</strong> dữ liệu trong bảng mount_point</li>
+                    <li>Và <strong>GHI ĐÈ</strong> bằng dữ liệu từ API RTK</li>
+                    <li>Các thông tin vị trí được phân bổ sẽ được lấy từ backup theo tên mountpoint</li>
+                </ul>
+            </div>
+            <p><strong>Bạn có chắc chắn muốn thực hiện đồng bộ hoàn toàn không?</strong></p>
+            <div id="fullSyncMountpointsStatus" style="display: none; margin-top: 15px;"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="window.helpers && window.helpers.closeModal ? window.helpers.closeModal('fullSyncMountpointsModal') : (document.getElementById('fullSyncMountpointsModal').style.display='none')">Hủy bỏ</button>
+            <button type="button" id="confirmFullSyncMountpointsBtn" class="btn btn-danger">🔄 Xác nhận đồng bộ hoàn toàn</button>
+        </div>
+    </div>
+</div>
 
 <!-- only define basePath inline -->
 <script>

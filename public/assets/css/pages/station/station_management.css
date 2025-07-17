@@ -3,3 +3,32 @@
     padding-left: 50px;
     padding-right: 50px;
 }
+
+/* Auto-save select styling */
+.mountpoint-location-select,
+.station-manager-select,
+.station-mountpoint-select {
+    transition: border-color 0.3s ease;
+}
+
+.mountpoint-location-select:focus,
+.station-manager-select:focus,
+.station-mountpoint-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Sync buttons styling */
+.sync-buttons .btn {
+    margin-left: 8px;
+}
+
+.sync-buttons .btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.sync-buttons .btn-info:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+}

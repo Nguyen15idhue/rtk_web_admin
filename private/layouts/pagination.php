@@ -28,18 +28,29 @@ if (!isset($pagination_param)) {
 if (!function_exists('generate_pagination_link')) {
     function generate_pagination_link($page, $base_url) {
         global $pagination_param;
-        $parsed = parse_url($base_url);
-        // Use only the path (no query string)
-        $path = $parsed['path'] ?? $base_url;
-        // Parse existing query params
-        $query_params = [];
-        if (isset($parsed['query'])) {
-            parse_str($parsed['query'], $query_params);
+        
+        // Get current URL query parameters to preserve filters
+        $current_query_params = [];
+        if (!empty($_GET)) {
+            $current_query_params = $_GET;
         }
+        
+        // Parse base URL if it has additional parameters
+        $parsed = parse_url($base_url);
+        $path = $parsed['path'] ?? $base_url;
+        
+        // If base URL has query parameters, merge them
+        if (isset($parsed['query'])) {
+            $base_query_params = [];
+            parse_str($parsed['query'], $base_query_params);
+            $current_query_params = array_merge($current_query_params, $base_query_params);
+        }
+        
         // Set/update pagination parameter
-        $query_params[$pagination_param] = $page;
+        $current_query_params[$pagination_param] = $page;
+        
         // Rebuild query string
-        $query_string = http_build_query($query_params);
+        $query_string = http_build_query($current_query_params);
         return $path . ($query_string ? '?' . $query_string : '');
     }
 }

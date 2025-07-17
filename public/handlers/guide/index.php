@@ -11,7 +11,9 @@ $allowed = [
     'create_guide',
     'update_guide',
     'delete_guide',
-    'fetch_topics'
+    'fetch_topics',
+    'auto_save_guide',
+    'upload_image'
 ];
 
 if (!in_array($action, $allowed, true)) {

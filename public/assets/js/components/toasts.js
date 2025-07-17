@@ -12,20 +12,47 @@
         if (!container) return;
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
-        toast.textContent = message;
+        
+        // Create close button
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'toast-close';
+        closeBtn.innerHTML = '×';
+        closeBtn.setAttribute('aria-label', 'Close');
+        
+        // Create message content
+        const messageEl = document.createElement('span');
+        messageEl.textContent = message;
+        
+        toast.appendChild(messageEl);
+        toast.appendChild(closeBtn);
         container.appendChild(toast);
-        // trigger CSS animation in
-        requestAnimationFrame(() => toast.classList.add('show'));
-        setTimeout(() => {
-            // trigger CSS animation out
+        
+        // Auto remove function
+        const removeToast = () => {
             toast.classList.remove('show');
             toast.addEventListener('transitionend', () => {
-                // only remove if still in container
                 if (container.contains(toast)) {
                     container.removeChild(toast);
                 }
             }, { once: true });
-        }, duration);
+        };
+        
+        // Close button click handler
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            removeToast();
+        });
+        
+        // Click to dismiss (optional)
+        toast.addEventListener('click', removeToast);
+        
+        // trigger CSS animation in
+        requestAnimationFrame(() => toast.classList.add('show'));
+        
+        // Auto dismiss after duration
+        if (duration > 0) {
+            setTimeout(removeToast, duration);
+        }
     }
     window.showToast = showToast;
 })(window);

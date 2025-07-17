@@ -99,10 +99,18 @@ class GuideModel {
     public function create($data) {
         // generate slug from title with proper transliteration
         $data['slug'] = $this->slugify($data['title']);
-        $sql = "INSERT INTO guide(title, slug, content, author_id, topic, status, thumbnail, image)
-                VALUES(?,?,?,?,?,?,?,?)";
+        
+        // Set published_at when status is published
+        if (isset($data['status']) && $data['status'] === 'published') {
+            $data['published_at'] = date('Y-m-d H:i:s');
+        } else {
+            $data['published_at'] = null;
+        }
+        
+        $sql = "INSERT INTO guide(title, slug, content, author_id, topic, status, thumbnail, image, published_at)
+                VALUES(?,?,?,?,?,?,?,?,?)";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([
+        $result = $stmt->execute([
             $data['title'], 
             $data['slug'], 
             $data['content'], 
@@ -110,27 +118,65 @@ class GuideModel {
             $data['topic'], 
             $data['status'], 
             $data['thumbnail'] ?? null, 
-            $data['image'] ?? null
+            $data['image'] ?? null,
+            $data['published_at']
         ]);
+        
+        return $result ? $this->db->lastInsertId() : false;
     }
     public function update($id, $data) {
+        // Get current guide data
+        $current = $this->getOne($id);
+        if (!$current) {
+            return false;
+        }
+        
+        // Only update slug if title is provided
         if (!empty($data['title'])) {
             $data['slug'] = $this->slugify($data['title']);
         }
-        $sql = "UPDATE guide SET title=?, slug=?, content=?, topic=?, status=?, thumbnail=?, image=?, published_at=?
-                WHERE id=?";
+        
+        // Handle status and published_at logic
+        if (isset($data['status'])) {
+            if ($data['status'] === 'published') {
+                // Set published_at when status changes to published
+                if ($current['status'] !== 'published') {
+                    $data['published_at'] = date('Y-m-d H:i:s');
+                } elseif (!isset($data['published_at'])) {
+                    // Keep existing published_at if already published
+                    $data['published_at'] = $current['published_at'];
+                }
+            } elseif ($data['status'] !== 'published') {
+                // Clear published_at if status is not published
+                $data['published_at'] = null;
+            }
+        } else {
+            // If status is not provided, keep existing status and published_at
+            $data['status'] = $current['status'];
+            $data['published_at'] = $current['published_at'];
+        }
+        
+        // Build dynamic SQL based on provided fields
+        $fields = ['title', 'slug', 'content', 'topic', 'status', 'thumbnail', 'image', 'published_at'];
+        $updateFields = [];
+        $values = [];
+        
+        foreach ($fields as $field) {
+            if (isset($data[$field])) {
+                $updateFields[] = "$field = ?";
+                $values[] = $data[$field];
+            }
+        }
+        
+        if (empty($updateFields)) {
+            return true; // No fields to update
+        }
+        
+        $sql = "UPDATE guide SET " . implode(', ', $updateFields) . " WHERE id = ?";
+        $values[] = $id;
+        
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([
-            $data['title'],
-            $data['slug'],
-            $data['content'],
-            $data['topic'],
-            $data['status'],
-            $data['thumbnail'] ?? null,
-            $data['image'] ?? null,
-            $data['published_at'] ?? null,
-            $id
-        ]);
+        return $stmt->execute($values);
     }
     public function delete($id) {
         $sql = "DELETE FROM guide WHERE id=?";

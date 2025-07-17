@@ -13,6 +13,7 @@ header('Cache-Control: no-cache, must-revalidate');
 // Include required files
 require_once '../../private/config/database.php';
 require_once '../../private/classes/Database.php'; // Assuming Database class is correctly autoloaded or included
+require_once '../../private/utils/logger_helpers.php';
 
 try {
     // Initialize response
@@ -184,7 +185,10 @@ try {
     // Fatal errors or uncaught exceptions outside this try-catch are handled by the global error handler.
     
     // It's good practice to log the exception details even if we send a JSON response
-    error_log("Error in system_status.php: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine());
+    log_exception($e, [
+        'endpoint' => 'system_status',
+        'request_method' => $_SERVER['REQUEST_METHOD'] ?? 'unknown'
+    ]);
 
     if (!headers_sent()) {
         http_response_code(500);

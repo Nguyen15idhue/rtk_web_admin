@@ -246,6 +246,15 @@ function validateSession(int $userId, string $sessionId): void {
     $upd->execute([$sessionId]);
 }
 
+/**
+ * Include shared logging helpers instead of redefining functions
+ */
+try {
+    require_once __DIR__ . '/logger_helpers.php';
+} catch (Exception $e) {
+    // Fallback if helpers not found
+}
+
 // Add more helper functions as needed...
 
 ?>

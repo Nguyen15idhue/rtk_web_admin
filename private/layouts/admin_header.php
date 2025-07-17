@@ -21,7 +21,9 @@ $public_assets_path = BASE_URL . 'public/assets/';
     <title><?php echo isset($page_title) ? htmlspecialchars($page_title) : 'Admin Dashboard'; ?></title>    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- Updated Font Awesome -->
 
-    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/base.css"> 
+    <link rel="stylesheet" href="<?php echo $public_assets_path; ?>css/base.css">
+    <!-- Favicon -->
+    <link rel="icon" href="<?php echo $public_assets_path; ?>favicon.ico">
 
     <?php
     // Include additional CSS files if defined

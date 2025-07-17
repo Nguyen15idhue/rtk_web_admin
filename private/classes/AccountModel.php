@@ -3,7 +3,7 @@
 error_reporting(E_ALL); // Report all errors for logging
 ini_set('display_errors', 0); // Keep off for browser output
 ini_set('log_errors', 1); // Ensure errors are logged
-ini_set('error_log', LOGS_PATH . '/error.log');
+// ini_set('error_log', LOGS_PATH . '/error.log'); // Removed - let Logger class handle this
 
 class AccountModel {
     private $db;
@@ -544,7 +544,7 @@ class AccountModel {
         } else {
             $endMs = 0;
         }
-        // userId trên RTK
+        // userId trên RTK - chỉ gửi nếu có giá trị
         $rtkUserId = $account['user_id'] ?? null;
         // Phone
         $cPhone = $input['customer_phone'] ?? ($account['user_phone'] ?? '');
@@ -565,7 +565,7 @@ class AccountModel {
         $numOnline       = isset($input['concurrent_user'])? (int)$input['concurrent_user']: ($account['concurrent_user'] ?? 1);
         $customerBizType = isset($input['customerBizType'])? (int)$input['customerBizType']: ($account['customerBizType']  ?? 1);
 
-        return [
+        $payload = [
             'id'              => $accountId,
             'name'            => $account['username_acc'] ?? '',
             'userPwd'         => $pwd,
@@ -574,14 +574,23 @@ class AccountModel {
             'enabled'         => $enabled,
             'numOnline'       => $numOnline,
             'customerBizType' => $customerBizType,
-            'userId'          => $rtkUserId,
             'customerName'    => $cName,
-            'customerPhone'   => $cPhone,
             'customerCompany' => $custCompany,
             'casterIds'       => $casterIds,
             'regionIds'       => $regionIdsArr,
             'mountIds'        => $mountIds,
         ];
+
+        // Chỉ thêm userId nếu có giá trị (tránh gửi null gây lỗi RTK API)
+        if ($rtkUserId !== null) {
+            $payload['userId'] = $rtkUserId;
+            $payload['customerPhone']   = $cPhone;
+        }
+
+        // Debug logging
+        error_log("[AccountModel::buildRtkUpdatePayload] Built payload for account ID $accountId: " . json_encode($payload, JSON_PRETTY_PRINT));
+
+        return $payload;
     }
 
     /**

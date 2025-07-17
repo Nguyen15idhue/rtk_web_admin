@@ -327,7 +327,7 @@ $payload = [
 ];
 
 error_log("[PTA] Generated survey account username: {$username}");
-error_log("[PTA] cURL timeout set to 1s; calling public front-controller URL={$url} with payload=".json_encode($payload));
+error_log("[PTA] cURL timeout set to 5s; calling public front-controller URL={$url} with payload=".json_encode($payload));
 
 // --- Release session lock before internal request ---
 // Preserve needed session data before closing
@@ -367,8 +367,8 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
 ]);
 curl_setopt($ch, CURLOPT_POSTFIELDS,     json_encode($payload));
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);  
-curl_setopt($ch, CURLOPT_TIMEOUT,        1);  
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);  
+curl_setopt($ch, CURLOPT_TIMEOUT,        5);  
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 if (isset($_COOKIE[session_name()])) {

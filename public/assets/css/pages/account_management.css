@@ -54,3 +54,126 @@
 #viewAccountError p.error {
     color: var(--danger-color, #dc3545); /* Use CSS variable if available */
 }
+
+/* Layout for header actions: title and buttons aligned horizontally */
+.header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem; /* space between items */
+}
+.header-actions h3 {
+    margin: 0;
+    margin-right: auto; /* push buttons group to the right */
+}
+
+/* Styles for Sync IDs Modal */
+#syncIdsModal .modal-content {
+    max-width: 800px;
+    width: 90%;
+    border-radius: 8px;
+    overflow: hidden;
+}
+#syncIdsModal .modal-body {
+    padding: 1rem;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+#syncIdsModal table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.95rem;
+    color: #333;
+}
+#syncIdsModal thead {
+    background-color: var(--primary-color, #007bff);
+    color: #fff;
+}
+#syncIdsModal th,
+#syncIdsModal td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+#syncIdsModal tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+#syncIdsModal tr:hover {
+    background-color: #e9ecef;
+}
+#syncIdsModal th:first-child,
+#syncIdsModal td:first-child {
+    width: 40px;
+    text-align: center;
+}
+#syncIdsModal .syncCheckbox {
+    transform: scale(1.2);
+    margin: 0;
+}
+#syncIdsModal .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+}
+
+/* Styles for sync modal with detailed changes */
+#syncIdsModal .modal-content {
+    max-width: 800px;
+    width: 90%;
+}
+
+#syncIdsModal .table {
+    font-size: 0.9rem;
+}
+
+#syncIdsModal .table td:nth-child(3) {
+    max-width: 400px;
+}
+
+#syncIdsModal .table ul {
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+#syncIdsModal .table li {
+    margin-bottom: 5px;
+    color: #555;
+}
+
+#syncIdsModal .table li strong {
+    color: #333;
+    font-weight: 600;
+}
+
+/* Highlight changes */
+#syncIdsModal .table li {
+    background: #f8f9fa;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border-left: 3px solid #007bff;
+}
+
+/* Full sync modal warning styles */
+#fullSyncModal .warning-message {
+    font-size: 0.9rem;
+}
+
+#fullSyncModal .warning-message strong {
+    color: #856404;
+}
+
+#fullSyncModal .warning-message ul li {
+    margin-bottom: 5px;
+    color: #856404;
+}
+
+#fullSyncModal .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+#fullSyncModal .btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}

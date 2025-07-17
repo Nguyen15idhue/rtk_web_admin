@@ -4,6 +4,7 @@
 // User info and role display logic (similar to sidebar)
 require_once __DIR__ . '/../config/constants.php';
 require_once __DIR__ . '/../classes/Database.php';
+require_once __DIR__ . '/../classes/Auth.php';
 
 $admin_user_role_display = 'Admin'; // Default fallback
 $user_display_name = 'Admin'; // Default fallback
@@ -48,6 +49,16 @@ if (!empty($role)) {
         error_log('Content header user info error: ' . $e->getMessage());
     }
 }
+
+// Determine show_quick_search based on user permissions
+$app_permissions = require __DIR__ . '/../config/app_permissions.php';
+$show_quick_search = false;
+foreach (array_keys($app_permissions) as $perm) {
+    if (substr($perm, -5) === '_view' && Auth::can($perm)) {
+        $show_quick_search = true;
+        break;
+    }
+}
 ?>
 <div class="content-header">
     <div class="header-left">
@@ -67,6 +78,9 @@ if (!empty($role)) {
     </div>
     
     <div class="header-center">
+        <?php if (
+            isset($show_quick_search) && $show_quick_search
+        ): ?>
         <!-- Quick Search -->
         <div class="quick-search">
             <div class="search-input-wrapper">
@@ -79,8 +93,9 @@ if (!empty($role)) {
                 <div class="search-results" id="search-results"></div>
             </div>
         </div>
+        <?php endif; ?>
     </div>
-    
+
     <div class="header-right">
         <!-- Notifications -->
         <div class="notification-bell" id="notification-bell" title="Thông báo (Ctrl+Shift+H)">
