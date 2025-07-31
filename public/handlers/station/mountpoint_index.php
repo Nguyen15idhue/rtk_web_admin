@@ -24,6 +24,11 @@ if ($action === 'full_sync_mountpoints') {
     exit;
 }
 
+if ($action === 'update_mountpoint_ip_port') {
+    require_once __DIR__ . '/../../../private/actions/station/mountpoint_update_ip_port.php';
+    exit;
+}
+
 // Handle regular mountpoint actions
 require_once __DIR__ . '/../../../private/actions/station/mountpoint_actions.php';
 exit;

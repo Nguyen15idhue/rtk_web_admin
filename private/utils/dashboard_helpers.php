@@ -176,6 +176,43 @@ function format_activity_log($log, $voucher_details_map = [], $num_account_map =
             $details_url = BASE_URL . 'public/pages/referral/referral_management.php?tab=withdrawals#request-' . $entity_id;
             $required_permission = 'referral_management_view';
             break;
+        case 'approve_transaction':
+            $details = [];
+            if (!empty($log['new_values'])) {
+                $decoded = json_decode($log['new_values'], true);
+                $details = is_array($decoded) ? $decoded : [];
+            }
+            $message = "Giao dịch của <strong class='font-medium'>{$actor}</strong> đã được duyệt</strong>";
+            $message .= ".";
+            $icon = 'fas fa-check-circle text-green-500';
+            $action_type = 'navigate';
+            $details_url = BASE_URL . 'public/pages/purchase/invoice_management.php#transaction-' . $entity_id;
+            $required_permission = 'transaction_approve';
+            break;
+        case 'reject_transaction':
+            $details = [];
+            if (!empty($log['new_values'])) {
+                $decoded = json_decode($log['new_values'], true);
+                $details = is_array($decoded) ? $decoded : [];
+            }
+            $reason = isset($details['reason']) ? htmlspecialchars($details['reason']) : '';
+            $message = "Giao dịch của <strong class='font-medium'>{$actor}</strong> đã bị từ chối";
+            if ($reason) {
+                $message .= " với lý do: <em>{$reason}</em>";
+            }
+            $message .= ".";
+            $icon = 'fas fa-times-circle text-red-500';
+            $action_type = 'navigate';
+            $details_url = BASE_URL . 'public/pages/purchase/invoice_management.php#transaction-' . $entity_id;
+            $required_permission = 'transaction_approve';
+            break;
+        case 'revert_transaction':
+            $message = "Giao dịch của <strong class='font-medium'>{$actor}</strong> đã bị hoàn tác duyệt.";
+            $icon = 'fas fa-undo-alt text-yellow-500';
+            $action_type = 'navigate';
+            $details_url = BASE_URL . 'public/pages/purchase/invoice_management.php#transaction-' . $entity_id;
+            $required_permission = 'transaction_approve';
+            break;
         default:
             $message = "<strong class='font-medium'>{$actor}</strong> thực hiện: {$action} trên {$entity_type} <strong class='font-medium'>{$entity_id}</strong>.";
     }

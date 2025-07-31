@@ -25,6 +25,7 @@ try {
     $phone        = isset($_POST['phone']) ? trim((string)$_POST['phone']) : null; 
 
     $is_company   = (isset($_POST['is_company']) && $_POST['is_company'] === '1') ? 1 : 0;
+    $customer_source = isset($_POST['customer_source']) ? trim((string)$_POST['customer_source']) : null;
 
     $company_name_input = isset($_POST['company_name']) ? trim((string)$_POST['company_name']) : '';
     $tax_code_input     = isset($_POST['tax_code']) ? trim((string)$_POST['tax_code']) : '';
@@ -61,7 +62,8 @@ try {
             'is_company'   => $is_company,
             'company_name' => $company_name,
             'tax_code'     => $tax_code,
-            'company_address' => $company_address
+            'company_address' => $company_address,
+            'customer_source' => $customer_source
         ]);
         api_success(['user' => $updated], 'User updated successfully.');
     } catch (\InvalidArgumentException $e) {

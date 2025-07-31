@@ -87,8 +87,15 @@
         const dateToInput = document.querySelector('input[name="date_to"]');
 
         if (dateFromInput && dateToInput) {
-            dateFromInput.addEventListener('change', validateDateRange);
-            dateToInput.addEventListener('change', validateDateRange);
+            // Validate date range only on form submission to avoid interrupting user input
+            const filterForm = dateFromInput.closest('form');
+            if (filterForm) {
+                filterForm.addEventListener('submit', function(e) {
+                    if (!validateDateRange()) {
+                        e.preventDefault();
+                    }
+                });
+            }
         }
 
         function validateDateRange() {

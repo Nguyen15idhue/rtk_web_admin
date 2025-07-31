@@ -37,6 +37,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
                         <label for="phone">Số điện thoại:</label>
                         <input type="tel" id="phone" name="phone">
                     </div>
+                    <div class="form-group">
+                        <label for="customerSource">Nguồn khách hàng:</label>
+                        <input type="text" id="customerSource" name="customer_source" placeholder="Nhập nguồn khách hàng (VD: Facebook, Google, ...)">
+                    </div>
                     <div class="form-group form-check">
                         <input type="checkbox" id="isCompany" name="is_company">
                         <label for="isCompany">Là công ty?</label>
@@ -77,6 +81,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
                     <div class="form-group">
                         <label for="phone">Số điện thoại</label>
                         <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="customerSource">Nguồn khách hàng:</label>
+                        <input type="text" id="customerSource" name="customer_source" placeholder="Nhập nguồn khách hàng (VD: Facebook, Google, ...)">
                     </div>
                     <div class="form-group">
                         <div class="checkbox-group">

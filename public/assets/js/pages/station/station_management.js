@@ -316,11 +316,6 @@ function openEditManagerModal(managerData) {
     helpers.openModal('genericModal');
 }
 
-// The closeManagerModal function is no longer needed as genericModal uses helpers.closeModal('genericModal')
-// function closeManagerModal(modalId) {
-//     helpers.closeModal(modalId);
-// }
-
 document.addEventListener('DOMContentLoaded', function() {
     // Bulk export: collect checked IDs into hidden input before submit
     const bulkActionForm = document.getElementById('bulkActionForm');

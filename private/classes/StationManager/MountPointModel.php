@@ -3,6 +3,27 @@ require_once BASE_PATH . '/config/constants.php';
 require_once BASE_PATH . '/classes/Database.php';
 
 class MountPointModel {
+    /**
+     * Update IP and Port for a mount point.
+     *
+     * @param string $mountpointId
+     * @param string $ip
+     * @param int $port
+     * @return bool
+     */
+    public function updateMountPointIpPort(string $mountpointId, string $ip, int $port): bool {
+        $sql = "UPDATE mount_point SET ip = :ip, port = :port WHERE id = :id";
+        try {
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $mountpointId, PDO::PARAM_STR);
+            $stmt->bindParam(':ip', $ip, PDO::PARAM_STR);
+            $stmt->bindParam(':port', $port, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error in MountPointModel::updateMountPointIpPort (ID: {$mountpointId}): " . $e->getMessage());
+            return false;
+        }
+    }
     private $db;
 
     public function __construct() {

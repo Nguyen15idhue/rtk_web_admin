@@ -45,6 +45,7 @@ require_once __DIR__ . '/../../classes/UserModel.php';
 $userModel = new UserModel();
 
 try {
+    $customer_source = isset($input['customer_source']) ? trim($input['customer_source']) : null;
     $userId = $userModel->createWithSettings([
         'username'     => $username,
         'email'        => $email,
@@ -53,7 +54,8 @@ try {
         'is_company'   => $is_company,
         'company_name' => $company_name,
         'tax_code'     => $tax_code,
-        'company_address' => $company_address
+        'company_address' => $company_address,
+        'customer_source' => $customer_source
     ]);
     api_success(['id' => $userId], 'Thêm người dùng thành công.');
 } catch (Exception $e) {

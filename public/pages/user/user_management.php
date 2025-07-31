@@ -32,6 +32,7 @@ $user_permissions = [
 $filters = [
     'q' => isset($_GET['q']) ? (string)$_GET['q'] : '', // Use raw input, UserModel will trim
     'status' => filter_input(INPUT_GET, 'status', FILTER_SANITIZE_SPECIAL_CHARS) ?: '',
+    'customer_source' => isset($_GET['customer_source']) ? (string)$_GET['customer_source'] : '',
 ];
 // Debug JavaScript console
 echo '<script>console.log("DEBUG Search keyword:", ' . json_encode($filters['q'], JSON_UNESCAPED_UNICODE) . ');</script>';
@@ -59,12 +60,20 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
     <!-- Main Content Section -->
     <div id="admin-user-management" class="content-section">
         <div class="header-actions">
-             <h3>Quản lý người dùng (KH)</h3>
-            <?php if (Auth::can('user_management_edit')): ?>
-                <button class="btn btn-primary" onclick="UserManagementPageEvents.openCreateUserModal()" data-permission="user_create">
-                    <i class="fas fa-plus"></i> Thêm người dùng
-                </button>
-            <?php endif; ?>
+            <h3>Quản lý người dùng (KH)</h3>
+            <div class="action-group" style="display: inline-block; margin-left: 10px;">
+                <?php if (Auth::can('user_management_edit')): ?>
+                    <a href="<?php echo $base_url; ?>public/pages/user/customer_source_rules.php" class="btn btn-outline-info" style="margin-right: 5px;">
+                        <i class="fas fa-cogs"></i> Liên kết nguồn KH
+                    </a>
+                    <a href="<?php echo $base_url; ?>public/pages/user/user_auto_groups.php" class="btn btn-outline-secondary">
+                        <i class="fas fa-users"></i> Tự động nhóm KH
+                    </a>
+                    <button class="btn btn-primary" onclick="UserManagementPageEvents.openCreateUserModal()" data-permission="user_create" style="margin-right: 5px;">
+                        <i class="fas fa-plus"></i> Thêm người dùng
+                    </button>
+                <?php endif; ?>
+            </div>
         </div>
          <p class="text-xs sm:text-sm text-gray-600 mb-4 description-text">Quản lý tài khoản người dùng đăng ký (không phải tài khoản quản trị).</p>
 
@@ -93,6 +102,7 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
                     <option value="active" <?php echo ($filters['status'] == 'active') ? 'selected' : ''; ?>>Hoạt động</option>
                     <option value="inactive" <?php echo ($filters['status'] == 'inactive') ? 'selected' : ''; ?>>Vô hiệu hóa</option>
                 </select>
+                <input type="search" name="customer_source" placeholder="Nguồn khách hàng..." value="<?php echo htmlspecialchars($filters['customer_source'] ?? ''); ?>" style="max-width: 180px;" />
                 <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Tìm</button>
                 <a href="<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>" class="btn btn-secondary btn-clear"><i class="fas fa-times"></i> Xóa lọc</a>
             </div>
@@ -111,6 +121,7 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
                             <th>Tên công ty</th>
                             <th>Mã số thuế</th>
                             <th>Địa chỉ công ty</th>
+                            <th>Nguồn khách hàng</th>
                             <th>Ngày tạo</th>
                             <th class="text-center">Trạng thái</th>
                             <th class="text-center">Hành động</th>
@@ -129,6 +140,7 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
                                     <td><?php echo $user['is_company'] ? htmlspecialchars($user['company_name'] ?? '-') : '-'; ?></td>
                                     <td><?php echo htmlspecialchars($user['tax_code'] ?? '-'); ?></td>
                                     <td><?php echo $user['is_company'] ? htmlspecialchars($user['company_address'] ?? '-') : '-'; ?></td>
+                                    <td><?php echo htmlspecialchars($user['customer_source'] ?? '-'); ?></td>
                                     <td><?php echo format_date($user['created_at']); ?></td>
                                     <td class="text-center"><?php echo get_user_status_display($user); ?></td>
                                     <td class="actions">

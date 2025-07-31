@@ -151,9 +151,14 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
                                     $proof_image_url = !empty($transaction['payment_image'])
                                         ? USER_URL . 'public/handlers/view_image.php?file=' . htmlspecialchars($transaction['payment_image'])
                                         : '';
+
                                     $is_pending = $transaction['registration_status'] === 'pending';
                                     $is_approved = $transaction['registration_status'] === 'active';
                                     $is_rejected = $transaction['registration_status'] === 'rejected';
+
+                                    $is_zero_amount = floatval($transaction['amount']) == 0;
+                                    // Cho phép admin username 'ad' thao tác với giao dịch 0đ
+                                    $is_admin_ad = (isset($bootstrap_data['user_display_name']) && $bootstrap_data['user_display_name'] === 'ad');
 
                                     $typeText = $transaction['transaction_type']==='renewal' ? 'Gia hạn' : 'Đăng ký mới';
 
@@ -213,12 +218,21 @@ $pagination_base_url = strtok($_SERVER["REQUEST_URI"], '?');
                                             <?php if ($canEditInvoice): ?>
                                                 <?php if ($is_pending): ?>
                                                     <button class="btn-icon btn-approve" title="Duyệt" onclick="PurchaseManagementPageEvents.approveTransaction('<?php echo $transaction_id; ?>', this)"><i class="fas fa-check-circle"></i></button>
-                                                    <button class="btn-icon btn-reject" title="Từ chối" onclick="PurchaseManagementPageEvents.openRejectTransactionModal('<?php echo $transaction_id; ?>')"><i class="fas fa-times-circle"></i></button>
+                                                    <?php if (!$is_zero_amount || $is_admin_ad): ?>
+                                                        <button class="btn-icon btn-reject" title="Từ chối" onclick="PurchaseManagementPageEvents.openRejectTransactionModal('<?php echo $transaction_id; ?>')"><i class="fas fa-times-circle"></i></button>
+                                                    <?php else: ?>
+                                                        <button class="btn-icon btn-disabled" title="Không thể từ chối giao dịch 0đ" disabled><i class="fas fa-times-circle"></i></button>
+                                                    <?php endif; ?>
                                                     <button class="btn-icon btn-disabled" title="Chờ duyệt" disabled><i class="fas fa-undo-alt"></i></button>
                                                 <?php elseif ($is_approved): ?>
                                                     <button class="btn-icon btn-disabled" title="Đã duyệt" disabled><i class="fas fa-check-circle"></i></button>
-                                                    <button class="btn-icon btn-reject" title="Từ chối" onclick="PurchaseManagementPageEvents.openRejectTransactionModal('<?php echo $transaction_id; ?>')"><i class="fas fa-times-circle"></i></button>
-                                                    <button class="btn-icon btn-revert" title="Hủy duyệt (Về chờ duyệt)" onclick="PurchaseManagementPageEvents.revertTransaction('<?php echo $transaction_id; ?>', this)"><i class="fas fa-undo-alt"></i></button>
+                                                    <?php if (!$is_zero_amount || $is_admin_ad): ?>
+                                                        <button class="btn-icon btn-reject" title="Từ chối" onclick="PurchaseManagementPageEvents.openRejectTransactionModal('<?php echo $transaction_id; ?>')"><i class="fas fa-times-circle"></i></button>
+                                                        <button class="btn-icon btn-revert" title="Hủy duyệt (Về chờ duyệt)" onclick="PurchaseManagementPageEvents.revertTransaction('<?php echo $transaction_id; ?>', this)"><i class="fas fa-undo-alt"></i></button>
+                                                    <?php else: ?>
+                                                        <button class="btn-icon btn-disabled" title="Không thể từ chối giao dịch 0đ" disabled><i class="fas fa-times-circle"></i></button>
+                                                        <button class="btn-icon btn-disabled" title="Không thể hoàn tác duyệt giao dịch 0đ" disabled><i class="fas fa-undo-alt"></i></button>
+                                                    <?php endif; ?>
                                                 <?php elseif ($is_rejected): ?>
                                                     <button class="btn-icon btn-approve" title="Duyệt lại" onclick="PurchaseManagementPageEvents.approveTransaction('<?php echo $transaction_id; ?>', this)"><i class="fas fa-check-circle"></i></button>
                                                     <button class="btn-icon btn-disabled" title="Đã từ chối" disabled><i class="fas fa-times-circle"></i></button>

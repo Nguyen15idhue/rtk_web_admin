@@ -11,7 +11,7 @@ class UserModel {
     // Lấy chi tiết user theo ID
     public function getOne(int $id) {
         $sql = "SELECT id, username, email, phone, is_company, company_name, tax_code, company_address,
-                       created_at, updated_at, deleted_at
+                       customer_source, created_at, updated_at, deleted_at
                 FROM user WHERE id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$id]);
@@ -22,7 +22,7 @@ class UserModel {
     public function fetchPaginated(array $filters = [], int $page = 1, int $perPage = 10): array {
         // build base clauses
         $baseSelect = "SELECT id, username, email, phone, is_company, company_name, tax_code, company_address,
-                              created_at, updated_at, deleted_at";
+                              customer_source, created_at, updated_at, deleted_at";
         $baseFrom  = " FROM user";
         $baseWhere = " WHERE 1=1";
 
@@ -30,9 +30,9 @@ class UserModel {
         $params = [];
         if (!empty($filters['q'])) {
             $term = '%'.trim($filters['q']).'%';
-            $baseWhere .= " AND (email LIKE ? OR username LIKE ? OR company_name LIKE ? OR phone LIKE ? OR tax_code LIKE ? OR company_address LIKE ?)";
+            $baseWhere .= " AND (email LIKE ? OR username LIKE ? OR company_name LIKE ? OR phone LIKE ? OR tax_code LIKE ? OR company_address LIKE ? OR customer_source LIKE ?)";
             // same term for each placeholder
-            for ($i = 0; $i < 6; $i++) {
+            for ($i = 0; $i < 7; $i++) {
                 $params[] = $term;
             }
         }
@@ -40,6 +40,11 @@ class UserModel {
             $baseWhere .= $filters['status'] === 'inactive'
                         ? " AND deleted_at IS NOT NULL"
                         : " AND deleted_at IS NULL";
+        }
+        // NEW: filter by customer_source if provided (exact or partial match)
+        if (isset($filters['customer_source']) && $filters['customer_source'] !== '') {
+            $baseWhere .= " AND customer_source LIKE ?";
+            $params[] = '%' . trim($filters['customer_source']) . '%';
         }
 
         // count total
@@ -76,14 +81,14 @@ class UserModel {
     // Tạo user mới
     public function create(array $data) {
         $sql = "INSERT INTO user
-                (username,email,password,phone,is_company,company_name,tax_code,company_address,created_at)
-                VALUES(?,?,?,?,?,?,?,?,NOW())";
+                (username,email,password,phone,is_company,company_name,tax_code,company_address,customer_source,created_at)
+                VALUES(?,?,?,?,?,?,?,?,?,NOW())";
         $stmt = $this->db->prepare($sql);
         $ok = $stmt->execute([
             $data['username'], $data['email'], $data['password'],
             $data['phone'] ?? null, (int)$data['is_company'],
             $data['company_name'] ?? null, $data['tax_code'] ?? null,
-            $data['company_address'] ?? null
+            $data['company_address'] ?? null, $data['customer_source'] ?? null
         ]);
         return $ok ? $this->db->lastInsertId() : false;
     }
@@ -92,7 +97,7 @@ class UserModel {
     public function update(int $id, array $data): bool {
         $sql = "UPDATE user SET
                     username=:u, email=:e, phone=:p,
-                    is_company=:c, company_name=:n, tax_code=:t, company_address=:ca,
+                    is_company=:c, company_name=:n, tax_code=:t, company_address=:ca, customer_source=:cs,
                     updated_at=NOW()
                 WHERE id=:id";
         $stmt = $this->db->prepare($sql);
@@ -105,6 +110,7 @@ class UserModel {
         $stmt->bindParam(':n',$data['company_name']);
         $stmt->bindParam(':t',$data['tax_code']);
         $stmt->bindParam(':ca',$data['company_address']);
+        $stmt->bindParam(':cs',$data['customer_source']);
         $stmt->bindParam(':id',$id,PDO::PARAM_INT);
         return $stmt->execute();
     }
@@ -174,7 +180,7 @@ class UserModel {
     public function getAllDataForExport(): array {
         $sql = "SELECT id, username, email, phone, 
                        CASE WHEN is_company = 1 THEN 'Công ty' ELSE 'Cá nhân' END as account_type, 
-                       company_name, tax_code, company_address, created_at 
+                       company_name, tax_code, company_address, customer_source, created_at 
                 FROM user 
                 WHERE deleted_at IS NULL 
                 ORDER BY created_at DESC";
@@ -199,7 +205,7 @@ class UserModel {
 
         $sql = "SELECT id, username, email, phone, 
                        CASE WHEN is_company = 1 THEN 'Công ty' ELSE 'Cá nhân' END as account_type, 
-                       company_name, tax_code, company_address, created_at 
+                       company_name, tax_code, company_address, customer_source, created_at 
                 FROM user 
                 WHERE id IN ($placeholders) AND deleted_at IS NULL 
                 ORDER BY created_at DESC";

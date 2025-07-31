@@ -187,8 +187,14 @@ include $private_layouts_path . 'admin_sidebar.php';
             baseUrl: '<?php echo rtrim($base_url, '/'); ?>'
         };
     </script>
-    <script src="<?php echo $base_url; ?>public/assets/js/pages/purchase/revenue_management.js"></script>
     <link rel="stylesheet" href="<?php echo $base_url; ?>public/assets/css/pages/purchase/revenue_management.css">
+
+<?php 
+// Cache-bust revenue_management.js by appending filemtime as version parameter
+$rmJsPath = __DIR__ . '/../../assets/js/pages/purchase/revenue_management.js';
+$rmJsVer = file_exists($rmJsPath) ? filemtime($rmJsPath) : time();
+?>
+<script src="<?php echo $base_url; ?>public/assets/js/pages/purchase/revenue_management.js?ver=<?php echo $rmJsVer; ?>"></script>
 
 <?php 
 // admin_footer.php is assumed to close </body> and </html>
