@@ -1,0 +1,12 @@
+[01-Aug-2025 09:43:09 UTC] Critical [create_guide.php:113]: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'thu-lan-2' for key 'guide.uq_slug'
+Stack trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\GuideModel.php(113): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\guide\create_guide.php(27): GuideModel->create(Array)
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\guide\index.php(28): require_once('E:\\Application\\...')
+#3 {main}
+[01-Aug-2025 09:43:18 UTC] Critical [create_guide.php:113]: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'thu-lan-2' for key 'guide.uq_slug'
+Stack trace:
+#0 E:\Application\laragon\www\rtk_web_admin\private\classes\GuideModel.php(113): PDOStatement->execute(Array)
+#1 E:\Application\laragon\www\rtk_web_admin\private\actions\guide\create_guide.php(27): GuideModel->create(Array)
+#2 E:\Application\laragon\www\rtk_web_admin\public\handlers\guide\index.php(28): require_once('E:\\Application\\...')
+#3 {main}

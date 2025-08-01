@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../core/page_bootstrap.php';
 // Load Cloudinary service for file uploads
 require_once __DIR__ . '/../../services/CloudinaryService.php';
+require_once __DIR__ . '/../../services/ContentImageProcessor.php';
 Auth::ensureAuthorized('guide_management_edit');
 
 header('Content-Type: application/json');
@@ -19,6 +20,11 @@ try {
         // giữ ảnh cũ
         $_POST['thumbnail'] = $_POST['existing_thumbnail'] ?? '';
         unset($_POST['existing_thumbnail']);
+    }
+
+    // process content images: upload local images to Cloudinary and replace src
+    if (!empty($_POST['content'])) {
+        $_POST['content'] = ContentImageProcessor::process($_POST['content']);
     }
 
     $model = new GuideModel();
