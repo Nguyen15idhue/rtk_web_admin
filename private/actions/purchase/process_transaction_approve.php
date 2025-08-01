@@ -2,10 +2,13 @@
 declare(strict_types=1);
 header('Content-Type: application/json');
 
+
 $bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
-Auth::ensureAuthorized('invoice_management_edit');
+if (!defined('IS_CRON')) {
+    Auth::ensureAuthorized('invoice_management_edit');
+}
 
 // Capture logged-in admin ID
 $sessionAdminId = $_SESSION['admin_id'] ?? null;
