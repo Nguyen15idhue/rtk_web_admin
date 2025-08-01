@@ -2,8 +2,7 @@
 declare(strict_types=1);
 header('Content-Type: application/json');
 
-// --- Centralized session start + validation + idle‐timeout + multi‐device ---
-$bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
+$bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
 Auth::ensureAuthorized('invoice_management_edit');

@@ -15,10 +15,15 @@ $userModel = new UserModel();
 
 $pdo = Database::getInstance()->getConnection();
 
-// Đọc rule từ file cấu hình
-$rules_file = __DIR__ . '/customer_source_rules.json';
-$rules = file_exists($rules_file) ? json_decode(file_get_contents($rules_file), true) : [];
-if (!is_array($rules)) $rules = [];
+
+// Đọc rule từ bảng customer_source_rules trong DB
+require_once BASE_PATH . '/classes/Database.php';
+$rules = [];
+$db = Database::getInstance()->getConnection();
+$stmt = $db->query('SELECT voucher, `group` FROM customer_source_rules');
+if ($stmt) {
+    $rules = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
 // Lấy tất cả user từng dùng voucher khớp rule
@@ -30,17 +35,22 @@ ORDER BY u.id ASC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $all_users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Gom user theo id, lấy voucher cuối cùng khớp rule (nếu user dùng nhiều voucher khớp rule)
 $users = [];
 foreach ($all_users as $user) {
     $voucher = $user['voucher'] ?? '';
     foreach ($rules as $rule) {
         if (isset($rule['voucher']) && $rule['voucher'] !== '' && $voucher === $rule['voucher']) {
-            $user['target_group'] = $rule['group'];
-            $users[] = $user;
+            $uid = $user['id'];
+            // Luôn ghi đè, để lấy dòng cuối cùng (voucher mới nhất khớp rule)
+            $users[$uid] = $user;
+            $users[$uid]['target_group'] = $rule['group'];
             break;
         }
     }
 }
+$users = array_values($users); // Đảm bảo $users là mảng tuần tự cho foreach ở view
 
 include $private_layouts_path . 'admin_header.php';
 include $private_layouts_path . 'admin_sidebar.php';
@@ -49,11 +59,9 @@ include $private_layouts_path . 'admin_sidebar.php';
     <div class="content-section">
         <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
             <h3 style="margin-bottom: 0;">Nhóm tự động theo voucher đã sử dụng</h3>
-            <form method="post" style="margin-bottom: 0;">
-                <button type="submit" name="update_customer_source" class="btn btn-primary">Cập nhật trường Nguồn khách hàng tự động</button>
-            </form>
         </div>
         <form method="post">
+            <button type="submit" name="update_customer_source" class="btn btn-primary" style="margin-bottom: 12px;">Cập nhật trường Nguồn khách hàng tự động</button>
             <table class="table table-bordered" style="margin-top: 12px;">
                 <thead>
                     <tr>

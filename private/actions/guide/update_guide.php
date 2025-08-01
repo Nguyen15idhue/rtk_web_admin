@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../../core/page_bootstrap.php';
+// Load Cloudinary service for file uploads
+require_once __DIR__ . '/../../services/CloudinaryService.php';
 Auth::ensureAuthorized('guide_management_edit');
 
 header('Content-Type: application/json');
@@ -9,14 +11,10 @@ try {
         abort('Guide ID is required', 400);
     }
 
-    // file upload?
+    // file upload via Cloudinary
     if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] === UPLOAD_ERR_OK) {
-        $up = UPLOADS_PATH . 'guide/';
-        if (!is_dir($up)) mkdir($up, 0755, true);
-        $ext = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
-        $fname = uniqid('guide-') . '.' . $ext;
-        move_uploaded_file($_FILES['thumbnail']['tmp_name'], $up . $fname);
-        $_POST['thumbnail'] = $fname;
+        $result = CloudinaryService::uploadRaw($_FILES['thumbnail']['tmp_name'], ['folder' => 'rtk_web_admin/guide']);
+        $_POST['thumbnail'] = $result['secure_url'] ?? '';
     } else {
         // giữ ảnh cũ
         $_POST['thumbnail'] = $_POST['existing_thumbnail'] ?? '';

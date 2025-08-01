@@ -44,7 +44,7 @@ function renderInvoiceActions($invoice, $isEditAllowed) {
 function renderPDFViewer($invoice, $pdfBaseUrl) {
     if ($invoice['invoice_file']): ?>
         <button class="btn-link" 
-                onclick="openPDFModal('<?php echo $pdfBaseUrl . $invoice['invoice_file']; ?>', '<?php echo $invoice['invoice_id']; ?>')">
+                onclick="openPDFModal('<?php echo $invoice['invoice_file']; ?>', '<?php echo $invoice['invoice_id']; ?>')">
             <i class="fas fa-eye"></i> Xem PDF
         </button>
     <?php else: ?>

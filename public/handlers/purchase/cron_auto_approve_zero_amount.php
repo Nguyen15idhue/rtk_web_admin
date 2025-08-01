@@ -5,6 +5,12 @@
 require_once dirname(__DIR__, 3) . '/private/config/constants.php';
 require_once dirname(__DIR__, 3) . '/private/utils/functions.php';
 
+// Simulate authenticated admin for cron-based approvals
+// Ensure admin ID exists and has permission 'invoice_management_edit'
+$_SESSION['admin_id'] = 1;
+$_SESSION['admin_role'] = 'superadmin';
+$_SESSION['admin_permissions'] = ['invoice_management_edit'];
+
 // Bootstrap DB and Auth (no session needed for cron)
 $bootstrap = require_once dirname(__DIR__, 3) . '/private/core/page_bootstrap.php';
 $db = $bootstrap['db'];

@@ -35,19 +35,15 @@ if (mime_content_type($file['tmp_name']) !== 'application/pdf') {
     abort('Invalid file type.', 400);
 }
 
-$uploadDir = UPLOADS_PATH . 'invoice/';
-if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0755, true);
-}
-$fileName = time() . '_' . basename($file['name']);
-$target   = $uploadDir . $fileName;
-
-// Log the target path so you can verify exactly where the PDF lands
-error_log("Invoice file will be stored at: " . $target);
-
-if (!move_uploaded_file($file['tmp_name'], $target)) {
-    abort('Failed to move uploaded file.', 500);
-}
+require_once __DIR__ . '/../../services/CloudinaryService.php';
+// Upload PDF invoice to Cloudinary
+    $result = CloudinaryService::uploadRaw($file['tmp_name'], [
+        'folder' => 'rtk_web_admin/invoice'
+    ]);
+    $fileName = $result['secure_url'] ?? '';
+    if (empty($fileName)) {
+        abort('Failed to upload file to cloud storage.', 500);
+    }
 
 try {
     $model = new InvoiceModel();
