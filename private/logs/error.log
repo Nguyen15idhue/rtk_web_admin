@@ -10,3 +10,65 @@ Stack trace:
 #1 E:\Application\laragon\www\rtk_web_admin\private\actions\guide\create_guide.php(27): GuideModel->create(Array)
 #2 E:\Application\laragon\www\rtk_web_admin\public\handlers\guide\index.php(28): require_once('E:\\Application\\...')
 #3 {main}
+[02-Aug-2025 02:21:00 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 69 records
+[02-Aug-2025 02:21:00 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 69 mountpoints (expected: 69)
+[02-Aug-2025 02:21:05 UTC] Fetched 43 stations from RTK API
+[02-Aug-2025 02:21:05 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 69 records
+[02-Aug-2025 02:21:05 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 69 mountpoints (expected: 69)
+[02-Aug-2025 02:21:21 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 69 records
+[02-Aug-2025 02:21:21 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 69 mountpoints (expected: 69)
+[02-Aug-2025 02:22:15 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 69 records
+[02-Aug-2025 02:22:15 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 69 mountpoints (expected: 69)
+[02-Aug-2025 02:23:46 UTC] Fetched 43 stations from RTK API
+[02-Aug-2025 02:23:46 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 69 records
+[02-Aug-2025 02:23:46 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 69 mountpoints (expected: 69)
+[02-Aug-2025 02:31:25 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 69 records
+[02-Aug-2025 02:31:25 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 69 mountpoints (expected: 69)
+[02-Aug-2025 02:31:26 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 69 records
+[02-Aug-2025 02:31:26 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 69 mountpoints (expected: 69)
+[02-Aug-2025 02:31:30 UTC] Fetched 43 stations from RTK API
+[02-Aug-2025 02:31:30 UTC] StationModel::applyCoordinateOffset - Original: (10.426359919444, 105.00377233333) -> Offset: (10.411422305525, 104.99352762819) - Distance: ~2km, Angle: 236°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.311513981944, 106.38641893861) -> Offset: (21.299225723205, 106.40056372885) - Distance: ~2km, Angle: 317°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (11.309630038889, 108.78121213611) -> Offset: (11.297809155484, 108.76734447912) - Distance: ~2km, Angle: 221°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (8.9288676861111, 105.05431737778) -> Offset: (8.9235997274675, 105.0717594609) - Distance: ~2km, Angle: 343°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (10.0675, 105.66691666667) -> Offset: (10.071246156591, 105.64901677186) - Distance: ~2km, Angle: 168°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (10.048442302778, 105.78338580278) -> Offset: (10.033865419996, 105.77263009119) - Distance: ~2km, Angle: 234°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (10.466130966667, 105.64679365833) -> Offset: (10.478647333702, 105.65997402469) - Distance: ~2km, Angle: 44°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.137513401111, 106.42735374167) -> Offset: (21.129333392107, 106.41014148896) - Distance: ~2km, Angle: 207°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (20.873108210556, 106.27970494694) -> Offset: (20.881567157633, 106.29673132288) - Distance: ~2km, Angle: 28°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.020093481111, 105.800743135) -> Offset: (21.036914750057, 105.80766053575) - Distance: ~2km, Angle: 69°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (20.926164394722, 105.60029841528) -> Offset: (20.927107384925, 105.61956236181) - Distance: ~2km, Angle: 3°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.251, 105.85313888889) -> Offset: (21.237401629185, 105.8404555586) - Distance: ~2km, Angle: 229°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (20.830434236111, 106.67063354194) -> Offset: (20.843395313595, 106.68402523103) - Distance: ~2km, Angle: 46°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (20.719294399444, 106.46120752167) -> Offset: (20.705096007488, 106.4493474728) - Distance: ~2km, Angle: 232°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (20.867606863889, 106.61829600556) -> Offset: (20.871660036039, 106.59950736642) - Distance: ~2km, Angle: 167°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (20.828243766944, 106.08992895278) -> Offset: (20.811658093909, 106.09746139448) - Distance: ~2km, Angle: 293°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (9.9096388888889, 105.31433333333) -> Offset: (9.8917551744449, 105.31656243468) - Distance: ~2km, Angle: 277°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (10.2289846, 103.9463279) -> Offset: (10.246388668942, 103.95106662398) - Distance: ~2km, Angle: 75°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (10.0352413, 103.9792824) -> Offset: (10.032733676559, 103.96116251157) - Distance: ~2km, Angle: 188°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (18.954837730556, 105.45334151111) -> Offset: (18.949269856783, 105.43522287277) - Distance: ~2km, Angle: 198°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (20.444342780833, 106.21418920056) -> Offset: (20.43116523666, 106.20107489729) - Distance: ~2km, Angle: 227°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.02008148, 105.80072191972) -> Offset: (21.011346171527, 105.81760427356) - Distance: ~2km, Angle: 331°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.3060385, 105.5510816) -> Offset: (21.288020481982, 105.5510816) - Distance: ~2km, Angle: 270°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (13.065368873889, 109.33150530778) -> Offset: (13.068187512899, 109.34977443084) - Distance: ~2km, Angle: 9°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (20.949454771111, 107.10727566861) -> Offset: (20.945401598961, 107.08847677295) - Distance: ~2km, Angle: 193°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.322037347222, 103.91525562222) -> Offset: (21.331317312536, 103.93183490614) - Distance: ~2km, Angle: 31°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (20.846816924722, 104.63940302917) -> Offset: (20.848387298465, 104.62019620425) - Distance: ~2km, Angle: 175°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (19.874534013889, 105.46313930778) -> Offset: (19.882148757344, 105.44577522094) - Distance: ~2km, Angle: 155°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.573653528333, 105.84029195722) -> Offset: (21.58956249397, 105.8493881307) - Distance: ~2km, Angle: 62°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.75413356, 106.07747531917) -> Offset: (21.736126518072, 106.07679828278) - Distance: ~2km, Angle: 268°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.634406608333, 105.63585588111) -> Offset: (21.651442979065, 105.6295452365) - Distance: ~2km, Angle: 109°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.416232244167, 105.86204897917) -> Offset: (21.43099174046, 105.87315020248) - Distance: ~2km, Angle: 55°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.9111472775, 105.64930905389) -> Offset: (21.92343553624, 105.63510549687) - Distance: ~2km, Angle: 137°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.784987, 105.2189131) -> Offset: (21.785929990203, 105.19953591675) - Distance: ~2km, Angle: 177°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (9.9743534611111, 106.35228861389) -> Offset: (9.9709154611944, 106.37024702468) - Distance: ~2km, Angle: 349°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (10.255964786111, 105.96190087778) -> Offset: (10.272425064627, 105.95445329336) - Distance: ~2km, Angle: 114°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.711390815556, 104.90687266111) -> Offset: (21.696110669679, 104.917149828) - Distance: ~2km, Angle: 302°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.850058284167, 104.70566167917) -> Offset: (21.866388154203, 104.7138657982) - Distance: ~2km, Angle: 65°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.601562853611, 104.51197793389) -> Offset: (21.594234265448, 104.52968160412) - Distance: ~2km, Angle: 336°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (22.111581580556, 104.76650895083) -> Offset: (22.094025363172, 104.76213401324) - Distance: ~2km, Angle: 257°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.465988547778, 104.38109117944) -> Offset: (21.476832061708, 104.39655355683) - Distance: ~2km, Angle: 37°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.969788939722, 104.56571339778) -> Offset: (21.975655032595, 104.5840838045) - Distance: ~2km, Angle: 19°
+[02-Aug-2025 02:31:31 UTC] StationModel::applyCoordinateOffset - Original: (21.8497853, 104.08575841194) -> Offset: (21.856242380172, 104.06763522369) - Distance: ~2km, Angle: 159°
+[02-Aug-2025 02:31:31 UTC] StationModel::fetchAllMountpointsFromAPI - Completed: Got all 69 records
+[02-Aug-2025 02:31:31 UTC] StationModel::fetchAllMountpointsFromAPI - Final result: 69 mountpoints (expected: 69)

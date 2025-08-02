@@ -11,6 +11,7 @@
 # Ignore log files
 /private/logs/*.log
 !/private/logs/.gitkeep
+/public/uploads
 
 # Ignore Composer lock file if you prefer to generate it on each environment
 # composer.lock

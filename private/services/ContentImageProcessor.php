@@ -29,6 +29,7 @@ class ContentImageProcessor
                 // Resolve local filesystem path
                 $basePublic = realpath(__DIR__ . '/..') . '/../public/';
                 $localPath = realpath($basePublic . ltrim($src, '/\.'));
+                error_log('[ContentImageProcessor] src=' . $src . ' | basePublic=' . $basePublic . ' | localPath=' . $localPath);
                 if ($localPath && file_exists($localPath)) {
                     try {
                         $uploadResult = CloudinaryService::uploadRaw(
@@ -41,6 +42,8 @@ class ContentImageProcessor
                     } catch (Exception $e) {
                         error_log('Cloudinary upload error for content image: ' . $e->getMessage());
                     }
+                } else {
+                    error_log('[ContentImageProcessor] File not found: ' . $localPath . ' for src=' . $src);
                 }
             }
         }
