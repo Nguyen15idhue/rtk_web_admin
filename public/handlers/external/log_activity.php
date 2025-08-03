@@ -35,7 +35,7 @@ require_once __DIR__ . '/../../../private/classes/ActivityLogModel.php';
 require_once __DIR__ . '/../../../private/utils/dashboard_helpers.php'; // For format_activity_log()
 
 // Actions that trigger notifications
-$notifyActions = ['purchase', 'create_support_request', 'request_invoice', 'renewal_request', 'withdrawal_request'];
+$notifyActions = ['purchase', 'create_support_request', 'request_invoice', 'renewal_request', 'withdrawal_request', 'approve_transaction', 'reject_transaction', 'revert_transaction'];
 
 // Prepare statement to fetch relevant activity logs
 // Assumes 'activity_logs.created_at' stores timestamps in the local timezone (e.g., $database_timezone_str)
@@ -92,6 +92,35 @@ if (!empty($userIds)) {
     }
 }
 
+
+// Prefetch voucher codes for all registration_ids in purchase/renewal_request logs
+$registration_ids_for_vouchers = [];
+foreach ($activities as $activity) {
+    if (in_array($activity['action'], ['purchase', 'renewal_request'])) {
+        $details = json_decode($activity['new_values'] ?? '', true);
+        if (!empty($details['registration_id'])) {
+            $registration_ids_for_vouchers[] = $details['registration_id'];
+        }
+    }
+}
+$voucher_details_map = [];
+if (!empty($registration_ids_for_vouchers)) {
+    $placeholders = implode(',', array_fill(0, count($registration_ids_for_vouchers), '?'));
+    $sql_vouchers = "
+        SELECT th.registration_id, v.code 
+        FROM transaction_history th
+        JOIN voucher v ON th.voucher_id = v.id
+        WHERE th.registration_id IN ({$placeholders})
+          AND th.voucher_id IS NOT NULL
+    ";
+    $stmt_vouchers = $db->prepare($sql_vouchers);
+    $stmt_vouchers->execute($registration_ids_for_vouchers);
+    $voucher_rows = $stmt_vouchers->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($voucher_rows as $row) {
+        $voucher_details_map[$row['registration_id']] = htmlspecialchars($row['code']);
+    }
+}
+
 $notificationsSent = 0;
 $notificationsFailed = 0;
 
@@ -125,8 +154,8 @@ foreach ($activities as $activity) {
         'created_at'  => $activity['created_at'],     // Use the actual creation time from the log
     ];
 
-    // Format the message using the existing helper function
-    $formattedLog = format_activity_log($logDetails); // Assuming this function is robust
+    // Format the message using the existing helper function, now with voucher_details_map
+    $formattedLog = format_activity_log($logDetails, $voucher_details_map);
 
     if (isset($formattedLog['message']) && !empty(trim($formattedLog['message']))) {
         // Convert HTML to Discord markdown: strip <span>, convert <strong> to **bold**, then remove other tags

@@ -2,11 +2,13 @@
 declare(strict_types=1);
 header('Content-Type: application/json');
 
-// --- Centralized session start + validation + idle‐timeout + multi‐device ---
-$bootstrap = require_once __DIR__ . '/../../core/page_bootstrap.php';
+
+$bootstrap = require __DIR__ . '/../../core/page_bootstrap.php';
 $db        = $bootstrap['db'];
 
-Auth::ensureAuthorized('invoice_management_edit');
+if (!defined('IS_CRON')) {
+    Auth::ensureAuthorized('invoice_management_edit');
+}
 
 // Capture logged-in admin ID
 $sessionAdminId = $_SESSION['admin_id'] ?? null;
@@ -367,13 +369,14 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
 ]);
 curl_setopt($ch, CURLOPT_POSTFIELDS,     json_encode($payload));
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);  
-curl_setopt($ch, CURLOPT_TIMEOUT,        5);  
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8);  
+curl_setopt($ch, CURLOPT_TIMEOUT,        8);  
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 if (isset($_COOKIE[session_name()])) {
     curl_setopt($ch, CURLOPT_COOKIE, session_name() . '=' . $_COOKIE[session_name()]);
 }
+
 
 $result    = curl_exec($ch);
 $httpCode  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -382,12 +385,11 @@ curl_close($ch);
 
 // xử lý kết quả
 if ($curlErrno === CURLE_OPERATION_TIMEDOUT) {
-    // timeout → log và coi như đã gửi, không throw
     error_log("[PTA] create_account timed out (could be pending), transaction {$transaction_id}");
-    $createdAccounts = [];
+    api_error('Tạo tài khoản thất bại: Kết nối tới máy chủ quá lâu (timeout). Vui lòng thử lại.', 500);
 } elseif ($curlErrno || $httpCode !== 200) {
     error_log("[PTA] create_account failed (HTTP {$httpCode}, cURL err {$curlErrno})");
-    $createdAccounts = [];
+    api_error('Tạo tài khoản thất bại: Lỗi kết nối hoặc máy chủ trả về lỗi. Vui lòng thử lại.', 500);
 } else {
     $resData = json_decode($result, true);
     if (!empty($resData['accounts'])) {
@@ -396,7 +398,6 @@ if ($curlErrno === CURLE_OPERATION_TIMEDOUT) {
         $createdAccounts = [ $resData['account'] ];
     } else {
         error_log("[PTA] Warning: create_account returned no data. Resp={$result}");
-        $createdAccounts = [];
     }
 }
 

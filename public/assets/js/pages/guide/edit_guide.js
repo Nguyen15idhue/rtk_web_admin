@@ -1355,7 +1355,12 @@
                 
                 // Update thumbnail preview
                 if (d.thumbnail) {
-                    currentThumbnailUrl = basePath + '/public/uploads/guide/' + d.thumbnail;
+                    // Nếu là link Cloudinary thì dùng trực tiếp, nếu là tên file cũ thì ghép đường dẫn cũ
+                    if (d.thumbnail.startsWith('http')) {
+                        currentThumbnailUrl = d.thumbnail;
+                    } else {
+                        currentThumbnailUrl = basePath + '/public/uploads/guide/' + d.thumbnail;
+                    }
                     updateThumbnailPreview(currentThumbnailUrl);
                 }
                 

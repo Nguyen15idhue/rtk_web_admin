@@ -1,18 +1,22 @@
 <?php
 require_once __DIR__ . '/../../core/page_bootstrap.php';
+// Load Cloudinary service for file uploads
+require_once __DIR__ . '/../../services/CloudinaryService.php';
+require_once __DIR__ . '/../../services/ContentImageProcessor.php';
 header('Content-Type: application/json');
 
 Auth::ensureAuthorized('guide_management_edit');
 
 try {
-    // handle file upload
+    // handle file upload via Cloudinary
     if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] === UPLOAD_ERR_OK) {
-        $up = UPLOADS_PATH . 'guide/';
-        if (!is_dir($up)) mkdir($up, 0755, true);
-        $ext = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
-        $fname = uniqid('guide-') . '.' . $ext;
-        move_uploaded_file($_FILES['thumbnail']['tmp_name'], $up . $fname);
-        $_POST['thumbnail'] = $fname;
+        $result = CloudinaryService::uploadRaw($_FILES['thumbnail']['tmp_name'], ['folder' => 'rtk_web_admin/guide']);
+        $_POST['thumbnail'] = $result['secure_url'] ?? '';
+    }
+
+    // process content images via shared processor
+    if (!empty($_POST['content'])) {
+        $_POST['content'] = ContentImageProcessor::process($_POST['content']);
     }
 
     // prepare data

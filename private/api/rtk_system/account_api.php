@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../config/constants.php';
 require_once __DIR__ . '/../../classes/Auth.php'; // Include the Auth class
 require_once __DIR__ . '/../../classes/RtkApiClient.php'; // Include the RtkApiClient class
+require_once __DIR__ . '/../../classes/StationManager/StationModel.php'; // Include the StationModel class
 
 // Prevent PHP from outputting HTML errors directly
 error_reporting(E_ALL); // Report all errors for logging
@@ -244,6 +245,9 @@ function fetchAndUpdateStations(): void {
         $conn->query("UPDATE station SET status = -1 WHERE id IN ($ids)");
     }
 
+    // Initialize StationModel for coordinate offset if needed
+    $stationModel = new StationModel();
+
     // 4. Thêm mới trạm API chưa có trong DB
     $toInsert = array_diff($apiIds, $existingIds);
     if (!empty($toInsert)) {
@@ -260,9 +264,15 @@ function fetchAndUpdateStations(): void {
         foreach ($toInsert as $id) {
             $stationName = $map[$id]['stationName'] ?? '';
             $identName   = $map[$id]['identificationName'] ?? '';
-            $lat         = $map[$id]['lat']                ?? 0.0;
-            $lng         = $map[$id]['lng']                ?? 0.0;
-            $status      = $dyn[$id]['connectStatus']      ?? 0;
+            $originalLat = $map[$id]['lat'] ?? 0.0;
+            $originalLng = $map[$id]['lng'] ?? 0.0;
+            $status      = $dyn[$id]['connectStatus'] ?? 0;
+            
+            // Apply coordinate offset (approximately 2km)
+            $offsetCoords = $stationModel->applyCoordinateOffset($originalLat, $originalLng);
+            $lat = $offsetCoords['lat'];
+            $lng = $offsetCoords['lng'];
+            
             $stmtI->bind_param('sssddi', $id, $stationName, $identName, $lat, $lng, $status);
             $stmtI->execute();
         }
@@ -282,9 +292,15 @@ function fetchAndUpdateStations(): void {
     foreach ($apiIds as $id) {
         $stationName = $map[$id]['stationName'];
         $identName   = $map[$id]['identificationName'];
-        $lat         = $map[$id]['lat']            ?? 0.0;
-        $lng         = $map[$id]['lng']            ?? 0.0;
-        $status      = $dyn[$id]['connectStatus']  ?? 0;
+        $originalLat = $map[$id]['lat'] ?? 0.0;
+        $originalLng = $map[$id]['lng'] ?? 0.0;
+        $status      = $dyn[$id]['connectStatus'] ?? 0;
+        
+        // Apply coordinate offset (approximately 2km)
+        $offsetCoords = $stationModel->applyCoordinateOffset($originalLat, $originalLng);
+        $lat = $offsetCoords['lat'];
+        $lng = $offsetCoords['lng'];
+        
         $stmtU->bind_param('ssddis', $stationName, $identName, $lat, $lng, $status, $id);
         $stmtU->execute();
     }

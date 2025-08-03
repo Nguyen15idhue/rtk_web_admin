@@ -233,5 +233,48 @@ class StationModel {
             return [];
         }
     }
+
+    /**
+     * Apply coordinate offset to latitude and longitude (approximately 2km offset).
+     * This method adds a random offset to coordinates to shift them about 2km from original position.
+     *
+     * @param float $originalLat Original latitude
+     * @param float $originalLng Original longitude
+     * @return array Array containing offset coordinates ['lat' => float, 'lng' => float]
+     */
+    public function applyCoordinateOffset(float $originalLat, float $originalLng): array {
+        // Check if coordinate offset is enabled
+        if (!defined('ENABLE_COORDINATE_OFFSET') || !ENABLE_COORDINATE_OFFSET) {
+            return [
+                'lat' => $originalLat,
+                'lng' => $originalLng
+            ];
+        }
+        
+        // Approximate conversion: 1 degree latitude ≈ 111 km
+        // For longitude: 1 degree longitude ≈ 111 km * cos(latitude in radians)
+        
+        // Get offset distance from configuration (default to 2km)
+        $offsetDistanceKm = defined('COORDINATE_OFFSET_DISTANCE_KM') ? COORDINATE_OFFSET_DISTANCE_KM : 2.0;
+        
+        // Generate random direction (0-360 degrees)
+        $angle = mt_rand(0, 360) * (M_PI / 180); // Convert to radians
+        
+        // Calculate offset in decimal degrees
+        $latOffset = ($offsetDistanceKm / 111.0) * sin($angle);
+        $lngOffset = ($offsetDistanceKm / (111.0 * cos($originalLat * M_PI / 180))) * cos($angle);
+        
+        // Apply offset
+        $offsetLat = $originalLat + $latOffset;
+        $offsetLng = $originalLng + $lngOffset;
+        
+        // Log the offset for debugging (optional)
+        error_log("StationModel::applyCoordinateOffset - Original: ({$originalLat}, {$originalLng}) -> Offset: ({$offsetLat}, {$offsetLng}) - Distance: ~{$offsetDistanceKm}km, Angle: " . ($angle * 180 / M_PI) . "°");
+        
+        return [
+            'lat' => $offsetLat,
+            'lng' => $offsetLng
+        ];
+    }
 }
 ?>

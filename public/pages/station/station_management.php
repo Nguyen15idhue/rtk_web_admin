@@ -279,26 +279,40 @@ $canEditStation = Auth::can('station_management_edit');
                             <tr>
                                 <td><?php echo htmlspecialchars($mp['id']); ?></td>
                                 <td><?php echo htmlspecialchars($mp['name'] ?? $mp['mountpoint'] ?? ''); ?></td>
-                                <td><?php echo htmlspecialchars($mp['ip'] ?? 'N/A'); ?></td>
-                                <td><?php echo htmlspecialchars($mp['port'] ?? 'N/A'); ?></td>
+                                <td>
+                                    <form class="updateMountpointIpPortForm d-flex align-items-center" data-mountpoint-id="<?php echo htmlspecialchars($mp['id']); ?>" onsubmit="return false;">
+                                        <input type="text" name="ip" class="form-control form-control-sm mountpoint-ip-input" style="width:165px; margin-right:4px;" placeholder="rtk.taikhoandodac.vn"
+                                            value="<?php echo htmlspecialchars($dbMountpoint['ip'] ?? $mp['ip'] ?? 'rtk.taikhoandodac.vn'); ?>" <?php echo !$canEditStation ? 'disabled' : ''; ?> />
+                                        <button type="button" class="btn btn-xs btn-primary save-mountpoint-ip-btn" title="Lưu IP" <?php echo !$canEditStation ? 'disabled' : ''; ?>>Lưu</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form class="updateMountpointIpPortForm d-flex align-items-center" data-mountpoint-id="<?php echo htmlspecialchars($mp['id']); ?>" onsubmit="return false;">
+                                        <input type="number" name="port" class="form-control form-control-sm mountpoint-port-input" style="width:80px; margin-right:4px;" placeholder="1509"
+                                            value="<?php echo htmlspecialchars($dbMountpoint['port'] ?? $mp['port'] ?? '1509'); ?>" <?php echo !$canEditStation ? 'disabled' : ''; ?> />
+                                        <button type="button" class="btn btn-xs btn-primary save-mountpoint-port-btn" title="Lưu Port" <?php echo !$canEditStation ? 'disabled' : ''; ?>>Lưu</button>
+                                    </form>
+                                </td>
                                 <td>
                                     <form id="updateMountpointForm_<?php echo htmlspecialchars($mp['id']); ?>" action="<?php echo $base_url; ?>public/handlers/station/mountpoint_index.php" method="POST">
                                         <input type="hidden" name="action" value="update_mountpoint">
                                         <input type="hidden" name="mountpoint_id" value="<?php echo htmlspecialchars($mp['id']); ?>">
                                         <select name="location_id" class="form-control mountpoint-location-select" 
                                                 data-mountpoint-id="<?php echo htmlspecialchars($mp['id']); ?>"
-                                                <?php echo !$canEditStation ? 'disabled' : ''; ?>>
+                                                <?php echo !$canEditStation ? 'disabled' : ''; ?> >
                                             <option value="">-- Chưa phân bổ --</option>
                                             <?php foreach ($allLocations as $loc): 
                                                 $isSelected = $dbMountpoint && ((string)$dbMountpoint['location_id'] === (string)$loc['id']);
                                             ?>
-                                                <option value="<?php echo htmlspecialchars($loc['id'], ENT_QUOTES, 'UTF-8'); ?>" <?php echo $isSelected ? 'selected' : ''; ?>>
+                                                <option value="<?php echo htmlspecialchars($loc['id'], ENT_QUOTES, 'UTF-8'); ?>" <?php echo $isSelected ? 'selected' : ''; ?> >
                                                     <?php echo htmlspecialchars($loc['province']); ?>
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
                                     </form>
                                 </td>
+<script src="<?php echo $base_url; ?>public/assets/js/pages/station/station_management.mountpoint.js?<?php echo time(); ?>"></script>
+</script>
                             </tr>
                         <?php endforeach; endif; ?>
                     </tbody>
