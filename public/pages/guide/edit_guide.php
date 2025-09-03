@@ -220,6 +220,8 @@ $requiredAttr = $viewMode ? '' : 'required';
 
 <script>
     window.basePath = '<?php echo $basePath; ?>/';
+    // Early stub to avoid ReferenceError if any inline/other scripts touch editorState before main script executes
+    window.editorState = window.editorState || { earlyStub: true };
 </script>
-<script defer src="<?php echo $basePath; ?>/public/assets/js/pages/guide/edit_guide.js"></script>
+<script defer src="<?php echo $basePath; ?>/public/assets/js/pages/guide/edit_guide.js?v=<?php echo time(); ?>"></script>
 <?php include $private_layouts_path . 'admin_footer.php'; ?>

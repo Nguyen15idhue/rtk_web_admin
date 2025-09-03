@@ -27,6 +27,7 @@ $data = [
     'start_date' => $_POST['start_date'] ?? '',
     'end_date' => $_POST['end_date'] ?? '',
     'is_active' => isset($_POST['is_active']) ? 1 : 0,
+    'auto_approve' => isset($_POST['auto_approve']) ? 1 : 0,
 ];
 if ($data['code'] === '' || $data['voucher_type'] === '' || $data['discount_value'] === '' || $data['start_date'] === '' || $data['end_date'] === '') {
     api_error('Missing required fields', 400);

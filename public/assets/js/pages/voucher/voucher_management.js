@@ -113,6 +113,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
                     <input type="checkbox" id="isActive" name="is_active" value="1">
                     <label for="isActive">Kích hoạt</label>
                 </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" id="autoApprove" name="auto_approve" value="1">
+                    <label for="autoApprove">Tự động duyệt đơn khi áp voucher</label>
+                </div>
                 <p id="voucherFormError" class="error-message"></p>
             </form>
         `;
@@ -257,11 +261,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
             return false;
         }
         
-        if (startDate < today) {
-            showFieldError(startDateInput, 'Ngày bắt đầu không được nhỏ hơn ngày hiện tại');
-            return false;
-        }
-        
         if (endDate <= startDate) {
             showFieldError(endDateInput, 'Ngày kết thúc phải sau ngày bắt đầu');
             return false;
@@ -395,6 +394,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
                     html += `<div class="detail-row"><span class="detail-label">Gói áp dụng:</span> <span class="detail-value">${v.package_name || 'Tất cả'}</span></div>`;
                     html += `<div class="detail-row"><span class="detail-label">Thời gian:</span> <span class="detail-value">${helpers.formatDate(v.start_date)} - ${helpers.formatDate(v.end_date)}</span></div>`;
                     html += `<div class="detail-row"><span class="detail-label">Trạng thái:</span> <span class="detail-value">${v.is_active == 1 ? 'Hoạt động':'Vô hiệu hóa'}</span></div>`;
+                    html += `<div class="detail-row"><span class="detail-label">Tự động duyệt:</span> <span class="detail-value">${v.auto_approve == 1 ? 'Có':'Không'}</span></div>`;
                     genericModalBody.innerHTML = html;
                 } else {
                     genericModalBody.innerHTML = `<p class="error-message">${res.message}</p>`;
@@ -451,6 +451,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
                     document.getElementById('startDate').value = v.start_date ? v.start_date.split(' ')[0] : '';
                     document.getElementById('endDate').value = v.end_date ? v.end_date.split(' ')[0] : '';
                     document.getElementById('isActive').checked = (v.is_active == 1);
+                    document.getElementById('autoApprove').checked = (v.auto_approve == 1);
                     helpers.openModal('genericModal');
                     const voucherTypeSelect = document.getElementById('voucherType');
                     if (voucherTypeSelect) voucherTypeSelect.dispatchEvent(new Event('change'));
@@ -797,6 +798,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
         // Ensure checkbox value is 0 or 1
         fd.set('is_active', document.getElementById('isActive').checked ? '1' : '0');
+        fd.set('auto_approve', document.getElementById('autoApprove').checked ? '1' : '0');
 
         const targetAction = isEdit?'update_voucher':'create_voucher';
         postForm(`${apiBase}?action=${targetAction}`, fd)

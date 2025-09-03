@@ -15,7 +15,7 @@ require_once BASE_PATH . '/classes/Database.php';
 require_once BASE_PATH . '/utils/functions.php';
 
 // --- Enforce multi-device session validity ---
-if (isset($_SESSION['admin_id'])) {
+if (isset($_SESSION['admin_id']) && !defined('DISABLE_SESSION_VALIDATION') && !defined('IS_CRON')) {
     validateSession($_SESSION['admin_id'], session_id());
 }
 
@@ -27,7 +27,8 @@ require_once BASE_PATH . '/classes/GuideModel.php';
 
 // Enforce session idle timeout for security
 if (isset($_SESSION['last_activity']) 
-    && (time() - $_SESSION['last_activity']) > SESSION_TIMEOUT) {
+    && (time() - $_SESSION['last_activity']) > SESSION_TIMEOUT
+    && !defined('IS_CRON')) { // Allow cron to bypass idle timeout
     session_unset();
     session_destroy();
     header('Location: ' . BASE_URL . 'public/pages/auth/admin_login.php');

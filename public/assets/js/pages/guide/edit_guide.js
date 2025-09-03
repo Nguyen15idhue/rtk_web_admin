@@ -518,6 +518,8 @@
             // Restore TinyMCE content safely
             if (data.content) {
                 safeSetContent(data.content);
+                // Call resolver after a short delay to ensure content is in the DOM
+                setTimeout(resolveAllEmbeddedPdfs, 100);
             }
         }
 
@@ -862,6 +864,144 @@
                 editorState.isInitialized = true;
                 
                 if (!isViewMode) {
+                    // Helper: Detect PDF / drive links to auto-embed
+                    function isPdfLikeUrl(url) {
+                        if (!url || typeof url !== 'string') return false;
+                        const trimmed = url.trim();
+                        // 1. Direct .pdf file (ends with .pdf, optional query string)
+                        const pdfExt = /^(https?:\/\/[^\s]+\.pdf)(\?[^\s]*)?$/i;
+                        // 2. Legacy drive share pattern (keep backward compatibility)
+                        const drivePattern = /^https?:\/\/drive\.techcity\.cloud\/drive\/s\/[A-Za-z0-9]+/i;
+                        // 3. New S3 pre-signed PDF pattern (no .pdf extension, uses query param response-content-type=application%2Fpdf)
+                        const s3Host = 'techcity-drive.s3-hn-2.cloud.cmctelecom.vn';
+                        const s3BasePattern = new RegExp('^https?:\\/\\/' + s3Host.replace(/\./g, '\\.') + '\\/uploads\\/[A-Za-z0-9-]+\\/[A-Za-z0-9-]+(\\?[^\\s]*)?$', 'i');
+                        // 4. API redirect endpoint that returns 302 to a presigned PDF (we will treat as PDF-capable)
+                        const apiRedirectPattern = /^https?:\/\/drive\.techcity\.cloud\/api\/v1\/file-entries\/\d+\?[^#]*\bshareable_link=\d+/i;
+
+                        if (pdfExt.test(trimmed) || drivePattern.test(trimmed) || apiRedirectPattern.test(trimmed)) return true;
+
+                        // Fast path: host + /uploads/ structure
+                        if (s3BasePattern.test(trimmed)) {
+                            // Deep check query param for response-content-type=application/pdf (decoded) or application%2Fpdf (encoded)
+                            try {
+                                const u = new URL(trimmed);
+                                const rct = u.searchParams.get('response-content-type');
+                                if (rct === 'application/pdf' || rct === 'application%2Fpdf') return true;
+                            } catch (e) { /* ignore URL parse errors */ }
+                        }
+                        return false;
+                    }
+
+                    // *** MODIFIED FUNCTION ***
+                    // Builds the PDF embed HTML, storing the original URL and setting iframe src to blank.
+                    function buildPdfEmbed(originalUrl) {
+                        const safeUrl = tinymce.util.Tools.encodeAll(originalUrl);
+                        return `\n<div class="pdf-embed-wrapper" data-embed-type="pdf" data-original-src="${safeUrl}" contenteditable="false" style="margin:16px 0; border:1px solid #e3e6eb; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.05); overflow:hidden;">\n  <div style="background:#f8f9fa; padding:6px 10px; display:flex; align-items:center; gap:8px; border-bottom:1px solid #e3e6eb;">\n    <i class="fas fa-file-pdf text-danger"></i>\n    <strong style="font-size:13px; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Tài liệu PDF</strong>\n    <a href="${safeUrl}" target="_blank" rel="noopener" style="font-size:12px; text-decoration:none;">Mở</a>\n  </div>\n  <iframe src="about:blank" style="width:100%; min-height:600px; border:0; background:#fff;" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>\n  <div style="background:#fafafa; padding:4px 8px; text-align:right; border-top:1px solid #e3e6eb;">\n    <small style="font-size:11px; color:#6c757d;">Nhúng PDF - <span style="cursor:pointer; color:#dc3545;" class="remove-pdf-embed">Xóa</span></small>\n  </div>\n</div>\n<p></p>`;
+                    }
+
+                    // Resolve API redirect URL to final presigned PDF URL.
+                    async function resolvePdfUrl(originalUrl) {
+                        try {
+                            const isApi = /\/api\/v1\/file-entries\//i.test(originalUrl);
+                            if (!isApi) return originalUrl; // No need to resolve
+                           
+                            const controller = new AbortController();
+                            const timeout = setTimeout(() => controller.abort(), 8000);
+                            const resp = await fetch(originalUrl, { method: 'GET', redirect: 'manual', signal: controller.signal });
+                            clearTimeout(timeout);
+                            if (resp.status === 302 || resp.status === 301) {
+                                const loc = resp.headers.get('Location');
+                                if (loc && /X-Amz-Signature=/.test(loc)) return loc;
+                            }
+                            if (resp.url && resp.url !== originalUrl && /X-Amz-Signature=/.test(resp.url)) {
+                                return resp.url;
+                            }
+                        } catch (err) {
+                            // Silent fail; fallback to original URL
+                        }
+                        return originalUrl; // Fallback
+                    }
+                    
+                    // *** NEW FUNCTION ***
+                    // Finds all unresolved PDF embeds and fetches a fresh URL for them.
+                    async function resolveAllEmbeddedPdfs() {
+                        const editor = tinymce.get('guideContent');
+                        if (!editor || editor.destroyed || !editor.getDoc()) return;
+
+                        const editorBody = editor.getBody();
+                        const pdfWrappers = editorBody.querySelectorAll('.pdf-embed-wrapper[data-original-src]');
+
+                        for (const wrapper of pdfWrappers) {
+                            const iframe = wrapper.querySelector('iframe');
+                            // Only process iframes that haven't been loaded yet
+                            if (iframe && (!iframe.src || iframe.src === 'about:blank')) {
+                                const originalUrl = wrapper.dataset.originalSrc;
+                                if (!originalUrl) continue;
+
+                                // Show a loading indicator inside the iframe
+                                try {
+                                    const doc = iframe.contentWindow.document;
+                                    doc.open();
+                                    doc.write('<div style="font-family:sans-serif;text-align:center;padding:20px;color:#6c757d;">Đang tải tài liệu...</div>');
+                                    doc.close();
+                                } catch (e) {}
+
+
+                                try {
+                                    const finalUrl = await resolvePdfUrl(originalUrl);
+                                    iframe.src = finalUrl;
+                                } catch (error) {
+                                    console.error("Failed to resolve PDF on load:", error);
+                                    // Show error in iframe
+                                    try {
+                                        const doc = iframe.contentWindow.document;
+                                        doc.open();
+                                        doc.write('<div style="font-family:sans-serif;text-align:center;padding:20px;color:#dc3545;">Lỗi: Không thể tải tài liệu.</div>');
+                                        doc.close();
+                                    } catch (e) {}
+                                }
+                            }
+                        }
+                    }
+                    // Make it globally accessible for other functions
+                    window.resolveAllEmbeddedPdfs = resolveAllEmbeddedPdfs;
+
+
+                    // Handle paste of a single PDF URL -> replace with iframe embed
+                    editor.on('paste', function(e) {
+                        try {
+                            if (!e.clipboardData) return;
+                            const pasted = e.clipboardData.getData('text/plain');
+                            const trimmed = pasted && pasted.trim();
+                            if (trimmed && isPdfLikeUrl(trimmed)) {
+                                e.preventDefault();
+                                
+                                // Insert the placeholder HTML first
+                                editor.insertContent(buildPdfEmbed(trimmed));
+                                checkForChanges();
+                                
+                                // Then, trigger the resolver to load the content of the new embed
+                                resolveAllEmbeddedPdfs();
+                            }
+                        } catch(err) {
+                            // Silent fail - do not block normal paste
+                        }
+                    });
+
+                    // Delegate click handler inside editor for removing embed
+                    editor.on('click', function(ev){
+                        const target = ev.target;
+                        if (target && target.classList && target.classList.contains('remove-pdf-embed')) {
+                            ev.preventDefault();
+                            const wrapper = target.closest('.pdf-embed-wrapper');
+                            if (wrapper) {
+                                wrapper.remove();
+                                editor.focus();
+                                checkForChanges();
+                            }
+                        }
+                    });
+
                     // Optimized content change tracking
                     let editorChangeTimeout;
                     editor.on('keyup change paste', function() {
@@ -923,19 +1063,20 @@
                 editor.on('init', function() {
                     editorState.isReady = true;
                     
-                    // Set pending content if any
+                    // Set pending content if any, and resolve PDFs
                     if (editorState.pendingContent !== null) {
-                        safeSetContent(editorState.pendingContent);
+                        if (safeSetContent(editorState.pendingContent)) {
+                           resolveAllEmbeddedPdfs();
+                        }
                     }
                     
-                    // Load guide content or draft - but not both
+                    // Load guide content or draft
                     if (id) {
-                        loadGuideContent();
+                        loadGuideContent(); // This function will now handle PDF resolving
                     } else if (!isViewMode && !editorState.contentLoaded) {
-                        // Only load draft for new guides and if no content is loaded yet
                         setTimeout(() => {
                             if (!editorState.contentLoaded) {
-                                loadDraftFromStorage();
+                                loadDraftFromStorage(); // This function also handles PDF resolving now
                             }
                         }, 500);
                     }
@@ -1355,7 +1496,6 @@
                 
                 // Update thumbnail preview
                 if (d.thumbnail) {
-                    // Nếu là link Cloudinary thì dùng trực tiếp, nếu là tên file cũ thì ghép đường dẫn cũ
                     if (d.thumbnail.startsWith('http')) {
                         currentThumbnailUrl = d.thumbnail;
                     } else {
@@ -1366,7 +1506,11 @@
                 
                 // Set content safely
                 safeSetContent(d.content || '');
-                
+                // *** MODIFIED LINE: Resolve PDFs after content is loaded ***
+                if (window.resolveAllEmbeddedPdfs) {
+                    await window.resolveAllEmbeddedPdfs();
+                }
+
                 // Update lastSavedData after loading
                 if (!isViewMode) {
                     setTimeout(() => {

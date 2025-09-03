@@ -373,9 +373,8 @@ curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8);
 curl_setopt($ch, CURLOPT_TIMEOUT,        8);  
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-if (isset($_COOKIE[session_name()])) {
-    curl_setopt($ch, CURLOPT_COOKIE, session_name() . '=' . $_COOKIE[session_name()]);
-}
+// Pass current PHP session ID to maintain authentication in internal request
+curl_setopt($ch, CURLOPT_COOKIE, session_name() . '=' . session_id());
 
 
 $result    = curl_exec($ch);

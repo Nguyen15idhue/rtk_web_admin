@@ -269,7 +269,7 @@ class StationModel {
         $offsetLng = $originalLng + $lngOffset;
         
         // Log the offset for debugging (optional)
-        error_log("StationModel::applyCoordinateOffset - Original: ({$originalLat}, {$originalLng}) -> Offset: ({$offsetLat}, {$offsetLng}) - Distance: ~{$offsetDistanceKm}km, Angle: " . ($angle * 180 / M_PI) . "°");
+        //error_log("StationModel::applyCoordinateOffset - Original: ({$originalLat}, {$originalLng}) -> Offset: ({$offsetLat}, {$offsetLng}) - Distance: ~{$offsetDistanceKm}km, Angle: " . ($angle * 180 / M_PI) . "°");
         
         return [
             'lat' => $offsetLat,

@@ -10,7 +10,7 @@ class VoucherModel {
 
     // Fetch paginated vouchers with filters
     public function fetchPaginated(array $filters = [], int $page = 1, int $perPage = 10): array {
-        $baseSelect = "SELECT v.id, v.code, v.description, v.voucher_type, v.discount_value, v.max_discount, v.min_order_value, v.quantity, v.limit_usage, v.used_quantity, v.start_date, v.end_date, v.is_active, v.created_at, v.max_sa, l.province as location_name, p.name as package_name";
+        $baseSelect = "SELECT v.id, v.code, v.description, v.voucher_type, v.discount_value, v.max_discount, v.min_order_value, v.quantity, v.limit_usage, v.used_quantity, v.start_date, v.end_date, v.is_active, v.auto_approve, v.created_at, v.max_sa, l.province as location_name, p.name as package_name";
         $baseFrom = " FROM voucher v LEFT JOIN location l ON v.location_id = l.id LEFT JOIN package p ON v.package_id = p.id";
         $baseWhere = " WHERE 1=1";
         $params = [];
@@ -132,8 +132,8 @@ class VoucherModel {
             throw new InvalidArgumentException('Mã voucher đã tồn tại');
         }
         
-        $sql = "INSERT INTO voucher (code, description, voucher_type, discount_value, max_discount, min_order_value, quantity, limit_usage, start_date, end_date, is_active, max_sa, location_id, package_id, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+        $sql = "INSERT INTO voucher (code, description, voucher_type, discount_value, max_discount, min_order_value, quantity, limit_usage, start_date, end_date, is_active, auto_approve, max_sa, location_id, package_id, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
         $stmt = $this->db->prepare($sql);
         $ok = $stmt->execute([
             $data['code'],
@@ -147,6 +147,7 @@ class VoucherModel {
             $data['start_date'],
             $data['end_date'],
             isset($data['is_active']) ? (int)$data['is_active'] : 1,
+            isset($data['auto_approve']) ? (int)$data['auto_approve'] : 0,
             $data['max_sa'] ?? null,
             $data['location_id'] ?? null,
             $data['package_id'] ?? null
@@ -211,7 +212,7 @@ class VoucherModel {
             throw new InvalidArgumentException('Mã voucher đã tồn tại');
         }
 
-        $sql = "UPDATE voucher SET code = ?, description = ?, voucher_type = ?, discount_value = ?, max_discount = ?, min_order_value = ?, quantity = ?, limit_usage = ?, start_date = ?, end_date = ?, is_active = ?, max_sa = ?, location_id = ?, package_id = ?, updated_at = NOW() WHERE id = ?";
+        $sql = "UPDATE voucher SET code = ?, description = ?, voucher_type = ?, discount_value = ?, max_discount = ?, min_order_value = ?, quantity = ?, limit_usage = ?, start_date = ?, end_date = ?, is_active = ?, auto_approve = ?, max_sa = ?, location_id = ?, package_id = ?, updated_at = NOW() WHERE id = ?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
             $data['code'],
@@ -225,6 +226,7 @@ class VoucherModel {
             $data['start_date'],
             $data['end_date'],
             isset($data['is_active']) ? (int)$data['is_active'] : 1,
+            isset($data['auto_approve']) ? (int)$data['auto_approve'] : 0,
             $data['max_sa'] ?? null,
             $data['location_id'] ?? null,
             $data['package_id'] ?? null,
